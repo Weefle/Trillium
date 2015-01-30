@@ -6,9 +6,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
 
-/**
- * Created by saad on 30-Jan-15.
- */
 public class ServerListPing implements Listener {
 
     @EventHandler

@@ -12,9 +12,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by saad on 30-Jan-15.
- */
 public class PlayerJoin implements Listener {
 
     @EventHandler

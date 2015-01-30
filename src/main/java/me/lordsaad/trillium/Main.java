@@ -7,9 +7,6 @@ import me.lordsaad.trillium.motd.CommandMotd;
 import me.lordsaad.trillium.tp.CommandTeleport;
 import org.bukkit.plugin.java.JavaPlugin;
 
-/**
- * Created by saad on 29-Jan-15.
- */
 public class Main extends JavaPlugin {
 
     public static Main plugin;

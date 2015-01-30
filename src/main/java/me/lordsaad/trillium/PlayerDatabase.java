@@ -6,9 +6,6 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 
-/**
- * Created by saad on 30-Jan-15.
- */
 public class PlayerDatabase {
 
 

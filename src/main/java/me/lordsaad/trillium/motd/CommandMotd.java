@@ -9,9 +9,6 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * Created by saad on 30-Jan-15.
- */
 public class CommandMotd implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

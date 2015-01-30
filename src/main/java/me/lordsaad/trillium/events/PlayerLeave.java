@@ -9,9 +9,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.io.IOException;
 
-/**
- * Created by saad on 30-Jan-15.
- */
 public class PlayerLeave implements Listener {
 
     @EventHandler

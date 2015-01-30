@@ -4,6 +4,7 @@ import me.lordsaad.trillium.events.PlayerJoin;
 import me.lordsaad.trillium.events.PlayerLeave;
 import me.lordsaad.trillium.events.ServerListPing;
 import me.lordsaad.trillium.motd.CommandMotd;
+import me.lordsaad.trillium.tp.CommandTeleport;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -22,6 +23,7 @@ public class Main extends JavaPlugin {
 
         getCommand("trillium").setExecutor(new CommandTrillium());
         getCommand("motd").setExecutor(new CommandMotd());
+        getCommand("teleport").setExecutor(new CommandTeleport());
     }
 
     public void onDisable() {

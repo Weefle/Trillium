@@ -11,3 +11,7 @@ commands:
   motd:
     description: View/Edit the motd.
     usage: /motd
+  teleport:
+    description: Teleport to any player.
+    usage: /teleport <player> [player]
+    aliases: [tp]

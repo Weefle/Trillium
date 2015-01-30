@@ -27,3 +27,11 @@ commands:
     description: Deny a player teleport request.
     usage: /tprd
     aliases: [tprd]
+  teleportrequesthere:
+    description: Request permission to have a player teleport to you.
+    usage: /tprh <player>
+    aliases: [tprh]
+  teleporthere:
+    description: Teleport a player to you.
+    usage: /tph <player>
+    aliases: [tph]

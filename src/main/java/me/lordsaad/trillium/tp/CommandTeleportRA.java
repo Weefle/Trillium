@@ -23,6 +23,13 @@ public class CommandTeleportRA implements CommandExecutor {
                         p.sendMessage(ChatColor.GREEN + "You teleported " + requester.getName() + " to you.");
                         requester.sendMessage(ChatColor.GREEN + p.getName() + " accepted your teleport request.");
 
+                    } else if (CommandTeleportRH.tprh.containsKey(p.getUniqueId())) {
+                        Player requester = Bukkit.getPlayer(CommandTeleportR.tprequest.get(p.getUniqueId()));
+
+                        p.teleport(requester);
+                        p.sendMessage(ChatColor.GREEN + "You teleported to " + requester.getName());
+                        requester.sendMessage(ChatColor.GREEN + p.getName() + " accepted to teleport to you.");
+                        
                     } else {
                         p.sendMessage(ChatColor.RED + "No pending teleport requests to accept.");
                     }

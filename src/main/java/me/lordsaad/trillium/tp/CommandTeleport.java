@@ -18,7 +18,7 @@ public class CommandTeleport implements CommandExecutor {
                     if (p.hasPermission("tr.teleport.self")) {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null) {
-
+                            
                             p.teleport(target);
                             p.sendMessage(ChatColor.GREEN + "You teleported to " + target.getName());
 

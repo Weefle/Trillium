@@ -1,0 +1,13 @@
+author: LordSaad44
+description: The Premium Essentials.
+main: me.lordsaad.trillium.Main
+name: Trillium
+version: 1.0
+commands:
+  trillium:
+    description: The main command of the plugin.
+    usage: /trillium
+    aliases: [tr]
+  motd:
+    description: View/Edit the motd.
+    usage: /motd

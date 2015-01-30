@@ -1,0 +1,19 @@
+#  _____     _ _ _ _
+# |_   _| __(_) | (_)_   _ _ __ ___
+#   | || '__| | | | | | | | '_ ` _ \
+#   | || |  | | | | | |_| | | | | | |
+#   |_||_|  |_|_|_|_|\__,_|_| |_| |_|
+
+#---------------[ Motd ]---------------#
+Server List Motd: "&4Please define a motd in the conig.yml"
+Motd:
+  - "&8<<<--->>> &a[SERVER] &8<<<--->>>"
+  - "&7Welcome &6[USERNAME]&7!"
+  - "&7There are currently &6[ONLINE]&7/&6[SLOTS] players."
+  - "&7Have fun! ^_^/"
+
+#---------------[ Player Join ]---------------#
+Play Particle Effect: true
+
+#---------------[ Player Leave ]---------------#
+Play Particle Effect: true

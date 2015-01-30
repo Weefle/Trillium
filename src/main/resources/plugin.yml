@@ -15,3 +15,15 @@ commands:
     description: Teleport to any player.
     usage: /teleport <player> [player]
     aliases: [tp]
+  teleportrequest:
+    description: Request permission to teleport to any player.
+    usage: /tpr <player>
+    aliases: [tpr]
+  teleportrequestaccept:
+    description: Accept to have a player teleport to you.
+    usage: /tpra
+    aliases: [tpra]
+  teleportrequestdeny:
+    description: Deny a player teleport request.
+    usage: /tprd
+    aliases: [tprd]

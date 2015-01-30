@@ -28,7 +28,7 @@ public class CommandTeleport implements CommandExecutor {
                     } else {
                         p.sendMessage(ChatColor.RED + "You don't have permission to do that.");
                     }
-                } else {
+                } else if (args.length >= 2) {
                     if (p.hasPermission("tr.teleport.other")) {
                         Player target1 = Bukkit.getPlayer(args[0]);
                         Player target2 = Bukkit.getPlayer(args[1]);
@@ -48,6 +48,8 @@ public class CommandTeleport implements CommandExecutor {
                     } else {
                         p.sendMessage(ChatColor.RED + "You don't have permission to do that.");
                     }
+                } else {
+                    p.sendMessage(ChatColor.RED + "Too few arguments. /tp <player> [player]");
                 }
             } else {
                 sender.sendMessage(ChatColor.RED + "You can't do that.");

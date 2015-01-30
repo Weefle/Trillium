@@ -23,6 +23,7 @@ public class CommandTeleport implements CommandExecutor {
                         if (target != null) {
 
                             p.teleport(target);
+                            p.sendMessage(ChatColor.GREEN + "You teleported to " + target.getName());
 
                         } else {
                             p.sendMessage(ChatColor.RED + args[0] + " is either offline or does not exist.");
@@ -38,6 +39,8 @@ public class CommandTeleport implements CommandExecutor {
                             if (target2 != null) {
 
                                 target1.teleport(target2);
+                                p.sendMessage(ChatColor.GREEN + "You teleported " + target1.getName() + " to " + target2.getName());
+                                target1.sendMessage(ChatColor.GREEN + p.getName() + " teleported you to " + target2.getName());
 
                             } else {
                                 p.sendMessage(ChatColor.RED + args[1] + " is either offline or does not exist.");

@@ -5,9 +5,10 @@ import me.lordsaad.trillium.events.PlayerLeave;
 import me.lordsaad.trillium.events.ServerListPing;
 import me.lordsaad.trillium.motd.CommandMotd;
 import me.lordsaad.trillium.tp.CommandTeleport;
-import me.lordsaad.trillium.tp.CommandTeleportRequest;
-import me.lordsaad.trillium.tp.CommandTeleportRequestAccept;
-import me.lordsaad.trillium.tp.CommandTeleportRequestDeny;
+
+import me.lordsaad.trillium.tp.CommandTeleportR;
+import me.lordsaad.trillium.tp.CommandTeleportRA;
+import me.lordsaad.trillium.tp.CommandTeleportRD;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
@@ -24,9 +25,9 @@ public class Main extends JavaPlugin {
         getCommand("trillium").setExecutor(new CommandTrillium());
         getCommand("motd").setExecutor(new CommandMotd());
         getCommand("teleport").setExecutor(new CommandTeleport());
-        getCommand("teleportrequest").setExecutor(new CommandTeleportRequest());
-        getCommand("teleportrequestaccept").setExecutor(new CommandTeleportRequestAccept());
-        getCommand("teleportrequestdeny").setExecutor(new CommandTeleportRequestDeny());
+        getCommand("teleportrequest").setExecutor(new CommandTeleportR());
+        getCommand("teleportrequestaccept").setExecutor(new CommandTeleportRA());
+        getCommand("teleportrequestdeny").setExecutor(new CommandTeleportRD());
     }
 
     public void onDisable() {

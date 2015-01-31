@@ -73,6 +73,14 @@ public class CommandTeleportRA implements CommandExecutor {
                             yml.set("Previous Location.pitch", pitch);
                             yml.set("Previous Location.yaw", yaw);
                         }
+
+                        try {
+                            if (yml != null) {
+                                yml.save(PlayerDatabase.db(p));
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         
                         p.teleport(requester);
                         p.sendMessage(ChatColor.GREEN + "You teleported to " + requester.getName());

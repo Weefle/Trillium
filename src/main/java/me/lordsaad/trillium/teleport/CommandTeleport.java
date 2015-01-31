@@ -45,6 +45,14 @@ public class CommandTeleport implements CommandExecutor {
                                 yml.set("Previous Location.yaw", yaw);
                             }
 
+                            try {
+                                if (yml != null) {
+                                    yml.save(PlayerDatabase.db(p));
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            
                             p.teleport(target);
                             p.sendMessage(ChatColor.GREEN + "You teleported to " + target.getName());
 

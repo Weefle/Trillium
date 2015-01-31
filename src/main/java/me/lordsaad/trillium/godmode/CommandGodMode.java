@@ -40,12 +40,28 @@ public class CommandGodMode implements CommandExecutor {
                                 yml.set("God Mode", false);
                             }
 
+                            try {
+                                if (yml != null) {
+                                    yml.save(PlayerDatabase.db(p));
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
                         } else {
                             godmodeusers.add(p.getUniqueId());
 
                             p.sendMessage(ChatColor.BLUE + "You are now in god mode.");
                             if (yml != null) {
                                 yml.set("God Mode", true);
+                            }
+
+                            try {
+                                if (yml != null) {
+                                    yml.save(PlayerDatabase.db(p));
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
                         }
                     } else {
@@ -72,12 +88,28 @@ public class CommandGodMode implements CommandExecutor {
                                     yml.set("God Mode", false);
                                 }
 
+                                try {
+                                    if (yml != null) {
+                                        yml.save(PlayerDatabase.db(p));
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
                             } else {
                                 godmodeusers.add(p.getUniqueId());
 
                                 p.sendMessage(ChatColor.BLUE + "You are now in god mode.");
                                 if (yml != null) {
                                     yml.set("God Mode", true);
+                                }
+
+                                try {
+                                    if (yml != null) {
+                                        yml.save(PlayerDatabase.db(p));
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
                             }
                         } else {

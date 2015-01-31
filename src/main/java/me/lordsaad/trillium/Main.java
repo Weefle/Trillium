@@ -4,9 +4,11 @@ import me.lordsaad.trillium.events.PlayerJoin;
 import me.lordsaad.trillium.events.PlayerLeave;
 import me.lordsaad.trillium.events.ServerListPing;
 import me.lordsaad.trillium.gamemode.CommandGamemode;
+import me.lordsaad.trillium.godmode.CommandGodMode;
 import me.lordsaad.trillium.motd.CommandMotd;
 import me.lordsaad.trillium.teleport.*;
 
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
@@ -30,10 +32,12 @@ public class Main extends JavaPlugin {
         getCommand("teleportrequesthere").setExecutor(new CommandTeleportRH());
         getCommand("gamemode").setExecutor(new CommandGamemode());
         getCommand("back").setExecutor(new CommandBack());
+        getCommand("god").setExecutor(new CommandGodMode());
 
     }
-
+    
     public void onDisable() {
+        HandlerList.unregisterAll();
         saveDefaultConfig();
     }
 }

@@ -2,6 +2,7 @@ package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.PlayerDatabase;
+import me.lordsaad.trillium.godmode.CommandGodMode;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -34,5 +35,12 @@ public class PlayerJoin implements Listener {
         
         //join message
         event.setJoinMessage(ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Join Message")));
+        
+        //god mode?
+        if (Main.plugin.getConfig().getBoolean("God Mode")) {
+            CommandGodMode.godmodeusers.add(p.getUniqueId());
+        } else {
+            CommandGodMode.godmodeusers.remove(p.getUniqueId());
+        }
     }
 }

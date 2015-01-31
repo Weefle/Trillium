@@ -22,6 +22,7 @@ public class PlayerDatabase {
             db.set("Previous Location.yaw", p.getLocation().getYaw());
             db.set("Muted", false);
             db.set("God Mode", false);
+            db.set("Vanish Mode", false);
 
             db.save(file);
         }

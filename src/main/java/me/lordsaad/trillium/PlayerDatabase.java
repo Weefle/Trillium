@@ -14,7 +14,7 @@ public class PlayerDatabase {
         if (!file.exists()) {
             YamlConfiguration db = YamlConfiguration.loadConfiguration(file);
             db.set("Nickname", p.getName());
-            db.set("Previous Location.wolrd", p.getLocation().getWorld().getName());
+            db.set("Previous Location.world", p.getLocation().getWorld().getName());
             db.set("Previous Location.x", p.getLocation().getX());
             db.set("Previous Location.y", p.getLocation().getY());
             db.set("Previous Location.z", p.getLocation().getZ());

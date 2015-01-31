@@ -36,6 +36,9 @@ commands:
     usage: /tph <player>
     aliases: [tph]
   gamemode:
-    description:
-    usage: /tph <player>
-    aliases: [tph]
+    description: Change your/someone else's gamemode.
+    usage: /gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp]
+    aliases: [gm]
+  back:
+    description: Teleport to the last place you teleported from.
+    usage: /back

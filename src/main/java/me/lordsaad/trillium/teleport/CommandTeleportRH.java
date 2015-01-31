@@ -1,4 +1,4 @@
-package me.lordsaad.trillium.tp;
+package me.lordsaad.trillium.teleport;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -1,12 +1,13 @@
 package me.lordsaad.trillium.teleport;
 
-import me.lordsaad.trillium.Main;
+import me.lordsaad.trillium.PlayerDatabase;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class CommandBack implements CommandExecutor {
@@ -18,14 +19,16 @@ public class CommandBack implements CommandExecutor {
                 Player p = (Player) sender;
                 if (p.hasPermission("tr.back")) {
 
-                    String world = Main.plugin.getConfig().getString("Previous Location.world");
-                    double x = Main.plugin.getConfig().getDouble("Previous Location.x");
-                    double y = Main.plugin.getConfig().getDouble("Previous Location.y");
-                    double z = Main.plugin.getConfig().getDouble("Previous Location.z");
-                    float pitch = (float) Main.plugin.getConfig().getDouble("Previous Location.pitch");
-                    float yaw = (float) Main.plugin.getConfig().getDouble("Previous Location.yaw");
+                    YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
+
+                    String world = yml.getString("Previous Location.world");
+                    double x = yml.getDouble("Previous Location.x");
+                    double y = yml.getDouble("Previous Location.y");
+                    double z = yml.getDouble("Previous Location.z");
+                    float pitch = (float) yml.getDouble("Previous Location.pitch");
+                    float yaw = (float) yml.getDouble("Previous Location.yaw");
                     Location loc = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
-                    
+
                     p.sendMessage(ChatColor.BLUE + "You have been sent back to your last location.");
                     p.teleport(loc);
 

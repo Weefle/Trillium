@@ -20,7 +20,7 @@ public class CommandTeleportRA implements CommandExecutor {
                 Player p = (Player) sender;
                 if (p.hasPermission("tr.teleportrequest.respond")) {
                     if (CommandTeleportR.tprequest.containsValue(p.getUniqueId())) {
-                        
+
                         Player requester = Bukkit.getPlayer(CommandTeleportR.tprequest.get(p.getUniqueId()));
 
                         String world = requester.getLocation().getWorld().getName();
@@ -30,21 +30,15 @@ public class CommandTeleportRA implements CommandExecutor {
                         float yaw = requester.getLocation().getYaw();
                         float pitch = requester.getLocation().getPitch();
 
-                        YamlConfiguration yml = null;
-                        try {
-                            yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(requester));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        if (yml != null) {
-                            yml.set("Previous Location.world", world);
-                            yml.set("Previous Location.x", x);
-                            yml.set("Previous Location.y", y);
-                            yml.set("Previous Location.z", z);
-                            yml.set("Previous Location.pitch", pitch);
-                            yml.set("Previous Location.yaw", yaw);
-                        }
-                        
+                        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(requester));
+
+                        yml.set("Previous Location.world", world);
+                        yml.set("Previous Location.x", x);
+                        yml.set("Previous Location.y", y);
+                        yml.set("Previous Location.z", z);
+                        yml.set("Previous Location.pitch", pitch);
+                        yml.set("Previous Location.yaw", yaw);
+
                         requester.teleport(p);
                         p.sendMessage(ChatColor.GREEN + "You teleported " + requester.getName() + " to you.");
                         requester.sendMessage(ChatColor.GREEN + p.getName() + " accepted your teleport request.");
@@ -59,33 +53,25 @@ public class CommandTeleportRA implements CommandExecutor {
                         float yaw = p.getLocation().getYaw();
                         float pitch = p.getLocation().getPitch();
 
-                        YamlConfiguration yml = null;
-                        try {
-                            yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        if (yml != null) {
-                            yml.set("Previous Location.world", world);
-                            yml.set("Previous Location.x", x);
-                            yml.set("Previous Location.y", y);
-                            yml.set("Previous Location.z", z);
-                            yml.set("Previous Location.pitch", pitch);
-                            yml.set("Previous Location.yaw", yaw);
-                        }
+                        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
+
+                        yml.set("Previous Location.world", world);
+                        yml.set("Previous Location.x", x);
+                        yml.set("Previous Location.y", y);
+                        yml.set("Previous Location.z", z);
+                        yml.set("Previous Location.pitch", pitch);
+                        yml.set("Previous Location.yaw", yaw);
 
                         try {
-                            if (yml != null) {
-                                yml.save(PlayerDatabase.db(p));
-                            }
+                            yml.save(PlayerDatabase.db(p));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        
+
                         p.teleport(requester);
                         p.sendMessage(ChatColor.GREEN + "You teleported to " + requester.getName());
                         requester.sendMessage(ChatColor.GREEN + p.getName() + " accepted to teleport to you.");
-                        
+
                     } else {
                         p.sendMessage(ChatColor.RED + "No pending teleport requests to accept.");
                     }

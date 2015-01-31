@@ -22,28 +22,20 @@ public class CommandGodMode implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("god")) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
-                if (args.length != 0) {
+                if (args.length == 0) {
                     if (p.hasPermission("tr.god")) {
 
-                        YamlConfiguration yml = null;
-                        try {
-                            yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
+
 
                         if (godmodeusers.contains(p.getUniqueId())) {
 
                             godmodeusers.remove(p.getUniqueId());
                             p.sendMessage(ChatColor.BLUE + "You are no longer in god mode.");
-                            if (yml != null) {
-                                yml.set("God Mode", false);
-                            }
+                            yml.set("God Mode", false);
 
                             try {
-                                if (yml != null) {
-                                    yml.save(PlayerDatabase.db(p));
-                                }
+                                yml.save(PlayerDatabase.db(p));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -52,14 +44,10 @@ public class CommandGodMode implements CommandExecutor {
                             godmodeusers.add(p.getUniqueId());
 
                             p.sendMessage(ChatColor.BLUE + "You are now in god mode.");
-                            if (yml != null) {
-                                yml.set("God Mode", true);
-                            }
+                            yml.set("God Mode", true);
 
                             try {
-                                if (yml != null) {
-                                    yml.save(PlayerDatabase.db(p));
-                                }
+                                yml.save(PlayerDatabase.db(p));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -73,25 +61,16 @@ public class CommandGodMode implements CommandExecutor {
                         Player pl = Bukkit.getPlayer(args[0]);
                         if (pl != null) {
 
-                            YamlConfiguration yml = null;
-                            try {
-                                yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
 
                             if (godmodeusers.contains(p.getUniqueId())) {
 
                                 godmodeusers.remove(p.getUniqueId());
                                 p.sendMessage(ChatColor.BLUE + "You are no longer in god mode.");
-                                if (yml != null) {
-                                    yml.set("God Mode", false);
-                                }
+                                yml.set("God Mode", false);
 
                                 try {
-                                    if (yml != null) {
-                                        yml.save(PlayerDatabase.db(p));
-                                    }
+                                    yml.save(PlayerDatabase.db(p));
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -100,14 +79,10 @@ public class CommandGodMode implements CommandExecutor {
                                 godmodeusers.add(p.getUniqueId());
 
                                 p.sendMessage(ChatColor.BLUE + "You are now in god mode.");
-                                if (yml != null) {
-                                    yml.set("God Mode", true);
-                                }
+                                yml.set("God Mode", true);
 
                                 try {
-                                    if (yml != null) {
-                                        yml.save(PlayerDatabase.db(p));
-                                    }
+                                    yml.save(PlayerDatabase.db(p));
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }

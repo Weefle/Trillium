@@ -31,52 +31,37 @@ public class Utils {
     }
 
     public static void saveinventory(Player p, ItemStack[] items, ItemStack[] armor) {
-        YamlConfiguration yml = null;
-        try {
-            yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
 
         ItemStack[] itemspart = p.getInventory().getContents();
         ItemStack[] armorpart = p.getInventory().getArmorContents();
 
-        if (yml != null) {
-            yml.set("Inventory.items", itemspart);
-            yml.set("Inventory.armor", armorpart);
-        }
+        yml.set("Inventory.items", itemspart);
+        yml.set("Inventory.armor", armorpart);
 
         try {
-            if (yml != null) {
-                yml.save(PlayerDatabase.db(p));
-            }
+            yml.save(PlayerDatabase.db(p));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         clearInventory(p);
-        
+
         p.getInventory().setContents(items);
         p.getInventory().setArmorContents(armor);
     }
-    
+
     public void restoreinventory(Player p) {
         clearInventory(p);
 
-        YamlConfiguration yml = null;
-        try {
-            yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
+
 
         List<?> itemsList = null;
         List<?> armorList = null;
-        if (yml != null) {
-            itemsList = yml.getList("Inventory.items");
-            armorList = yml.getList("Inventory.armor");
-        }
-        
+        itemsList = yml.getList("Inventory.items");
+        armorList = yml.getList("Inventory.armor");
+
         if (itemsList != null && armorList != null) {
 
             ItemStack[] itemspart2 = itemsList.toArray(new ItemStack[itemsList.size()]);

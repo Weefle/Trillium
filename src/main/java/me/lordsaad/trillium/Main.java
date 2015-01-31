@@ -4,7 +4,7 @@ import me.lordsaad.trillium.events.PlayerJoin;
 import me.lordsaad.trillium.events.PlayerLeave;
 import me.lordsaad.trillium.events.ServerListPing;
 import me.lordsaad.trillium.gamemode.CommandGamemode;
-import me.lordsaad.trillium.gamemode.EntityDamage;
+import me.lordsaad.trillium.godmode.EntityDamage;
 import me.lordsaad.trillium.godmode.CommandGodMode;
 import me.lordsaad.trillium.motd.CommandMotd;
 import me.lordsaad.trillium.teleport.*;

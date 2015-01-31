@@ -1,6 +1,5 @@
-package me.lordsaad.trillium.gamemode;
+package me.lordsaad.trillium.godmode;
 
-import me.lordsaad.trillium.godmode.CommandGodMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

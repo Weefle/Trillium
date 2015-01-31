@@ -28,7 +28,7 @@ public class CommandTeleportRH implements CommandExecutor {
                             target.sendMessage(ChatColor.AQUA + p.getName() + ChatColor.BLUE + " would like you to teleport to him");
                             target.sendMessage(ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.");
                             target.sendMessage(ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.");
-                            tprh.put(p.getUniqueId(), target.getUniqueId());
+                            tprh.put(target.getUniqueId(), p.getUniqueId());
 
                         } else {
                             p.sendMessage(ChatColor.RED + args[0] + " is either offline or does not exist.");

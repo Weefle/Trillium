@@ -18,13 +18,15 @@ public class PlayerJoin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player p = event.getPlayer();
-        YamlConfiguration yml;
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
         try {
-            yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
             yml.save(PlayerDatabase.db(p));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //join message
+        event.setJoinMessage(ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Join Message")));
 
         //motd
         ArrayList<String> motd = (ArrayList<String>) Main.plugin.getConfig().getStringList("Motd");
@@ -32,10 +34,7 @@ public class PlayerJoin implements Listener {
             s = ChatColor.translateAlternateColorCodes('&', s);
             p.sendMessage(s);
         }
-        
-        //join message
-        event.setJoinMessage(ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Join Message")));
-        
+
         //god mode?
         if (Main.plugin.getConfig().getBoolean("God Mode")) {
             CommandGodMode.godmodeusers.add(p.getUniqueId());

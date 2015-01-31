@@ -17,10 +17,8 @@ public class PlayerLeave implements Listener {
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
         Player p = event.getPlayer();
-        YamlConfiguration yml;
-
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
         try {
-            yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
             yml.save(PlayerDatabase.db(p));
         } catch (IOException e) {
             e.printStackTrace();
@@ -28,7 +26,7 @@ public class PlayerLeave implements Listener {
 
         //leave message
         event.setQuitMessage(ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Leave Message")));
-        
+
         //remove godmode?
         if (Main.plugin.getConfig().getBoolean("God Mode")) {
             CommandGodMode.godmodeusers.add(p.getUniqueId());

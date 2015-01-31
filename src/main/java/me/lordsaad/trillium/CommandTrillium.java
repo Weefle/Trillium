@@ -11,21 +11,22 @@ public class CommandTrillium implements CommandExecutor {
 
         if (cmd.getName().equalsIgnoreCase("trillium")) {
             if (sender.hasPermission("tr.admin")) {
-                sender.sendMessage(ChatColor.DARK_GRAY + "<<<-{[|O|]}->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<-{[|O|]}->>>");
-                sender.sendMessage(ChatColor.GRAY + "Plugin made with love");
-                sender.sendMessage(ChatColor.GRAY + "   by LordSaad44");
-                sender.sendMessage(ChatColor.DARK_RED + "        ❤");
+                sender.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
+                sender.sendMessage(ChatColor.GRAY + "       Plugin made with love");
+                sender.sendMessage(ChatColor.GRAY + "   by LordSaad44 and VortexSeven");
+                sender.sendMessage(ChatColor.DARK_RED + "                  ❤");
+                sender.sendMessage(ChatColor.DARK_GRAY + "<<<------------------------------->>>");
                 sender.sendMessage(ChatColor.GRAY + "Vesion: " + Main.plugin.getDescription().getVersion());
                 sender.sendMessage(ChatColor.GRAY + "Configuration Reloaded");
-                sender.sendMessage(ChatColor.DARK_GRAY + "<<<--------------------------------------->>>");
                 Main.plugin.reloadConfig();
             } else {
-                sender.sendMessage(ChatColor.DARK_GRAY + "<<<-{[|O|]}->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<-{[|O|]}->>>");
-                sender.sendMessage(ChatColor.GRAY + "Plugin made with love");
-                sender.sendMessage(ChatColor.GRAY + "   by LordSaad44");
-                sender.sendMessage(ChatColor.DARK_RED + "        ❤");
+                sender.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
+                sender.sendMessage(ChatColor.GRAY + "       Plugin made with love");
+                sender.sendMessage(ChatColor.GRAY + "   by LordSaad44 and VortexSeven");
+                sender.sendMessage(ChatColor.DARK_RED + "                  ❤");
+                sender.sendMessage(ChatColor.DARK_GRAY + "<<<------------------------------->>>");
                 sender.sendMessage(ChatColor.GRAY + "Vesion: " + Main.plugin.getDescription().getVersion());
-                sender.sendMessage(ChatColor.DARK_GRAY + "<<<--------------------------------------->>>");
+
             }
         }
         return true;

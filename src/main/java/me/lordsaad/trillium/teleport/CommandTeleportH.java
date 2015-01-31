@@ -30,29 +30,21 @@ public class CommandTeleportH implements CommandExecutor {
                             float yaw = target.getLocation().getYaw();
                             float pitch = target.getLocation().getPitch();
 
-                            YamlConfiguration yml = null;
-                            try {
-                                yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(target));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            if (yml != null) {
-                                yml.set("Previous Location.world", world);
-                                yml.set("Previous Location.x", x);
-                                yml.set("Previous Location.y", y);
-                                yml.set("Previous Location.z", z);
-                                yml.set("Previous Location.pitch", pitch);
-                                yml.set("Previous Location.yaw", yaw);
-                            }
+                            YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(target));
+
+                            yml.set("Previous Location.world", world);
+                            yml.set("Previous Location.x", x);
+                            yml.set("Previous Location.y", y);
+                            yml.set("Previous Location.z", z);
+                            yml.set("Previous Location.pitch", pitch);
+                            yml.set("Previous Location.yaw", yaw);
 
                             try {
-                                if (yml != null) {
-                                    yml.save(PlayerDatabase.db(p));
-                                }
+                                yml.save(PlayerDatabase.db(p));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            
+
                             target.teleport(p);
                             p.sendMessage(ChatColor.GREEN + "You teleported " + target.getName() + " to you.");
                             target.sendMessage(ChatColor.BLUE + p.getName() + " teleported you to them.");

@@ -9,7 +9,7 @@ import java.io.IOException;
 public class PlayerDatabase {
 
 
-    public static File db(Player p) throws IOException {
+    public static File db(Player p) {
         File file = new File(Main.plugin.getDataFolder() + "/PlayerDatabase/" + p.getUniqueId() + ".yml");
         if (!file.exists()) {
             YamlConfiguration db = YamlConfiguration.loadConfiguration(file);
@@ -26,7 +26,11 @@ public class PlayerDatabase {
             db.set("Inventory.items", null);
             db.set("Inventory.armor", null);
 
-            db.save(file);
+            try {
+                db.save(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return file;
     }

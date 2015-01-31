@@ -31,5 +31,8 @@ public class PlayerJoin implements Listener {
             s = ChatColor.translateAlternateColorCodes('&', s);
             p.sendMessage(s);
         }
+        
+        //join message
+        event.setJoinMessage(ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Join Message")));
     }
 }

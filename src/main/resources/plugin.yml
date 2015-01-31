@@ -35,3 +35,7 @@ commands:
     description: Teleport a player to you.
     usage: /tph <player>
     aliases: [tph]
+  gamemode:
+    description:
+    usage: /tph <player>
+    aliases: [tph]

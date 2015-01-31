@@ -13,10 +13,12 @@ Motd:
   - "&7Have fun! ^_^/"
 
 #---------------[ Player Join ]---------------#
-Play Particle Effect: true
+Join Message: "&b[USERNAME] &9has joined the game!"
+Temporary God Mode: 10
+#Temporary god mdoe in seconds.
 
 #---------------[ Player Leave ]---------------#
-Play Particle Effect: true
+Leave Message: "&b[USERNAME] &9has left the game!"
 
 
 

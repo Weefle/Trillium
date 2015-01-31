@@ -3,6 +3,7 @@ package me.lordsaad.trillium;
 import me.lordsaad.trillium.events.PlayerJoin;
 import me.lordsaad.trillium.events.PlayerLeave;
 import me.lordsaad.trillium.events.ServerListPing;
+import me.lordsaad.trillium.gamemode.CommandGamemode;
 import me.lordsaad.trillium.motd.CommandMotd;
 import me.lordsaad.trillium.tp.*;
 
@@ -27,6 +28,7 @@ public class Main extends JavaPlugin {
         getCommand("teleportrequestdeny").setExecutor(new CommandTeleportRD());
         getCommand("teleporthere").setExecutor(new CommandTeleportHere());
         getCommand("teleportrequesthere").setExecutor(new CommandTeleportRH());
+        getCommand("gamemode").setExecutor(new CommandGamemode());
 
     }
 

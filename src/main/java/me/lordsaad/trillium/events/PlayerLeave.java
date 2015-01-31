@@ -1,6 +1,8 @@
 package me.lordsaad.trillium.events;
 
+import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.PlayerDatabase;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,5 +24,8 @@ public class PlayerLeave implements Listener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //leave message
+        event.setQuitMessage(ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Leave Message")));
     }
 }

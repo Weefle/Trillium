@@ -4,14 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class MsgUtil {
+public class Message {
 
-    public static void b(MsgType msgType, String tag, String msg) {
-        Bukkit.broadcastMessage(msgType.getPrefix() + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " » " + ChatColor.GRAY + msg);
+    public static void b(MType MType, String tag, String msg) {
+        Bukkit.broadcastMessage(MType.getPrefix() + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " » " + ChatColor.GRAY + msg);
     }
 
-    public static void m(MsgType msgType, CommandSender cs, String tag, String msg) {
-        cs.sendMessage(msgType.getPrefix() + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " » " + ChatColor.GRAY + msg);
+    public static void m(MType MType, CommandSender cs, String tag, String msg) {
+        cs.sendMessage(MType.getPrefix() + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " » " + ChatColor.GRAY + msg);
     }
 
     public static void e(CommandSender cs, String tag, Crit criteria) {

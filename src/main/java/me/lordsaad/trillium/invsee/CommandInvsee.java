@@ -2,7 +2,7 @@ package me.lordsaad.trillium.invsee;
 
 import me.lordsaad.trillium.Utils;
 import me.lordsaad.trillium.messageutils.Crit;
-import me.lordsaad.trillium.messageutils.MsgUtil;
+import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,13 +31,13 @@ public class CommandInvsee implements CommandExecutor {
                             }
                         }
                     } else {
-                        MsgUtil.e(p, "Invsee", Crit.A, "/invsee <inventory/enderchest> <player>");
+                        Message.e(p, "Invsee", Crit.A, "/invsee <inventory/enderchest> <player>");
                     }
                 } else {
-                    MsgUtil.e(p, "Invsee", Crit.P);
+                    Message.e(p, "Invsee", Crit.P);
                 }
             } else {
-                MsgUtil.e(sender, "Invsee", Crit.C);
+                Message.e(sender, "Invsee", Crit.C);
             }
         }
         return true;

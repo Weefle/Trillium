@@ -41,10 +41,12 @@ Features:
 * Nick
 * Say
 * Mute
-* SetCmd
 * SetFood
 * SetHealth
-* Sign Crap
 * Weather
 * Thor
+* Command Binder (Bind a command to anything (items/blocks/signs/etc...)
+* Chat Channels
+* Rules
+* Report
 * adding more to the list...

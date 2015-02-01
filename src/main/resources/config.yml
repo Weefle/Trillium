@@ -21,15 +21,15 @@ Temporary God Mode: 10
 Leave Message: "&b[USERNAME] &9has left the game!"
 
 #---------------[ Broadcast ]---------------#
-broadcast:
+Broadcast:
   line clear: true
   line clearing between header and footer: true
   prefix:
    enabled: false
-   set: &8[&a&lBroadcast&8]
+   set: "&8[&a&lBroadcast&8]"
   header:
     enabled: true
     set: "&8[&a*&8]&b&m------------------&8[ &a&lBroadcast &8]&b&m------------------&8[&a*&8]"
   footer:
     enabled: true
-    set: "&8[&a*&8]&b&m--------------------------------------------------------&8[&a*&8]"
+    set: "&8[&a*&8]&b&m------------------------------------------------&8[&a*&8]"

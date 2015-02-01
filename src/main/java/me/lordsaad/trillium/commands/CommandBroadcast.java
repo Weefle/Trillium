@@ -38,23 +38,23 @@ public class CommandBroadcast implements CommandExecutor {
                     Bukkit.broadcastMessage(" ");
                 }
                 if (headerboolean) {
-                    Bukkit.broadcastMessage(header);
+                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', header));
                 }
                 if (btwn) {
                     Bukkit.broadcastMessage(" ");
                 }
-
+                
                 if (prefixboolean) {
-                    Bukkit.broadcastMessage(prefix + " " + message);
+                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', prefix) + " " + ChatColor.BLUE + message);
                 } else {
-                    Bukkit.broadcastMessage(message);
+                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', message));
                 }
-
+                
                 if (btwn) {
                     Bukkit.broadcastMessage(" ");
                 }
                 if (footerboolean) {
-                    Bukkit.broadcastMessage(footer);
+                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', footer));
                 }
                 if (space) {
                     Bukkit.broadcastMessage(" ");

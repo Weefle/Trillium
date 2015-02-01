@@ -32,7 +32,7 @@ public class CommandInventory implements CommandExecutor {
                                 p.openInventory(target.getInventory());
                                 Message.m(MType.G, p, "Inventory", "You are now viewing " + target.getName() + "'s inventory");
                             } else {
-                                Message.eplayer(p, "Inventory");
+                                Message.eplayer(p, "Inventory", args[0]);
                             }
                         } else {
                             Message.e(p, "Inventory", Crit.P);
@@ -45,10 +45,10 @@ public class CommandInventory implements CommandExecutor {
 
                             if (target != null) {
                                 p.openInventory(target.getEnderChest());
-                                Message.m(MType.G, p, "Inventory", "Now viewing " + args[1] + "'s ender chest.");
+                                Message.m(MType.G, p, "Inventory", "Now viewing " + args[0] + "'s ender chest.");
                                 
                             } else {
-                                Message.eplayer(p, "Inventory");
+                                Message.eplayer(p, "Inventory", args[0]);
                             }
                         } else {
                             Message.e(p, "Inventory", Crit.P);

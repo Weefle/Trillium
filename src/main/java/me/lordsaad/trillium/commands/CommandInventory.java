@@ -1,4 +1,4 @@
-package me.lordsaad.trillium.invsee;
+package me.lordsaad.trillium.commands;
 
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;

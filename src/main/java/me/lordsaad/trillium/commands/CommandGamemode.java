@@ -1,4 +1,4 @@
-package me.lordsaad.trillium.gamemode;
+package me.lordsaad.trillium.commands;
 
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;

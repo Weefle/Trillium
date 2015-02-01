@@ -1,4 +1,4 @@
-package me.lordsaad.trillium.motd;
+package me.lordsaad.trillium.commands;
 
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.messageutils.Crit;

@@ -2,7 +2,7 @@ package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.PlayerDatabase;
-import me.lordsaad.trillium.godmode.CommandGodMode;
+import me.lordsaad.trillium.commands.CommandGodMode;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;

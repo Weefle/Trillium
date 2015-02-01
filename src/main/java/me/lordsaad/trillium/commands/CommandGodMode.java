@@ -1,4 +1,4 @@
-package me.lordsaad.trillium.godmode;
+package me.lordsaad.trillium.commands;
 
 import me.lordsaad.trillium.PlayerDatabase;
 import me.lordsaad.trillium.messageutils.Crit;

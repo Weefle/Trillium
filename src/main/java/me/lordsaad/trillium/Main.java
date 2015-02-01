@@ -7,6 +7,7 @@ import me.lordsaad.trillium.gamemode.CommandGamemode;
 import me.lordsaad.trillium.godmode.EntityDamage;
 import me.lordsaad.trillium.godmode.CommandGodMode;
 import me.lordsaad.trillium.invsee.CommandInvsee;
+import me.lordsaad.trillium.invsee.OpenInventory;
 import me.lordsaad.trillium.motd.CommandMotd;
 import me.lordsaad.trillium.teleport.*;
 
@@ -24,6 +25,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
         getServer().getPluginManager().registerEvents(new EntityDamage(), this);
+        getServer().getPluginManager().registerEvents(new OpenInventory(), this);
 
         getCommand("trillium").setExecutor(new CommandTrillium());
         getCommand("motd").setExecutor(new CommandMotd());

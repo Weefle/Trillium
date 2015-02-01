@@ -51,14 +51,13 @@ public class Utils {
         p.getInventory().setArmorContents(armor);
     }
 
-    public void restoreinventory(Player p) {
+    public static void restoreinventory(Player p) {
         clearInventory(p);
 
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
 
-
-        List<?> itemsList = null;
-        List<?> armorList = null;
+        List<?> itemsList;
+        List<?> armorList;
         itemsList = yml.getList("Inventory.items");
         armorList = yml.getList("Inventory.armor");
 
@@ -70,6 +69,18 @@ public class Utils {
             p.getInventory().setContents(itemspart2);
             p.getInventory().setArmorContents(armorpart2);
         }
+    }
+
+    public static ItemStack[] originalinventory(Player p) {
+
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
+        List<?> itemsList = yml.getList("Inventory.items");
+        
+        if (itemsList != null) {
+            ItemStack[] itemspart = itemsList.toArray(new ItemStack[itemsList.size()]);
+            return itemspart;
+        }
+        return new ItemStack[0];
     }
 
     public static void clearInventory(Player p) {

@@ -53,4 +53,8 @@ commands:
     description: Broadcast a fancy message to the server!
     usage: /broadcast <message>
     aliases: [bc]
+  information:
+    description: Show information about a player.
+    usage: /info <player>
+    aliases: [info]
 

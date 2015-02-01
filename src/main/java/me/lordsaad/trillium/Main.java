@@ -34,6 +34,7 @@ public class Main extends JavaPlugin {
         getCommand("god").setExecutor(new CommandGodMode());
         getCommand("inventory").setExecutor(new CommandInventory());
         getCommand("broadcast").setExecutor(new CommandBroadcast());
+        getCommand("info").setExecutor(new CommandInfo());
 
     }
     

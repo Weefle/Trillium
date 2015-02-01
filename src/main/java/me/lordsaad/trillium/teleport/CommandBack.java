@@ -1,8 +1,10 @@
 package me.lordsaad.trillium.teleport;
 
 import me.lordsaad.trillium.PlayerDatabase;
+import me.lordsaad.trillium.messageutils.Crit;
+import me.lordsaad.trillium.messageutils.MType;
+import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,14 +30,14 @@ public class CommandBack implements CommandExecutor {
 
                     Location loc = new Location(Bukkit.getWorld(world), x, y, z);
 
-                    p.sendMessage(ChatColor.BLUE + "You have been sent back to your last location.");
+                    Message.m(MType.G, p, "Back", "You have been sent back to your last location.");
                     p.teleport(loc);
 
                 } else {
-                    p.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+                    Message.e(p, "Back", Crit.P);
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "You can't do that.");
+                Message.e(sender, "Back", Crit.C);
             }
         }
         return true;

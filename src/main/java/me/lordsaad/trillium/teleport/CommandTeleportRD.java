@@ -1,5 +1,8 @@
 package me.lordsaad.trillium.teleport;
 
+import me.lordsaad.trillium.messageutils.Crit;
+import me.lordsaad.trillium.messageutils.MType;
+import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -19,18 +22,18 @@ public class CommandTeleportRD implements CommandExecutor {
 
                         Player requester = Bukkit.getPlayer(CommandTeleportR.tprequest.get(p.getUniqueId()));
 
-                        p.sendMessage(ChatColor.GREEN + "You denied " + ChatColor.AQUA + requester.getName() + "'s teleport request.");
-                        requester.sendMessage(ChatColor.RED + p.getName() + " denied your teleport request.");
+                        Message.m(MType.G, p, "TPRD", "You denied " + ChatColor.AQUA + requester.getName() + "'s teleport request.");
+                        Message.m(MType.G, requester, "TPRD", p.getName() + " denied your teleport request.");
                         CommandTeleportR.tprequest.remove(p.getUniqueId());
 
                     } else {
-                        p.sendMessage(ChatColor.RED + "No pending teleport requests to deny.");
+                        Message.m(MType.W, p, "TPRD", "No pending teleport requests to deny.");
                     }
                 } else {
-                    p.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+                    Message.e(p, "TPRD", Crit.P);
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "You can't do that.");
+                Message.e(sender, "TPRD", Crit.C);
             }
         }
         return true;

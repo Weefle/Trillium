@@ -7,7 +7,7 @@
 #---------------[ Motd ]---------------#
 Server List Motd: "&4Please define a motd in the conig.yml"
 Motd:
-  - "&8<<<--->>> &a[SERVER] &8<<<--->>>"
+  - "&8<<<--->>> &aServer &8<<<--->>>"
   - "&7Welcome &6[USERNAME]&7!"
   - "&7There are currently &6[ONLINE]&7/&6[SLOTS] players."
   - "&7Have fun! ^_^/"

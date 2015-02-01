@@ -1,6 +1,9 @@
 package me.lordsaad.trillium.motd;
 
 import me.lordsaad.trillium.Main;
+import me.lordsaad.trillium.messageutils.Crit;
+import me.lordsaad.trillium.messageutils.MType;
+import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,7 +32,7 @@ public class CommandMotd implements CommandExecutor {
                         Collections.addAll(motd, msg.split("\n"));
 
                         Main.plugin.getConfig().set("Motd", motd);
-                        sender.sendMessage(ChatColor.GREEN + "New motd set:");
+                        Message.m(MType.G, sender, "Motd", "New motd set:");
                         sender.sendMessage(String.valueOf(motd));
 
                     } else {
@@ -43,7 +46,7 @@ public class CommandMotd implements CommandExecutor {
                     }
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+                Message.e(sender, "TPRH", Crit.P);
             }
         }
         return true;

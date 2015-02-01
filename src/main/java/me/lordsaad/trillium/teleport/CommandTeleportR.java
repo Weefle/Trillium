@@ -1,5 +1,8 @@
 package me.lordsaad.trillium.teleport;
 
+import me.lordsaad.trillium.messageutils.Crit;
+import me.lordsaad.trillium.messageutils.MType;
+import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -24,23 +27,23 @@ public class CommandTeleportR implements CommandExecutor {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null) {
 
-                            p.sendMessage(ChatColor.BLUE + "Teleport request to " + target.getName() + " is now pending. Please stand by.");
-                            target.sendMessage(ChatColor.AQUA + p.getName() + ChatColor.BLUE + " would like to teleport to you.");
-                            target.sendMessage(ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.");
-                            target.sendMessage(ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.");
+                            Message.m(MType.R, p, "TPR", target.getName() + " is now pending. Please stand by.");
+                            Message.m(MType.R, target, "TPR", p.getName() + " would like to teleport to you.");
+                            Message.m(MType.R, target, "TPR", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.");
+                            Message.m(MType.R, target, "TPR", "/tprd " + ChatColor.BLUE + "to deny the teleport.");
                             tprequest.put(p.getUniqueId(), target.getUniqueId());
 
                         } else {
-                            p.sendMessage(ChatColor.RED + args[0] + " is either offline or does not exist.");
+                            Message.eplayer(p, "TPR", args[0]);
                         }
                     } else {
-                        p.sendMessage(ChatColor.RED + "Too few arguments. /tpa <player>");
+                        Message.earg(p, "TPR", "/tpr <player>");
                     }
                 } else {
-                    p.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+                    Message.e(p, "TPR", Crit.P);
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "You can't do that.");
+                Message.e(sender, "TPR", Crit.C);
             }
         }
         return true;

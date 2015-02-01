@@ -1,8 +1,10 @@
 package me.lordsaad.trillium.godmode;
 
 import me.lordsaad.trillium.PlayerDatabase;
+import me.lordsaad.trillium.messageutils.Crit;
+import me.lordsaad.trillium.messageutils.MType;
+import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,11 +29,10 @@ public class CommandGodMode implements CommandExecutor {
 
                         YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
 
-
                         if (godmodeusers.contains(p.getUniqueId())) {
 
                             godmodeusers.remove(p.getUniqueId());
-                            p.sendMessage(ChatColor.BLUE + "You are no longer in god mode.");
+                            Message.m(MType.G, p, "God", "You are no longer in god mode.");
                             yml.set("God Mode", false);
 
                             try {
@@ -43,7 +44,7 @@ public class CommandGodMode implements CommandExecutor {
                         } else {
                             godmodeusers.add(p.getUniqueId());
 
-                            p.sendMessage(ChatColor.BLUE + "You are now in god mode.");
+                            Message.m(MType.G, p, "God", "You are now in god mode.");
                             yml.set("God Mode", true);
 
                             try {
@@ -53,7 +54,7 @@ public class CommandGodMode implements CommandExecutor {
                             }
                         }
                     } else {
-                        p.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+                        Message.e(p, "God", Crit.P);
                     }
 
                 } else {
@@ -66,7 +67,7 @@ public class CommandGodMode implements CommandExecutor {
                             if (godmodeusers.contains(p.getUniqueId())) {
 
                                 godmodeusers.remove(p.getUniqueId());
-                                p.sendMessage(ChatColor.BLUE + "You are no longer in god mode.");
+                                Message.m(MType.G, p, "God", "You are no longer in god mode.");
                                 yml.set("God Mode", false);
 
                                 try {
@@ -78,7 +79,7 @@ public class CommandGodMode implements CommandExecutor {
                             } else {
                                 godmodeusers.add(p.getUniqueId());
 
-                                p.sendMessage(ChatColor.BLUE + "You are now in god mode.");
+                                Message.m(MType.G, p, "God", "You are now in god mode.");
                                 yml.set("God Mode", true);
 
                                 try {
@@ -88,15 +89,14 @@ public class CommandGodMode implements CommandExecutor {
                                 }
                             }
                         } else {
-                            p.sendMessage(ChatColor.RED + args[0] + " is either not online or does not exist.");
+                            Message.eplayer(p, "God", args[0]);
                         }
                     } else {
-                        p.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+                        Message.earg(p, "God", "/god [player]");
                     }
-
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "You can't do that.");
+                Message.e(sender, "God", Crit.C);
             }
         }
 

@@ -45,6 +45,7 @@ commands:
   god:
     description: Become invcible to anything.
     usage: /god [player]
-  invsee:
-    description: Check anyone's inventory.
-    usage: /invsee <inventory/enderchest> <player>
+  inventory:
+    description: Open a crafting table or view someone's inventory or enderchest.
+    usage: /invsee <player [enderchest]/crafting>
+    aliases: [inv]

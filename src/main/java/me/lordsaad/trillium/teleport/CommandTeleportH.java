@@ -1,8 +1,10 @@
 package me.lordsaad.trillium.teleport;
 
 import me.lordsaad.trillium.PlayerDatabase;
+import me.lordsaad.trillium.messageutils.Crit;
+import me.lordsaad.trillium.messageutils.MType;
+import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,20 +44,20 @@ public class CommandTeleportH implements CommandExecutor {
                             }
 
                             target.teleport(p);
-                            p.sendMessage(ChatColor.GREEN + "You teleported " + target.getName() + " to you.");
-                            target.sendMessage(ChatColor.BLUE + p.getName() + " teleported you to them.");
+                            Message.m(MType.G, p, "TPH", "You teleported " + target.getName() + " to you.");
+                            Message.m(MType.G, target, "TPH", p.getName() + " teleported you to them.");
 
                         } else {
-                            p.sendMessage(ChatColor.RED + args[0] + " is either offline or does not exist.");
+                            Message.eplayer(p, "TPH", args[0]);
                         }
                     } else {
-                        p.sendMessage(ChatColor.RED + "Too few arguments. /tphere <player>");
+                        Message.earg(p, "TPH", "/tphere <player>");
                     }
                 } else {
-                    p.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+                    Message.e(p, "TPH", Crit.P);
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "You can't do that.");
+                Message.e(sender, "TPH", Crit.C);
             }
         }
         return true;

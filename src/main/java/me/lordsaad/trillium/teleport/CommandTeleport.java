@@ -3,6 +3,7 @@ package me.lordsaad.trillium.teleport;
 import me.lordsaad.trillium.PlayerDatabase;
 import me.lordsaad.trillium.Utils;
 import me.lordsaad.trillium.messageutils.Crit;
+import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,7 +25,7 @@ public class CommandTeleport implements CommandExecutor {
                 Player p = (Player) sender;
                 if (args.length == 0) {
                     if (p.hasPermission("tr.teleport")) {
-                        Message.e(p, "TP", Crit.A, "/tp <player> [player]");
+                        Message.earg(p, "TP", "/tp <player> [player]");
                     }
                 } else if (args.length == 1) {
                     if (p.hasPermission("tr.teleport")) {
@@ -49,14 +50,15 @@ public class CommandTeleport implements CommandExecutor {
                             }
 
                             p.teleport(target);
-                            p.sendMessage(ChatColor.GREEN + "You teleported to " + target.getName());
+                            Message.m(MType.G, p, "TP", "You teleported to " + target.getName());
 
                         } else {
-                            p.sendMessage(ChatColor.RED + args[0] + " is either offline or does not exist.");
+                            Message.eplayer(p, "TP", args[0]);
                         }
                     } else {
-                        p.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+                        Message.e(p, "TP", Crit.P);
                     }
+                    
                 } else if (args.length == 2) {
                     if (p.hasPermission("tr.teleport.other")) {
                         Player target1 = Bukkit.getPlayer(args[0]);
@@ -77,17 +79,17 @@ public class CommandTeleport implements CommandExecutor {
                                 yml.set("Previous Location.z", z);
 
                                 target1.teleport(target2);
-                                p.sendMessage(ChatColor.GREEN + "You teleported " + target1.getName() + " to " + target2.getName());
-                                target1.sendMessage(ChatColor.GREEN + p.getName() + " teleported you to " + target2.getName());
+                                Message.m(MType.G, p, "TP", "You teleported " + target1.getName() + " to " + target2.getName());
+                                Message.m(MType.G, target1, "TP", p.getName() + " teleported you to " + target2.getName());
 
                             } else {
-                                p.sendMessage(ChatColor.RED + args[1] + " is either offline or does not exist.");
+                                Message.eplayer(p, "TP", args[1]);
                             }
                         } else {
-                            p.sendMessage(ChatColor.RED + args[0] + " is either offline or does not exist.");
+                            Message.eplayer(p, "TP", args[2]);
                         }
                     } else {
-                        p.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+                        Message.e(p, "TP", Crit.P);
                     }
                 } else {
                     if (p.hasPermission("tr.teleport.coord")) {
@@ -102,6 +104,7 @@ public class CommandTeleport implements CommandExecutor {
                             int c6 = Integer.parseInt(c3);
                             Location loc = new Location(p.getWorld(), c4, c5, c6);
                             pl.teleport(loc);
+                            Message.m(MType.G, p, "TP", "You teleported to " + ChatColor.AQUA + c4 + ", " + c5 + ", " + c6);
                         } else {
                             if (c1.contains("~") && c2.contains("~") && c3.contains("~")) {
                                 int c4 = Integer.parseInt(c1.split("~")[1]);
@@ -109,12 +112,16 @@ public class CommandTeleport implements CommandExecutor {
                                 int c6 = Integer.parseInt(c3.split("~")[1]);
                                 Location loc = new Location(p.getWorld(), p.getLocation().getX() + c4, p.getLocation().getY() + c5, p.getLocation().getZ() + c6);
                                 pl.teleport(loc);
+                                Message.m(MType.G, p, "TP", "You teleported to " + ChatColor.AQUA + loc.getX() + ", " + loc.getY() + ", " + loc.getZ());
+
                             }
                         }
+                    } else {
+                        Message.e(p, "TP", Crit.P);
                     }
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "You can't do that.");
+                Message.e(sender, "TP", Crit.C);
             }
         }
         return true;

@@ -18,11 +18,11 @@ public class Message {
         cs.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + criteria);
     }
 
-    public static void e(CommandSender cs, String tag, String preextra, Crit criteria) {
-        cs.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + preextra + criteria);
+    public static void eplayer(CommandSender cs, String tag, String p) {
+        cs.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + p + " is either not online or does not exist.");
     }
 
-    public static void e(CommandSender cs, String tag, Crit criteria, String forextra) {
-        cs.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + criteria + forextra);
+    public static void earg(CommandSender cs, String tag, String forextra) {
+        cs.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + "Too few arguments. " + forextra);
     }
 }

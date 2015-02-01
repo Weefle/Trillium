@@ -1,5 +1,8 @@
 package me.lordsaad.trillium.gamemode;
 
+import me.lordsaad.trillium.messageutils.Crit;
+import me.lordsaad.trillium.messageutils.MType;
+import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -19,27 +22,27 @@ public class CommandGamemode implements CommandExecutor {
                     if (p.hasPermission("tr.gamemode")) {
 
                         if (args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c")) {
-                            p.sendMessage(ChatColor.BLUE + "Gamemode set to " + ChatColor.AQUA + "creative");
+                            Message.m(MType.G, p, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "creative");
                             p.setGameMode(GameMode.CREATIVE);
 
                         } else if (args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0") || args[0].equalsIgnoreCase("s")) {
-                            p.sendMessage(ChatColor.BLUE + "Gamemode set to " + ChatColor.AQUA + "survival");
+                            Message.m(MType.G, p, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "survival");
                             p.setGameMode(GameMode.SURVIVAL);
 
                         } else if (args[0].equalsIgnoreCase("adventure") || args[0].equalsIgnoreCase("2") || args[0].equalsIgnoreCase("a")) {
-                            p.sendMessage(ChatColor.BLUE + "Gamemode set to " + ChatColor.AQUA + "adventure");
+                            Message.m(MType.G, p, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "adventure");
                             p.setGameMode(GameMode.ADVENTURE);
 
                         } else if (args[0].equalsIgnoreCase("spectator") || args[0].equalsIgnoreCase("3") || args[0].equalsIgnoreCase("sp")) {
-                            p.sendMessage(ChatColor.BLUE + "Gamemode set to " + ChatColor.AQUA + "spectator");
+                            Message.m(MType.G, p, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "spectator");
                             p.setGameMode(GameMode.SPECTATOR);
 
                         } else {
-                            p.sendMessage(ChatColor.RED + "Mojang didn't add that gamemode yet...");
+                            Message.m(MType.W, p, "Gamemode", "Mojang didn't add that gamemode yet...");
                         }
 
                     } else {
-                        p.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+                        Message.e(p, "Gamemode", Crit.P);
                     }
 
                 } else if (args.length > 1) {
@@ -49,51 +52,52 @@ public class CommandGamemode implements CommandExecutor {
                         if (pl != null) {
 
                             if (args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c")) {
-                                p.sendMessage(ChatColor.BLUE + pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "creative");
-                                pl.sendMessage(ChatColor.BLUE + p.getName() + " set your gamemode to " + ChatColor.AQUA + "creative");
+                                Message.m(MType.G, p, "Gamemode", pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "creative");
+                                Message.m(MType.G, pl, "Gamemode", p.getName() + "set your gamemode to " + ChatColor.AQUA + "creative");
                                 pl.setGameMode(GameMode.CREATIVE);
 
                             } else if (args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0") || args[0].equalsIgnoreCase("s")) {
-                                p.sendMessage(ChatColor.BLUE + pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "survival");
-                                pl.sendMessage(ChatColor.BLUE + p.getName() + " set your gamemode to " + ChatColor.AQUA + "survival");
+                                Message.m(MType.G, p, "Gamemode", pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "survival");
+                                Message.m(MType.G, pl, "Gamemode", p.getName() + "set your gamemode to " + ChatColor.AQUA + "survival");
                                 pl.setGameMode(GameMode.SURVIVAL);
 
                             } else if (args[0].equalsIgnoreCase("adventure") || args[0].equalsIgnoreCase("2") || args[0].equalsIgnoreCase("a")) {
-                                p.sendMessage(ChatColor.BLUE + pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "adventure");
-                                pl.sendMessage(ChatColor.BLUE + p.getName() + " set your gamemode to " + ChatColor.AQUA + "adventure");
+                                Message.m(MType.G, p, "Gamemode", pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "adventure");
+                                Message.m(MType.G, pl, "Gamemode", p.getName() + "set your gamemode to " + ChatColor.AQUA + "adventure");
                                 pl.setGameMode(GameMode.ADVENTURE);
 
                             } else if (args[0].equalsIgnoreCase("spectator") || args[0].equalsIgnoreCase("3") || args[0].equalsIgnoreCase("sp")) {
-                                p.sendMessage(ChatColor.BLUE + pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "spectator");
-                                pl.sendMessage(ChatColor.BLUE + p.getName() + " set your gamemode to " + ChatColor.AQUA + "spectator");
+                                Message.m(MType.G, p, "Gamemode", pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "spectator");
+                                Message.m(MType.G, pl, "Gamemode", p.getName() + "set your gamemode to " + ChatColor.AQUA + "spectator");
                                 pl.setGameMode(GameMode.SPECTATOR);
 
                             } else {
-                                p.sendMessage(ChatColor.RED + "Mojang didn't add that gamemode yet...");
+                                Message.m(MType.W, p, "Gamemode", "Mojang didn't add that gamemode yet...");
                             }
 
                         } else {
-                            p.sendMessage(ChatColor.RED + args[1] + " is either not online or does not exist.");
+                            Message.eplayer(p, "Gamemode", args[1]);
                         }
                     } else {
-                        p.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+                        Message.earg(p, "Gamemode", "/gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp] [player]");
+                        
                     }
 
                 } else {
                     if (p.hasPermission("tr.gamemode")) {
                         if (p.getGameMode() == GameMode.CREATIVE) {
                             p.setGameMode(GameMode.SURVIVAL);
-                            p.sendMessage(ChatColor.BLUE + "Gamemode set to " + ChatColor.AQUA + "survival");
+                            Message.m(MType.G, p, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "survival.");
                         } else {
                             p.setGameMode(GameMode.CREATIVE);
-                            p.sendMessage(ChatColor.BLUE + "Gamemode set to " + ChatColor.AQUA + "creative");
+                            Message.m(MType.G, p, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "creative.");
                         }
                     } else {
-                        p.sendMessage(ChatColor.RED + "You don't have permission to do that.");
+                        Message.e(p, "Gamemode", Crit.P);
                     }
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "You can't do that.");
+                Message.e(sender, "Gamemode", Crit.C);
             }
         }
         return true;

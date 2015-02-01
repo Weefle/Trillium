@@ -33,7 +33,6 @@ public class PlayerJoin implements Listener {
         ArrayList<String> motd = (ArrayList<String>) Main.plugin.getConfig().getStringList("Motd");
         for (String s : motd) {
             s = ChatColor.translateAlternateColorCodes('&', s);
-            s = s.replace("[SERVER]", Main.plugin.getServer().getName());
             s = s.replace("[USERNAME]", p.getName());
             s = s.replace("[SLOTS]", String.valueOf(Main.plugin.getServer().getMaxPlayers()));
             s = s.replace("[ONLINE]", String.valueOf(Bukkit.getOnlinePlayers().size()));

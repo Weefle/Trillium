@@ -25,8 +25,9 @@ public class CommandInvsee implements CommandExecutor {
                             
                         } else if (args[0].equalsIgnoreCase("enderchest")) {
                             Player target = Bukkit.getPlayer(args[1]);
-                            
                             if (target != null) {
+                                
+                            }
                         }
                     } else {
                         p.sendMessage(ChatColor.RED + "Too few arguments. /invsee <inventory/enderchest> <player>");

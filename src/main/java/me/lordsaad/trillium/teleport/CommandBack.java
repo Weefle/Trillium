@@ -22,12 +22,11 @@ public class CommandBack implements CommandExecutor {
                     YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
 
                     String world = yml.getString("Previous Location.world");
-                    double x = yml.getDouble("Previous Location.x");
-                    double y = yml.getDouble("Previous Location.y");
-                    double z = yml.getDouble("Previous Location.z");
-                    float pitch = (float) yml.getDouble("Previous Location.pitch");
-                    float yaw = (float) yml.getDouble("Previous Location.yaw");
-                    Location loc = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+                    int x = yml.getInt("Previous Location.x");
+                    int y = yml.getInt("Previous Location.y");
+                    int z = yml.getInt("Previous Location.z");
+
+                    Location loc = new Location(Bukkit.getWorld(world), x, y, z);
 
                     p.sendMessage(ChatColor.BLUE + "You have been sent back to your last location.");
                     p.teleport(loc);

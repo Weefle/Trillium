@@ -15,7 +15,7 @@ public class CommandTeleportH implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if (cmd.getName().equalsIgnoreCase("teleport")) {
+        if (cmd.getName().equalsIgnoreCase("teleporthere")) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (p.hasPermission("tr.teleporthere")) {
@@ -24,11 +24,9 @@ public class CommandTeleportH implements CommandExecutor {
                         if (target != null) {
 
                             String world = target.getLocation().getWorld().getName();
-                            double x = target.getLocation().getX();
-                            double y = target.getLocation().getY();
-                            double z = target.getLocation().getZ();
-                            float yaw = target.getLocation().getYaw();
-                            float pitch = target.getLocation().getPitch();
+                            int x = target.getLocation().getBlockX();
+                            int y = target.getLocation().getBlockY();
+                            int z = target.getLocation().getBlockZ();
 
                             YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(target));
 
@@ -36,8 +34,6 @@ public class CommandTeleportH implements CommandExecutor {
                             yml.set("Previous Location.x", x);
                             yml.set("Previous Location.y", y);
                             yml.set("Previous Location.z", z);
-                            yml.set("Previous Location.pitch", pitch);
-                            yml.set("Previous Location.yaw", yaw);
 
                             try {
                                 yml.save(PlayerDatabase.db(p));

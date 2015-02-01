@@ -24,19 +24,15 @@ public class CommandTeleport implements CommandExecutor {
                         if (target != null) {
 
                             String world = p.getLocation().getWorld().getName();
-                            double x = p.getLocation().getX();
-                            double y = p.getLocation().getY();
-                            double z = p.getLocation().getZ();
-                            float yaw = p.getLocation().getYaw();
-                            float pitch = p.getLocation().getPitch();
+                            int x = p.getLocation().getBlockX();
+                            int y = p.getLocation().getBlockY();
+                            int z = p.getLocation().getBlockZ();
 
                             YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
                             yml.set("Previous Location.world", world);
                             yml.set("Previous Location.x", x);
                             yml.set("Previous Location.y", y);
                             yml.set("Previous Location.z", z);
-                            yml.set("Previous Location.pitch", pitch);
-                            yml.set("Previous Location.yaw", yaw);
 
                             try {
                                 yml.save(PlayerDatabase.db(p));
@@ -61,11 +57,9 @@ public class CommandTeleport implements CommandExecutor {
                             if (target2 != null) {
 
                                 String world = target1.getLocation().getWorld().getName();
-                                double x = target1.getLocation().getX();
-                                double y = target1.getLocation().getY();
-                                double z = target1.getLocation().getZ();
-                                float yaw = target1.getLocation().getYaw();
-                                float pitch = target1.getLocation().getPitch();
+                                int x = target1.getLocation().getBlockX();
+                                int y = target1.getLocation().getBlockY();
+                                int z = target1.getLocation().getBlockZ();
 
                                 YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(target1));
 
@@ -73,8 +67,6 @@ public class CommandTeleport implements CommandExecutor {
                                 yml.set("Previous Location.x", x);
                                 yml.set("Previous Location.y", y);
                                 yml.set("Previous Location.z", z);
-                                yml.set("Previous Location.pitch", pitch);
-                                yml.set("Previous Location.yaw", yaw);
 
                                 target1.teleport(target2);
                                 p.sendMessage(ChatColor.GREEN + "You teleported " + target1.getName() + " to " + target2.getName());

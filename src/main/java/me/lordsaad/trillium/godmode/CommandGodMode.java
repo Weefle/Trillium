@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class CommandGodMode implements CommandExecutor {
 
-    public static ArrayList<UUID> godmodeusers = new ArrayList<>();
+    public static ArrayList<UUID> godmodeusers = new ArrayList<UUID>();
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 

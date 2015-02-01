@@ -23,55 +23,55 @@ public class CommandTeleportRA implements CommandExecutor {
 
                         Player requester = Bukkit.getPlayer(CommandTeleportR.tprequest.get(p.getUniqueId()));
 
-                        String world = requester.getLocation().getWorld().getName();
-                        double x = requester.getLocation().getX();
-                        double y = requester.getLocation().getY();
-                        double z = requester.getLocation().getZ();
-                        float yaw = requester.getLocation().getYaw();
-                        float pitch = requester.getLocation().getPitch();
+                        if (requester != null) {
+                            String world = requester.getLocation().getWorld().getName();
+                            int x = requester.getLocation().getBlockX();
+                            int y = requester.getLocation().getBlockY();
+                            int z = requester.getLocation().getBlockZ();
 
-                        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(requester));
 
-                        yml.set("Previous Location.world", world);
-                        yml.set("Previous Location.x", x);
-                        yml.set("Previous Location.y", y);
-                        yml.set("Previous Location.z", z);
-                        yml.set("Previous Location.pitch", pitch);
-                        yml.set("Previous Location.yaw", yaw);
+                            YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(requester));
 
-                        requester.teleport(p);
-                        p.sendMessage(ChatColor.GREEN + "You teleported " + requester.getName() + " to you.");
-                        requester.sendMessage(ChatColor.GREEN + p.getName() + " accepted your teleport request.");
+                            yml.set("Previous Location.world", world);
+                            yml.set("Previous Location.x", x);
+                            yml.set("Previous Location.y", y);
+                            yml.set("Previous Location.z", z);
 
+                            requester.teleport(p);
+                            p.sendMessage(ChatColor.GREEN + "You teleported " + requester.getName() + " to you.");
+                            requester.sendMessage(ChatColor.GREEN + p.getName() + " accepted your teleport request.");
+                        } else {
+                            p.sendMessage(ChatColor.RED + "Something went wrong...");
+                        }
                     } else if (CommandTeleportRH.tprh.containsKey(p.getUniqueId())) {
+                        
                         Player requester = Bukkit.getPlayer(CommandTeleportR.tprequest.get(p.getUniqueId()));
 
-                        String world = p.getLocation().getWorld().getName();
-                        double x = p.getLocation().getX();
-                        double y = p.getLocation().getY();
-                        double z = p.getLocation().getZ();
-                        float yaw = p.getLocation().getYaw();
-                        float pitch = p.getLocation().getPitch();
+                        if (requester != null) {
+                            String world = p.getLocation().getWorld().getName();
+                            int x = requester.getLocation().getBlockX();
+                            int y = requester.getLocation().getBlockY();
+                            int z = requester.getLocation().getBlockZ();
 
-                        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
+                            YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
 
-                        yml.set("Previous Location.world", world);
-                        yml.set("Previous Location.x", x);
-                        yml.set("Previous Location.y", y);
-                        yml.set("Previous Location.z", z);
-                        yml.set("Previous Location.pitch", pitch);
-                        yml.set("Previous Location.yaw", yaw);
+                            yml.set("Previous Location.world", world);
+                            yml.set("Previous Location.x", x);
+                            yml.set("Previous Location.y", y);
+                            yml.set("Previous Location.z", z);
 
-                        try {
-                            yml.save(PlayerDatabase.db(p));
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                            try {
+                                yml.save(PlayerDatabase.db(p));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            p.teleport(requester);
+                            p.sendMessage(ChatColor.GREEN + "You teleported to " + requester.getName());
+                            requester.sendMessage(ChatColor.GREEN + p.getName() + " accepted to teleport to you.");
+                        } else {
+                            p.sendMessage(ChatColor.RED + "Something went wrong...");
                         }
-
-                        p.teleport(requester);
-                        p.sendMessage(ChatColor.GREEN + "You teleported to " + requester.getName());
-                        requester.sendMessage(ChatColor.GREEN + p.getName() + " accepted to teleport to you.");
-
                     } else {
                         p.sendMessage(ChatColor.RED + "No pending teleport requests to accept.");
                     }

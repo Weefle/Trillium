@@ -3,6 +3,7 @@ package me.lordsaad.trillium.events;
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.PlayerDatabase;
 import me.lordsaad.trillium.godmode.CommandGodMode;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -26,12 +27,16 @@ public class PlayerJoin implements Listener {
         }
 
         //join message
-        event.setJoinMessage(ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Join Message")));
+        event.setJoinMessage(ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Join Message")).replace("[USERNAME]", p.getName()));
 
         //motd
         ArrayList<String> motd = (ArrayList<String>) Main.plugin.getConfig().getStringList("Motd");
         for (String s : motd) {
             s = ChatColor.translateAlternateColorCodes('&', s);
+            s = s.replace("[SERVER]", Main.plugin.getServer().getName());
+            s = s.replace("[USERNAME]", p.getName());
+            s = s.replace("[SLOTS]", String.valueOf(Main.plugin.getServer().getMaxPlayers()));
+            s = s.replace("[ONLINE]", String.valueOf(Bukkit.getOnlinePlayers().size()));
             p.sendMessage(s);
         }
 

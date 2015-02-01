@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class CommandTeleportR implements CommandExecutor {
 
-    static HashMap<UUID, UUID> tprequest = new HashMap<>();
+    static HashMap<UUID, UUID> tprequest = new HashMap<UUID, UUID>();
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 

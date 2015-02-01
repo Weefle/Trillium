@@ -17,12 +17,19 @@ public class CommandInvsee implements CommandExecutor {
                 Player p = (Player) sender;
                 if (p.hasPermission("tr.invsee")) {
                     if (args.length != 0) {
-                        Player target = Bukkit.getPlayer(args[0]);
-                        Utils.saveinventory(p, p.getInventory().getContents(), p.getInventory().getArmorContents());
-                        
-                        p.sendMessage(ChatColor.BLUE + "You have been sent back to your last location.");
+                        if (args[0].equalsIgnoreCase("inventory")) {
+                            Player target = Bukkit.getPlayer(args[1]);
+                            if (target != null) {
+                                Utils.saveinventory(p, target.getInventory().getContents(), target.getInventory().getArmorContents());
+                            }
+                            
+                        } else if (args[0].equalsIgnoreCase("enderchest")) {
+                            Player target = Bukkit.getPlayer(args[1]);
+                            
+                            if (target != null) {
+                        }
                     } else {
-                        p.sendMessage(ChatColor.RED + "Too few arguments. /invsee <player>");
+                        p.sendMessage(ChatColor.RED + "Too few arguments. /invsee <inventory/enderchest> <player>");
                     }
                 } else {
                     p.sendMessage(ChatColor.RED + "You don't have permission to do that.");

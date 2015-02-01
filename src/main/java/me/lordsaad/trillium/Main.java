@@ -1,13 +1,10 @@
 package me.lordsaad.trillium;
 
+import me.lordsaad.trillium.commands.*;
 import me.lordsaad.trillium.events.PlayerJoin;
 import me.lordsaad.trillium.events.PlayerLeave;
 import me.lordsaad.trillium.events.ServerListPing;
-import me.lordsaad.trillium.commands.CommandGamemode;
-import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.events.EntityDamage;
-import me.lordsaad.trillium.commands.CommandInventory;
-import me.lordsaad.trillium.commands.CommandMotd;
 import me.lordsaad.trillium.teleport.*;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,6 +33,7 @@ public class Main extends JavaPlugin {
         getCommand("back").setExecutor(new CommandBack());
         getCommand("god").setExecutor(new CommandGodMode());
         getCommand("inventory").setExecutor(new CommandInventory());
+        getCommand("broadcast").setExecutor(new CommandBroadcast());
 
     }
     

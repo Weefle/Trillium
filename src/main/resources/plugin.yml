@@ -49,3 +49,8 @@ commands:
     description: Open a crafting table or view someone's inventory or enderchest.
     usage: /invsee <player [enderchest]/crafting>
     aliases: [inv]
+  broadcast:
+    description: Broadcast a fancy message to the server!
+    usage: /broadcast <message>
+    aliases: [bc]
+

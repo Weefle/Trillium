@@ -24,7 +24,7 @@ public class CommandMotd implements CommandExecutor {
                         }
                         String msg = sb.toString().trim();
 
-                        ArrayList<String> motd = new ArrayList<>();
+                        ArrayList<String> motd = new ArrayList<String>();
 
                         Collections.addAll(motd, msg.split("\n"));
 

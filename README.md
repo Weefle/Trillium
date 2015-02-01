@@ -1,4 +1,4 @@
-# Trillium
+# *Trillium*
 The Premium Essentials
 ---
 Plans:
@@ -23,4 +23,28 @@ Features:
 * Warp
 * Spawn
 * Gamemode
+* KITTYBOMB
+* Msg System
+* Ban
+* Kick
+* Info
+* Freeze
+* Fly
+* ChestFinder
+* Hat
+* Home
+* Chat Format
+* Broadcast
+* Afk
+* Killall
+* Me
+* Nick
+* Say
+* Mute
+* SetCmd
+* SetFood
+* SetHealth
+* Sign Crap
+* Weather
+* Thor
 * adding more to the list...

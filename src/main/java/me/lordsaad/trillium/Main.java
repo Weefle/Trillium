@@ -6,6 +6,7 @@ import me.lordsaad.trillium.events.ServerListPing;
 import me.lordsaad.trillium.gamemode.CommandGamemode;
 import me.lordsaad.trillium.godmode.EntityDamage;
 import me.lordsaad.trillium.godmode.CommandGodMode;
+import me.lordsaad.trillium.invsee.CommandInvsee;
 import me.lordsaad.trillium.motd.CommandMotd;
 import me.lordsaad.trillium.teleport.*;
 
@@ -35,6 +36,7 @@ public class Main extends JavaPlugin {
         getCommand("gamemode").setExecutor(new CommandGamemode());
         getCommand("back").setExecutor(new CommandBack());
         getCommand("god").setExecutor(new CommandGodMode());
+        getCommand("invsee").setExecutor(new CommandInvsee());
 
     }
     

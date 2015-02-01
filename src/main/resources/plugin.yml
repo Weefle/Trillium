@@ -45,3 +45,6 @@ commands:
   god:
     description: Become invcible to anything.
     usage: /god [player]
+  invsee:
+    description: Check anyone's inventory.
+    usage: /invsee <inventory/enderchest> <player>

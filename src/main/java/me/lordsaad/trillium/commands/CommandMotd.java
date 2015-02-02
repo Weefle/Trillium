@@ -33,7 +33,7 @@ public class CommandMotd implements CommandExecutor {
 
                         Main.plugin.getConfig().set("Motd", motd);
                         Message.m(MType.G, sender, "Motd", "New motd set:");
-                        sender.sendMessage(String.valueOf(motd));
+w                        sender.sendMessage(String.valueOf(motd));
 
                     } else {
                         sender.sendMessage(ChatColor.RED + "You don't have permission to do that.");

@@ -17,7 +17,7 @@ public class CommandInventory implements CommandExecutor {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (args.length == 1) {
-                    if (args[0].equalsIgnoreCase("crafting")) {
+                    if (args[0].equalsIgnoreCase("crafting") || args[0].equalsIgnoreCase("cv")) {
                         if (p.hasPermission("tr.inventory.crafting")) {
                             p.openWorkbench(p.getLocation(), true);
                             Message.m(MType.G, p, "Inventory", "Now viewing a crafting table.");
@@ -39,7 +39,7 @@ public class CommandInventory implements CommandExecutor {
                         }
                     }
                 } else if (args.length > 1) {
-                    if (args[1].equalsIgnoreCase("enderchest")) {
+                    if (args[1].equalsIgnoreCase("enderchest") || args[1].equalsIgnoreCase("ec")) {
                         if (p.hasPermission("tr.inventory.enderchest")) {
                             Player target = Bukkit.getPlayer(args[0]);
 

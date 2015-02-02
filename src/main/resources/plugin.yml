@@ -65,3 +65,7 @@ commands:
     description: SOAR THROUGH THE AIR LIKE A MAJESTIC BLOCKY BUTTERFLY!!
     usage: /fly [player]
     aliases: [f]
+  afk:
+    description: Indicate you are away from your keyboard.
+    usage: /afk
+    

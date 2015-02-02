@@ -1,14 +1,10 @@
 package me.lordsaad.trillium;
 
-import org.bukkit.configuration.file.YamlConfiguration;
+import me.lordsaad.trillium.commands.CommandAfk;
+import me.lordsaad.trillium.messageutils.MType;
+import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
-import java.io.IOException;
-import java.util.List;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Utils {
 
@@ -30,73 +26,32 @@ public class Utils {
         return true;
     }
 
-    public static void saveinventory(Player p, ItemStack[] items, ItemStack[] armor) {
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
+    public static void starttimer(final Player p) {
+        new BukkitRunnable() {
+            public void run() {
+                if (!CommandAfk.afklist.contains(p.getUniqueId())) {
+                    if (CommandAfk.afktimer.containsKey(p.getUniqueId())) {
+                        CommandAfk.afktimer.put(p.getUniqueId(), CommandAfk.afktimer.get(p.getUniqueId()) + 1);
+                    } else {
+                        CommandAfk.afktimer.put(p.getUniqueId(), 1);
+                    }
+                    if (CommandAfk.afktimer.get(p.getUniqueId()) >= Integer.parseInt(Main.plugin.getConfig().getString("AFK.time until idle"))) {
+                        
+                        cancel();
 
-        ItemStack[] itemspart = p.getInventory().getContents();
-        ItemStack[] armorpart = p.getInventory().getArmorContents();
+                        if (Main.plugin.getConfig().getBoolean("AFK.kick on afk")) {
+                            p.kickPlayer("You idled for too long. Sorry.");
+                            Message.b(MType.W, "AFK", p.getName() + " got kicked for idling for too long.");
+                            CommandAfk.afktimer.remove(p.getUniqueId());
 
-        yml.set("Inventory.items", itemspart);
-        yml.set("Inventory.armor", armorpart);
-
-        try {
-            yml.save(PlayerDatabase.db(p));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        clearInventory(p);
-
-        p.getInventory().setContents(items);
-        p.getInventory().setArmorContents(armor);
-    }
-
-    public static void restoreinventory(Player p) {
-        clearInventory(p);
-
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-
-        List<?> itemsList;
-        List<?> armorList;
-        itemsList = yml.getList("Inventory.items");
-        armorList = yml.getList("Inventory.armor");
-
-        if (itemsList != null && armorList != null) {
-
-            ItemStack[] itemspart2 = itemsList.toArray(new ItemStack[itemsList.size()]);
-            ItemStack[] armorpart2 = armorList.toArray(new ItemStack[armorList.size()]);
-
-            p.getInventory().setContents(itemspart2);
-            p.getInventory().setArmorContents(armorpart2);
-        }
-    }
-
-    public static ItemStack[] originalinventory(Player p) {
-
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        List<?> itemsList = yml.getList("Inventory.items");
-        
-        if (itemsList != null) {
-            ItemStack[] itemspart = itemsList.toArray(new ItemStack[itemsList.size()]);
-            return itemspart;
-        }
-        return new ItemStack[0];
-    }
-
-    public static void clearInventory(Player p) {
-        PlayerInventory inv = p.getInventory();
-        inv.clear();
-        inv.setHelmet(null);
-        inv.setChestplate(null);
-        inv.setLeggings(null);
-        inv.setBoots(null);
-        InventoryView view = p.getOpenInventory();
-        if (view != null) {
-            view.setCursor(null);
-            Inventory i = view.getTopInventory();
-            if (i != null) {
-                i.clear();
+                        } else {
+                            Message.b(MType.G, "AFK", p.getName() + " is now AFK.");
+                            CommandAfk.afklist.add(p.getUniqueId());
+                            CommandAfk.afktimer.remove(p.getUniqueId());
+                        }
+                    }
+                }
             }
-        }
+        }.runTaskTimer(Main.plugin, 0, 20);
     }
 }

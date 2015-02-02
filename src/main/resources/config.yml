@@ -38,3 +38,14 @@ Broadcast:
 Vanish:
   prevent item pickup/drop: true
   god mode: true
+
+#---------------[ AFK ]---------------#
+AFK:
+  auto afk:
+    enabled: true
+    time until idle: 60
+    #Time until idle in seconds.
+    kick on afk: false
+  god mode: true
+  auto unafk: true
+  #When the player makes any action, it takes them out of afk mode.

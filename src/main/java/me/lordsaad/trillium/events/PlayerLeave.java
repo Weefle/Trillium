@@ -2,6 +2,7 @@ package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.PlayerDatabase;
+import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandVanish;
 import org.bukkit.Bukkit;
@@ -41,6 +42,11 @@ public class PlayerLeave implements Listener {
             for (Player online : Bukkit.getOnlinePlayers()) {
                 online.showPlayer(p);
             }
+        }
+        
+        //remove afk
+        if (CommandAfk.afklist.contains(p.getUniqueId())) {
+            CommandAfk.afklist.remove(p.getUniqueId());
         }
     }
 }

@@ -20,6 +20,12 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerPickupItem(), this);
         getServer().getPluginManager().registerEvents(new PlayerDropItem(), this);
         getServer().getPluginManager().registerEvents(new EntityTarget(), this);
+        getServer().getPluginManager().registerEvents(new AsyncPlayerChat(), this);
+        getServer().getPluginManager().registerEvents(new BlockBreak(), this);
+        getServer().getPluginManager().registerEvents(new BlockPlace(), this);
+        getServer().getPluginManager().registerEvents(new PlayerCommandPreprocess(), this);
+        getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
+        getServer().getPluginManager().registerEvents(new PlayerMove(), this);
 
         getCommand("trillium").setExecutor(new CommandTrillium());
         getCommand("motd").setExecutor(new CommandMotd());
@@ -37,6 +43,7 @@ public class Main extends JavaPlugin {
         getCommand("info").setExecutor(new CommandInfo());
         getCommand("vanish").setExecutor(new CommandVanish());
         getCommand("fly").setExecutor(new CommandFly());
+        getCommand("afk").setExecutor(new CommandAfk());
 
     }
     

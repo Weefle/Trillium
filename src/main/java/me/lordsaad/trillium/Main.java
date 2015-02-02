@@ -36,6 +36,7 @@ public class Main extends JavaPlugin {
         getCommand("broadcast").setExecutor(new CommandBroadcast());
         getCommand("info").setExecutor(new CommandInfo());
         getCommand("vanish").setExecutor(new CommandVanish());
+        getCommand("fly").setExecutor(new CommandFly());
 
     }
     

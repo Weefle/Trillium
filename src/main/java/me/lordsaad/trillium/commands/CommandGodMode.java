@@ -58,7 +58,7 @@ public class CommandGodMode implements CommandExecutor {
                     }
 
                 } else {
-                    if (p.hasPermission("tr.god")) {
+                    if (p.hasPermission("tr.god.other")) {
                         Player pl = Bukkit.getPlayer(args[0]);
                         if (pl != null) {
 

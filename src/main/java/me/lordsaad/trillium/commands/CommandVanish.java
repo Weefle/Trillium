@@ -32,7 +32,7 @@ public class CommandVanish implements CommandExecutor {
                         if (vanishedusers.contains(p.getUniqueId())) {
 
                             vanishedusers.remove(p.getUniqueId());
-                            Message.m(MType.G, p, "Vanish Mode", "You are no longer in vanish mode.");
+                            Message.m(MType.G, p, "Vanish", "You are no longer in vanish mode.");
                             yml.set("Vanish Mode", false);
 
                             for (Player online : Bukkit.getOnlinePlayers()) {
@@ -48,7 +48,7 @@ public class CommandVanish implements CommandExecutor {
                         } else {
                             vanishedusers.add(p.getUniqueId());
 
-                            Message.m(MType.G, p, "Vanish Mode", "You are now in vanish mode.");
+                            Message.m(MType.G, p, "Vanish", "You are now in vanish mode.");
                             yml.set("Vanish Mode", true);
 
                             for (Player online : Bukkit.getOnlinePlayers()) {
@@ -62,11 +62,11 @@ public class CommandVanish implements CommandExecutor {
                             }
                         }
                     } else {
-                        Message.e(p, "Vanish Mode", Crit.P);
+                        Message.e(p, "Vanish", Crit.P);
                     }
 
                 } else {
-                    if (p.hasPermission("tr.vanish")) {
+                    if (p.hasPermission("tr.vanish.other")) {
                         Player pl = Bukkit.getPlayer(args[0]);
                         if (pl != null) {
 
@@ -75,8 +75,8 @@ public class CommandVanish implements CommandExecutor {
                             if (vanishedusers.contains(pl.getUniqueId())) {
 
                                 vanishedusers.remove(pl.getUniqueId());
-                                Message.m(MType.G, pl, "Vanish Mode", p.getName() + " removed you from vanish mode.");
-                                Message.m(MType.G, p, "Vanish Mode", pl.getName() + " is no longer in vanish mode.");
+                                Message.m(MType.G, pl, "Vanish", p.getName() + " removed you from vanish mode.");
+                                Message.m(MType.G, p, "Vanish", pl.getName() + " is no longer in vanish mode.");
                                 yml.set("Vanish Mode", false);
 
                                 for (Player online : Bukkit.getOnlinePlayers()) {
@@ -92,9 +92,9 @@ public class CommandVanish implements CommandExecutor {
                             } else {
                                 vanishedusers.add(pl.getUniqueId());
 
-                                Message.m(MType.G, pl, "Vanish Mode", p.getName() + " put you in vanish mode.");
-                                Message.m(MType.G, p, "Vanish Mode", pl.getName() + " is now in vanish mode.");
-                                yml.set("vanish Mode", true);
+                                Message.m(MType.G, pl, "Vanish", p.getName() + " put you in vanish mode.");
+                                Message.m(MType.G, p, "Vanish", pl.getName() + " is now in vanish mode.");
+                                yml.set("Vanish Mode", true);
 
                                 for (Player online : Bukkit.getOnlinePlayers()) {
                                     online.hidePlayer(pl);
@@ -107,14 +107,14 @@ public class CommandVanish implements CommandExecutor {
                                 }
                             }
                         } else {
-                            Message.eplayer(p, "Vanish Mode", args[0]);
+                            Message.eplayer(p, "Vanish", args[0]);
                         }
                     } else {
-                        Message.earg(p, "Vanish Mode", "/vanish [player]");
+                        Message.earg(p, "Vanish", "/vanish [player]");
                     }
                 }
             } else {
-                Message.e(sender, "Vanish Mode", Crit.C);
+                Message.e(sender, "Vanish", Crit.C);
             }
         }
 

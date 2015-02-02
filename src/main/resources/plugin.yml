@@ -61,4 +61,7 @@ commands:
     description: Turn completely invisible and roam the world undetected.
     usage: /v [player]
     aliases: [v]
-
+  fly:
+    description: SOAR THROUGH THE AIR LIKE A MAJESTIC BLOCKY BUTTERFLY!!
+    usage: /fly [player]
+    aliases: [f]

@@ -9,7 +9,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class CommandInfo implements CommandExecutor {
@@ -32,8 +31,6 @@ public class CommandInfo implements CommandExecutor {
                         Message.m(MType.G, sender, "Info", "Muted: " + muted(p));
                         Message.m(MType.G, sender, "Info", "Location: " + location(p));
                         Message.m(MType.G, sender, "Info", "Last found at: " + lastlocation(p));
-                        Message.m(MType.G, sender, "Info", "Ping:" + ping(p));
-                        Message.m(MType.G, sender, "Info", "Lag Rate: " + lag(p));
                         Message.m(MType.G, sender, "Info", "Food level: " + food(p));
                         Message.m(MType.G, sender, "Info", "Health level: " + health(p));
                         Message.m(MType.G, sender, "Info", "Time Played: hours: " + (timeplayed(p) / 60) / 60);
@@ -69,46 +66,6 @@ public class CommandInfo implements CommandExecutor {
         if (p.isOnline()) {
             Location loc = p.getLocation();
             return loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ", " + p.getWorld().getName();
-        } else {
-            return "null";
-        }
-    }
-
-    public String ping(Player p) {
-        if (p.isOnline()) {
-            int ping = ((CraftPlayer) p).getHandle().ping;
-            return " " + ping;
-        } else {
-            return "null";
-        }
-    }
-
-    public String lag(Player p) {
-        if (p.isOnline()) {
-            int ping = ((CraftPlayer) p).getHandle().ping;
-            StringBuilder sb = new StringBuilder();
-            sb.append(ChatColor.DARK_GRAY + "[");
-
-            if (ping < 50) {
-                sb.append(ChatColor.GREEN + "");
-            } else if (ping < 250) {
-                sb.append(ChatColor.YELLOW + "");
-            } else {
-                sb.append(ChatColor.RED + "");
-            }
-            for (int i = 0; i < 30; i++) {
-                if (i * 20 < ping) {
-                    sb.append("|");
-                } else {
-                    if (i * 20 < ping + 20) {
-                        sb.append(ChatColor.DARK_GRAY);
-                    }
-
-                    sb.append("|");
-                }
-            }
-            sb.append("]");
-            return sb.toString();
         } else {
             return "null";
         }

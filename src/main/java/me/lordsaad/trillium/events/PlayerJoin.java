@@ -3,6 +3,8 @@ package me.lordsaad.trillium.events;
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.PlayerDatabase;
 import me.lordsaad.trillium.commands.CommandGodMode;
+import me.lordsaad.trillium.messageutils.MType;
+import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -42,6 +44,7 @@ public class PlayerJoin implements Listener {
         //god mode?
         if (Main.plugin.getConfig().getBoolean("God Mode")) {
             CommandGodMode.godmodeusers.add(p.getUniqueId());
+            Message.m(MType.W, p, "God Mode", "Remember! You are still in god mode!");
         } else {
             CommandGodMode.godmodeusers.remove(p.getUniqueId());
         }

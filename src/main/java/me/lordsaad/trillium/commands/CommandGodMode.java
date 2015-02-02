@@ -32,7 +32,7 @@ public class CommandGodMode implements CommandExecutor {
                         if (godmodeusers.contains(p.getUniqueId())) {
 
                             godmodeusers.remove(p.getUniqueId());
-                            Message.m(MType.G, p, "God", "You are no longer in god mode.");
+                            Message.m(MType.G, p, "God Mode", "You are no longer in god mode.");
                             yml.set("God Mode", false);
 
                             try {
@@ -44,7 +44,7 @@ public class CommandGodMode implements CommandExecutor {
                         } else {
                             godmodeusers.add(p.getUniqueId());
 
-                            Message.m(MType.G, p, "God", "You are now in god mode.");
+                            Message.m(MType.G, p, "God Mode", "You are now in god mode.");
                             yml.set("God Mode", true);
 
                             try {
@@ -54,7 +54,7 @@ public class CommandGodMode implements CommandExecutor {
                             }
                         }
                     } else {
-                        Message.e(p, "God", Crit.P);
+                        Message.e(p, "God Mode", Crit.P);
                     }
 
                 } else {
@@ -67,7 +67,7 @@ public class CommandGodMode implements CommandExecutor {
                             if (godmodeusers.contains(p.getUniqueId())) {
 
                                 godmodeusers.remove(p.getUniqueId());
-                                Message.m(MType.G, p, "God", "You are no longer in god mode.");
+                                Message.m(MType.G, p, "God Mode", "You are no longer in god mode.");
                                 yml.set("God Mode", false);
 
                                 try {
@@ -79,7 +79,7 @@ public class CommandGodMode implements CommandExecutor {
                             } else {
                                 godmodeusers.add(p.getUniqueId());
 
-                                Message.m(MType.G, p, "God", "You are now in god mode.");
+                                Message.m(MType.G, p, "God Mode", "You are now in god mode.");
                                 yml.set("God Mode", true);
 
                                 try {
@@ -89,14 +89,14 @@ public class CommandGodMode implements CommandExecutor {
                                 }
                             }
                         } else {
-                            Message.eplayer(p, "God", args[0]);
+                            Message.eplayer(p, "God Mode", args[0]);
                         }
                     } else {
-                        Message.earg(p, "God", "/god [player]");
+                        Message.earg(p, "God Mode", "/god [player]");
                     }
                 }
             } else {
-                Message.e(sender, "God", Crit.C);
+                Message.e(sender, "God Mode", Crit.C);
             }
         }
 

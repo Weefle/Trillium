@@ -22,8 +22,8 @@ public class CommandInfo implements CommandExecutor {
                     Player p = Bukkit.getPlayer(args[0]);
                     if (p != null) {
                         Message.m(MType.G, sender, "Info", "Displaying Information on: " + p.getName());
-                        Message.m(MType.G, sender, "Info", "Online: " + online(p));
                         Message.m(MType.G, sender, "Info", "NickName: " + nickname(p));
+                        Message.m(MType.G, sender, "Info", "Online: " + online(p));
                         Message.m(MType.G, sender, "Info", "Banned: " + banned(p));
                         if (p.isBanned()) {
                             Message.m(MType.G, sender, "Info", "Ban Reason: potato");
@@ -48,17 +48,21 @@ public class CommandInfo implements CommandExecutor {
 
     public String online(Player p) {
         if (p.isOnline()) {
-            return ChatColor.GREEN + "true";
+            if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
+                return ChatColor.GREEN + "True";
+            } else {
+                return ChatColor.RED + "False";
+            }
         } else {
-            return ChatColor.RED + "false";
+            return ChatColor.RED + "False";
         }
     }
 
     public String banned(Player p) {
         if (p.isBanned()) {
-            return ChatColor.GREEN + "true";
+            return ChatColor.GREEN + "True";
         } else {
-            return ChatColor.RED + "false";
+            return ChatColor.RED + "False";
         }
     }
 
@@ -126,6 +130,14 @@ public class CommandInfo implements CommandExecutor {
     public String muted(Player p) {
         YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
         if (pdb.getBoolean("Muted")) {
+            return ChatColor.GREEN + "True";
+        } else {
+            return ChatColor.RED + "False";
+        }
+    }
+
+    public String fly(Player p) {
+        if (p.isFlying()) {
             return ChatColor.GREEN + "True";
         } else {
             return ChatColor.RED + "False";

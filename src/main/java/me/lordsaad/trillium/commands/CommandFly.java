@@ -27,9 +27,11 @@ public class CommandFly implements CommandExecutor {
                         if (flyusers.contains(p.getUniqueId())) {
                             flyusers.remove(p.getUniqueId());
                             Message.m(MType.G, p, "Fly", "You are no longer in fly mode.");
+                            p.setAllowFlight(false);
                         } else {
                             flyusers.add(p.getUniqueId());
                             Message.m(MType.G, p, "Fly", "You are now in fly mode.");
+                            p.setAllowFlight(true);
                         }
                     } else {
                         Message.e(p, "Fly", Crit.P);
@@ -44,16 +46,18 @@ public class CommandFly implements CommandExecutor {
                                 flyusers.remove(pl.getUniqueId());
                                 Message.m(MType.G, pl, "Fly", p.getName() + " removed you from fly mode.");
                                 Message.m(MType.G, p, "Fly", pl.getName() + " is no longer in fly mode.");
+                                pl.setAllowFlight(false);
                             } else {
                                 flyusers.add(pl.getUniqueId());
                                 Message.m(MType.G, pl, "Fly", p.getName() + " put you in fly mode.");
                                 Message.m(MType.G, p, "Fly", pl.getName() + " is now in fly mode.");
+                                pl.setAllowFlight(true);
                             }
                         } else {
                             Message.eplayer(p, "Fly", args[0]);
                         }
                     } else {
-                        Message.earg(p, "Fly", "/Fly [player]");
+                        Message.earg(p, "Fly", "/fly [player]");
                     }
                 }
             } else {

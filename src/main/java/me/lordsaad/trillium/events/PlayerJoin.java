@@ -30,8 +30,12 @@ public class PlayerJoin implements Listener {
         }
 
         //join message
-        event.setJoinMessage(ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Join Message")).replace("[USERNAME]", p.getName()));
-
+        if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
+            String m1 = ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Join Message"));
+            m1 = m1.replace("[USERNAME]", p.getName());
+            event.setJoinMessage(m1);
+        }
+        
         //motd
         ArrayList<String> motd = (ArrayList<String>) Main.plugin.getConfig().getStringList("Motd");
         for (String s : motd) {
@@ -51,16 +55,10 @@ public class PlayerJoin implements Listener {
         }
 
         //vanish mode?
-        if (Main.plugin.getConfig().getBoolean("Vanish Mode")) {
-            CommandVanish.vanishedusers.add(p.getUniqueId());
+        if (CommandVanish.vanishedusers.contains(p.getUniqueId())) {
             Message.m(MType.W, p, "Vanish Mode", "Remember! You are still in vanish mode!");
             for (Player online : Bukkit.getOnlinePlayers()) {
                 online.hidePlayer(p);
-            }
-        } else {
-            CommandVanish.vanishedusers.remove(p.getUniqueId());
-            for (Player online : Bukkit.getOnlinePlayers()) {
-                online.showPlayer(p);
             }
         }
     }

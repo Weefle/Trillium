@@ -3,6 +3,7 @@ package me.lordsaad.trillium.events;
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.PlayerDatabase;
 import me.lordsaad.trillium.commands.CommandGodMode;
+import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.Bukkit;
@@ -47,6 +48,20 @@ public class PlayerJoin implements Listener {
             Message.m(MType.W, p, "God Mode", "Remember! You are still in god mode!");
         } else {
             CommandGodMode.godmodeusers.remove(p.getUniqueId());
+        }
+
+        //vanish mode?
+        if (Main.plugin.getConfig().getBoolean("Vanish Mode")) {
+            CommandVanish.vanishedusers.add(p.getUniqueId());
+            Message.m(MType.W, p, "Vanish Mode", "Remember! You are still in vanish mode!");
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                online.hidePlayer(p);
+            }
+        } else {
+            CommandVanish.vanishedusers.remove(p.getUniqueId());
+            for (Player online : Bukkit.getOnlinePlayers()) {
+                online.showPlayer(p);
+            }
         }
     }
 }

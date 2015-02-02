@@ -62,28 +62,30 @@ public class CommandGodMode implements CommandExecutor {
                         Player pl = Bukkit.getPlayer(args[0]);
                         if (pl != null) {
 
-                            YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
+                            YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(pl));
 
-                            if (godmodeusers.contains(p.getUniqueId())) {
+                            if (godmodeusers.contains(pl.getUniqueId())) {
 
-                                godmodeusers.remove(p.getUniqueId());
-                                Message.m(MType.G, p, "God Mode", "You are no longer in god mode.");
+                                godmodeusers.remove(pl.getUniqueId());
+                                Message.m(MType.G, pl, "God Mode", p.getName() + " removed you from god mode.");
+                                Message.m(MType.G, p, "God Mode", pl.getName() + " is no longer in god mode.");
                                 yml.set("God Mode", false);
 
                                 try {
-                                    yml.save(PlayerDatabase.db(p));
+                                    yml.save(PlayerDatabase.db(pl));
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
 
                             } else {
-                                godmodeusers.add(p.getUniqueId());
+                                godmodeusers.add(pl.getUniqueId());
 
-                                Message.m(MType.G, p, "God Mode", "You are now in god mode.");
+                                Message.m(MType.G, pl, "God Mode", p.getName() + " put you in god mode.");
+                                Message.m(MType.G, p, "God Mode", pl.getName() + " is now in god mode.");
                                 yml.set("God Mode", true);
 
                                 try {
-                                    yml.save(PlayerDatabase.db(p));
+                                    yml.save(PlayerDatabase.db(pl));
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -99,7 +101,6 @@ public class CommandGodMode implements CommandExecutor {
                 Message.e(sender, "God Mode", Crit.C);
             }
         }
-
         return true;
     }
 }

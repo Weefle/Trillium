@@ -33,3 +33,8 @@ Broadcast:
   footer:
     enabled: true
     set: "&8[&a*&8]&b&m------------------------------------------------&8[&a*&8]"
+
+#---------------[ Vanish ]---------------#
+Vanish:
+  prevent item pickup/drop: true
+  god mode: true

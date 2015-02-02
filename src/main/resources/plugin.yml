@@ -13,7 +13,7 @@ commands:
     usage: /motd
   teleport:
     description: Teleport to any player.
-    usage: /teleport <player> [player]
+    usage: /tp <player> [player]
     aliases: [tp]
   teleportrequest:
     description: Request permission to teleport to any player.
@@ -47,14 +47,18 @@ commands:
     usage: /god [player]
   inventory:
     description: Open a crafting table or view someone's inventory or enderchest.
-    usage: /invsee <player [enderchest]/crafting>
+    usage: /inv <player [enderchest]/crafting>
     aliases: [inv]
   broadcast:
     description: Broadcast a fancy message to the server!
-    usage: /broadcast <message>
+    usage: /bc <message>
     aliases: [bc]
   information:
     description: Show information about a player.
     usage: /info <player>
     aliases: [info]
+  vanish:
+    description: Turn completely invisible and roam the world undetected.
+    usage: /v [player]
+    aliases: [v]
 

@@ -1,10 +1,7 @@
 package me.lordsaad.trillium;
 
 import me.lordsaad.trillium.commands.*;
-import me.lordsaad.trillium.events.PlayerJoin;
-import me.lordsaad.trillium.events.PlayerLeave;
-import me.lordsaad.trillium.events.ServerListPing;
-import me.lordsaad.trillium.events.EntityDamage;
+import me.lordsaad.trillium.events.*;
 import me.lordsaad.trillium.teleport.*;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +17,9 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
         getServer().getPluginManager().registerEvents(new EntityDamage(), this);
+        getServer().getPluginManager().registerEvents(new PlayerPickupItem(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDropItem(), this);
+        getServer().getPluginManager().registerEvents(new EntityTarget(), this);
 
         getCommand("trillium").setExecutor(new CommandTrillium());
         getCommand("motd").setExecutor(new CommandMotd());
@@ -35,6 +35,7 @@ public class Main extends JavaPlugin {
         getCommand("inventory").setExecutor(new CommandInventory());
         getCommand("broadcast").setExecutor(new CommandBroadcast());
         getCommand("info").setExecutor(new CommandInfo());
+        getCommand("vanish").setExecutor(new CommandVanish());
 
     }
     

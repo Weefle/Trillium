@@ -16,7 +16,7 @@ public class PlayerCommandPreprocess implements Listener {
     @EventHandler
     public void onCmd(PlayerCommandPreprocessEvent event) {
         Player p = event.getPlayer();
-        if (!event.getMessage().equalsIgnoreCase("/v") || !event.getMessage().equalsIgnoreCase("/vanish")) {
+        if (!event.getMessage().equalsIgnoreCase("v") || !event.getMessage().equalsIgnoreCase("vanish")) {
             if (Main.plugin.getConfig().getBoolean("AFK.auto unafk")) {
                 if (CommandAfk.afklist.contains(p.getUniqueId())) {
                     if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {

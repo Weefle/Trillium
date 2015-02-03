@@ -16,16 +16,12 @@ public class PlayerMove implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         Player p = event.getPlayer();
-        if (event.getFrom().getBlockX() != event.getTo().getBlockX()
-                || event.getFrom().getBlockY() != event.getTo().getBlockY()
-                || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
-            if (Main.plugin.getConfig().getBoolean("AFK.auto unafk")) {
-                if (CommandAfk.afklist.contains(p.getUniqueId())) {
-                    if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-                        CommandAfk.afklist.remove(p.getUniqueId());
-                        Utils.starttimer(p);
-                        Message.b(MType.G, "AFK", p.getName() + " is no longer AFK.");
-                    }
+        if (Main.plugin.getConfig().getBoolean("AFK.auto unafk")) {
+            if (CommandAfk.afklist.contains(p.getUniqueId())) {
+                if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
+                    CommandAfk.afklist.remove(p.getUniqueId());
+                    Utils.starttimer(p);
+                    Message.b(MType.G, "AFK", p.getName() + " is no longer AFK.");
                 }
             }
         }

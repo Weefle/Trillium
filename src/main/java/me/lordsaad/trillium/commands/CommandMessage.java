@@ -35,6 +35,8 @@ public class CommandMessage implements CommandExecutor {
                             Message.eplayer(p, "MSG", args[0]);
                         }
                     }
+                } else {
+                    Message.e(p, "MSG", Crit.P);
                 }
             } else {
                 Message.e(sender, "MSG", Crit.C);

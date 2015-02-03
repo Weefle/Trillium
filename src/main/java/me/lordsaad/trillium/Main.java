@@ -6,6 +6,8 @@ import me.lordsaad.trillium.teleport.*;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 public class Main extends JavaPlugin {
 
     public static Main plugin;
@@ -45,6 +47,12 @@ public class Main extends JavaPlugin {
         getCommand("fly").setExecutor(new CommandFly());
         getCommand("afk").setExecutor(new CommandAfk());
         getCommand("message").setExecutor(new CommandMessage());
+        getCommand("commandbinder").setExecutor(new CommandCmdBinder());
+
+        File cmdbinder = new File(Main.plugin.getDataFolder() + "/cmdbinder/");
+        if (!cmdbinder.exists()) {
+            cmdbinder.mkdir();
+        }
 
     }
     

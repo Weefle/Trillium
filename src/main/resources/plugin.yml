@@ -69,6 +69,10 @@ commands:
     description: Indicate you are away from your keyboard.
     usage: /afk
   message:
-    description: Send a message to a player
+    description: Send a message to a player.
     usage: /message <sender> <message>
     aliases: [msg, m]
+  commandbinder:
+    description: Bind a command to a block to activate that command when it's either touched or walked through.
+    usage: /cb <touch/walk> <console/player> <command>
+    aliases: [cmdbinder, cmdb, cb, cbinder, cbind]

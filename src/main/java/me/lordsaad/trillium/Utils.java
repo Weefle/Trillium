@@ -37,21 +37,23 @@ public class Utils {
                     }
                     if (CommandAfk.afktimer.get(p.getUniqueId()) >= Integer.parseInt(Main.plugin.getConfig().getString("AFK.time until idle"))) {
                         
-                        cancel();
-
                         if (Main.plugin.getConfig().getBoolean("AFK.kick on afk")) {
                             p.kickPlayer("You idled for too long. Sorry.");
                             Message.b(MType.W, "AFK", p.getName() + " got kicked for idling for too long.");
                             CommandAfk.afktimer.remove(p.getUniqueId());
+                            cancel();
 
                         } else {
                             Message.b(MType.G, "AFK", p.getName() + " is now AFK.");
                             CommandAfk.afklist.add(p.getUniqueId());
                             CommandAfk.afktimer.remove(p.getUniqueId());
+                            cancel();
                         }
                     }
+                } else {
+                    cancel();
                 }
             }
-        }.runTaskTimer(Main.plugin, 0, 20);
+        }.runTaskTimer(Main.plugin, 20, 0);
     }
 }

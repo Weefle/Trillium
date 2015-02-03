@@ -14,6 +14,10 @@ public class Message {
         cs.sendMessage(MType.getPrefix() + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + msg);
     }
 
+    public static void minvert(MType MType, CommandSender cs, String tag, String msg) {
+        cs.sendMessage(MType.getPrefix() + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " << " + ChatColor.GRAY + msg);
+    }
+
     public static void e(CommandSender cs, String tag, Crit criteria) {
         cs.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + criteria);
     }

@@ -68,4 +68,7 @@ commands:
   afk:
     description: Indicate you are away from your keyboard.
     usage: /afk
-    
+  message:
+    description: Send a message to a player
+    usage: /message <sender> <message>
+    aliases: [msg, m]

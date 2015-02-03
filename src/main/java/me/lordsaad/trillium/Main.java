@@ -44,6 +44,7 @@ public class Main extends JavaPlugin {
         getCommand("vanish").setExecutor(new CommandVanish());
         getCommand("fly").setExecutor(new CommandFly());
         getCommand("afk").setExecutor(new CommandAfk());
+        getCommand("message").setExecutor(new CommandMessage());
 
     }
     

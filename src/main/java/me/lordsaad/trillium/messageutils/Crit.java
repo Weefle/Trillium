@@ -1,9 +1,9 @@
 package me.lordsaad.trillium.messageutils;
 
-public  enum Crit {
+public enum Crit {
     P("You don't have permission to do that."),
     C("You can't do that.");
-    
+
     private String prefix;
 
     private Crit(String prefix) {

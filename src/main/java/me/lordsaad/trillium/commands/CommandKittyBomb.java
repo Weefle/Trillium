@@ -39,14 +39,14 @@ public class CommandKittyBomb implements CommandExecutor {
                         int count = 30;
 
                         public void run() {
-                            ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 1, cat.getLocation(), 10);
+                            ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat.getLocation(), 30);
                             if (count != 0) {
                                 count--;
                             } else {
                                 cancel();
                                 cat.setHealth(0.0);
-                                ParticleEffect.EXPLOSION_LARGE.display((float) 1.5, (float) 1.5, (float) 1.5, (float) 0, 1, cat.getLocation(), 10);
-                                ParticleEffect.SMOKE_LARGE.display((float) 1.5, (float) 1.5, (float) 1.5, (float) 0, 1, cat.getLocation(), 10);
+                                ParticleEffect.EXPLOSION_LARGE.display((float) 1.5, (float) 1.5, (float) 1.5, (float) 0, 3, cat.getLocation(), 30);
+                                ParticleEffect.SMOKE_LARGE.display((float) 1.5, (float) 1.5, (float) 1.5, (float) 0, 3, cat.getLocation(), 30);
                                 p.playSound(p.getLocation(), Sound.EXPLODE, 10, 1);
                                 throwcats(cat.getLocation(), p);
                             }
@@ -158,14 +158,14 @@ public class CommandKittyBomb implements CommandExecutor {
             int count = 20;
 
             public void run() {
-                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 1, cat1.getLocation(), 10);
-                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 1, cat2.getLocation(), 10);
-                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 1, cat3.getLocation(), 10);
-                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 1, cat4.getLocation(), 10);
-                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 1, cat5.getLocation(), 10);
-                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 1, cat6.getLocation(), 10);
-                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 1, cat7.getLocation(), 10);
-                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 1, cat8.getLocation(), 10);
+                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat1.getLocation(), 30);
+                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat2.getLocation(), 30);
+                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat3.getLocation(), 30);
+                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat4.getLocation(), 30);
+                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat5.getLocation(), 30);
+                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat6.getLocation(), 30);
+                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat7.getLocation(), 30);
+                ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat8.getLocation(), 30);
                 
                 if (count != 0) {
                     count--;

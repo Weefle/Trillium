@@ -48,6 +48,7 @@ public class Main extends JavaPlugin {
         getCommand("afk").setExecutor(new CommandAfk());
         getCommand("message").setExecutor(new CommandMessage());
         getCommand("commandbinder").setExecutor(new CommandCmdBinder());
+        getCommand("kittybomb").setExecutor(new CommandKittyBomb());
 
         File cmdbinder = new File(Main.plugin.getDataFolder() + "/cmdbinder/");
         if (!cmdbinder.exists()) {

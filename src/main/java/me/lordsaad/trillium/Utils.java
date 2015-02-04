@@ -36,7 +36,7 @@ public class Utils {
                         CommandAfk.afktimer.put(p.getUniqueId(), 1);
                     }
                     if (CommandAfk.afktimer.get(p.getUniqueId()) >= Integer.parseInt(Main.plugin.getConfig().getString("AFK.time until idle"))) {
-                        
+
                         if (Main.plugin.getConfig().getBoolean("AFK.kick on afk")) {
                             p.kickPlayer("You idled for too long. Sorry.");
                             Message.b(MType.W, "AFK", p.getName() + " got kicked for idling for too long.");
@@ -54,6 +54,6 @@ public class Utils {
                     cancel();
                 }
             }
-        }.runTaskTimer(Main.plugin, 20, 0);
+        }.runTaskTimer(Main.plugin, 20, 1);
     }
 }

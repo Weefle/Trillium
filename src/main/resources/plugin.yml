@@ -88,4 +88,7 @@ commands:
     usage: /spawn
   me:
     description: Share your feelings/thoughts to everyone.
-    usage: /me
+    usage: /me <message>
+  say:
+    description: Say something from the console. Not for players.
+    usage: /say <message>

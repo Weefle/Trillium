@@ -94,4 +94,8 @@ commands:
     usage: /say <message>
   killall:
     description: Kill anything in a radius.
-    usage: /killall <radius> <>
+    usage: /killall <radius> <mobs/players/animals/monsters/items/everything>
+  smite:
+    description: Strike lightning upon summon.
+    usage: /smite [player]
+    aliases: [thor, lightning, thunder]

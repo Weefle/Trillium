@@ -1,5 +1,6 @@
 package me.lordsaad.trillium;
 
+import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandVanish;
 import org.bukkit.*;
@@ -218,5 +219,9 @@ public class API {
                 }
             }
         }
+    }
+    
+    public static boolean isafk(Player p) {
+        return CommandAfk.afklist.contains(p.getUniqueId());
     }
 }

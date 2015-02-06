@@ -80,3 +80,9 @@ commands:
     description: KITTEH BAMB!!
     usage: /kittybomb
     aliases: [kittehbamb, kittehbomb, kittybamb, kittyb, kbomb, kb]
+  setspawn:
+    description: Set the world's spawn location.
+    usage: /setspawn
+  spawn:
+    description: teleport to the spawn location
+    usage: /spawn

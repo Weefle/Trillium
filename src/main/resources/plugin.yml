@@ -86,3 +86,6 @@ commands:
   spawn:
     description: teleport to the spawn location
     usage: /spawn
+  me:
+    description: Share your feelings/thoughts to everyone.
+    usage: /me

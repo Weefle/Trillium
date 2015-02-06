@@ -1,9 +1,8 @@
 package me.lordsaad.trillium.commands;
 
-import me.lordsaad.trillium.Main;
+import me.lordsaad.trillium.API;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.Message;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -25,41 +24,7 @@ public class CommandBroadcast implements CommandExecutor {
                 }
                 String message = ChatColor.translateAlternateColorCodes('&', sb.toString().trim());
 
-                Boolean space = Main.plugin.getConfig().getBoolean("Broadcast.line clearing");
-                Boolean btwn = Main.plugin.getConfig().getBoolean("Broadcast.line clearing between header and footer");
-                Boolean headerboolean = Main.plugin.getConfig().getBoolean("Broadcast.header.enabled");
-                String header = Main.plugin.getConfig().getString("Broadcast.header.set");
-                Boolean footerboolean = Main.plugin.getConfig().getBoolean("Broadcast.footer.enabled");
-                String footer = Main.plugin.getConfig().getString("Broadcast.footer.set");
-                Boolean prefixboolean = Main.plugin.getConfig().getBoolean("Broadcast.prefix.enabled");
-                String prefix = Main.plugin.getConfig().getString("Broadcast.prefix.set");
-
-                if (space) {
-                    Bukkit.broadcastMessage(" ");
-                }
-                if (headerboolean) {
-                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', header));
-                }
-                if (btwn) {
-                    Bukkit.broadcastMessage(" ");
-                }
-                
-                if (prefixboolean) {
-                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', prefix) + " " + ChatColor.BLUE + message);
-                } else {
-                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', message));
-                }
-                
-                if (btwn) {
-                    Bukkit.broadcastMessage(" ");
-                }
-                if (footerboolean) {
-                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', footer));
-                }
-                if (space) {
-                    Bukkit.broadcastMessage(" ");
-                    Bukkit.broadcastMessage(" ");
-                }
+                API.broadcast(message);
             }
         } else {
             Message.e(sender, "Broadcast", Crit.P);

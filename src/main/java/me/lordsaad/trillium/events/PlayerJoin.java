@@ -2,6 +2,7 @@ package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.PlayerDatabase;
+import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.messageutils.MType;
@@ -35,7 +36,7 @@ public class PlayerJoin implements Listener {
             m1 = m1.replace("[USERNAME]", p.getName());
             event.setJoinMessage(m1);
         }
-        
+
         //motd
         ArrayList<String> motd = (ArrayList<String>) Main.plugin.getConfig().getStringList("Motd");
         for (String s : motd) {
@@ -60,6 +61,11 @@ public class PlayerJoin implements Listener {
             for (Player online : Bukkit.getOnlinePlayers()) {
                 online.hidePlayer(p);
             }
+        }
+
+        //initiate AFK
+        if (Main.plugin.getConfig().getBoolean("AFK.auto afk.enabled")) {
+            CommandAfk.afktimer.put(p.getUniqueId(), 0);
         }
     }
 }

@@ -1,14 +1,13 @@
 package me.lordsaad.trillium.commands;
 
-import me.lordsaad.trillium.PlayerDatabase;
+import me.lordsaad.trillium.API;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 public class CommandInfo implements CommandExecutor {
@@ -20,127 +19,30 @@ public class CommandInfo implements CommandExecutor {
                     Message.earg(sender, "Info", "/info <player>");
                 } else {
                     Player p = Bukkit.getPlayer(args[0]);
-                    if (p != null) {
-                        Message.m(MType.G, sender, "Info", "Displaying Information on: " + p.getName());
-                        Message.m(MType.G, sender, "Info", "NickName: " + nickname(p));
-                        Message.m(MType.G, sender, "Info", "Online: " + online(p));
-                        Message.m(MType.G, sender, "Info", "Banned: " + banned(p));
-                        if (p.isBanned()) {
-                            Message.m(MType.G, sender, "Info", "Ban Reason: potato");
-                        }
-                        Message.m(MType.G, sender, "Info", "Muted: " + muted(p));
-                        Message.m(MType.G, sender, "Info", "Location: " + location(p));
-                        Message.m(MType.G, sender, "Info", "Last found at: " + lastlocation(p));
-                        Message.m(MType.G, sender, "Info", "Food level: " + food(p));
-                        Message.m(MType.G, sender, "Info", "Health level: " + health(p));
-                        Message.m(MType.G, sender, "Info", "Time Played: hours: " + (timeplayed(p) / 60) / 60);
-                        Message.m(MType.G, sender, "Info", "Time Played: days: " + ((timeplayed(p) / 60) / 60) / 24);
-                    } else {
-                        Message.eplayer(sender, "Info", args[0]);
+                    Message.m(MType.G, sender, "Info", "Displaying Information on: " + p.getName());
+                    Message.m(MType.G, sender, "Info", "Nickname: " + API.getnickname(p));
+                    Message.m(MType.G, sender, "Info", "Online: " + API.isonline(p));
+                    Message.m(MType.G, sender, "Info", "Gamemode: " + API.getgamemode(p));
+                    Message.m(MType.G, sender, "Info", "Banned: " + p.isBanned());
+                    if (p.isBanned()) {
+                        Message.m(MType.G, sender, "Info", "Ban Reason: 'You are the weakest link. Goodbye.'");
                     }
+                    Message.m(MType.G, sender, "Info", "Muted: " + API.ismuted(p));
+                    Message.m(MType.G, sender, "Info", "Flying: " + API.isflying(p));
+                    if (API.isonline(p)) {
+                        Message.m(MType.G, sender, "Info", "Location: " + API.locationstring(p));
+                    } else {
+                        Message.m(MType.G, sender, "Info", "Last found at: " + API.lastlocationstring(p));
+                    }
+                    Message.m(MType.G, sender, "Info", "Food level: " + API.getfoodlevel(p));
+                    Message.m(MType.G, sender, "Info", "Health level: " + API.gethealthlevel(p));
+                    Message.m(MType.G, sender, "Info", "Time Played: hours: " + (API.gettimeplayed(p) / 60) / 60);
+                    Message.m(MType.G, sender, "Info", "Time Played: days: " + ((API.gettimeplayed(p) / 60) / 60) / 24);
                 }
             } else {
                 Message.e(sender, "Info", Crit.P);
             }
         }
         return true;
-    }
-
-    public String online(Player p) {
-        if (p.isOnline()) {
-            if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-                return ChatColor.GREEN + "True";
-            } else {
-                return ChatColor.RED + "False";
-            }
-        } else {
-            return ChatColor.RED + "False";
-        }
-    }
-
-    public String banned(Player p) {
-        if (p.isBanned()) {
-            return ChatColor.GREEN + "True";
-        } else {
-            return ChatColor.RED + "False";
-        }
-    }
-
-    public String location(Player p) {
-        if (p.isOnline()) {
-            Location loc = p.getLocation();
-            return loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ", " + p.getWorld().getName();
-        } else {
-            return "null";
-        }
-    }
-
-    public String food(Player p) {
-        if (p.isOnline()) {
-            int food = p.getFoodLevel();
-            return "" + food;
-        } else {
-            return "null";
-        }
-    }
-
-    public String health(Player p) {
-        if (p.isOnline()) {
-            double health = p.getHealthScale();
-            return "" + health;
-        } else {
-            return "null";
-        }
-    }
-
-    public String gm(Player p) {
-        if (p.isOnline()) {
-            if (p.getGameMode() == GameMode.SURVIVAL) {
-                return "Survival mode";
-            } else if (p.getGameMode() == GameMode.CREATIVE) {
-                return "Creative mode";
-            } else if (p.getGameMode() == GameMode.ADVENTURE) {
-                return "Adventure mode";
-            } else {
-                return "Spectator mode";
-            }
-        } else {
-            return "null";
-        }
-    }
-
-    public int timeplayed(Player p) {
-        return p.getStatistic(Statistic.PLAY_ONE_TICK) / 20;
-    }
-
-    public String lastlocation(Player p) {
-        YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        int x = pdb.getInt("Last Location.x");
-        int y = pdb.getInt("Last Location.y");
-        int z = pdb.getInt("Last Location.z");
-        String world = pdb.getString("Last Location.world");
-        return world + ", " + x + ", " + y + ", " + z;
-    }
-
-    public String nickname(Player p) {
-        YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        return pdb.getString("Nickname");
-    }
-
-    public String muted(Player p) {
-        YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        if (pdb.getBoolean("Muted")) {
-            return ChatColor.GREEN + "True";
-        } else {
-            return ChatColor.RED + "False";
-        }
-    }
-
-    public String fly(Player p) {
-        if (p.isFlying()) {
-            return ChatColor.GREEN + "True";
-        } else {
-            return ChatColor.RED + "False";
-        }
     }
 }

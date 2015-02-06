@@ -1,7 +1,6 @@
 package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.Main;
-import me.lordsaad.trillium.Utils;
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.messageutils.MType;
@@ -20,7 +19,7 @@ public class PlayerInteract implements Listener {
             if (CommandAfk.afklist.contains(p.getUniqueId())) {
                 if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
                     CommandAfk.afklist.remove(p.getUniqueId());
-                    Utils.starttimer(p);
+                    CommandAfk.afktimer.put(p.getUniqueId(), 0);
                     Message.b(MType.G, "AFK", p.getName() + " is no longer AFK.");
                 }
             }

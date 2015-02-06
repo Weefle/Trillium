@@ -1,6 +1,6 @@
 package me.lordsaad.trillium.commands;
 
-import me.lordsaad.trillium.PlayerDatabase;
+import me.lordsaad.trillium.API;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
@@ -8,10 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -27,32 +25,15 @@ public class CommandGodMode implements CommandExecutor {
                 if (args.length == 0) {
                     if (p.hasPermission("tr.god")) {
 
-                        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-
-                        if (godmodeusers.contains(p.getUniqueId())) {
-
-                            godmodeusers.remove(p.getUniqueId());
+                        if (API.isgodmode(p)) {
+                            API.setgodmode(false, p);
                             Message.m(MType.G, p, "God Mode", "You are no longer in god mode.");
-                            yml.set("God Mode", false);
-
-                            try {
-                                yml.save(PlayerDatabase.db(p));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
 
                         } else {
-                            godmodeusers.add(p.getUniqueId());
-
+                            API.setgodmode(true, p);
                             Message.m(MType.G, p, "God Mode", "You are now in god mode.");
-                            yml.set("God Mode", true);
-
-                            try {
-                                yml.save(PlayerDatabase.db(p));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
                         }
+
                     } else {
                         Message.e(p, "God Mode", Crit.P);
                     }
@@ -62,34 +43,17 @@ public class CommandGodMode implements CommandExecutor {
                         Player pl = Bukkit.getPlayer(args[0]);
                         if (pl != null) {
 
-                            YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(pl));
-
-                            if (godmodeusers.contains(pl.getUniqueId())) {
-
-                                godmodeusers.remove(pl.getUniqueId());
+                            if (API.isgodmode(pl)) {
+                                API.setgodmode(false, pl);
                                 Message.m(MType.G, pl, "God Mode", p.getName() + " removed you from god mode.");
                                 Message.m(MType.G, p, "God Mode", pl.getName() + " is no longer in god mode.");
-                                yml.set("God Mode", false);
-
-                                try {
-                                    yml.save(PlayerDatabase.db(pl));
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
 
                             } else {
-                                godmodeusers.add(pl.getUniqueId());
-
+                                API.setgodmode(true, pl);
                                 Message.m(MType.G, pl, "God Mode", p.getName() + " put you in god mode.");
                                 Message.m(MType.G, p, "God Mode", pl.getName() + " is now in god mode.");
-                                yml.set("God Mode", true);
-
-                                try {
-                                    yml.save(PlayerDatabase.db(pl));
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
                             }
+                            
                         } else {
                             Message.eplayer(p, "God Mode", args[0]);
                         }

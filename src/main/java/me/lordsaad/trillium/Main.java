@@ -3,6 +3,7 @@ package me.lordsaad.trillium;
 import me.lordsaad.trillium.commands.*;
 import me.lordsaad.trillium.events.*;
 import me.lordsaad.trillium.teleport.*;
+import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,8 +24,6 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerDropItem(), this);
         getServer().getPluginManager().registerEvents(new EntityTarget(), this);
         getServer().getPluginManager().registerEvents(new AsyncPlayerChat(), this);
-        getServer().getPluginManager().registerEvents(new BlockBreak(), this);
-        getServer().getPluginManager().registerEvents(new BlockPlace(), this);
         getServer().getPluginManager().registerEvents(new PlayerCommandPreprocess(), this);
         getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
@@ -50,6 +49,9 @@ public class Main extends JavaPlugin {
         getCommand("commandbinder").setExecutor(new CommandCmdBinder());
         getCommand("kittybomb").setExecutor(new CommandKittyBomb());
 
+        AfkRunnable afk = new AfkRunnable();
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, afk, 1, 1);
+        
         File cmdbinder = new File(Main.plugin.getDataFolder() + "/cmdbinder/");
         if (!cmdbinder.exists()) {
             cmdbinder.mkdir();
@@ -60,5 +62,6 @@ public class Main extends JavaPlugin {
     public void onDisable() {
         HandlerList.unregisterAll();
         saveDefaultConfig();
+        Bukkit.getScheduler().cancelAllTasks();
     }
 }

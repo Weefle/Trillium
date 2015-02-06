@@ -33,7 +33,7 @@ public class EntityDamage implements Listener {
                     if (Main.plugin.getConfig().getBoolean("AFK.auto unafk")) {
                         if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
                             CommandAfk.afklist.remove(p.getUniqueId());
-                            Utils.starttimer(p);
+                            CommandAfk.afktimer.put(p.getUniqueId(), 0);
                             Message.b(MType.G, "AFK", p.getName() + " is no longer AFK.");
                         }
                     }

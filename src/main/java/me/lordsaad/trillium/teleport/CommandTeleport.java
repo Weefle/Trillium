@@ -1,7 +1,7 @@
 package me.lordsaad.trillium.teleport;
 
+import me.lordsaad.trillium.API;
 import me.lordsaad.trillium.PlayerDatabase;
-import me.lordsaad.trillium.Utils;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
@@ -97,8 +97,8 @@ public class CommandTeleport implements CommandExecutor {
                         String c1 = args[1];
                         String c2 = args[2];
                         String c3 = args[3];
-                        if (Utils.isdouble(c1) && Utils.isdouble(c2) && Utils.isdouble(c3)
-                                || Utils.isint(c1) && Utils.isint(c2) && Utils.isint(c3)) {
+                        if (API.isdouble(c1) && API.isdouble(c2) && API.isdouble(c3)
+                                || API.isint(c1) && API.isint(c2) && API.isint(c3)) {
                             int c4 = Integer.parseInt(c1);
                             int c5 = Integer.parseInt(c2);
                             int c6 = Integer.parseInt(c3);

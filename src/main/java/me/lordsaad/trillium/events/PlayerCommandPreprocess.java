@@ -21,7 +21,7 @@ public class PlayerCommandPreprocess implements Listener {
                 if (CommandAfk.afklist.contains(p.getUniqueId())) {
                     if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
                         CommandAfk.afklist.remove(p.getUniqueId());
-                        Utils.starttimer(p);
+                        CommandAfk.afktimer.put(p.getUniqueId(), 0);
                         Message.b(MType.G, "AFK", p.getName() + " is no longer AFK.");
                     }
                 }

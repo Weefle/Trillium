@@ -1,5 +1,6 @@
-package me.lordsaad.trillium;
+package me.lordsaad.trillium.commands;
 
+import me.lordsaad.trillium.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

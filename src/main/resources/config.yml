@@ -5,7 +5,7 @@
 #   |_||_|  |_|_|_|_|\__,_|_| |_| |_|
 
 #---------------[ Motd ]---------------#
-Server List Motd: "&4Please define a motd in the conig.yml"
+Server List Motd: "&cPlease define a motd in the config.yml"
 Motd:
   - "&8<<<--->>> &aServer &8<<<--->>>"
   - "&7Welcome &6[USERNAME]&7!"

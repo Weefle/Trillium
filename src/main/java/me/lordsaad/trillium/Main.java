@@ -56,7 +56,6 @@ public class Main extends JavaPlugin {
         if (!cmdbinder.exists()) {
             cmdbinder.mkdir();
         }
-
     }
     
     public void onDisable() {

@@ -19,25 +19,24 @@ public class CommandInfo implements CommandExecutor {
                     Message.earg(sender, "Info", "/info <player>");
                 } else {
                     Player p = Bukkit.getPlayer(args[0]);
-                    Message.m(MType.G, sender, "Info", "Displaying Information on: " + p.getName());
-                    Message.m(MType.G, sender, "Info", "Nickname: " + API.getnickname(p));
-                    Message.m(MType.G, sender, "Info", "Online: " + API.isonline(p));
-                    Message.m(MType.G, sender, "Info", "Gamemode: " + API.getgamemode(p));
-                    Message.m(MType.G, sender, "Info", "Banned: " + p.isBanned());
+                    Message.m(MType.R, sender, "Info", "Displaying Information on: " + p.getName());
+                    Message.m(MType.R, sender, "Info", "Nickname: " + API.getnickname(p));
+                    Message.m(MType.R, sender, "Info", "Online: " + API.isonline(p));
+                    Message.m(MType.R, sender, "Info", "Gamemode: " + API.getgamemode(p));
+                    Message.m(MType.R, sender, "Info", "Banned: " + p.isBanned());
                     if (p.isBanned()) {
-                        Message.m(MType.G, sender, "Info", "Ban Reason: 'You are the weakest link. Goodbye.'");
+                        Message.m(MType.R, sender, "Info", "Ban Reason: 'You are the weakest link. Goodbye.'");
                     }
-                    Message.m(MType.G, sender, "Info", "Muted: " + API.ismuted(p));
-                    Message.m(MType.G, sender, "Info", "Flying: " + API.isflying(p));
-                    if (API.isonline(p)) {
-                        Message.m(MType.G, sender, "Info", "Location: " + API.locationstring(p));
-                    } else {
-                        Message.m(MType.G, sender, "Info", "Last found at: " + API.lastlocationstring(p));
+                    Message.m(MType.R, sender, "Info", "Muted: " + API.ismuted(p));
+                    Message.m(MType.R, sender, "Info", "Flying: " + API.isflying(p));
+                    Message.m(MType.R, sender, "Info", "Location: " + API.locationstring(p));
+                    if (!API.isonline(p)) {
+                        Message.m(MType.R, sender, "Info", "Last found at: " + API.lastlocationstring(p));
                     }
-                    Message.m(MType.G, sender, "Info", "Food level: " + API.getfoodlevel(p));
-                    Message.m(MType.G, sender, "Info", "Health level: " + API.gethealthlevel(p));
-                    Message.m(MType.G, sender, "Info", "Time Played: hours: " + (API.gettimeplayed(p) / 60) / 60);
-                    Message.m(MType.G, sender, "Info", "Time Played: days: " + ((API.gettimeplayed(p) / 60) / 60) / 24);
+                    Message.m(MType.R, sender, "Info", "Food level: " + API.getfoodlevel(p));
+                    Message.m(MType.R, sender, "Info", "Health level: " + API.gethealthlevel(p));
+                    Message.m(MType.R, sender, "Info", "Time Played: hours: " + (API.gettimeplayed(p) / 60) / 60);
+                    Message.m(MType.R, sender, "Info", "Time Played: days: " + ((API.gettimeplayed(p) / 60) / 60) / 24);
                 }
             } else {
                 Message.e(sender, "Info", Crit.P);

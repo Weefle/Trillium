@@ -54,6 +54,7 @@ public class Main extends JavaPlugin {
         getCommand("spawn").setExecutor(new CommandSpawn());
         getCommand("me").setExecutor(new CommandMe());
         getCommand("say").setExecutor(new CommandSay());
+        getCommand("killall").setExecutor(new CommandKillall());
 
         AfkRunnable afk = new AfkRunnable();
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, afk, 1, 1);

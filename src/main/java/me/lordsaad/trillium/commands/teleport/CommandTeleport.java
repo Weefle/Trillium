@@ -1,4 +1,4 @@
-package me.lordsaad.trillium.teleport;
+package me.lordsaad.trillium.commands.teleport;
 
 import me.lordsaad.trillium.API;
 import me.lordsaad.trillium.PlayerDatabase;

@@ -2,7 +2,7 @@ package me.lordsaad.trillium;
 
 import me.lordsaad.trillium.commands.*;
 import me.lordsaad.trillium.events.*;
-import me.lordsaad.trillium.teleport.*;
+import me.lordsaad.trillium.commands.teleport.*;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;

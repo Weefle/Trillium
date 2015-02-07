@@ -14,7 +14,7 @@ public class CommandTrillium implements CommandExecutor {
             if (sender.hasPermission("tr.admin")) {
                 sender.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
                 sender.sendMessage(ChatColor.GRAY + "              Plugin made with love");
-                sender.sendMessage(ChatColor.GRAY + "       by LordSaad44 and VortexSeven");
+                sender.sendMessage(ChatColor.GRAY + "       by LordSaad, VortexSeven, and TurboTailz");
                 sender.sendMessage(ChatColor.DARK_RED + "                          ❤");
                 sender.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
                 sender.sendMessage(ChatColor.GRAY + "Vesion: " + Main.plugin.getDescription().getVersion());

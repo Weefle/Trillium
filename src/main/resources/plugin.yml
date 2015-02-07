@@ -99,3 +99,9 @@ commands:
     description: Strike lightning upon summon.
     usage: /smite [player]
     aliases: [thor, lightning, thunder]
+  report:
+    description: Send a report to the admins/mods
+    usage: /report <msg>
+  reports:
+    description: View the reports, remove a report, or clear the report list.
+    usage: /reports [remove <index number/clear]

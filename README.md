@@ -10,7 +10,7 @@ Plans:
 * Make Trillium big.
 * Get more devs involved in the project (by volunteering)
 * Turn project super professional by having volunteer devs improve upon it.
-* Becom famous.
+* Become famous.
 
 Features:
 * Vanish

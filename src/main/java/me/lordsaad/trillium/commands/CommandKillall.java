@@ -21,8 +21,8 @@ public class CommandKillall implements CommandExecutor {
                     if (args.length <= 1) {
                         Message.earg(p, "Killall", "/killall <radius> <mobs/players/animals/monsters/items/everything>");
                     } else {
-                        if (API.isdouble(args[0])) {
-                            List<Entity> entities = p.getNearbyEntities(Double.parseDouble(args[1]), Double.parseDouble(args[1]), Double.parseDouble(args[1]));
+                        if (API.isdouble(args[0]) || API.isint(args[0])) {
+                            List<Entity> entities = p.getNearbyEntities(Double.parseDouble(args[0]), Double.parseDouble(args[0]), Double.parseDouble(args[0]));
                             if (args[1].equalsIgnoreCase("mobs")
                                     || args[1].equalsIgnoreCase("animals")
                                     || args[1].equalsIgnoreCase("players")
@@ -44,19 +44,19 @@ public class CommandKillall implements CommandExecutor {
                                     if (e instanceof Monster) {
                                         ((LivingEntity) e).setHealth(0D);
                                     }
-                                } else if (args[0].equalsIgnoreCase("animals")) {
+                                } else if (args[1].equalsIgnoreCase("animals")) {
                                     if (e instanceof Animals) {
                                         ((LivingEntity) e).setHealth(0D);
                                     }
-                                } else if (args[0].equalsIgnoreCase("players")) {
+                                } else if (args[1].equalsIgnoreCase("players")) {
                                     if (e instanceof Player) {
                                         ((LivingEntity) e).setHealth(0D);
                                     }
-                                } else if (args[0].equalsIgnoreCase("items")) {
+                                } else if (args[1].equalsIgnoreCase("items")) {
                                     if (e instanceof Item) {
                                         e.remove();
                                     }
-                                } else if (args[0].equalsIgnoreCase("everything")) {
+                                } else if (args[1].equalsIgnoreCase("everything")) {
                                     if (e instanceof Damageable) {
                                         ((Damageable) e).setHealth(0D);
                                     } else {

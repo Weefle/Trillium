@@ -24,6 +24,7 @@ public class CommandFly implements CommandExecutor {
                 if (args.length == 0) {
                     if (p.hasPermission("tr.fly")) {
 
+                        //long way for api and message. sorry, i know it can be compacted into 1 line of code...
                         if (flyusers.contains(p.getUniqueId())) {
                             flyusers.remove(p.getUniqueId());
                             Message.m(MType.G, p, "Fly", "You are no longer in fly mode.");

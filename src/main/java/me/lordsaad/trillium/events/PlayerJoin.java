@@ -4,6 +4,7 @@ import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.PlayerDatabase;
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandGodMode;
+import me.lordsaad.trillium.commands.CommandReport;
 import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
@@ -66,6 +67,14 @@ public class PlayerJoin implements Listener {
         //initiate AFK
         if (Main.plugin.getConfig().getBoolean("AFK.auto afk.enabled")) {
             CommandAfk.afktimer.put(p.getUniqueId(), 0);
+        }
+        
+        //Send report warning
+        if (p.hasPermission("div.reportreceiver")) {
+            if (CommandReport.reportlist.size() > 0) {
+                Message.m(MType.W, p, "Reports", "There are " + CommandReport.reportlist.size() + " reports available for revision.");
+                Message.m(MType.W, p, "Reports", "/reports to view them.");
+            }
         }
     }
 }

@@ -1,8 +1,8 @@
 package me.lordsaad.trillium.events;
 
+import me.lordsaad.trillium.API;
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.commands.CommandAfk;
-import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.entity.Player;
@@ -19,8 +19,8 @@ public class PlayerMove implements Listener {
                 || event.getFrom().getBlockY() != event.getTo().getBlockY()
                 || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
             if (Main.plugin.getConfig().getBoolean("AFK.auto unafk")) {
-                if (CommandAfk.afklist.contains(p.getUniqueId())) {
-                    if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
+                if (API.isafk(p)) {
+                    if (!API.isvanished(p)) {
                         CommandAfk.afktimer.put(p.getUniqueId(), 0);
                         CommandAfk.afklist.remove(p.getUniqueId());
                         Message.b(MType.G, "AFK", p.getName() + " is no longer AFK.");

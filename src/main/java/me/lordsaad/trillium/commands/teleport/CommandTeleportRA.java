@@ -45,14 +45,14 @@ public class CommandTeleportRA implements CommandExecutor {
                             }
 
                             requester.teleport(p);
-                            Message.m(MType.G, p, "TPRA", "You teleported " + requester.getName() + " to you.");
-                            Message.m(MType.G, requester, "TPRA", p.getName() + " accepted your teleport request.");
+                            Message.m(MType.G, p, "TPR", "You teleported " + requester.getName() + " to you.");
+                            Message.m(MType.G, requester, "TPR", p.getName() + " accepted your teleport request.");
 
                         } else {
-                            Message.m(MType.W, p, "TPRA", "No pending teleport requests to accept.");
+                            Message.m(MType.W, p, "TPR", "No pending teleport requests to accept.");
                         }
                     } else {
-                        Message.m(MType.W, p, "TPRA", "No pending teleport requests to accept.");
+                        Message.m(MType.W, p, "TPR", "No pending teleport requests to accept.");
                     }
                     if (!CommandTeleportRH.tprh.isEmpty()) {
                         if (CommandTeleportRH.tprh.containsValue(p.getUniqueId())) {
@@ -78,14 +78,14 @@ public class CommandTeleportRA implements CommandExecutor {
                             }
 
                             p.teleport(requester);
-                            Message.m(MType.G, p, "TPRA", "You teleported to " + requester.getName());
-                            Message.m(MType.G, requester, "TPRA", p.getName() + " accepted to teleport to you.");
-                            
+                            Message.m(MType.G, p, "TPRH", "You teleported to " + requester.getName());
+                            Message.m(MType.G, requester, "TPRH", p.getName() + " accepted to teleport to you.");
+
                         } else {
-                            Message.m(MType.W, p, "TPRA", "No pending teleport requests to accept.");
+                            Message.m(MType.W, p, "TPRH", "No pending teleport requests to accept.");
                         }
                     } else {
-                        Message.m(MType.W, p, "TPRA", "No pending teleport requests to accept.");
+                        Message.m(MType.W, p, "TPRH", "No pending teleport requests to accept.");
                     }
                 } else {
                     Message.e(p, "TPRA", Crit.P);

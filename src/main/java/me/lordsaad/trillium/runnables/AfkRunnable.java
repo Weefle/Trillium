@@ -1,8 +1,8 @@
 package me.lordsaad.trillium.runnables;
 
+import me.lordsaad.trillium.API;
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.commands.CommandAfk;
-import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.Bukkit;
@@ -14,12 +14,12 @@ public class AfkRunnable implements Runnable {
 
     @Override
     public void run() {
-        //if (Main.plugin.getConfig().getBoolean("AFK.auto afk.enabled")) {
+        if (Main.plugin.getConfig().getBoolean("AFK.auto afk.enabled")) {
             for (UUID uuid : CommandAfk.afktimer.keySet()) {
                 Player p = Bukkit.getPlayer(uuid);
                 if (p != null) {
-                    if (!CommandAfk.afklist.contains(p.getUniqueId())) {
-                        if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
+                    if (!API.isafk(p)) {
+                        if (!API.isvanished(p)) {
                             if (!p.hasPermission("tr.afk.exempt")) {
                                 CommandAfk.afktimer.put(p.getUniqueId(), CommandAfk.afktimer.get(p.getUniqueId()) + 1);
 
@@ -38,7 +38,7 @@ public class AfkRunnable implements Runnable {
                                     }
                                 }
                             }
-                       // }
+                        }
                     }
                 } else {
                     CommandAfk.afktimer.remove(uuid);

@@ -66,8 +66,8 @@ public class Main extends JavaPlugin {
         getCommand("lag").setExecutor(new CommandLag());
         getCommand("speed").setExecutor(new CommandSpeed());
 
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkRunnable(), 1L, 1L);
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100L, 1L);
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkRunnable(), 0, getConfig().getInt("AFK.auto afk.time until idle") * 20);
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);
         
         File cmdbinder = new File(Main.plugin.getDataFolder() + "/cmdbinder/");
         if (!cmdbinder.exists()) {
@@ -90,12 +90,18 @@ public class Main extends JavaPlugin {
         }
 
         PluginDescriptionFile pdf = getDescription();
-        System.out.println("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
-        System.out.println("           Plugin made with love");
-        System.out.println("   by LordSaad, VortexSeven, and Turbotailz");
-        System.out.println("                      ❤");
-        System.out.println("Version: " + pdf.getVersion());
-        System.out.println("<<<-------------------------------->>>");
+        getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
+        getLogger().info("           Plugin made with love");
+        getLogger().info("   by LordSaad, VortexSeven, and Turbotailz");
+        getLogger().info("                      ❤");
+        getLogger().info("Version: " + pdf.getVersion());
+        getLogger().info("<<<-------------------------------->>>");
+        
+        if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
+            getLogger().warning("Essentials plugin detected!");
+            getLogger().warning("Essentials might heavily interfere with Trillium");
+            getLogger().warning("Please consider removing Essentials.");
+        }
     }
     
     public void onDisable() {

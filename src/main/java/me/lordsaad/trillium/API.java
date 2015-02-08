@@ -244,8 +244,8 @@ public class API {
     public static String bar(int percent) {
         StringBuilder bar = new StringBuilder("[");
 
-        for (int i = 0; i < 50; i++) {
-            if (i < (percent / 2)) {
+        for (int i = 0; i < 25; i++) {
+            if (i < (percent / 4)) {
                 bar.append(ChatColor.AQUA + "#");
             } else {
                 bar.append(ChatColor.DARK_GRAY + "-");

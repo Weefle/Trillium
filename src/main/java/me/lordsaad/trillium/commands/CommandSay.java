@@ -18,9 +18,9 @@ public class CommandSay implements CommandExecutor {
                     for (String arg : args) {
                         sb.append(arg).append(" ");
                     }
-                    String message = sb.toString();
+                    String message = sb.toString().trim();
 
-                Message.b(MType.R, ChatColor.LIGHT_PURPLE + "Console", ChatColor.LIGHT_PURPLE + message);
+                Message.b(MType.R, ChatColor.LIGHT_PURPLE + "Console", message);
                 
             } else {
                 Message.m(MType.W, sender, "Say", "Say is for the console. Not you.");

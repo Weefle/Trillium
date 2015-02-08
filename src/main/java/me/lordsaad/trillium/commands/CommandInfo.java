@@ -4,6 +4,7 @@ import me.lordsaad.trillium.API;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,24 +20,25 @@ public class CommandInfo implements CommandExecutor {
                     Message.earg(sender, "Info", "/info <player>");
                 } else {
                     Player p = Bukkit.getPlayer(args[0]);
+                    p.sendMessage(" ");
                     Message.m(MType.R, sender, "Info", "Displaying Information on: " + p.getName());
-                    Message.m(MType.R, sender, "Info", "Nickname: " + API.getnickname(p));
-                    Message.m(MType.R, sender, "Info", "Online: " + API.isonline(p));
-                    Message.m(MType.R, sender, "Info", "Gamemode: " + API.getgamemode(p));
-                    Message.m(MType.R, sender, "Info", "Banned: " + p.isBanned());
+                    Message.m(MType.R, sender, "Info", "Nickname: " + ChatColor.AQUA + API.getnickname(p));
+                    Message.m(MType.R, sender, "Info", "Online: " + ChatColor.AQUA + API.isonline(p));
+                    Message.m(MType.R, sender, "Info", "Gamemode: " + ChatColor.AQUA + API.getgamemode(p));
+                    Message.m(MType.R, sender, "Info", "Banned: " + ChatColor.AQUA +p.isBanned());
                     if (p.isBanned()) {
                         Message.m(MType.R, sender, "Info", "Ban Reason: 'You are the weakest link. Goodbye.'");
                     }
-                    Message.m(MType.R, sender, "Info", "Muted: " + API.ismuted(p));
-                    Message.m(MType.R, sender, "Info", "Flying: " + API.isflying(p));
-                    Message.m(MType.R, sender, "Info", "Location: " + API.locationstring(p));
+                    Message.m(MType.R, sender, "Info", "Muted: " + ChatColor.AQUA + API.ismuted(p));
+                    Message.m(MType.R, sender, "Info", "Flying: " + ChatColor.AQUA + API.isflying(p));
+                    Message.m(MType.R, sender, "Info", "Location: " + ChatColor.AQUA + API.locationstring(p));
                     if (!API.isonline(p)) {
-                        Message.m(MType.R, sender, "Info", "Last found at: " + API.lastlocationstring(p));
+                        Message.m(MType.R, sender, "Info", "Last found at: " + ChatColor.AQUA + API.lastlocationstring(p));
                     }
-                    Message.m(MType.R, sender, "Info", "Food level: " + API.getfoodlevel(p));
-                    Message.m(MType.R, sender, "Info", "Health level: " + API.gethealthlevel(p));
-                    Message.m(MType.R, sender, "Info", "Time Played: hours: " + (API.gettimeplayed(p) / 60) / 60);
-                    Message.m(MType.R, sender, "Info", "Time Played: days: " + ((API.gettimeplayed(p) / 60) / 60) / 24);
+                    Message.m(MType.R, sender, "Info", "Food level: " + ChatColor.AQUA + API.getfoodlevel(p));
+                    Message.m(MType.R, sender, "Info", "Health level: " + ChatColor.AQUA + API.gethealthlevel(p));
+                    Message.m(MType.R, sender, "Info", "Time Played: hours: " + ChatColor.AQUA + (API.gettimeplayed(p) / 60) / 60);
+                    Message.m(MType.R, sender, "Info", "Time Played: days: " + ChatColor.AQUA + ((API.gettimeplayed(p) / 60) / 60) / 24);
                 }
             } else {
                 Message.e(sender, "Info", Crit.P);
@@ -44,4 +46,5 @@ public class CommandInfo implements CommandExecutor {
         }
         return true;
     }
+
 }

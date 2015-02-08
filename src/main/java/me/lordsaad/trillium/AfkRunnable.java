@@ -13,7 +13,7 @@ public class AfkRunnable implements Runnable {
 
     @Override
     public void run() {
-        if (Main.plugin.getConfig().getBoolean("AFK.auto afk.enabled")) {
+        //if (Main.plugin.getConfig().getBoolean("AFK.auto afk.enabled")) {
             for (UUID uuid : CommandAfk.afktimer.keySet()) {
                 Player p = Bukkit.getPlayer(uuid);
                 if (p != null) {
@@ -37,7 +37,7 @@ public class AfkRunnable implements Runnable {
                                     }
                                 }
                             }
-                        }
+                       // }
                     }
                 } else {
                     CommandAfk.afktimer.remove(uuid);

@@ -31,7 +31,7 @@ public class CommandTeleportRH implements CommandExecutor {
                             Message.m(MType.R, target, "TPR", p.getName() + ChatColor.BLUE + " would like you to teleport to him");
                             Message.m(MType.R, target, "TPR", "/tpra " + ChatColor.BLUE + "to accept the teleport.");
                             Message.m(MType.R, target, "TPR", "/tprd " + ChatColor.BLUE + "to deny the teleport.");
-                            tprh.put(target.getUniqueId(), p.getUniqueId());
+                            tprh.put(p.getUniqueId(), target.getUniqueId());
 
                         } else {
                             Message.eplayer(p, "TPR", args[0]);

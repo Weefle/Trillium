@@ -30,10 +30,10 @@ public class CommandReports implements CommandExecutor {
                             } else {
                                 if (API.isint(args[1])) {
                                     int nb = Integer.parseInt(args[1]);
-                                    if (nb - 1 > 0 && nb <= CommandReport.reportlist.size()) {
-                                        CommandReport.reportlist.remove(nb - 1);
+                                    if (nb > 0 && nb <= CommandReport.reportlist.size() + 1) {
                                         Message.m(MType.G, p, "Reports", "Removed: " + nb);
                                         p.sendMessage(CommandReport.reportlist.get(nb - 1));
+                                        CommandReport.reportlist.remove(nb - 1);
 
                                     } else {
                                         Message.m(MType.W, p, "Reports", args[1] + " is either larger than the list index or smaller than 0");

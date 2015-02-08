@@ -21,10 +21,10 @@ public class CommandMe implements CommandExecutor {
                     for (String arg : args) {
                         sb.append(arg).append(" ");
                     }
-                    String message = sb.toString();
+                    String message = sb.toString().trim();
 
                     // I think /me really needed a custom format, so i did bukkit.broadcastmessage instead of the message util
-                    Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "**" + ChatColor.GRAY + p.getName() + " " + message + ChatColor.DARK_GRAY + "**");
+                    Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "** " + ChatColor.GRAY + p.getName() + " " + message + ChatColor.DARK_GRAY + " **");
 
                 } else {
                     Message.e(p, "Me", Crit.P);

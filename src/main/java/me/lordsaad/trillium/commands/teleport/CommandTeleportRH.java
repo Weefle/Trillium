@@ -29,8 +29,8 @@ public class CommandTeleportRH implements CommandExecutor {
 
                             Message.m(MType.R, p, "TPR", "Teleport request for " + target.getName() + " to here is now pending. Please stand by.");
                             Message.m(MType.R, target, "TPR", p.getName() + ChatColor.BLUE + " would like you to teleport to him");
-                            Message.m(MType.R, target, "TPR", "/tpra " + ChatColor.BLUE + "to accept the teleport.");
-                            Message.m(MType.R, target, "TPR", "/tprd " + ChatColor.BLUE + "to deny the teleport.");
+                            Message.m(MType.R, target, "TPR", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.");
+                            Message.m(MType.R, target, "TPR", ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.");
                             tprh.put(p.getUniqueId(), target.getUniqueId());
 
                         } else {

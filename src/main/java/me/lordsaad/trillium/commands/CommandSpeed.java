@@ -21,7 +21,7 @@ public class CommandSpeed implements CommandExecutor {
                         if (API.isint(args[1]) || API.isdouble(args[1])) {
                             if (args[0].equalsIgnoreCase("fly")) {
                                 double i = Double.parseDouble(args[1]);
-                                if (i <= 10 && i >= 0) {
+                                if (i <= 10 && i >= -10) {
                                     i = i * 0.1;
                                     p.setFlySpeed((float) i);
                                     Message.m(MType.G, p, "Speed", "Fly speed set to " + ChatColor.AQUA + args[1]);
@@ -30,7 +30,7 @@ public class CommandSpeed implements CommandExecutor {
                                 }
                             } else if (args[0].equalsIgnoreCase("walk")) {
                                 double i = Double.parseDouble(args[1]);
-                                if (i <= 10 && i >= 0) {
+                                if (i <= 10 && i >= -10) {
                                     i = i * 0.1;
                                     p.setWalkSpeed((float) i);
                                     Message.m(MType.G, p, "Speed", "Walk speed set to " + ChatColor.AQUA + args[1]);

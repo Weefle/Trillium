@@ -16,9 +16,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PlayerInteract implements Listener {
 
@@ -45,6 +47,30 @@ public class PlayerInteract implements Listener {
                     String cmd = CommandCmdBinder.touchplayer.get(p.getLocation());
                     cmd = cmd.replace("[p]", p.getName());
                     Bukkit.dispatchCommand(p, cmd);
+                }
+            }
+        }
+        
+        if (CommandCmdBinder.antilagcheckitem.contains(p.getUniqueId())) {
+            if (CommandCmdBinder.itemconsole.containsKey(p.getUniqueId())) {
+
+                Map<ItemStack, String> iands = CommandCmdBinder.itemconsole.get(p.getUniqueId());
+                for (ItemStack item : iands.keySet()) {
+                    String cmd = iands.get(item);
+                    cmd = cmd.replace("[p]", p.getName());
+                    if (p.getItemInHand().equals(item)) {
+                        Bukkit.dispatchCommand(Main.plugin.getServer().getConsoleSender(), cmd);
+                    }
+                }
+                
+            } else if (CommandCmdBinder.itemplayer.containsKey(p.getUniqueId())) {
+                Map<ItemStack, String> iands = CommandCmdBinder.itemplayer.get(p.getUniqueId());
+                for (ItemStack item : iands.keySet()) {
+                    String cmd = iands.get(item);
+                    cmd = cmd.replace("[p]", p.getName());
+                    if (p.getItemInHand().equals(item)) {
+                        Bukkit.dispatchCommand(p, cmd);
+                    }
                 }
             }
         }

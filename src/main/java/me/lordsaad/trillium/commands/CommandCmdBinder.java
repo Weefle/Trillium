@@ -4,13 +4,16 @@ import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class CommandCmdBinder implements CommandExecutor {
@@ -19,14 +22,18 @@ public class CommandCmdBinder implements CommandExecutor {
     public static HashMap<UUID, String> tcmdbplayer = new HashMap<UUID, String>();
     public static HashMap<UUID, String> wcmdbplayer = new HashMap<UUID, String>();
     public static HashMap<UUID, String> wcmdbconsole = new HashMap<UUID, String>();
-    
+
     public static HashMap<Location, String> touchconsole = new HashMap<Location, String>();
     public static HashMap<Location, String> touchplayer = new HashMap<Location, String>();
     public static HashMap<Location, String> walkconsole = new HashMap<Location, String>();
     public static HashMap<Location, String> walkplayer = new HashMap<Location, String>();
 
+    public static Map<UUID, Map<ItemStack, String>> itemconsole = new HashMap<UUID, Map<ItemStack, String>>();
+    public static Map<UUID, Map<ItemStack, String>> itemplayer = new HashMap<UUID, Map<ItemStack, String>>();
+
     public static ArrayList<Location> antilagcheckloc = new ArrayList<Location>();
     public static ArrayList<UUID> antilagcheckcmd = new ArrayList<UUID>();
+    public static ArrayList<UUID> antilagcheckitem = new ArrayList<UUID>();
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("commandbinder")) {
@@ -55,7 +62,7 @@ public class CommandCmdBinder implements CommandExecutor {
                                 Message.m(MType.R, p, "Cmd Binder", "The first thing you touch now will bind the command you want");
                                 Message.m(MType.R, p, "Cmd Binder", "to the block you punch next. Be careful where you punch!");
                                 antilagcheckcmd.add(p.getUniqueId());
-                                
+
                             } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
 
                                 StringBuilder sb = new StringBuilder();
@@ -114,21 +121,39 @@ public class CommandCmdBinder implements CommandExecutor {
 
                             if (args[1].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c")) {
 
-                                StringBuilder sb = new StringBuilder();
-                                for (int i = 2; i < args.length; i++) {
-                                    sb.append(args[i]).append(" ");
+                                if (p.getItemInHand().getType() != null
+                                        || p.getItemInHand().getType() != Material.AIR) {
+
+                                    StringBuilder sb = new StringBuilder();
+                                    for (int i = 2; i < args.length; i++) {
+                                        sb.append(args[i]).append(" ");
+                                    }
+                                    String msg = sb.toString().trim();
+
+                                    Map<ItemStack, String> iands = new HashMap<ItemStack, String>();
+                                    iands.put(p.getItemInHand(), msg);
+                                    itemconsole.put(p.getUniqueId(), iands);
+                                    antilagcheckitem.add(p.getUniqueId());
+                                    
                                 }
-                                String msg = sb.toString().trim();
-                                
 
                             } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
 
-                                StringBuilder sb = new StringBuilder();
-                                for (int i = 2; i < args.length; i++) {
-                                    sb.append(args[i]).append(" ");
+                                if (p.getItemInHand().getType() != null
+                                        || p.getItemInHand().getType() != Material.AIR) {
+
+                                    StringBuilder sb = new StringBuilder();
+                                    for (int i = 2; i < args.length; i++) {
+                                        sb.append(args[i]).append(" ");
+                                    }
+                                    String msg = sb.toString().trim();
+
+                                    Map<ItemStack, String> iands = new HashMap<ItemStack, String>();
+                                    iands.put(p.getItemInHand(), msg);
+                                    itemplayer.put(p.getUniqueId(), iands);
+                                    antilagcheckitem.add(p.getUniqueId());
+
                                 }
-                                String msg = sb.toString().trim();
-                                
                             }
                         } else {
                             Message.earg(p, "Cmd Binder", "/cb <touch/walk/item> <console/player> <command>");

@@ -21,71 +21,60 @@ public class CommandTeleportRA implements CommandExecutor {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (p.hasPermission("tr.teleportrequest.respond")) {
-                    if (!CommandTeleportR.tprequest.isEmpty()) {
-                        if (CommandTeleportR.tprequest.containsValue(p.getUniqueId())) {
+                    if (CommandTeleportR.tprequest.containsValue(p.getUniqueId())) {
 
-                            Player requester = Bukkit.getPlayer(CommandTeleportR.tprequest.get(p.getUniqueId()));
+                        Player requester = Bukkit.getPlayer(CommandTeleportR.tprequest.get(p.getUniqueId()));
 
-                            String world = requester.getLocation().getWorld().getName();
-                            int x = requester.getLocation().getBlockX();
-                            int y = requester.getLocation().getBlockY();
-                            int z = requester.getLocation().getBlockZ();
+                        String world = requester.getLocation().getWorld().getName();
+                        int x = requester.getLocation().getBlockX();
+                        int y = requester.getLocation().getBlockY();
+                        int z = requester.getLocation().getBlockZ();
 
-                            YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(requester));
+                        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(requester));
 
-                            yml.set("Previous Location.world", world);
-                            yml.set("Previous Location.x", x);
-                            yml.set("Previous Location.y", y);
-                            yml.set("Previous Location.z", z);
+                        yml.set("Previous Location.world", world);
+                        yml.set("Previous Location.x", x);
+                        yml.set("Previous Location.y", y);
+                        yml.set("Previous Location.z", z);
 
-                            try {
-                                yml.save(PlayerDatabase.db(requester));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                            requester.teleport(p);
-                            Message.m(MType.G, p, "TPR", "You teleported " + requester.getName() + " to you.");
-                            Message.m(MType.G, requester, "TPR", p.getName() + " accepted your teleport request.");
-
-                        } else {
-                            Message.m(MType.W, p, "TPR", "No pending teleport requests to accept.");
+                        try {
+                            yml.save(PlayerDatabase.db(requester));
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    } else {
-                        Message.m(MType.W, p, "TPR", "No pending teleport requests to accept.");
-                    }
-                    if (!CommandTeleportRH.tprh.isEmpty()) {
-                        if (CommandTeleportRH.tprh.containsValue(p.getUniqueId())) {
 
-                            Player requester = Bukkit.getPlayer(CommandTeleportR.tprequest.get(p.getUniqueId()));
+                        requester.teleport(p);
+                        Message.m(MType.G, p, "TPRA", "You teleported " + requester.getName() + " to you.");
+                        Message.m(MType.G, requester, "TPRA", p.getName() + " accepted your teleport request.");
 
-                            String world = p.getLocation().getWorld().getName();
-                            int x = requester.getLocation().getBlockX();
-                            int y = requester.getLocation().getBlockY();
-                            int z = requester.getLocation().getBlockZ();
+                    } else if (CommandTeleportRH.tprh.containsValue(p.getUniqueId())) {
 
-                            YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
+                        Player requester = Bukkit.getPlayer(CommandTeleportR.tprequest.get(p.getUniqueId()));
 
-                            yml.set("Previous Location.world", world);
-                            yml.set("Previous Location.x", x);
-                            yml.set("Previous Location.y", y);
-                            yml.set("Previous Location.z", z);
+                        String world = p.getLocation().getWorld().getName();
+                        int x = requester.getLocation().getBlockX();
+                        int y = requester.getLocation().getBlockY();
+                        int z = requester.getLocation().getBlockZ();
 
-                            try {
-                                yml.save(PlayerDatabase.db(p));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
 
-                            p.teleport(requester);
-                            Message.m(MType.G, p, "TPRH", "You teleported to " + requester.getName());
-                            Message.m(MType.G, requester, "TPRH", p.getName() + " accepted to teleport to you.");
+                        yml.set("Previous Location.world", world);
+                        yml.set("Previous Location.x", x);
+                        yml.set("Previous Location.y", y);
+                        yml.set("Previous Location.z", z);
 
-                        } else {
-                            Message.m(MType.W, p, "TPRH", "No pending teleport requests to accept.");
+                        try {
+                            yml.save(PlayerDatabase.db(p));
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+
+                        p.teleport(requester);
+                        Message.m(MType.G, p, "TPRA", "You teleported to " + requester.getName());
+                        Message.m(MType.G, requester, "TPRA", p.getName() + " accepted to teleport to you.");
+                            
                     } else {
-                        Message.m(MType.W, p, "TPRH", "No pending teleport requests to accept.");
+                        Message.m(MType.W, p, "TPRA", "No pending teleport requests to accept.");
                     }
                 } else {
                     Message.e(p, "TPRA", Crit.P);

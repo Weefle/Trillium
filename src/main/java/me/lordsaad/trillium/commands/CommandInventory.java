@@ -54,10 +54,10 @@ public class CommandInventory implements CommandExecutor {
                             Message.e(p, "Inventory", Crit.P);
                         }
                     } else {
-                        Message.m(MType.W, p, "Inventory", "What is that? /inventory <player [enderchest]/workbench>");
+                        Message.m(MType.W, p, "Inventory", "What is that? /inventory <player [enderchest]/crafting>");
                     }
                 } else {
-                    Message.earg(p, "Inventory", " /inventory <player [enderchest]/workbench>");
+                    Message.earg(p, "Inventory", " /inventory <player [enderchest]/crafting>");
                 }
             } else {
                 Message.e(sender, "Invsee", Crit.C);

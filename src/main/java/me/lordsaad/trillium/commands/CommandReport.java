@@ -32,6 +32,7 @@ public class CommandReport implements CommandExecutor {
 
                         String big = ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "Reports" + ChatColor.DARK_GRAY + "]"
                                 + ChatColor.BLUE + " {"
+                                + ChatColor.AQUA + p.getName() + ChatColor.BLUE + ", "
                                 + ChatColor.AQUA + p.getLocation().getBlockX() + ChatColor.BLUE + ", "
                                 + ChatColor.AQUA + p.getLocation().getBlockY() + ChatColor.BLUE + ", "
                                 + ChatColor.AQUA + p.getLocation().getBlockZ() + ChatColor.BLUE + "} >> "

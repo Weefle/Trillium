@@ -3,6 +3,7 @@ package me.lordsaad.trillium.commands;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -134,7 +135,8 @@ public class CommandCmdBinder implements CommandExecutor {
                                     iands.put(p.getItemInHand(), msg);
                                     itemconsole.put(p.getUniqueId(), iands);
                                     antilagcheckitem.add(p.getUniqueId());
-                                    
+                                    Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to item.");
+                                    Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + CommandCmdBinder.tcmdbconsole.get(p.getUniqueId()));
                                 }
 
                             } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
@@ -152,7 +154,8 @@ public class CommandCmdBinder implements CommandExecutor {
                                     iands.put(p.getItemInHand(), msg);
                                     itemplayer.put(p.getUniqueId(), iands);
                                     antilagcheckitem.add(p.getUniqueId());
-
+                                    Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to item.");
+                                    Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + CommandCmdBinder.tcmdbconsole.get(p.getUniqueId()));
                                 }
                             }
                         } else {

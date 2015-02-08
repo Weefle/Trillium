@@ -7,6 +7,7 @@ import me.lordsaad.trillium.commands.CommandCmdBinder;
 import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -90,6 +91,8 @@ public class PlayerInteract implements Listener {
                     l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + CommandCmdBinder.tcmdbconsole.get(p.getUniqueId()));
                     yml.set("touchconsole", l);
                     CommandCmdBinder.tcmdbconsole.remove(p.getUniqueId());
+                    Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to block.");
+                    Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + CommandCmdBinder.tcmdbconsole.get(p.getUniqueId()));
                 }
             } else if (CommandCmdBinder.tcmdbplayer.containsKey(p.getUniqueId())) {
                 if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
@@ -102,6 +105,8 @@ public class PlayerInteract implements Listener {
                     l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + CommandCmdBinder.tcmdbplayer.get(p.getUniqueId()));
                     yml.set("touchplayer", l);
                     CommandCmdBinder.tcmdbplayer.remove(p.getUniqueId());
+                    Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to block.");
+                    Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + CommandCmdBinder.tcmdbconsole.get(p.getUniqueId()));
                 }
             } else if (CommandCmdBinder.wcmdbconsole.containsKey(p.getUniqueId())) {
                 if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -116,6 +121,8 @@ public class PlayerInteract implements Listener {
                         l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + CommandCmdBinder.wcmdbconsole.get(p.getUniqueId()));
                         yml.set("walkconsole", l);
                         CommandCmdBinder.wcmdbconsole.remove(p.getUniqueId());
+                        Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to air block.");
+                        Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + CommandCmdBinder.tcmdbconsole.get(p.getUniqueId()));
                     }
                 }
             } else if (CommandCmdBinder.wcmdbplayer.containsKey(p.getUniqueId())) {
@@ -131,6 +138,8 @@ public class PlayerInteract implements Listener {
                         l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + CommandCmdBinder.wcmdbplayer.get(p.getUniqueId()));
                         yml.set("walkplayer", l);
                         CommandCmdBinder.wcmdbplayer.remove(p.getUniqueId());
+                        Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to air block.");
+                        Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + CommandCmdBinder.tcmdbconsole.get(p.getUniqueId()));
                     }
                 }
             }

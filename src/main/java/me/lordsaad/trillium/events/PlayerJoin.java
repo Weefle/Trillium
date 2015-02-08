@@ -33,7 +33,7 @@ public class PlayerJoin implements Listener {
 
         //join message
         if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-            String m1 = ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Join Message"));
+            String m1 = ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Join.message"));
             m1 = m1.replace("[USERNAME]", p.getName());
             event.setJoinMessage(m1);
         }

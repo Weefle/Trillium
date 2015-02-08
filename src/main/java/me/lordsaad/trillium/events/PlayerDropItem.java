@@ -12,8 +12,8 @@ public class PlayerDropItem implements Listener {
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
         Player p = event.getPlayer();
-        if (CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-            if (Main.plugin.getConfig().getBoolean("Vanish.prevent item pickup/drop")) {
+        if (Main.plugin.getConfig().getBoolean("Vanish.prevent item pickup/drop")) {
+            if (CommandVanish.vanishedusers.contains(p.getUniqueId())) {
                 event.setCancelled(true);
             }
         }

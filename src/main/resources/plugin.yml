@@ -105,3 +105,7 @@ commands:
   reports:
     description: View the reports, remove a report, or clear the report list.
     usage: /reports [remove <index number/clear]
+  lag:
+    description: Statistics on server lag and it also clears lag through gc.
+    usage: /lag
+    aliases: [tps, memory, mem, gc, garbagecollector, tick]

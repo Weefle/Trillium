@@ -49,5 +49,6 @@ Features:
 * Chat Channels
 * Rules
 * Report
-* Bug reporter to us (the devs) (via email)
+* Note
+
 * adding more to the list...

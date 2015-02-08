@@ -28,8 +28,11 @@ public class PlayerLeave implements Listener {
         }
 
         //leave message
-        event.setQuitMessage(ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Leave Message")));
-
+        if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
+            String m1 = ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Leave.message"));
+            m1 = m1.replace("[USERNAME]", p.getName());
+            event.setQuitMessage(m1);
+        }
         //remove godmode?
         if (Main.plugin.getConfig().getBoolean("God Mode")) {
             CommandGodMode.godmodeusers.add(p.getUniqueId());
@@ -47,6 +50,7 @@ public class PlayerLeave implements Listener {
         //remove afk
         if (CommandAfk.afklist.contains(p.getUniqueId())) {
             CommandAfk.afklist.remove(p.getUniqueId());
+            CommandAfk.afktimer.remove(p.getUniqueId());
         }
     }
 }

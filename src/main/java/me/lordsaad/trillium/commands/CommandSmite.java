@@ -14,10 +14,10 @@ public class CommandSmite implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-        if (cmd.getName().equalsIgnoreCase("thor")) {
+        if (cmd.getName().equalsIgnoreCase("smite")) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
-                if (sender.hasPermission("saad.thor")) {
+                if (sender.hasPermission("tr.thor")) {
                     if (args.length == 0) {
                         Location loc = p.getTargetBlock(null, 100).getLocation();
                         p.getWorld().strikeLightning(loc);

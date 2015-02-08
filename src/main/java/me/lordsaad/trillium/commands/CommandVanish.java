@@ -28,12 +28,12 @@ public class CommandVanish implements CommandExecutor {
                         if (!API.isvanished(p)) {
 
                             API.setvanished(true, p);
-                            Message.m(MType.G, p, "Vanish", "You are no longer in vanish mode.");
+                            Message.m(MType.G, p, "Vanish", "You are now in vanish mode.");
 
                         } else {
                             
                             API.setvanished(false, p);
-                            Message.m(MType.G, p, "Vanish", "You are now in vanish mode.");
+                            Message.m(MType.G, p, "Vanish", "You are no longer in vanish mode.");
                         }
                     } else {
                         Message.e(p, "Vanish", Crit.P);
@@ -47,14 +47,14 @@ public class CommandVanish implements CommandExecutor {
                             if (API.isvanished(p)) {
 
                                 API.setvanished(false, p);
-                                Message.m(MType.G, pl, "Vanish", p.getName() + " removed you from vanish mode.");
-                                Message.m(MType.G, p, "Vanish", pl.getName() + " is no longer in vanish mode.");
+                                Message.m(MType.G, pl, "Vanish", p.getName() + " put you in vanish mode.");
+                                Message.m(MType.G, p, "Vanish", pl.getName() + " is now in vanish mode.");
 
                             } else {
 
                                 API.setvanished(false, p);
-                                Message.m(MType.G, pl, "Vanish", p.getName() + " put you in vanish mode.");
-                                Message.m(MType.G, p, "Vanish", pl.getName() + " is now in vanish mode.");
+                                Message.m(MType.G, pl, "Vanish", p.getName() + " removed you from vanish mode.");
+                                Message.m(MType.G, p, "Vanish", pl.getName() + " is no longer in vanish mode.");
                             }
                         } else {
                             Message.eplayer(p, "Vanish", args[0]);

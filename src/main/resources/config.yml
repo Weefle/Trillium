@@ -13,12 +13,14 @@ Motd:
   - "&7Have fun! ^_^/"
 
 #---------------[ Player Join ]---------------#
-Join Message: "&b[USERNAME] &9has joined the game!"
-Temporary God Mode: 10
+Join:
+  message: "&b[USERNAME] &9has joined the game!"
+  temporary god mode: 10
 #Temporary god mode in seconds.
 
 #---------------[ Player Leave ]---------------#
-Leave Message: "&b[USERNAME] &9has left the game!"
+Leave:
+  message: "&b[USERNAME] &9has left the game!"
 
 #---------------[ Broadcast ]---------------#
 Broadcast:

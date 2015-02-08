@@ -61,9 +61,10 @@ public class Main extends JavaPlugin {
         getCommand("smite").setExecutor(new CommandSmite());
         getCommand("report").setExecutor(new CommandReport());
         getCommand("reports").setExecutor(new CommandReports());
+        getCommand("lag").setExecutor(new CommandLag());
 
-        AfkRunnable afk = new AfkRunnable();
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, afk, 1, 1);
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkRunnable(), 1L, 1L);
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100L, 1L);
         
         File cmdbinder = new File(Main.plugin.getDataFolder() + "/cmdbinder/");
         if (!cmdbinder.exists()) {
@@ -88,7 +89,7 @@ public class Main extends JavaPlugin {
         PluginDescriptionFile pdf = getDescription();
         System.out.println("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         System.out.println("           Plugin made with love");
-        System.out.println("   by LordSaad, VortexSeven, and TurboTailz");
+        System.out.println("   by LordSaad, VortexSeven, and Turbotailz");
         System.out.println("                      ❤");
         System.out.println("Version: " + pdf.getVersion());
         System.out.println("<<<-------------------------------->>>");

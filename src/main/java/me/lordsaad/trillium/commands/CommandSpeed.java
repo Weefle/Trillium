@@ -20,11 +20,25 @@ public class CommandSpeed implements CommandExecutor {
                     if (args.length > 1) {
                         if (API.isint(args[1]) || API.isdouble(args[1])) {
                             if (args[0].equalsIgnoreCase("fly")) {
-                                p.setFlySpeed(Float.parseFloat(args[1]));
-                                Message.m(MType.G, p, "Speed", "Fly speed set to " + ChatColor.AQUA + args[1]);
+                                double i = Double.parseDouble(args[1]);
+                                if (i <= 10 && i >= 0) {
+                                    i = i * 0.1;
+                                    p.setFlySpeed((float) i);
+                                    Message.m(MType.G, p, "Speed", "Fly speed set to " + ChatColor.AQUA + args[1]);
+                                } else {
+                                    Message.earg2(p, "Speed", "/speed <fly/walk> <speed>");
+                                }
                             } else if (args[0].equalsIgnoreCase("walk")) {
-                                p.setWalkSpeed(Float.parseFloat(args[1]));
-                                Message.m(MType.G, p, "Speed", "Walk speed set to " + ChatColor.AQUA + args[1]);
+                                double i = Double.parseDouble(args[1]);
+                                if (i <= 10 && i >= 0) {
+                                    i = i * 0.1;
+                                    p.setWalkSpeed((float) i);
+                                    Message.m(MType.G, p, "Speed", "Walk speed set to " + ChatColor.AQUA + args[1]);
+                                } else {
+                                    Message.earg2(p, "Speed", "/speed <fly/walk> <speed>");
+                                }
+                            } else {
+                                Message.earg2(p, "Speed", "/speed <fly/walk> <speed>");
                             }
                         } else {
                             Message.m(MType.W, p, "Speed", args[1] + " is not a number.");

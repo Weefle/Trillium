@@ -24,8 +24,9 @@ public class CommandCmdBinder implements CommandExecutor {
     public static HashMap<Location, String> touchplayer = new HashMap<Location, String>();
     public static HashMap<Location, String> walkconsole = new HashMap<Location, String>();
     public static HashMap<Location, String> walkplayer = new HashMap<Location, String>();
-    
+
     public static ArrayList<Location> antilagcheckloc = new ArrayList<Location>();
+    public static ArrayList<UUID> antilagcheckcmd = new ArrayList<UUID>();
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("commandbinder")) {
@@ -53,7 +54,8 @@ public class CommandCmdBinder implements CommandExecutor {
                                 Message.m(MType.R, p, "Cmd Binder", "WARNING: Do not touch anything aimlessly!");
                                 Message.m(MType.R, p, "Cmd Binder", "The first thing you touch now will bind the command you want");
                                 Message.m(MType.R, p, "Cmd Binder", "to the block you punch next. Be careful where you punch!");
-
+                                antilagcheckcmd.add(p.getUniqueId());
+                                
                             } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
 
                                 StringBuilder sb = new StringBuilder();
@@ -68,6 +70,7 @@ public class CommandCmdBinder implements CommandExecutor {
                                 Message.m(MType.R, p, "Cmd Binder", "WARNING: Do not touch anything aimlessly!");
                                 Message.m(MType.R, p, "Cmd Binder", "The first thing you touch now will bind the command you want");
                                 Message.m(MType.R, p, "Cmd Binder", "to the block you punch next. Be careful where you punch!");
+                                antilagcheckcmd.add(p.getUniqueId());
 
                             }
                         } else if (args[0].equalsIgnoreCase("walk") || args[0].equalsIgnoreCase("w")) {
@@ -87,6 +90,7 @@ public class CommandCmdBinder implements CommandExecutor {
                                 Message.m(MType.R, p, "Cmd Binder", "The first block you right click will bind the command to the adjacent empty side");
                                 Message.m(MType.R, p, "Cmd Binder", "so walking through that empty air block adjacent to the block you right clicked");
                                 Message.m(MType.R, p, "Cmd Binder", "will make the command get run.");
+                                antilagcheckcmd.add(p.getUniqueId());
 
                             } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
 
@@ -103,6 +107,7 @@ public class CommandCmdBinder implements CommandExecutor {
                                 Message.m(MType.R, p, "Cmd Binder", "The first block you right click will bind the command to the adjacent empty side");
                                 Message.m(MType.R, p, "Cmd Binder", "so walking through that empty air block adjacent to the block you right clicked");
                                 Message.m(MType.R, p, "Cmd Binder", "will make the command get run.");
+                                antilagcheckcmd.add(p.getUniqueId());
 
                             }
                         } else if (args[0].equalsIgnoreCase("item") || args[0].equalsIgnoreCase("i")) {

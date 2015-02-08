@@ -3,8 +3,11 @@ package me.lordsaad.trillium.events;
 import me.lordsaad.trillium.API;
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.commands.CommandAfk;
+import me.lordsaad.trillium.commands.CommandCmdBinder;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,6 +27,20 @@ public class PlayerMove implements Listener {
                         CommandAfk.afktimer.put(p.getUniqueId(), 0);
                         CommandAfk.afklist.remove(p.getUniqueId());
                         Message.b(MType.G, "AFK", p.getName() + " is no longer AFK.");
+                    }
+                }
+            }
+
+            for (Location loc : CommandCmdBinder.antilagcheckloc) {
+                if (p.getLocation().equals(loc)) {
+                    if (CommandCmdBinder.walkconsole.containsKey(p.getLocation())) {
+                        String cmd = CommandCmdBinder.walkconsole.get(p.getLocation());
+                        cmd = cmd.replace("[p]", p.getName());
+                        Bukkit.dispatchCommand(Main.plugin.getServer().getConsoleSender(), cmd);
+                    } else if (CommandCmdBinder.walkplayer.containsKey(p.getLocation())) {
+                        String cmd = CommandCmdBinder.walkplayer.get(p.getLocation());
+                        cmd = cmd.replace("[p]", p.getName());
+                        Bukkit.dispatchCommand(p, cmd);
                     }
                 }
             }

@@ -1,6 +1,6 @@
 package me.lordsaad.trillium.events;
 
-import me.lordsaad.trillium.CmdBinderDatabase;
+import me.lordsaad.trillium.databases.CmdBinderDatabase;
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandCmdBinder;

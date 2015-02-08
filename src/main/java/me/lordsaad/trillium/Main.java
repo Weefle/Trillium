@@ -2,6 +2,7 @@ package me.lordsaad.trillium;
 
 import me.lordsaad.trillium.commands.*;
 import me.lordsaad.trillium.commands.teleport.*;
+import me.lordsaad.trillium.databases.CmdBinderDatabase;
 import me.lordsaad.trillium.events.*;
 import me.lordsaad.trillium.runnables.AfkRunnable;
 import me.lordsaad.trillium.runnables.TpsRunnable;

@@ -1,6 +1,6 @@
 package me.lordsaad.trillium.commands.teleport;
 
-import me.lordsaad.trillium.PlayerDatabase;
+import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;

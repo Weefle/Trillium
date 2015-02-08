@@ -1,5 +1,6 @@
-package me.lordsaad.trillium;
+package me.lordsaad.trillium.databases;
 
+import me.lordsaad.trillium.Main;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 

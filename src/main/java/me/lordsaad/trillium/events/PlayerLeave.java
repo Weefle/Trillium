@@ -1,7 +1,7 @@
 package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.Main;
-import me.lordsaad.trillium.PlayerDatabase;
+import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandVanish;

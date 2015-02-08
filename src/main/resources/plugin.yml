@@ -109,3 +109,6 @@ commands:
     description: Statistics on server lag and it also clears lag through gc.
     usage: /lag
     aliases: [tps, memory, mem, gc, garbagecollector, tick]
+  speed:
+    description: Change your walk or fly speed.
+    usage: /speed <fly/walk> <speed>

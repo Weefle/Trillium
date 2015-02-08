@@ -3,6 +3,8 @@ package me.lordsaad.trillium;
 import me.lordsaad.trillium.commands.*;
 import me.lordsaad.trillium.events.*;
 import me.lordsaad.trillium.commands.teleport.*;
+import me.lordsaad.trillium.runnables.AfkRunnable;
+import me.lordsaad.trillium.runnables.TpsRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.HandlerList;
@@ -62,6 +64,7 @@ public class Main extends JavaPlugin {
         getCommand("report").setExecutor(new CommandReport());
         getCommand("reports").setExecutor(new CommandReports());
         getCommand("lag").setExecutor(new CommandLag());
+        getCommand("speed").setExecutor(new CommandSpeed());
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkRunnable(), 1L, 1L);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100L, 1L);

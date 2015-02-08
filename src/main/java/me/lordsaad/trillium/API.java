@@ -5,6 +5,7 @@ import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+import me.lordsaad.trillium.runnables.TpsRunnable;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -88,11 +89,6 @@ public class API {
         int z = pdb.getInt("Last Location.z");
         String world = pdb.getString("Last Location.world");
         return world + ", " + x + ", " + y + ", " + z;
-    }
-
-    public static String getnickname(Player p) {
-        YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        return pdb.getString("Nickname");
     }
 
     public static boolean ismuted(Player p) {

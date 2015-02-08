@@ -4,8 +4,8 @@ import me.lordsaad.trillium.API;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,8 +22,8 @@ public class CommandInfo implements CommandExecutor {
                     Player p = Bukkit.getPlayer(args[0]);
                     if (p != null) {
                         p.sendMessage(" ");
-                        Message.m(MType.R, sender, "Info", "Displaying Information on: " + p.getName());
-                        Message.m(MType.R, sender, "Info", "Nickname: " + ChatColor.AQUA + API.getnickname(p));
+                        Message.m(MType.R, sender, "Info", "Displaying Information on: " + ChatColor.AQUA + p.getName());
+                        Message.m(MType.R, sender, "Info", "Nickname: " + ChatColor.AQUA + p.getDisplayName());
                         Message.m(MType.R, sender, "Info", "Online: " + ChatColor.AQUA + API.isonline(p));
                         Message.m(MType.R, sender, "Info", "Gamemode: " + ChatColor.AQUA + API.getgamemode(p));
                         Message.m(MType.R, sender, "Info", "Banned: " + ChatColor.AQUA + p.isBanned());

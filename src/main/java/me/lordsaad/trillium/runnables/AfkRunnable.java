@@ -1,5 +1,6 @@
-package me.lordsaad.trillium;
+package me.lordsaad.trillium.runnables;
 
+import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.messageutils.MType;

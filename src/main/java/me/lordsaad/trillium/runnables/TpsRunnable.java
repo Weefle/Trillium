@@ -1,4 +1,4 @@
-package me.lordsaad.trillium;
+package me.lordsaad.trillium.runnables;
 
 public class TpsRunnable implements Runnable {
     

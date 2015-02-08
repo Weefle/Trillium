@@ -8,7 +8,6 @@ import java.io.IOException;
 
 public class PlayerDatabase {
 
-
     public static File db(Player p) {
         File file = new File(Main.plugin.getDataFolder() + "/PlayerDatabase/" + p.getUniqueId() + ".yml");
         if (!file.exists()) {

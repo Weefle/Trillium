@@ -1,11 +1,12 @@
 package me.lordsaad.trillium;
 
 import me.lordsaad.trillium.commands.*;
-import me.lordsaad.trillium.events.*;
 import me.lordsaad.trillium.commands.teleport.*;
+import me.lordsaad.trillium.events.*;
 import me.lordsaad.trillium.runnables.AfkRunnable;
 import me.lordsaad.trillium.runnables.TpsRunnable;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -20,7 +21,8 @@ public class Main extends JavaPlugin {
 
     public void onEnable() {
         plugin = this;
-
+        setupcmdbinder();
+        
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
@@ -68,12 +70,7 @@ public class Main extends JavaPlugin {
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkRunnable(), 0, getConfig().getInt("AFK.auto afk.time until idle") * 20);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);
-        
-        File cmdbinder = new File(Main.plugin.getDataFolder() + "/cmdbinder/");
-        if (!cmdbinder.exists()) {
-            cmdbinder.mkdir();
-        }
-        
+
         File reports = new File(Main.plugin.getDataFolder(), "Reports.yml");
 
         if (!reports.exists()) {
@@ -83,6 +80,7 @@ public class Main extends JavaPlugin {
                 e.printStackTrace();
             }
         }
+        
         YamlConfiguration ymlreports = YamlConfiguration.loadConfiguration(reports);
 
         for (String s : ymlreports.getStringList("Reports")) {
@@ -96,14 +94,14 @@ public class Main extends JavaPlugin {
         getLogger().info("                      ❤");
         getLogger().info("Version: " + pdf.getVersion());
         getLogger().info("<<<-------------------------------->>>");
-        
+
         if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
             getLogger().warning("Essentials plugin detected!");
             getLogger().warning("Essentials might heavily interfere with Trillium");
             getLogger().warning("Please consider removing Essentials.");
         }
     }
-    
+
     public void onDisable() {
         File reports = new File(Main.plugin.getDataFolder(), "Reports.yml");
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(reports);
@@ -113,9 +111,61 @@ public class Main extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         HandlerList.unregisterAll();
         saveDefaultConfig();
         Bukkit.getScheduler().cancelAllTasks();
+    }
+
+    private void setupcmdbinder() {
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(CmdBinderDatabase.cbd());
+
+        for (String s : yml.getStringList("touchconsole")) {
+            String w = s.split("'")[0];
+            int x = Integer.parseInt(s.split(";")[0]);
+            int y = Integer.parseInt(s.split(";")[1]);
+            int z = Integer.parseInt(s.split(",")[1]);
+            Location loc = new Location(Bukkit.getWorld(w), x, y, z);
+            String cmd = s.split("/")[1];
+
+            CommandCmdBinder.touchconsole.put(loc, cmd);
+            CommandCmdBinder.antilagcheckloc.add(loc);
+        }
+
+        for (String s : yml.getStringList("touchplayer")) {
+            String w = s.split("'")[0];
+            int x = Integer.parseInt(s.split(";")[0]);
+            int y = Integer.parseInt(s.split(";")[1]);
+            int z = Integer.parseInt(s.split(",")[1]);
+            Location loc = new Location(Bukkit.getWorld(w), x, y, z);
+            String cmd = s.split("/")[1];
+
+            CommandCmdBinder.touchplayer.put(loc, cmd);
+            CommandCmdBinder.antilagcheckloc.add(loc);
+        }
+
+        for (String s : yml.getStringList("walkconsole")) {
+            String w = s.split("'")[0];
+            int x = Integer.parseInt(s.split(";")[0]);
+            int y = Integer.parseInt(s.split(";")[1]);
+            int z = Integer.parseInt(s.split(",")[1]);
+            Location loc = new Location(Bukkit.getWorld(w), x, y, z);
+            String cmd = s.split("/")[1];
+
+            CommandCmdBinder.walkconsole.put(loc, cmd);
+            CommandCmdBinder.antilagcheckloc.add(loc);
+        }
+
+        for (String s : yml.getStringList("walkplayer")) {
+            String w = s.split("'")[0];
+            int x = Integer.parseInt(s.split(";")[0]);
+            int y = Integer.parseInt(s.split(";")[1]);
+            int z = Integer.parseInt(s.split(",")[1]);
+            Location loc = new Location(Bukkit.getWorld(w), x, y, z);
+            String cmd = s.split("/")[1];
+
+            CommandCmdBinder.walkplayer.put(loc, cmd);
+            CommandCmdBinder.antilagcheckloc.add(loc);
+        }
     }
 }

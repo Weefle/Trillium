@@ -29,4 +29,8 @@ public class Message {
     public static void earg(CommandSender cs, String tag, String forextra) {
         cs.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + "Too few arguments. " + forextra);
     }
+
+    public static void earg2(CommandSender cs, String tag, String forextra) {
+        cs.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + tag + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + "Wrong arguments. " + forextra);
+    }
 }

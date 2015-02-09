@@ -73,6 +73,7 @@ public class Main extends JavaPlugin {
         getCommand("mute").setExecutor(new CommandMute());
         getCommand("ban").setExecutor(new CommandBan());
         getCommand("unban").setExecutor(new CommandUnban());
+        getCommand("kick").setExecutor(new CommandKick());
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkRunnable(), 1, getConfig().getInt("AFK.auto afk.time until idle") * 20);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);
@@ -99,6 +100,9 @@ public class Main extends JavaPlugin {
         getLogger().info("   by LordSaad, VortexSeven, and Turbotailz");
         getLogger().info("                      ❤");
         getLogger().info("Version: " + pdf.getVersion());
+        getLogger().warning("THIS PLUGIN IS STILL IN PRE-ALPHA.");
+        getLogger().warning("WE HIGHLY RECOMMEND YOU DON'T USE IT FOR THE TIME BEING.");
+        getLogger().warning("WE ARE FULLY AWARE OF ALL THE BUGS YOU MAY FIND.");
         getLogger().info("<<<-------------------------------->>>");
 
         if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {

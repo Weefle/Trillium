@@ -58,7 +58,7 @@ public class CommandTeleport implements CommandExecutor {
                     } else {
                         Message.e(p, "TP", Crit.P);
                     }
-                    
+
                 } else if (args.length == 2) {
                     if (p.hasPermission("tr.teleport.other")) {
                         Player target1 = Bukkit.getPlayer(args[0]);
@@ -91,30 +91,37 @@ public class CommandTeleport implements CommandExecutor {
                     } else {
                         Message.e(p, "TP", Crit.P);
                     }
+
                 } else {
                     if (p.hasPermission("tr.teleport.coord")) {
                         Player pl = Bukkit.getPlayer(args[0]);
                         String c1 = args[1];
                         String c2 = args[2];
                         String c3 = args[3];
-                        if (API.isdouble(c1) && API.isdouble(c2) && API.isdouble(c3)
-                                || API.isint(c1) && API.isint(c2) && API.isint(c3)) {
-                            int c4 = Integer.parseInt(c1);
-                            int c5 = Integer.parseInt(c2);
-                            int c6 = Integer.parseInt(c3);
-                            Location loc = new Location(p.getWorld(), c4, c5, c6);
-                            pl.teleport(loc);
-                            Message.m(MType.G, p, "TP", "You teleported to " + ChatColor.AQUA + c4 + ", " + c5 + ", " + c6);
-                        } else {
-                            if (c1.contains("~") && c2.contains("~") && c3.contains("~")) {
-                                int c4 = Integer.parseInt(c1.split("~")[1]);
-                                int c5 = Integer.parseInt(c2.split("~")[1]);
-                                int c6 = Integer.parseInt(c3.split("~")[1]);
-                                Location loc = new Location(p.getWorld(), p.getLocation().getX() + c4, p.getLocation().getY() + c5, p.getLocation().getZ() + c6);
+                        if (pl != null) {
+                            if (API.isdouble(c1) && API.isdouble(c2) && API.isdouble(c3)
+                                    || API.isint(c1) && API.isint(c2) && API.isint(c3)) {
+                                int c4 = Integer.parseInt(c1);
+                                int c5 = Integer.parseInt(c2);
+                                int c6 = Integer.parseInt(c3);
+                                Location loc = new Location(p.getWorld(), c4, c5, c6);
                                 pl.teleport(loc);
-                                Message.m(MType.G, p, "TP", "You teleported to " + ChatColor.AQUA + loc.getX() + ", " + loc.getY() + ", " + loc.getZ());
+                                Message.m(MType.G, p, "TP", "You teleported to " + ChatColor.AQUA + c4 + ", " + c5 + ", " + c6);
+                            } else {
+                                if (c1.startsWith("~") && c2.startsWith("~") && c3.startsWith("~")) {
+                                    int c4 = Integer.parseInt(c1.substring(1));
+                                    int c5 = Integer.parseInt(c2.substring(1));
+                                    int c6 = Integer.parseInt(c3.substring(1));
+                                    Location loc = new Location(p.getWorld(), p.getLocation().getX() + c4, p.getLocation().getY() + c5, p.getLocation().getZ() + c6);
+                                    pl.teleport(loc);
+                                    Message.m(MType.G, p, "TP", "You teleported to " + ChatColor.AQUA + loc.getX() + ", " + loc.getY() + ", " + loc.getZ());
 
+                                } else {
+                                    Message.earg2(p, "TP", "/tp <player> <x> <y> <z>");
+                                }
                             }
+                        } else {
+                            Message.eplayer(p, "TP", args[0]);
                         }
                     } else {
                         Message.e(p, "TP", Crit.P);

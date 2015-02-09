@@ -1,0 +1,127 @@
+author: LordSaad44
+description: The Premium Essentials.
+main: me.lordsaad.trillium.Main
+name: Trillium
+version: 0.1
+commands:
+  trillium:
+    description: The main command of the plugin.
+    usage: /trillium
+    aliases: [tr]
+  motd:
+    description: View/Edit the motd.
+    usage: /motd
+  teleport:
+    description: Teleport to any player.
+    usage: /tp <player> [player]
+    aliases: [tp]
+  teleportrequest:
+    description: Request permission to teleport to any player.
+    usage: /tpr <player>
+    aliases: [tpr]
+  teleportrequestaccept:
+    description: Accept to have a player teleport to you.
+    usage: /tpra
+    aliases: [tpra]
+  teleportrequestdeny:
+    description: Deny a player teleport request.
+    usage: /tprd
+    aliases: [tprd]
+  teleportrequesthere:
+    description: Request permission to have a player teleport to you.
+    usage: /tprh <player>
+    aliases: [tprh]
+  teleporthere:
+    description: Teleport a player to you.
+    usage: /tph <player>
+    aliases: [tph]
+  gamemode:
+    description: Change your/someone else's gamemode.
+    usage: /gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp] [player]
+    aliases: [gm]
+  back:
+    description: Teleport to the last place you teleported from.
+    usage: /back
+  god:
+    description: Become invcible to anything.
+    usage: /god [player]
+  inventory:
+    description: Open a crafting table or view someone's inventory or enderchest.
+    usage: /inv <player [enderchest]/crafting>
+    aliases: [inv]
+  broadcast:
+    description: Broadcast a fancy message to the server!
+    usage: /bc <message>
+    aliases: [bc]
+  information:
+    description: Show information about a player.
+    usage: /info <player>
+    aliases: [info]
+  vanish:
+    description: Turn completely invisible and roam the world undetected.
+    usage: /v [player]
+    aliases: [v]
+  fly:
+    description: SOAR THROUGH THE AIR LIKE A MAJESTIC BLOCKY BUTTERFLY!!
+    usage: /fly [player]
+    aliases: [f]
+  afk:
+    description: Indicate you are away from your keyboard.
+    usage: /afk
+  message:
+    description: Send a message to a player.
+    usage: /message <sender> <message>
+    aliases: [msg, m]
+  commandbinder:
+    description: Bind a command to a block to activate that command when it's either touched or walked through.
+    usage: /cb <touch/walk> <console/player> <command>
+    aliases: [cmdbinder, cmdb, cb, cbinder, cbind]
+  kittybomb:
+    description: KITTEH BAMB!!
+    usage: /kittybomb
+    aliases: [kittehbamb, kittehbomb, kittybamb, kittyb, kbomb, kb]
+  setspawn:
+    description: Set the world's spawn location.
+    usage: /setspawn
+  spawn:
+    description: teleport to the spawn location
+    usage: /spawn
+  me:
+    description: Share your feelings/thoughts to everyone.
+    usage: /me <message>
+  say:
+    description: Say something from the console. Not for players.
+    usage: /say <message>
+  killall:
+    description: Kill anything in a radius.
+    usage: /killall <radius> <mobs/players/animals/monsters/items/everything>
+  smite:
+    description: Strike lightning upon someone .
+    usage: /smite [player]
+    aliases: [thor, lightning, thunder]
+  report:
+    description: Send a report to the admins/mods
+    usage: /report <msg>
+  reports:
+    description: View the reports, remove a report, or clear the report list.
+    usage: /reports [remove <index number>/clear]
+  lag:
+    description: Statistics on server lag and it also clears lag through gc.
+    usage: /lag
+    aliases: [tps, memory, mem, gc, garbagecollector, tick]
+  speed:
+    description: Change your walk or fly speed.
+    usage: /speed <fly/walk> <speed>
+  nickname:
+    description: Set a nickname for yourself
+    usage: /nick [player]
+    aliases: [nick]
+  mute:
+    description: Silence/unsilence someone's voice.
+    usage: /mute <player>
+  ban:
+    description: Ban a player from the server.
+    usage: /ban <player> [reason]
+  unban:
+    description: Unban a banned player.
+    usage: /unban <player>

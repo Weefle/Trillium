@@ -171,6 +171,7 @@ public class API {
                     p.setGameMode(GameMode.SPECTATOR);
                 }
                 
+                
                 for (Player online : Bukkit.getOnlinePlayers()) {
                     online.hidePlayer(p);
                 }

@@ -13,42 +13,4 @@ Plans:
 * Become famous.
 
 Features:
-* Vanish
-* Tp
-* God Mode
-* Invsee
-* Motd
-* Back
-* Home
-* Warp
-* Spawn
-* Gamemode
-* KITTYBOMB
-* Msg System
-* Ban
-* Kick
-* Info
-* Freeze
-* Fly
-* ChestFinder
-* Hat
-* Home
-* Chat Format
-* Broadcast
-* Afk
-* Killall
-* Me
-* Nick
-* Say
-* Mute
-* SetFood
-* SetHealth
-* Weather
-* Thor
-* Command Binder (Bind a command to anything (items/blocks/signs/etc...)
-* Chat Channels
-* Rules
-* Report
-* Note
-
-* adding more to the list...
+https://docs.google.com/spreadsheets/d/1p-jhmtHTi9SHs7G6I89SkCvaVVe0pUNtFD_ibSiZBoI/edit#gid=0

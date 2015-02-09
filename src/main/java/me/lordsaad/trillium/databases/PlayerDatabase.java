@@ -21,7 +21,7 @@ public class PlayerDatabase {
             db.set("Muted", false);
             db.set("God Mode", false);
             db.set("Vanish Mode", false);
-            db.set("Banned", "");
+            db.set("Ban Reason", "");
             db.set("Inventory.items", null);
             db.set("Inventory.armor", null);
 

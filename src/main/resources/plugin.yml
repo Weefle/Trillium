@@ -122,3 +122,6 @@ commands:
   ban:
     description: Ban a player from the server.
     usage: /ban <player> [reason]
+  unban:
+    description: Unban a banned player.
+    usage: /unban <player>

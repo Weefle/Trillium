@@ -1,11 +1,11 @@
 package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.Main;
-import me.lordsaad.trillium.Utils;
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,6 +24,10 @@ public class AsyncPlayerChat implements Listener {
                     Message.b(MType.G, "AFK", p.getName() + " is no longer AFK.");
                 }
             }
+        }
+        
+        if (p.hasPermission("tr.chatcolor")) {
+            event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
         }
     }
 }

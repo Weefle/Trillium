@@ -112,3 +112,7 @@ commands:
   speed:
     description: Change your walk or fly speed.
     usage: /speed <fly/walk> <speed>
+  nickname:
+    description: Set a nickname for yourself
+    usage: /nick [player]
+    aliases: [nick]

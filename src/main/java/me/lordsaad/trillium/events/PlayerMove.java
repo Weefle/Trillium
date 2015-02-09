@@ -32,11 +32,14 @@ public class PlayerMove implements Listener {
             }
 
             for (Location loc : CommandCmdBinder.antilagcheckloc) {
-                if (p.getLocation().equals(loc)) {
+                if (p.getLocation().getBlockX() == loc.getBlockX()
+                        && p.getLocation().getBlockY() == loc.getBlockY()
+                        && p.getLocation().getBlockZ() == loc.getBlockZ()) {
                     if (CommandCmdBinder.walkconsole.containsKey(p.getLocation())) {
                         String cmd = CommandCmdBinder.walkconsole.get(p.getLocation());
                         cmd = cmd.replace("[p]", p.getName());
                         Bukkit.dispatchCommand(Main.plugin.getServer().getConsoleSender(), cmd);
+
                     } else if (CommandCmdBinder.walkplayer.containsKey(p.getLocation())) {
                         String cmd = CommandCmdBinder.walkplayer.get(p.getLocation());
                         cmd = cmd.replace("[p]", p.getName());

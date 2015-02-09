@@ -40,7 +40,10 @@ public class PlayerInteract implements Listener {
         }
 
         for (Location loc : CommandCmdBinder.antilagcheckloc) {
-            if (event.getClickedBlock().getLocation().equals(loc)) {
+            if (event.getClickedBlock().getLocation().getBlockX() == loc.getBlockX()
+                    && event.getClickedBlock().getLocation().getBlockY() == loc.getBlockY()
+                    && event.getClickedBlock().getLocation().getBlockZ() == loc.getBlockZ()) {
+                
                 if (CommandCmdBinder.touchconsole.containsKey(p.getLocation())) {
                     String cmd = CommandCmdBinder.touchconsole.get(p.getLocation());
                     cmd = cmd.replace("[p]", p.getName());

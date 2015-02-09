@@ -32,6 +32,8 @@ public class CommandInfo implements CommandExecutor {
                         }
                         Message.m(MType.R, sender, "Info", "Muted: " + ChatColor.AQUA + API.ismuted(p));
                         Message.m(MType.R, sender, "Info", "Flying: " + ChatColor.AQUA + API.isflying(p));
+                        Message.m(MType.R, sender, "Info", "Ping: " + ChatColor.AQUA + API.getping(p));
+                        Message.m(MType.R, sender, "Info", "Ping: " + ChatColor.AQUA + API.getpingbar(p));
                         Message.m(MType.R, sender, "Info", "Location: " + ChatColor.AQUA + API.locationstring(p));
                         if (!API.isonline(p)) {
                             Message.m(MType.R, sender, "Info", "Last found at: " + ChatColor.AQUA + API.lastlocationstring(p));

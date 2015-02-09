@@ -22,5 +22,14 @@
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.14" level="project" />
     <orderEntry type="library" name="Maven: net.md-5:bungeecord-chat:1.8-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.3" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: craftbukkit-1.8:craftbukkit-1.8:1.8">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/lib/craftbukkit-1.8.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

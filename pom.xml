@@ -21,6 +21,15 @@
             <artifactId>spigot-api</artifactId>
             <version>1.8-R0.1-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>craftbukkit-1.8</groupId>
+            <artifactId>craftbukkit-1.8</artifactId>
+            <scope>system</scope>
+            <version>1.8</version>
+            <systemPath>${basedir}\src\lib\craftbukkit-1.8.jar</systemPath>
+        </dependency>
+
     </dependencies>
 
 </project>

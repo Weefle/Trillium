@@ -10,6 +10,7 @@ import me.lordsaad.trillium.runnables.TpsRunnable;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -149,6 +150,7 @@ public class API {
         List<String> format =  Main.plugin.getConfig().getStringList("Broadcast");
         
         for (String s : format) {
+            s = ChatColor.translateAlternateColorCodes('&', s);
             s = s.replace("[msg]", message);
             Bukkit.broadcastMessage(s);
         }
@@ -165,6 +167,10 @@ public class API {
                 yml.set("Vanish Mode", true);
                 CommandVanish.vanishedusers.add(p.getUniqueId());
 
+                if (Main.plugin.getConfig().getBoolean("spectator mode")) {
+                    p.setGameMode(GameMode.SPECTATOR);
+                }
+                
                 for (Player online : Bukkit.getOnlinePlayers()) {
                     online.hidePlayer(p);
                 }
@@ -180,6 +186,10 @@ public class API {
                 yml.set("Vanish Mode", false);
                 CommandVanish.vanishedusers.remove(p.getUniqueId());
 
+                if (Main.plugin.getConfig().getBoolean("spectator mode")) {
+                    p.setGameMode(GameMode.SURVIVAL);
+                }
+                
                 for (Player online : Bukkit.getOnlinePlayers()) {
                     online.showPlayer(p);
                 }
@@ -211,7 +221,7 @@ public class API {
     }
 
     public static String bar(int percent) {
-        StringBuilder bar = new StringBuilder("[");
+        StringBuilder bar = new StringBuilder(ChatColor.GRAY + "[");
 
         for (int i = 0; i < 25; i++) {
             if (i < (percent / 4)) {
@@ -220,7 +230,37 @@ public class API {
                 bar.append(ChatColor.DARK_GRAY + "-");
             }
         }
-        bar.append("]  " + percent + "%");
+        bar.append(ChatColor.GRAY + "]  " + ChatColor.AQUA + percent + "%");
         return bar.toString();
+    }
+    
+    public static int getping(Player p) {
+        return ((CraftPlayer) p).getHandle().ping;
+    }
+    
+    public static String getpingbar(Player p) {
+        if (getping(p) <= 100 && getping(p) >= 0) {
+            return bar(100);
+        } else if (getping(p) <= 200 && getping(p) > 100) {
+            return bar(90);
+        } else if (getping(p) <= 300 && getping(p) > 200) {
+            return bar(80);
+        } else if (getping(p) <= 400 && getping(p) > 300) {
+            return bar(70);
+        } else if (getping(p) <= 500 && getping(p) > 400) {
+            return bar(60);
+        } else if (getping(p) <= 600 && getping(p) > 500) {
+            return bar(50);
+        } else if (getping(p) <= 700 && getping(p) > 600) {
+            return bar(40);
+        } else if (getping(p) <= 800 && getping(p) > 700) {
+            return bar(30);
+        } else if (getping(p) <= 900 && getping(p) > 800) {
+            return bar(20);
+        } else if (getping(p) <= 1000 && getping(p) > 900) {
+            return bar(10);
+        } else {
+            return bar(0);
+        }
     }
 }

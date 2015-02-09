@@ -32,6 +32,7 @@ Broadcast:
 #---------------[ Vanish ]---------------#
 Vanish:
   prevent item pickup/drop: true
+  spectator mode: true
   god mode: true
 
 #---------------[ AFK ]---------------#

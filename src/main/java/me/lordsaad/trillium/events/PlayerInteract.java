@@ -19,6 +19,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +45,13 @@ public class PlayerInteract implements Listener {
                     String cmd = CommandCmdBinder.touchconsole.get(p.getLocation());
                     cmd = cmd.replace("[p]", p.getName());
                     Bukkit.dispatchCommand(Main.plugin.getServer().getConsoleSender(), cmd);
+                    event.setCancelled(true);
+                    
                 } else if (CommandCmdBinder.touchplayer.containsKey(p.getLocation())) {
                     String cmd = CommandCmdBinder.touchplayer.get(p.getLocation());
                     cmd = cmd.replace("[p]", p.getName());
                     Bukkit.dispatchCommand(p, cmd);
+                    event.setCancelled(true);
                 }
             }
         }
@@ -61,6 +65,7 @@ public class PlayerInteract implements Listener {
                     cmd = cmd.replace("[p]", p.getName());
                     if (p.getItemInHand().equals(item)) {
                         Bukkit.dispatchCommand(Main.plugin.getServer().getConsoleSender(), cmd);
+                        event.setCancelled(true);
                     }
                 }
                 
@@ -71,6 +76,7 @@ public class PlayerInteract implements Listener {
                     cmd = cmd.replace("[p]", p.getName());
                     if (p.getItemInHand().equals(item)) {
                         Bukkit.dispatchCommand(p, cmd);
+                        event.setCancelled(true);
                     }
                 }
             }
@@ -90,9 +96,16 @@ public class PlayerInteract implements Listener {
                     l.add(yml.getString("touchconsole"));
                     l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + CommandCmdBinder.tcmdbconsole.get(p.getUniqueId()));
                     yml.set("touchconsole", l);
-                    CommandCmdBinder.tcmdbconsole.remove(p.getUniqueId());
                     Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to block.");
                     Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + CommandCmdBinder.tcmdbconsole.get(p.getUniqueId()));
+                    event.setCancelled(true);
+                    CommandCmdBinder.tcmdbconsole.remove(p.getUniqueId());
+                    try {
+                        yml.save(CmdBinderDatabase.cbd());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             } else if (CommandCmdBinder.tcmdbplayer.containsKey(p.getUniqueId())) {
                 if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
@@ -104,9 +117,15 @@ public class PlayerInteract implements Listener {
                     l.add(yml.getString("touchplayer"));
                     l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + CommandCmdBinder.tcmdbplayer.get(p.getUniqueId()));
                     yml.set("touchplayer", l);
-                    CommandCmdBinder.tcmdbplayer.remove(p.getUniqueId());
                     Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to block.");
                     Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + CommandCmdBinder.tcmdbconsole.get(p.getUniqueId()));
+                    event.setCancelled(true);
+                    CommandCmdBinder.tcmdbplayer.remove(p.getUniqueId());
+                    try {
+                        yml.save(CmdBinderDatabase.cbd());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             } else if (CommandCmdBinder.wcmdbconsole.containsKey(p.getUniqueId())) {
                 if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -120,9 +139,15 @@ public class PlayerInteract implements Listener {
                         l.add(yml.getString("walkconsole"));
                         l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + CommandCmdBinder.wcmdbconsole.get(p.getUniqueId()));
                         yml.set("walkconsole", l);
-                        CommandCmdBinder.wcmdbconsole.remove(p.getUniqueId());
                         Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to air block.");
                         Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + CommandCmdBinder.tcmdbconsole.get(p.getUniqueId()));
+                        event.setCancelled(true);
+                        CommandCmdBinder.wcmdbconsole.remove(p.getUniqueId());
+                        try {
+                            yml.save(CmdBinderDatabase.cbd());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             } else if (CommandCmdBinder.wcmdbplayer.containsKey(p.getUniqueId())) {
@@ -137,9 +162,15 @@ public class PlayerInteract implements Listener {
                         l.add(yml.getString("walkplayer"));
                         l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + CommandCmdBinder.wcmdbplayer.get(p.getUniqueId()));
                         yml.set("walkplayer", l);
-                        CommandCmdBinder.wcmdbplayer.remove(p.getUniqueId());
                         Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to air block.");
                         Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + CommandCmdBinder.tcmdbconsole.get(p.getUniqueId()));
+                        event.setCancelled(true);
+                        CommandCmdBinder.wcmdbplayer.remove(p.getUniqueId());
+                        try {
+                            yml.save(CmdBinderDatabase.cbd());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

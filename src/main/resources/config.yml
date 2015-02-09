@@ -45,3 +45,5 @@ AFK:
   god mode: true
   auto unafk: true
   #When the player makes any action, it takes them out of afk mode.
+#---------------[ Auto Respawn ]---------------#
+Auto Respawn: false

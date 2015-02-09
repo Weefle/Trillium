@@ -37,6 +37,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         getServer().getPluginManager().registerEvents(new EntityRegainHealth(), this);
         getServer().getPluginManager().registerEvents(new FoodLevelChange(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
         getCommand("trillium").setExecutor(new CommandTrillium());
         getCommand("motd").setExecutor(new CommandMotd());

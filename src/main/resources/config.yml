@@ -15,8 +15,6 @@ Motd:
 #---------------[ Player Join ]---------------#
 Join:
   message: "&b[USERNAME] &9has joined the game!"
-  temporary god mode: 10
-#Temporary god mode in seconds.
 
 #---------------[ Player Leave ]---------------#
 Leave:
@@ -29,7 +27,7 @@ Broadcast:
   - " "
   - "[msg]"
   - " "
-  -"&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
+  - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
 
 #---------------[ Vanish ]---------------#
 Vanish:

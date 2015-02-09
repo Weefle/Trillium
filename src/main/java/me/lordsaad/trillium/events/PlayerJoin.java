@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.api.player.TrilliumPlayer;
-import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandReport;
 import me.lordsaad.trillium.commands.CommandVanish;

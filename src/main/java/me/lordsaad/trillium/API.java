@@ -5,7 +5,6 @@ import java.util.List;
 
 import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.commands.CommandGodMode;
-import me.lordsaad.trillium.commands.CommandMute;
 import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.messageutils.MType;
@@ -99,23 +98,7 @@ public class API {
         String world = pdb.getString("Last Location.world");
         return world + ", " + x + ", " + y + ", " + z;
     }
-
-    public static boolean isMuted(Player p) {
-        return CommandMute.muted.contains(p.getUniqueId());
-    }
-
-    public static void setMuted(boolean b, Player p) {
-        if (b) {
-            if (!isMuted(p)) {
-                CommandMute.muted.add(p.getUniqueId());
-            }
-        } else {
-            if (isMuted(p)) {
-                CommandMute.muted.remove(p.getUniqueId());
-            }
-        }
-    }
-
+    
     public static boolean isFlying(Player p) {
         if (p.isOnline()) {
             if (p.isFlying()) {

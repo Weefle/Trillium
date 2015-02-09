@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 
 import me.lordsaad.trillium.api.TrilliumAPI;
-import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandBan;
 import me.lordsaad.trillium.commands.CommandBroadcast;
 import me.lordsaad.trillium.commands.CommandCmdBinder;
@@ -20,7 +19,6 @@ import me.lordsaad.trillium.commands.CommandLag;
 import me.lordsaad.trillium.commands.CommandMe;
 import me.lordsaad.trillium.commands.CommandMessage;
 import me.lordsaad.trillium.commands.CommandMotd;
-import me.lordsaad.trillium.commands.CommandMute;
 import me.lordsaad.trillium.commands.CommandNickname;
 import me.lordsaad.trillium.commands.CommandReport;
 import me.lordsaad.trillium.commands.CommandReports;
@@ -40,7 +38,6 @@ import me.lordsaad.trillium.commands.teleport.CommandTeleportRA;
 import me.lordsaad.trillium.commands.teleport.CommandTeleportRD;
 import me.lordsaad.trillium.commands.teleport.CommandTeleportRH;
 import me.lordsaad.trillium.databases.CmdBinderDatabase;
-import me.lordsaad.trillium.events.AsyncPlayerChat;
 import me.lordsaad.trillium.events.EntityDamage;
 import me.lordsaad.trillium.events.EntityRegainHealth;
 import me.lordsaad.trillium.events.EntityTarget;
@@ -54,6 +51,8 @@ import me.lordsaad.trillium.events.PlayerLeave;
 import me.lordsaad.trillium.events.PlayerMove;
 import me.lordsaad.trillium.events.PlayerPickupItem;
 import me.lordsaad.trillium.events.ServerListPing;
+import me.lordsaad.trillium.modules.AFKModule;
+import me.lordsaad.trillium.modules.PunishModule;
 import me.lordsaad.trillium.runnables.AfkRunnable;
 import me.lordsaad.trillium.runnables.TpsRunnable;
 
@@ -65,12 +64,23 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Trillium extends JavaPlugin {
-    
+
+    /*
+     *         if (player.getProxy().hasPermission("trillium.chat.color")) {
+            event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+        }
+
+     */
+
     public void onEnable() {
         TrilliumAPI.setInstance(this);
+
+        TrilliumAPI.registerCommand(AFKModule.class);
+        getServer().getPluginManager().registerEvents(new AFKModule(), this);
         
-        TrilliumAPI.registerCommand(CommandAfk.class);
-        
+        TrilliumAPI.registerCommand(PunishModule.class);
+        getServer().getPluginManager().registerEvents(new PunishModule(), this);
+
         setupcmdbinder();
 
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
@@ -80,7 +90,6 @@ public class Trillium extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerPickupItem(), this);
         getServer().getPluginManager().registerEvents(new PlayerDropItem(), this);
         getServer().getPluginManager().registerEvents(new EntityTarget(), this);
-        getServer().getPluginManager().registerEvents(new AsyncPlayerChat(), this);
         getServer().getPluginManager().registerEvents(new PlayerCommandPreprocess(), this);
         getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
@@ -118,7 +127,6 @@ public class Trillium extends JavaPlugin {
         getCommand("lag").setExecutor(new CommandLag());
         getCommand("speed").setExecutor(new CommandSpeed());
         getCommand("nickname").setExecutor(new CommandNickname());
-        getCommand("mute").setExecutor(new CommandMute());
         getCommand("ban").setExecutor(new CommandBan());
         getCommand("unban").setExecutor(new CommandUnban());
         getCommand("kick").setExecutor(new CommandKick());
@@ -146,7 +154,7 @@ public class Trillium extends JavaPlugin {
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         getLogger().info("           Plugin made with love");
         getLogger().info("   by LordSaad, VortexSeven, and Turbotailz");
-        getLogger().info("                      ❤");
+        getLogger().info("                      â�¤");
         getLogger().info("Version: " + pdf.getVersion());
         getLogger().warning("THIS PLUGIN IS STILL IN PRE-ALPHA.");
         getLogger().warning("WE HIGHLY RECOMMEND YOU DON'T USE IT FOR THE TIME BEING.");

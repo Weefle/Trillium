@@ -19,6 +19,8 @@ public class TrilliumPlayer {
 
     private boolean afk;
     private long lastActive;
+    
+    private boolean muted;
 
     public TrilliumPlayer(Player proxy) {
         this.proxy = proxy;
@@ -52,6 +54,18 @@ public class TrilliumPlayer {
         } else {
             Message.b(MType.G, "AFK", getProxy().getName() + " is no longer AFK.");
         }
+    }
+    
+    public boolean isMuted() {
+        return this.muted;
+    }
+    
+    public void mute() {
+        
+    }
+    
+    public void unmute() {
+        
     }
 
     public void active() {

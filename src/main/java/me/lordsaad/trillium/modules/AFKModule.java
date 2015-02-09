@@ -1,4 +1,4 @@
-package me.lordsaad.trillium.commands;
+package me.lordsaad.trillium.modules;
 
 import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.api.command.Command;
@@ -9,8 +9,11 @@ import me.lordsaad.trillium.messageutils.Message;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class CommandAfk {
+public class AFKModule extends TrilliumModule {
+
     @Command(command = "afk", description = "Toggle your AFK status", usage = "/afk [player]")
     public static void onCommand(CommandSender sender, String[] args) throws CommandException {
         if (sender instanceof Player) {
@@ -22,6 +25,14 @@ public class CommandAfk {
             }
         } else {
             Message.e(sender, "AFK", Crit.C);
+        }
+    }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent event) {
+        TrilliumPlayer player = TrilliumAPI.getPlayer(event.getPlayer().getName());
+        if (player.isAfk()) {
+            player.toggleAfk();
         }
     }
 }

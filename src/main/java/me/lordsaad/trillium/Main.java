@@ -71,8 +71,9 @@ public class Main extends JavaPlugin {
         getCommand("speed").setExecutor(new CommandSpeed());
         getCommand("nickname").setExecutor(new CommandNickname());
         getCommand("mute").setExecutor(new CommandMute());
+        getCommand("ban").setExecutor(new CommandBan());
 
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkRunnable(), 0, getConfig().getInt("AFK.auto afk.time until idle") * 20);
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkRunnable(), 1, getConfig().getInt("AFK.auto afk.time until idle") * 20);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);
 
         File reports = new File(Main.plugin.getDataFolder(), "Reports.yml");

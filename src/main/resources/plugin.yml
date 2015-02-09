@@ -117,5 +117,8 @@ commands:
     usage: /nick [player]
     aliases: [nick]
   mute:
-    description: Mute or unmute a certain player.
+    description: Silence/unsilence someone's voice.
     usage: /mute <player>
+  ban:
+    description: Ban a player from the server.
+    usage: /ban <player> [reason]

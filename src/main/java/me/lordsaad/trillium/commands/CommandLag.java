@@ -16,21 +16,21 @@ public class CommandLag implements CommandExecutor {
             if (sender.hasPermission("tr.lag")) {
 
                 long time = System.currentTimeMillis();
-                
+
                 Message.m(MType.R, sender, "Lag", "Before GC:");
                 API.printCurrentMemory(sender);
                 sender.sendMessage(" ");
-                
+
                 System.gc();
                 Message.m(MType.G, sender, "Lag", "GC complete.");
-                
+
                 sender.sendMessage(" ");
                 Message.m(MType.R, sender, "Lag", "After GC:");
                 API.printCurrentMemory(sender);
                 sender.sendMessage(" ");
-                
+
                 long need = System.currentTimeMillis() - time;
-                Message.m(MType.R, sender, "Lag","GC took " + need / 1000L + " seconds.");
+                Message.m(MType.R, sender, "Lag", "GC took " + need / 1000L + " seconds.");
 
             } else {
                 Message.e(sender, "Lag", Crit.P);

@@ -123,26 +123,6 @@ public enum ParticleEffect {
         this.properties = Arrays.asList(properties);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getRequiredVersion() {
-        return requiredVersion;
-    }
-
-    public boolean hasProperty(ParticleProperty property) {
-        return properties.contains(property);
-    }
-
-    public boolean isSupported() {
-        return requiredVersion == -1 || ParticlePacket.getVersion() >= requiredVersion;
-    }
-
     public static ParticleEffect fromName(String name) {
         for (Entry<String, ParticleEffect> entry : NAME_MAP.entrySet()) {
             if (!entry.getKey().equalsIgnoreCase(name)) {
@@ -184,6 +164,26 @@ public enum ParticleEffect {
 
     private static boolean isColorCorrect(ParticleEffect effect, ParticleColor color) {
         return ((effect == SPELL_MOB || effect == SPELL_MOB_AMBIENT || effect == REDSTONE) && color instanceof OrdinaryColor) || (effect == NOTE && color instanceof NoteColor);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getRequiredVersion() {
+        return requiredVersion;
+    }
+
+    public boolean hasProperty(ParticleProperty property) {
+        return properties.contains(property);
+    }
+
+    public boolean isSupported() {
+        return requiredVersion == -1 || ParticlePacket.getVersion() >= requiredVersion;
     }
 
     public void display(float offsetX, float offsetY, float offsetZ, float speed, int amount, Location center, double range) throws ParticleVersionException, ParticleDataException, IllegalArgumentException {
@@ -363,7 +363,7 @@ public enum ParticleEffect {
         public ParticleData(Material material, byte data) {
             this.material = material;
             this.data = data;
-            this.packetData = new int[] { material.getId(), data };
+            this.packetData = new int[]{material.getId(), data};
         }
 
         public Material getMaterial() {

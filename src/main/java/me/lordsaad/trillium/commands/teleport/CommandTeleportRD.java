@@ -27,13 +27,13 @@ public class CommandTeleportRD implements CommandExecutor {
                         CommandTeleportR.tprequest.remove(p.getUniqueId());
 
                     } else if (CommandTeleportRH.tprh.containsValue(p.getUniqueId())) {
-                        
+
                         Player requester = Bukkit.getPlayer(CommandTeleportRH.tprh.get(p.getUniqueId()));
-                        
+
                         Message.m(MType.G, p, "TPRD", "You denied " + ChatColor.AQUA + requester.getName() + "'s teleport request.");
                         Message.m(MType.G, requester, "TPRD", p.getName() + " denied your teleport request.");
                         CommandTeleportRH.tprh.remove(p.getUniqueId());
-                        
+
                     } else {
                         Message.m(MType.W, p, "TPRD", "No pending teleport requests to deny.");
                     }

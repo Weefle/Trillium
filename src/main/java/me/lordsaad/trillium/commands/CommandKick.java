@@ -19,9 +19,9 @@ public class CommandKick implements CommandExecutor {
                 if (sender.hasPermission("tr.kick")) {
                     if (args.length < 2) {
                         Message.earg(p, "Kick", "/kick <player>");
-                        
+
                     } else {
-                        
+
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null) {
 

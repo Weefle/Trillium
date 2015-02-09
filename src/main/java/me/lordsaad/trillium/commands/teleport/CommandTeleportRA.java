@@ -72,7 +72,7 @@ public class CommandTeleportRA implements CommandExecutor {
                         p.teleport(requester);
                         Message.m(MType.G, p, "TPRA", "You teleported to " + requester.getName());
                         Message.m(MType.G, requester, "TPRA", p.getName() + " accepted to teleport to you.");
-                            
+
                     } else {
                         Message.m(MType.W, p, "TPRA", "No pending teleport requests to accept.");
                     }

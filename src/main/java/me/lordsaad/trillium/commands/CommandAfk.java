@@ -14,10 +14,10 @@ import java.util.UUID;
 
 
 public class CommandAfk implements CommandExecutor {
-    
+
     public static HashMap<UUID, Integer> afktimer = new HashMap<UUID, Integer>();
     public static ArrayList<UUID> afklist = new ArrayList<UUID>();
-    
+
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("afk")) {
             if (sender instanceof Player) {

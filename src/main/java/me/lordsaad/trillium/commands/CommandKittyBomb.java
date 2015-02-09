@@ -34,7 +34,7 @@ public class CommandKittyBomb implements CommandExecutor {
                     cat.setAgeLock(true);
                     cat.setAge(6000);
                     p.getWorld().playSound(p.getLocation(), Sound.CAT_MEOW, 10, 1);
-                    
+
                     new BukkitRunnable() {
                         int count = 30;
 
@@ -52,7 +52,7 @@ public class CommandKittyBomb implements CommandExecutor {
                             }
                         }
                     }.runTaskTimer(Main.plugin, 1, 1);
-                    
+
                 } else {
                     Message.e(p, "Kitty Bomb", Crit.P);
                 }
@@ -166,7 +166,7 @@ public class CommandKittyBomb implements CommandExecutor {
                 ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat6.getLocation(), 30);
                 ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat7.getLocation(), 30);
                 ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat8.getLocation(), 30);
-                
+
                 if (count != 0) {
                     count--;
                 } else {

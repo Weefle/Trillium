@@ -5,7 +5,7 @@
 #   |_||_|  |_|_|_|_|\__,_|_| |_| |_|
 
 #---------------[ Motd ]---------------#
-Server List Motd: "&cPlease define a motd in the config.yml"
+Server_List_Motd: "&cPlease define a motd in the config.yml"
 Motd:
   - "&8<<<--->>> &aServer &8<<<--->>>"
   - "&7Welcome &6[USERNAME]&7!"
@@ -31,19 +31,19 @@ Broadcast:
 
 #---------------[ Vanish ]---------------#
 Vanish:
-  prevent item pickup/drop: true
-  spectator mode: true
-  god mode: true
+  prevent_item_pickup/drop: true
+  spectator_mode: true
+  god_mode: true
 
 #---------------[ AFK ]---------------#
 AFK:
-  auto afk:
+  auto_afk:
     enabled: true
-    time until idle: 60
+    time_until_idle: 60
     #Time until idle in seconds.
-    kick on afk: false
-  god mode: true
-  auto unafk: true
+    kick_on_afk: false
+  god_mode: true
+  auto_unafk: true
   #When the player makes any action, it takes them out of afk mode.
 #---------------[ Auto Respawn ]---------------#
-Auto Respawn: false
+Auto_Respawn: false

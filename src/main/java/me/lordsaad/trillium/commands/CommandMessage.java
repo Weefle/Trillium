@@ -18,17 +18,17 @@ public class CommandMessage implements CommandExecutor {
                 if (sender.hasPermission("tr.message")) {
                     if (args.length < 2) {
                         Message.earg(p, "MSG", "/msg <sender> <message>");
-                        
+
                     } else {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null) {
-                            
+
                             StringBuilder sb = new StringBuilder();
                             for (int i = 1; i < args.length; i++) {
                                 sb.append(args[i]).append(" ");
                             }
                             String msg = sb.toString().trim();
-                            
+
                             Message.minvert(MType.R, p, target.getName(), msg);
                             Message.m(MType.R, target, p.getName(), msg);
                         } else {

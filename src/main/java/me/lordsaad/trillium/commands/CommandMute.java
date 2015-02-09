@@ -16,7 +16,7 @@ import java.util.UUID;
 public class CommandMute implements CommandExecutor {
 
     public static ArrayList<UUID> muted = new ArrayList<UUID>();
-    
+
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("mute")) {
             if (sender.hasPermission("tr.mute")) {
@@ -26,7 +26,7 @@ public class CommandMute implements CommandExecutor {
 
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null) {
-                        
+
                         if (!API.isMuted(target)) {
                             API.setMuted(true, target);
                             Message.m(MType.G, sender, "Mute", "You muted " + target.getName());

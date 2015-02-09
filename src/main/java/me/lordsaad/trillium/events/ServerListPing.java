@@ -10,7 +10,7 @@ public class ServerListPing implements Listener {
 
     @EventHandler
     public void onPing(ServerListPingEvent event) {
-        String s = Main.plugin.getConfig().getString("Server List Motd");
+        String s = Main.plugin.getConfig().getString("Server_List_Motd");
         s = ChatColor.translateAlternateColorCodes('&', s);
         event.setMotd(s);
     }

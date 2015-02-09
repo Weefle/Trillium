@@ -1,10 +1,10 @@
 package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.Main;
-import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandVanish;
+import me.lordsaad.trillium.databases.PlayerDatabase;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -39,14 +39,14 @@ public class PlayerLeave implements Listener {
         } else {
             CommandGodMode.godmodeusers.remove(p.getUniqueId());
         }
-        
+
         //remove vanish
         if (CommandVanish.vanishedusers.contains(p.getUniqueId())) {
             for (Player online : Bukkit.getOnlinePlayers()) {
                 online.showPlayer(p);
             }
         }
-        
+
         //remove afk
         if (CommandAfk.afklist.contains(p.getUniqueId())) {
             CommandAfk.afklist.remove(p.getUniqueId());

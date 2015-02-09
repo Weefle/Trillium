@@ -1,11 +1,11 @@
 package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.Main;
-import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandReport;
 import me.lordsaad.trillium.commands.CommandVanish;
+import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.Bukkit;
@@ -68,7 +68,7 @@ public class PlayerJoin implements Listener {
         if (Main.plugin.getConfig().getBoolean("AFK.auto afk.enabled")) {
             CommandAfk.afktimer.put(p.getUniqueId(), 0);
         }
-        
+
         //Send report warning
         if (p.hasPermission("div.reportreceiver")) {
             if (CommandReport.reportlist.size() > 0) {

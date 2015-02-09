@@ -46,7 +46,7 @@ public class CommandInventory implements CommandExecutor {
                             if (target != null) {
                                 p.openInventory(target.getEnderChest());
                                 Message.m(MType.G, p, "Inventory", "Now viewing " + args[0] + "'s ender chest.");
-                                
+
                             } else {
                                 Message.eplayer(p, "Inventory", args[0]);
                             }

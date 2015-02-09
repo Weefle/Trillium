@@ -23,7 +23,7 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         setupcmdbinder();
-        
+
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
@@ -87,7 +87,7 @@ public class Main extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-        
+
         YamlConfiguration ymlreports = YamlConfiguration.loadConfiguration(reports);
 
         for (String s : ymlreports.getStringList("Reports")) {

@@ -98,7 +98,7 @@ public class API {
     public static boolean isMuted(Player p) {
         return CommandMute.muted.contains(p.getUniqueId());
     }
-    
+
     public static void setMuted(boolean b, Player p) {
         if (b) {
             if (!isMuted(p)) {
@@ -110,7 +110,7 @@ public class API {
             }
         }
     }
-    
+
     public static boolean isFlying(Player p) {
         if (p.isOnline()) {
             if (p.isFlying()) {
@@ -154,9 +154,9 @@ public class API {
     }
 
     public static void broadcast(String message) {
-        
-        List<String> format =  Main.plugin.getConfig().getStringList("Broadcast");
-        
+
+        List<String> format = Main.plugin.getConfig().getStringList("Broadcast");
+
         for (String s : format) {
             s = ChatColor.translateAlternateColorCodes('&', s);
             s = s.replace("[msg]", message);
@@ -178,8 +178,8 @@ public class API {
                 if (Main.plugin.getConfig().getBoolean("spectator mode")) {
                     p.setGameMode(GameMode.SPECTATOR);
                 }
-                
-                
+
+
                 for (Player online : Bukkit.getOnlinePlayers()) {
                     online.hidePlayer(p);
                 }
@@ -198,7 +198,7 @@ public class API {
                 if (Main.plugin.getConfig().getBoolean("spectator mode")) {
                     p.setGameMode(GameMode.SURVIVAL);
                 }
-                
+
                 for (Player online : Bukkit.getOnlinePlayers()) {
                     online.showPlayer(p);
                 }
@@ -242,11 +242,11 @@ public class API {
         bar.append(ChatColor.GRAY + "]  " + ChatColor.AQUA + percent + "%");
         return bar.toString();
     }
-    
+
     public static int getPing(Player p) {
         return ((CraftPlayer) p).getHandle().ping;
     }
-    
+
     public static String getPingBar(Player p) {
         if (getPing(p) <= 100 && getPing(p) >= 0) {
             return bar(100);

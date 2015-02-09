@@ -23,7 +23,7 @@ public class CommandReport implements CommandExecutor {
                 Player p = (Player) sender;
                 if (p.hasPermission("tr.report") || p.hasPermission("tr.reportreceiver")) {
                     if (args.length != 0) {
-                        
+
                         StringBuilder sb = new StringBuilder();
                         for (String arg : args) {
                             sb.append(arg).append(" ");
@@ -38,7 +38,7 @@ public class CommandReport implements CommandExecutor {
                                 + ChatColor.AQUA + p.getLocation().getBlockY() + ChatColor.BLUE + ", "
                                 + ChatColor.AQUA + p.getLocation().getBlockZ() + ChatColor.BLUE + "} >> "
                                 + ChatColor.GRAY + msg;
-                        
+
                         reportlist.add(big);
                         Message.m(MType.G, p, "Report", "Your report was submitted successfully.");
                         p.sendMessage(ChatColor.YELLOW + "'" + ChatColor.GRAY + msg + ChatColor.YELLOW + "'");

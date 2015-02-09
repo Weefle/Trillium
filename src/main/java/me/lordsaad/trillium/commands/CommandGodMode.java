@@ -53,7 +53,7 @@ public class CommandGodMode implements CommandExecutor {
                                 Message.m(MType.G, pl, "God Mode", p.getName() + " put you in god mode.");
                                 Message.m(MType.G, p, "God Mode", pl.getName() + " is now in god mode.");
                             }
-                            
+
                         } else {
                             Message.eplayer(p, "God Mode", args[0]);
                         }

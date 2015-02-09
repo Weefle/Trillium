@@ -14,14 +14,14 @@ public class CommandSay implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("say")) {
             if (!(sender instanceof Player)) {
 
-                    StringBuilder sb = new StringBuilder();
-                    for (String arg : args) {
-                        sb.append(arg).append(" ");
-                    }
-                    String message = sb.toString().trim();
+                StringBuilder sb = new StringBuilder();
+                for (String arg : args) {
+                    sb.append(arg).append(" ");
+                }
+                String message = sb.toString().trim();
 
                 Message.b(MType.R, ChatColor.LIGHT_PURPLE + "Console", message);
-                
+
             } else {
                 Message.m(MType.W, sender, "Say", "Say is for the console. Not you.");
             }

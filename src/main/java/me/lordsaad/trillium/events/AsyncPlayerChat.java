@@ -13,7 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class AsyncPlayerChat implements Listener {
-    
+
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         Player p = event.getPlayer();
@@ -26,11 +26,11 @@ public class AsyncPlayerChat implements Listener {
                 }
             }
         }
-        
+
         if (p.hasPermission("tr.chatcolor")) {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
         }
-        
+
         if (API.isMuted(p)) {
             event.setCancelled(true);
             Message.m(MType.W, p, "Mute", "Your voice has been silenced.");

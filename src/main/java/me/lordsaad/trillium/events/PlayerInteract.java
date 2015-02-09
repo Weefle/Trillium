@@ -1,10 +1,10 @@
 package me.lordsaad.trillium.events;
 
-import me.lordsaad.trillium.databases.CmdBinderDatabase;
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandCmdBinder;
 import me.lordsaad.trillium.commands.CommandVanish;
+import me.lordsaad.trillium.databases.CmdBinderDatabase;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import net.md_5.bungee.api.ChatColor;
@@ -43,13 +43,13 @@ public class PlayerInteract implements Listener {
             if (event.getClickedBlock().getLocation().getBlockX() == loc.getBlockX()
                     && event.getClickedBlock().getLocation().getBlockY() == loc.getBlockY()
                     && event.getClickedBlock().getLocation().getBlockZ() == loc.getBlockZ()) {
-                
+
                 if (CommandCmdBinder.touchconsole.containsKey(p.getLocation())) {
                     String cmd = CommandCmdBinder.touchconsole.get(p.getLocation());
                     cmd = cmd.replace("[p]", p.getName());
                     Bukkit.dispatchCommand(Main.plugin.getServer().getConsoleSender(), cmd);
                     event.setCancelled(true);
-                    
+
                 } else if (CommandCmdBinder.touchplayer.containsKey(p.getLocation())) {
                     String cmd = CommandCmdBinder.touchplayer.get(p.getLocation());
                     cmd = cmd.replace("[p]", p.getName());
@@ -58,7 +58,7 @@ public class PlayerInteract implements Listener {
                 }
             }
         }
-        
+
         if (CommandCmdBinder.antilagcheckitem.contains(p.getUniqueId())) {
             if (CommandCmdBinder.itemconsole.containsKey(p.getUniqueId())) {
 
@@ -71,7 +71,7 @@ public class PlayerInteract implements Listener {
                         event.setCancelled(true);
                     }
                 }
-                
+
             } else if (CommandCmdBinder.itemplayer.containsKey(p.getUniqueId())) {
                 Map<ItemStack, String> iands = CommandCmdBinder.itemplayer.get(p.getUniqueId());
                 for (ItemStack item : iands.keySet()) {
@@ -86,7 +86,7 @@ public class PlayerInteract implements Listener {
         }
 
         if (CommandCmdBinder.antilagcheckcmd.contains(p.getUniqueId())) {
-            
+
             YamlConfiguration yml = YamlConfiguration.loadConfiguration(CmdBinderDatabase.cbd());
 
             if (CommandCmdBinder.tcmdbconsole.containsKey(p.getUniqueId())) {

@@ -22,9 +22,9 @@ public class CommandUnban implements CommandExecutor {
                 if (args.length == 0) {
                     Message.earg(sender, "Unban", "/unban <player>");
                 } else {
-                    
+
                     OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
-                    
+
                     Bukkit.getBanList(BanList.Type.NAME).pardon(args[0]);
                     Message.b(MType.G, "Unban", target.getName() + " got unbanned.");
                     YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(target));

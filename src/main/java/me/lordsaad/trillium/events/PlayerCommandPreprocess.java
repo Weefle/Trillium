@@ -1,7 +1,6 @@
 package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.Main;
-import me.lordsaad.trillium.Utils;
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.messageutils.MType;

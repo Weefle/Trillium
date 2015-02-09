@@ -27,7 +27,7 @@ public class CommandSmite implements CommandExecutor {
                             target.getWorld().strikeLightning(target.getLocation());
                             Message.m(MType.R, target, "Smite", p.getName() + " stuck lightning upon you!");
                             Message.m(MType.R, p, "Smite", "You struck lightning upon " + target.getName());
-                            
+
                         } else {
                             Message.eplayer(p, "Smite", args[0]);
                         }

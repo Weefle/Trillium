@@ -13,6 +13,7 @@ public final class ReflectionUtils {
     // Prevent accidental construction
     private ReflectionUtils() {
     }
+
     public static Constructor<?> getConstructor(Class<?> clazz, Class<?>... parameterTypes) throws NoSuchMethodException {
         Class<?>[] primitiveTypes = DataType.getPrimitive(parameterTypes);
         for (Constructor<?> constructor : clazz.getConstructors()) {
@@ -129,6 +130,10 @@ public final class ReflectionUtils {
             this(parent + "." + path);
         }
 
+        public static String getServerVersion() {
+            return Bukkit.getServer().getClass().getPackage().getName().substring(23);
+        }
+
         public String getPath() {
             return path;
         }
@@ -140,10 +145,6 @@ public final class ReflectionUtils {
         @Override
         public String toString() {
             return path;
-        }
-
-        public static String getServerVersion() {
-            return Bukkit.getServer().getClass().getPackage().getName().substring(23);
         }
     }
 
@@ -172,14 +173,6 @@ public final class ReflectionUtils {
         private DataType(Class<?> primitive, Class<?> reference) {
             this.primitive = primitive;
             this.reference = reference;
-        }
-
-        public Class<?> getPrimitive() {
-            return primitive;
-        }
-
-        public Class<?> getReference() {
-            return reference;
         }
 
         public static DataType fromClass(Class<?> clazz) {
@@ -232,7 +225,6 @@ public final class ReflectionUtils {
             return types;
         }
 
-
         public static boolean compare(Class<?>[] primary, Class<?>[] secondary) {
             if (primary == null || secondary == null || primary.length != secondary.length) {
                 return false;
@@ -246,6 +238,14 @@ public final class ReflectionUtils {
                 return false;
             }
             return true;
+        }
+
+        public Class<?> getPrimitive() {
+            return primitive;
+        }
+
+        public Class<?> getReference() {
+            return reference;
         }
     }
 }

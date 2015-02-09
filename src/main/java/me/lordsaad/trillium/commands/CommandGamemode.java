@@ -80,7 +80,7 @@ public class CommandGamemode implements CommandExecutor {
                         }
                     } else {
                         Message.earg(p, "Gamemode", "/gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp] [player]");
-                        
+
                     }
 
                 } else {

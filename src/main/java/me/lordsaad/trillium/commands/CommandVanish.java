@@ -24,14 +24,14 @@ public class CommandVanish implements CommandExecutor {
                 Player p = (Player) sender;
                 if (args.length == 0) {
                     if (p.hasPermission("tr.vanish")) {
-                        
+
                         if (!API.isVanished(p)) {
 
                             API.setVanished(true, p);
                             Message.m(MType.G, p, "Vanish", "You are now in vanish mode.");
 
                         } else {
-                            
+
                             API.setVanished(false, p);
                             Message.m(MType.G, p, "Vanish", "You are no longer in vanish mode.");
                         }
@@ -43,7 +43,7 @@ public class CommandVanish implements CommandExecutor {
                     if (p.hasPermission("tr.vanish.other")) {
                         Player pl = Bukkit.getPlayer(args[0]);
                         if (pl != null) {
-                            
+
                             if (API.isVanished(p)) {
 
                                 API.setVanished(false, p);

@@ -1,7 +1,7 @@
 package me.lordsaad.trillium.runnables;
 
 public class TpsRunnable implements Runnable {
-    
+
     public static int TickCount = 0;
     public static long[] Ticks = new long[600];
 

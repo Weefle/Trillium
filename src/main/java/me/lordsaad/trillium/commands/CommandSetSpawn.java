@@ -15,10 +15,10 @@ public class CommandSetSpawn implements CommandExecutor {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (p.hasPermission("tr.setspawn")) {
-                    
+
                     p.getWorld().setSpawnLocation(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
                     Message.m(MType.G, p, "Spawn", "Spawn location set.");
-                    
+
                 } else {
                     Message.e(p, "Set Spawn", Crit.P);
                 }

@@ -88,10 +88,10 @@ public class API {
 
     public static String lastLocationString(Player p) {
         YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        int x = pdb.getInt("Last Location.x");
-        int y = pdb.getInt("Last Location.y");
-        int z = pdb.getInt("Last Location.z");
-        String world = pdb.getString("Last Location.world");
+        int x = pdb.getInt("Last_Location.x");
+        int y = pdb.getInt("Last_Location.y");
+        int z = pdb.getInt("Last_Location.z");
+        String world = pdb.getString("Last_Location.world");
         return world + ", " + x + ", " + y + ", " + z;
     }
 
@@ -125,14 +125,14 @@ public class API {
 
     public static boolean isGodMode(Player p) {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        return CommandGodMode.godmodeusers.contains(p.getUniqueId()) || yml.getBoolean("God Mode");
+        return CommandGodMode.godmodeusers.contains(p.getUniqueId()) || yml.getBoolean("God_Mode");
     }
 
     public static void setGodMode(boolean b, Player p) {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
         if (b) {
             if (!CommandGodMode.godmodeusers.contains(p.getUniqueId())) {
-                yml.set("God Mode", true);
+                yml.set("God_Mode", true);
                 CommandGodMode.godmodeusers.add(p.getUniqueId());
                 try {
                     yml.save(PlayerDatabase.db(p));
@@ -142,7 +142,7 @@ public class API {
             }
         } else {
             if (CommandGodMode.godmodeusers.contains(p.getUniqueId())) {
-                yml.set("God Mode", false);
+                yml.set("God_Mode", false);
                 CommandGodMode.godmodeusers.remove(p.getUniqueId());
                 try {
                     yml.save(PlayerDatabase.db(p));
@@ -172,10 +172,10 @@ public class API {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
         if (b) {
             if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-                yml.set("Vanish Mode", true);
+                yml.set("Vanish_Mode", true);
                 CommandVanish.vanishedusers.add(p.getUniqueId());
 
-                if (Main.plugin.getConfig().getBoolean("spectator mode")) {
+                if (Main.plugin.getConfig().getBoolean("Vanish.spectator_mode")) {
                     p.setGameMode(GameMode.SPECTATOR);
                 }
 
@@ -192,10 +192,10 @@ public class API {
             }
         } else {
             if (CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-                yml.set("Vanish Mode", false);
+                yml.set("Vanish_Mode", false);
                 CommandVanish.vanishedusers.remove(p.getUniqueId());
 
-                if (Main.plugin.getConfig().getBoolean("spectator mode")) {
+                if (Main.plugin.getConfig().getBoolean("Vanish.spectator_mode")) {
                     p.setGameMode(GameMode.SURVIVAL);
                 }
 

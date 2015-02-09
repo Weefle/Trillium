@@ -13,7 +13,7 @@ public class PlayerPickupItem implements Listener {
     public void onPickup(PlayerPickupItemEvent event) {
         Player p = event.getPlayer();
         if (CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-            if (Main.plugin.getConfig().getBoolean("Vanish.prevent item pickup/drop")) {
+            if (Main.plugin.getConfig().getBoolean("Vanish.prevent_item_pickup/drop")) {
                 event.setCancelled(true);
             }
         }

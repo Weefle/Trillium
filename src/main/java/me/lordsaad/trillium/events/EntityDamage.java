@@ -21,15 +21,15 @@ public class EntityDamage implements Listener {
                 event.setCancelled(true);
             }
             if (CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-                if (Main.plugin.getConfig().getBoolean("Vanish.god mode")) {
+                if (Main.plugin.getConfig().getBoolean("Vanish.god_mode")) {
                     event.setCancelled(true);
                 }
             }
             if (CommandAfk.afklist.contains(p.getUniqueId())) {
-                if (Main.plugin.getConfig().getBoolean("AFK.god mode")) {
+                if (Main.plugin.getConfig().getBoolean("AFK.god_mode")) {
                     event.setCancelled(true);
                 } else {
-                    if (Main.plugin.getConfig().getBoolean("AFK.auto unafk")) {
+                    if (Main.plugin.getConfig().getBoolean("AFK.auto_unafk")) {
                         if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
                             CommandAfk.afklist.remove(p.getUniqueId());
                             CommandAfk.afktimer.put(p.getUniqueId(), 0);

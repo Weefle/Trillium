@@ -21,7 +21,7 @@ public class PlayerMove implements Listener {
         if (event.getFrom().getBlockX() != event.getTo().getBlockX()
                 || event.getFrom().getBlockY() != event.getTo().getBlockY()
                 || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
-            if (Main.plugin.getConfig().getBoolean("AFK.auto unafk")) {
+            if (Main.plugin.getConfig().getBoolean("AFK.auto_unafk")) {
                 if (API.isAfk(p)) {
                     if (!API.isVanished(p)) {
                         CommandAfk.afktimer.put(p.getUniqueId(), 0);

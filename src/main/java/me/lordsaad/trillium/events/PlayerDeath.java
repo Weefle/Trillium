@@ -11,7 +11,7 @@ public class PlayerDeath implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player p = event.getEntity();
-        if (Main.plugin.getConfig().getBoolean("Auto Respawn")) {
+        if (Main.plugin.getConfig().getBoolean("Auto_Respawn")) {
             try {
                 Object nmsPlayer = p.getClass().getMethod("getHandle").invoke(p);
                 Object packet = Class.forName(nmsPlayer.getClass().getPackage().getName() + ".PacketPlayInClientCommand").newInstance();

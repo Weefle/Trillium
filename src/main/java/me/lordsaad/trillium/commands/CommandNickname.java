@@ -21,7 +21,7 @@ public class CommandNickname implements CommandExecutor {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (args.length == 1) {
-                    if (p.hasPermission("tr.nickname")) {
+                    if (p.hasPermission("tr.nickname") && !p.isOp()) {
 
                         YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
                         Message.m(MType.G, p, "Nickname", "New nickname set: " + args[0]);
@@ -32,7 +32,7 @@ public class CommandNickname implements CommandExecutor {
                             e.printStackTrace();
                         }
 
-                    } else if (p.hasPermission("tr.nickname.color")) {
+                    } else if (p.hasPermission("tr.nickname.color") || p.isOp()) {
 
                         YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
                         String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
@@ -48,7 +48,7 @@ public class CommandNickname implements CommandExecutor {
                         Message.e(p, "Nickname", Crit.P);
                     }
                 } else if (args.length > 1) {
-                    if (p.hasPermission("tr.nickname.other")) {
+                    if (p.hasPermission("tr.nickname.other") && !p.isOp()) {
 
                         Player target = Bukkit.getPlayer(args[1]);
                         if (target != null) {
@@ -64,7 +64,7 @@ public class CommandNickname implements CommandExecutor {
                         } else {
                             Message.eplayer(p, "Nickname", args[0]);
                         }
-                    } else if (p.hasPermission("tr.nickname.other.color")) {
+                    } else if (p.hasPermission("tr.nickname.other.color") || !p.isOp()) {
 
                         Player target = Bukkit.getPlayer(args[1]);
                         if (target != null) {

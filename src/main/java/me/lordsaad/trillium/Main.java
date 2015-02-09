@@ -75,7 +75,7 @@ public class Main extends JavaPlugin {
         getCommand("unban").setExecutor(new CommandUnban());
         getCommand("kick").setExecutor(new CommandKick());
 
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkRunnable(), 1, getConfig().getInt("AFK.auto afk.time until idle") * 20);
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkRunnable(), 1, getConfig().getInt("AFK.auto_afk.time_until_idle") * 20);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);
 
         File reports = new File(Main.plugin.getDataFolder(), "Reports.yml");

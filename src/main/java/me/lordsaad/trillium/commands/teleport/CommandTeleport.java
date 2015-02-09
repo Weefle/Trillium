@@ -38,10 +38,10 @@ public class CommandTeleport implements CommandExecutor {
                             int z = p.getLocation().getBlockZ();
 
                             YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-                            yml.set("Previous Location.world", world);
-                            yml.set("Previous Location.x", x);
-                            yml.set("Previous Location.y", y);
-                            yml.set("Previous Location.z", z);
+                            yml.set("Previous_Location.world", world);
+                            yml.set("Previous_Location.x", x);
+                            yml.set("Previous_Location.y", y);
+                            yml.set("Previous_Location.z", z);
 
                             try {
                                 yml.save(PlayerDatabase.db(p));
@@ -73,10 +73,10 @@ public class CommandTeleport implements CommandExecutor {
 
                                 YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(target1));
 
-                                yml.set("Previous Location.world", world);
-                                yml.set("Previous Location.x", x);
-                                yml.set("Previous Location.y", y);
-                                yml.set("Previous Location.z", z);
+                                yml.set("Previous_Location.world", world);
+                                yml.set("Previous_Location.x", x);
+                                yml.set("Previous_Location.y", y);
+                                yml.set("Previous_Location.z", z);
 
                                 target1.teleport(target2);
                                 Message.m(MType.G, p, "TP", "You teleported " + target1.getName() + " to " + target2.getName());

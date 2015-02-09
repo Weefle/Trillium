@@ -34,7 +34,7 @@ public class PlayerLeave implements Listener {
             event.setQuitMessage(m1);
         }
         //remove godmode?
-        if (Main.plugin.getConfig().getBoolean("God Mode")) {
+        if (Main.plugin.getConfig().getBoolean("God_Mode")) {
             CommandGodMode.godmodeusers.add(p.getUniqueId());
         } else {
             CommandGodMode.godmodeusers.remove(p.getUniqueId());

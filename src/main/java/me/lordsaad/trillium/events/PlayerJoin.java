@@ -51,21 +51,21 @@ public class PlayerJoin implements Listener {
         //god mode?
         if (Main.plugin.getConfig().getBoolean("God Mode")) {
             CommandGodMode.godmodeusers.add(p.getUniqueId());
-            Message.m(MType.W, p, "God Mode", "Remember! You are still in god mode!");
+            Message.m(MType.W, p, "God_Mode", "Remember! You are still in god mode!");
         } else {
             CommandGodMode.godmodeusers.remove(p.getUniqueId());
         }
 
         //vanish mode?
         if (CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-            Message.m(MType.W, p, "Vanish Mode", "Remember! You are still in vanish mode!");
+            Message.m(MType.W, p, "Vanish_Mode", "Remember! You are still in vanish mode!");
             for (Player online : Bukkit.getOnlinePlayers()) {
                 online.hidePlayer(p);
             }
         }
 
         //initiate AFK
-        if (Main.plugin.getConfig().getBoolean("AFK.auto afk.enabled")) {
+        if (Main.plugin.getConfig().getBoolean("AFK.auto_afk.enabled")) {
             CommandAfk.afktimer.put(p.getUniqueId(), 0);
         }
 

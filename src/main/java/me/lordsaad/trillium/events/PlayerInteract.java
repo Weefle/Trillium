@@ -29,7 +29,7 @@ public class PlayerInteract implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player p = event.getPlayer();
-        if (Main.plugin.getConfig().getBoolean("AFK.auto unafk")) {
+        if (Main.plugin.getConfig().getBoolean("AFK.auto_unafk")) {
             if (CommandAfk.afklist.contains(p.getUniqueId())) {
                 if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
                     CommandAfk.afklist.remove(p.getUniqueId());

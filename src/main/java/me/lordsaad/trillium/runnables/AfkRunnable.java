@@ -14,7 +14,7 @@ public class AfkRunnable implements Runnable {
 
     @Override
     public void run() {
-        if (Main.plugin.getConfig().getBoolean("AFK.auto afk.enabled")) {
+        if (Main.plugin.getConfig().getBoolean("AFK.auto_afk.enabled")) {
             for (UUID uuid : CommandAfk.afktimer.keySet()) {
                 Player p = Bukkit.getPlayer(uuid);
                 if (p != null) {
@@ -25,7 +25,7 @@ public class AfkRunnable implements Runnable {
 
                                 if (CommandAfk.afktimer.get(p.getUniqueId()) >= Main.plugin.getConfig().getInt("AFK.time until idle")) {
 
-                                    if (Main.plugin.getConfig().getBoolean("AFK.kick on afk")) {
+                                    if (Main.plugin.getConfig().getBoolean("AFK.kick_on_afk")) {
                                         p.kickPlayer("You idled for too long. Sorry.");
                                         Message.b(MType.W, "AFK", p.getName() + " got kicked for idling for too long.");
                                         CommandAfk.afklist.remove(p.getUniqueId());

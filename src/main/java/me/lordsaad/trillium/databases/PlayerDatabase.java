@@ -14,14 +14,14 @@ public class PlayerDatabase {
         if (!file.exists()) {
             YamlConfiguration db = YamlConfiguration.loadConfiguration(file);
             db.set("Nickname", p.getName());
-            db.set("Previous Location.world", "");
-            db.set("Previous Location.x", 0);
-            db.set("Previous Location.y", 0);
-            db.set("Previous Location.z", 0);
+            db.set("Previous_Location.world", "");
+            db.set("Previous_Location.x", 0);
+            db.set("Previous_Location.y", 0);
+            db.set("Previous_Location.z", 0);
             db.set("Muted", false);
-            db.set("God Mode", false);
-            db.set("Vanish Mode", false);
-            db.set("Ban Reason", "");
+            db.set("God_Mode", false);
+            db.set("Vanish_Mode", false);
+            db.set("Ban_Reason", "");
             db.set("Inventory.items", null);
             db.set("Inventory.armor", null);
 

@@ -28,7 +28,7 @@ public class CommandUnban implements CommandExecutor {
                     Bukkit.getBanList(BanList.Type.NAME).pardon(args[0]);
                     Message.b(MType.G, "Unban", target.getName() + " got unbanned.");
                     YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(target));
-                    pdb.set("Ban Reason", "");
+                    pdb.set("Ban_Reason", "");
                     try {
                         pdb.save(PlayerDatabase.db(target));
                     } catch (IOException e) {

@@ -45,7 +45,7 @@ public class CommandBan implements CommandExecutor {
                         Message.b(MType.W, "Ban", target.getName() + " got banned with reason:");
                         Message.b(MType.W, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
                         YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(target));
-                        pdb.set("Ban Reason", reason);
+                        pdb.set("Ban_Reason", reason);
                         try {
                             pdb.save(PlayerDatabase.db(target));
                         } catch (IOException e) {
@@ -59,7 +59,7 @@ public class CommandBan implements CommandExecutor {
                         Message.b(MType.W, "Ban", offlinetarget.getName() + " got banned with reason:");
                         Message.b(MType.W, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
                         YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(offlinetarget));
-                        pdb.set("Ban Reason", reason);
+                        pdb.set("Ban_Reason", reason);
                         try {
                             pdb.save(PlayerDatabase.db(offlinetarget));
                         } catch (IOException e) {

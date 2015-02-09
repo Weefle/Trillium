@@ -22,8 +22,8 @@ public class PlayerMove implements Listener {
                 || event.getFrom().getBlockY() != event.getTo().getBlockY()
                 || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
             if (Main.plugin.getConfig().getBoolean("AFK.auto unafk")) {
-                if (API.isafk(p)) {
-                    if (!API.isvanished(p)) {
+                if (API.isAfk(p)) {
+                    if (!API.isVanished(p)) {
                         CommandAfk.afktimer.put(p.getUniqueId(), 0);
                         CommandAfk.afklist.remove(p.getUniqueId());
                         Message.b(MType.G, "AFK", p.getName() + " is no longer AFK.");

@@ -21,7 +21,7 @@ public class CommandKillall implements CommandExecutor {
                     if (args.length <= 1) {
                         Message.earg(p, "Killall", "/killall <radius> <mobs/players/animals/monsters/items/everything>");
                     } else {
-                        if (API.isdouble(args[0]) || API.isint(args[0])) {
+                        if (API.isDouble(args[0]) || API.isInt(args[0])) {
                             List<Entity> entities = p.getNearbyEntities(Double.parseDouble(args[0]), Double.parseDouble(args[0]), Double.parseDouble(args[0]));
                             if (args[1].equalsIgnoreCase("mobs")
                                     || args[1].equalsIgnoreCase("animals")

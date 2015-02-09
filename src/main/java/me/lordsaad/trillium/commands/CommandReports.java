@@ -28,7 +28,7 @@ public class CommandReports implements CommandExecutor {
                             if (args.length < 2) {
                                 Message.earg(p, "Reports", "/reports remove <index number>");
                             } else {
-                                if (API.isint(args[1])) {
+                                if (API.isInt(args[1])) {
                                     int nb = Integer.parseInt(args[1]);
                                     if (nb > 0 && nb <= CommandReport.reportlist.size() + 1) {
                                         Message.m(MType.G, p, "Reports", "Removed: " + nb);

@@ -18,7 +18,7 @@ public class CommandSpeed implements CommandExecutor {
                 Player p = (Player) sender;
                 if (p.hasPermission("tr.speed")) {
                     if (args.length > 1) {
-                        if (API.isint(args[1]) || API.isdouble(args[1])) {
+                        if (API.isInt(args[1]) || API.isDouble(args[1])) {
                             if (args[0].equalsIgnoreCase("fly")) {
                                 double i = Double.parseDouble(args[1]);
                                 if (i <= 10 && i >= -10) {

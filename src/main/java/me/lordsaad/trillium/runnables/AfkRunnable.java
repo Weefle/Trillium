@@ -18,8 +18,8 @@ public class AfkRunnable implements Runnable {
             for (UUID uuid : CommandAfk.afktimer.keySet()) {
                 Player p = Bukkit.getPlayer(uuid);
                 if (p != null) {
-                    if (!API.isafk(p)) {
-                        if (!API.isvanished(p)) {
+                    if (!API.isAfk(p)) {
+                        if (!API.isVanished(p)) {
                             if (!p.hasPermission("tr.afk.exempt")) {
                                 CommandAfk.afktimer.put(p.getUniqueId(), CommandAfk.afktimer.get(p.getUniqueId()) + 1);
 

@@ -19,7 +19,7 @@ import java.util.List;
 
 public class API {
 
-    public static boolean isdouble(String s) {
+    public static boolean isDouble(String s) {
         try {
             Double.parseDouble(s);
         } catch (NumberFormatException nfe) {
@@ -28,7 +28,7 @@ public class API {
         return true;
     }
 
-    public static boolean isint(String s) {
+    public static boolean isInt(String s) {
         try {
             Integer.parseInt(s);
         } catch (NumberFormatException nfe) {
@@ -37,11 +37,11 @@ public class API {
         return true;
     }
 
-    public static boolean isonline(Player p) {
+    public static boolean isOnline(Player p) {
         return p.isOnline() && !CommandVanish.vanishedusers.contains(p.getUniqueId());
     }
 
-    public static String locationstring(Player p) {
+    public static String locationString(Player p) {
         if (p.isOnline()) {
             Location loc = p.getLocation();
             return loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ", " + p.getWorld().getName();
@@ -50,7 +50,7 @@ public class API {
         }
     }
 
-    public static int getfoodlevel(Player p) {
+    public static int getFoodLevel(Player p) {
         if (p.isOnline()) {
             return p.getFoodLevel();
         } else {
@@ -58,7 +58,7 @@ public class API {
         }
     }
 
-    public static double gethealthlevel(Player p) {
+    public static double getHealthLevel(Player p) {
         if (p.isOnline()) {
             return p.getHealthScale();
         } else {
@@ -66,7 +66,7 @@ public class API {
         }
     }
 
-    public static String getgamemode(Player p) {
+    public static String getGamemode(Player p) {
         if (p.isOnline()) {
             if (p.getGameMode() == GameMode.SURVIVAL) {
                 return "Survival mode";
@@ -82,11 +82,11 @@ public class API {
         }
     }
 
-    public static int gettimeplayed(Player p) {
+    public static int getTimePlayed(Player p) {
         return p.getStatistic(Statistic.PLAY_ONE_TICK) / 20;
     }
 
-    public static String lastlocationstring(Player p) {
+    public static String lastLocationString(Player p) {
         YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
         int x = pdb.getInt("Last Location.x");
         int y = pdb.getInt("Last Location.y");
@@ -95,23 +95,23 @@ public class API {
         return world + ", " + x + ", " + y + ", " + z;
     }
 
-    public static boolean ismuted(Player p) {
+    public static boolean isMuted(Player p) {
         return CommandMute.muted.contains(p.getUniqueId());
     }
     
-    public static void setmuted(boolean b, Player p) {
+    public static void setMuted(boolean b, Player p) {
         if (b) {
-            if (!ismuted(p)) {
+            if (!isMuted(p)) {
                 CommandMute.muted.add(p.getUniqueId());
             }
         } else {
-            if (ismuted(p)) {
+            if (isMuted(p)) {
                 CommandMute.muted.remove(p.getUniqueId());
             }
         }
     }
     
-    public static boolean isflying(Player p) {
+    public static boolean isFlying(Player p) {
         if (p.isOnline()) {
             if (p.isFlying()) {
                 return true;
@@ -123,12 +123,12 @@ public class API {
         }
     }
 
-    public static boolean isgodmode(Player p) {
+    public static boolean isGodMode(Player p) {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
         return CommandGodMode.godmodeusers.contains(p.getUniqueId()) || yml.getBoolean("God Mode");
     }
 
-    public static void setgodmode(boolean b, Player p) {
+    public static void setGodMode(boolean b, Player p) {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
         if (b) {
             if (!CommandGodMode.godmodeusers.contains(p.getUniqueId())) {
@@ -164,11 +164,11 @@ public class API {
         }
     }
 
-    public static boolean isvanished(Player p) {
+    public static boolean isVanished(Player p) {
         return CommandVanish.vanishedusers.contains(p.getUniqueId());
     }
 
-    public static void setvanished(boolean b, Player p) {
+    public static void setVanished(boolean b, Player p) {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
         if (b) {
             if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
@@ -212,11 +212,11 @@ public class API {
         }
     }
 
-    public static boolean isafk(Player p) {
+    public static boolean isAfk(Player p) {
         return CommandAfk.afklist.contains(p.getUniqueId());
     }
 
-    public static void printcurrentmemory(CommandSender sender) {
+    public static void printCurrentMemory(CommandSender sender) {
         int free = (int) Runtime.getRuntime().freeMemory() / 1000000;
         int max = (int) Runtime.getRuntime().maxMemory() / 1000000;
         int used = max - free;
@@ -243,30 +243,30 @@ public class API {
         return bar.toString();
     }
     
-    public static int getping(Player p) {
+    public static int getPing(Player p) {
         return ((CraftPlayer) p).getHandle().ping;
     }
     
-    public static String getpingbar(Player p) {
-        if (getping(p) <= 100 && getping(p) >= 0) {
+    public static String getPingBar(Player p) {
+        if (getPing(p) <= 100 && getPing(p) >= 0) {
             return bar(100);
-        } else if (getping(p) <= 200 && getping(p) > 100) {
+        } else if (getPing(p) <= 200 && getPing(p) > 100) {
             return bar(90);
-        } else if (getping(p) <= 300 && getping(p) > 200) {
+        } else if (getPing(p) <= 300 && getPing(p) > 200) {
             return bar(80);
-        } else if (getping(p) <= 400 && getping(p) > 300) {
+        } else if (getPing(p) <= 400 && getPing(p) > 300) {
             return bar(70);
-        } else if (getping(p) <= 500 && getping(p) > 400) {
+        } else if (getPing(p) <= 500 && getPing(p) > 400) {
             return bar(60);
-        } else if (getping(p) <= 600 && getping(p) > 500) {
+        } else if (getPing(p) <= 600 && getPing(p) > 500) {
             return bar(50);
-        } else if (getping(p) <= 700 && getping(p) > 600) {
+        } else if (getPing(p) <= 700 && getPing(p) > 600) {
             return bar(40);
-        } else if (getping(p) <= 800 && getping(p) > 700) {
+        } else if (getPing(p) <= 800 && getPing(p) > 700) {
             return bar(30);
-        } else if (getping(p) <= 900 && getping(p) > 800) {
+        } else if (getPing(p) <= 900 && getPing(p) > 800) {
             return bar(20);
-        } else if (getping(p) <= 1000 && getping(p) > 900) {
+        } else if (getPing(p) <= 1000 && getPing(p) > 900) {
             return bar(10);
         } else {
             return bar(0);

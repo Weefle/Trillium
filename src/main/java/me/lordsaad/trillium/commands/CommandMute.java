@@ -27,12 +27,12 @@ public class CommandMute implements CommandExecutor {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null) {
                         
-                        if (!API.ismuted(target)) {
-                            API.setmuted(true, target);
+                        if (!API.isMuted(target)) {
+                            API.setMuted(true, target);
                             Message.m(MType.G, sender, "Mute", "You muted " + target.getName());
                             Message.m(MType.W, sender, "Mute", sender.getName() + " muted you.");
                         } else {
-                            API.setmuted(false, target);
+                            API.setMuted(false, target);
                             Message.m(MType.G, sender, "Mute", "You unmuted " + target.getName());
                             Message.m(MType.G, sender, "Mute", sender.getName() + " unmuted you.");
                         }

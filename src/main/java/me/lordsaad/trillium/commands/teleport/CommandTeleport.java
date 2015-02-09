@@ -99,8 +99,8 @@ public class CommandTeleport implements CommandExecutor {
                         String c2 = args[2];
                         String c3 = args[3];
                         if (pl != null) {
-                            if (API.isdouble(c1) && API.isdouble(c2) && API.isdouble(c3)
-                                    || API.isint(c1) && API.isint(c2) && API.isint(c3)) {
+                            if (API.isDouble(c1) && API.isDouble(c2) && API.isDouble(c3)
+                                    || API.isInt(c1) && API.isInt(c2) && API.isInt(c3)) {
                                 int c4 = Integer.parseInt(c1);
                                 int c5 = Integer.parseInt(c2);
                                 int c6 = Integer.parseInt(c3);

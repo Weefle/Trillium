@@ -25,14 +25,14 @@ public class CommandVanish implements CommandExecutor {
                 if (args.length == 0) {
                     if (p.hasPermission("tr.vanish")) {
                         
-                        if (!API.isvanished(p)) {
+                        if (!API.isVanished(p)) {
 
-                            API.setvanished(true, p);
+                            API.setVanished(true, p);
                             Message.m(MType.G, p, "Vanish", "You are now in vanish mode.");
 
                         } else {
                             
-                            API.setvanished(false, p);
+                            API.setVanished(false, p);
                             Message.m(MType.G, p, "Vanish", "You are no longer in vanish mode.");
                         }
                     } else {
@@ -44,15 +44,15 @@ public class CommandVanish implements CommandExecutor {
                         Player pl = Bukkit.getPlayer(args[0]);
                         if (pl != null) {
                             
-                            if (API.isvanished(p)) {
+                            if (API.isVanished(p)) {
 
-                                API.setvanished(false, p);
+                                API.setVanished(false, p);
                                 Message.m(MType.G, pl, "Vanish", p.getName() + " put you in vanish mode.");
                                 Message.m(MType.G, p, "Vanish", pl.getName() + " is now in vanish mode.");
 
                             } else {
 
-                                API.setvanished(false, p);
+                                API.setVanished(false, p);
                                 Message.m(MType.G, pl, "Vanish", p.getName() + " removed you from vanish mode.");
                                 Message.m(MType.G, p, "Vanish", pl.getName() + " is no longer in vanish mode.");
                             }

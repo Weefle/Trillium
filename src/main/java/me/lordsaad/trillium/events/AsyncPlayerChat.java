@@ -31,7 +31,7 @@ public class AsyncPlayerChat implements Listener {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
         }
         
-        if (API.ismuted(p)) {
+        if (API.isMuted(p)) {
             event.setCancelled(true);
             Message.m(MType.W, p, "Mute", "Your voice has been silenced.");
         }

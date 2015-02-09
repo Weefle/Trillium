@@ -18,7 +18,7 @@ public class CommandLag implements CommandExecutor {
                 long time = System.currentTimeMillis();
                 
                 Message.m(MType.R, sender, "Lag", "Before GC:");
-                API.printcurrentmemory(sender);
+                API.printCurrentMemory(sender);
                 sender.sendMessage(" ");
                 
                 System.gc();
@@ -26,7 +26,7 @@ public class CommandLag implements CommandExecutor {
                 
                 sender.sendMessage(" ");
                 Message.m(MType.R, sender, "Lag", "After GC:");
-                API.printcurrentmemory(sender);
+                API.printCurrentMemory(sender);
                 sender.sendMessage(" ");
                 
                 long need = System.currentTimeMillis() - time;

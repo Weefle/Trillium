@@ -25,12 +25,12 @@ public class CommandGodMode implements CommandExecutor {
                 if (args.length == 0) {
                     if (p.hasPermission("tr.god")) {
 
-                        if (API.isgodmode(p)) {
-                            API.setgodmode(false, p);
+                        if (API.isGodMode(p)) {
+                            API.setGodMode(false, p);
                             Message.m(MType.G, p, "God Mode", "You are no longer in god mode.");
 
                         } else {
-                            API.setgodmode(true, p);
+                            API.setGodMode(true, p);
                             Message.m(MType.G, p, "God Mode", "You are now in god mode.");
                         }
 
@@ -43,13 +43,13 @@ public class CommandGodMode implements CommandExecutor {
                         Player pl = Bukkit.getPlayer(args[0]);
                         if (pl != null) {
 
-                            if (API.isgodmode(pl)) {
-                                API.setgodmode(false, pl);
+                            if (API.isGodMode(pl)) {
+                                API.setGodMode(false, pl);
                                 Message.m(MType.G, pl, "God Mode", p.getName() + " removed you from god mode.");
                                 Message.m(MType.G, p, "God Mode", pl.getName() + " is no longer in god mode.");
 
                             } else {
-                                API.setgodmode(true, pl);
+                                API.setGodMode(true, pl);
                                 Message.m(MType.G, pl, "God Mode", p.getName() + " put you in god mode.");
                                 Message.m(MType.G, p, "God Mode", pl.getName() + " is now in god mode.");
                             }

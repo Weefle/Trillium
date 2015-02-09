@@ -12,7 +12,7 @@ public class FoodLevelChange implements Listener {
     public void onfood(FoodLevelChangeEvent event) {
         if (event.getEntity() instanceof Player) {
             Player p = (Player) event.getEntity();
-            if (API.isgodmode(p)) {
+            if (API.isGodMode(p)) {
                 event.setCancelled(true);
             }
         }

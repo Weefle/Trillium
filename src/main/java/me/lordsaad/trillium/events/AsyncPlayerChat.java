@@ -1,5 +1,6 @@
 package me.lordsaad.trillium.events;
 
+import me.lordsaad.trillium.API;
 import me.lordsaad.trillium.Main;
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandVanish;
@@ -28,6 +29,11 @@ public class AsyncPlayerChat implements Listener {
         
         if (p.hasPermission("tr.chatcolor")) {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+        }
+        
+        if (API.ismuted(p)) {
+            event.setCancelled(true);
+            Message.m(MType.W, p, "Mute", "Your voice has been silenced.");
         }
     }
 }

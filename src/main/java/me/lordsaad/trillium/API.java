@@ -2,6 +2,7 @@ package me.lordsaad.trillium;
 
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandGodMode;
+import me.lordsaad.trillium.commands.CommandMute;
 import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.messageutils.MType;
@@ -95,14 +96,21 @@ public class API {
     }
 
     public static boolean ismuted(Player p) {
-        YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        if (pdb.getBoolean("Muted")) {
-            return true;
+        return CommandMute.muted.contains(p.getUniqueId());
+    }
+    
+    public static void setmuted(boolean b, Player p) {
+        if (b) {
+            if (!ismuted(p)) {
+                CommandMute.muted.add(p.getUniqueId());
+            }
         } else {
-            return true;
+            if (ismuted(p)) {
+                CommandMute.muted.remove(p.getUniqueId());
+            }
         }
     }
-
+    
     public static boolean isflying(Player p) {
         if (p.isOnline()) {
             if (p.isFlying()) {

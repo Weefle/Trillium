@@ -116,3 +116,6 @@ commands:
     description: Set a nickname for yourself
     usage: /nick [player]
     aliases: [nick]
+  mute:
+    description: Mute or unmute a certain player.
+    usage: /mute <player>

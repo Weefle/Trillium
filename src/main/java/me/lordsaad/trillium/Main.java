@@ -70,6 +70,7 @@ public class Main extends JavaPlugin {
         getCommand("lag").setExecutor(new CommandLag());
         getCommand("speed").setExecutor(new CommandSpeed());
         getCommand("nickname").setExecutor(new CommandNickname());
+        getCommand("mute").setExecutor(new CommandMute());
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkRunnable(), 0, getConfig().getInt("AFK.auto afk.time until idle") * 20);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);

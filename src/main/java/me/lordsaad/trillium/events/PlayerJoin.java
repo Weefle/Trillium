@@ -1,6 +1,5 @@
 package me.lordsaad.trillium.events;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import me.lordsaad.trillium.api.TrilliumAPI;
@@ -8,13 +7,11 @@ import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandReport;
 import me.lordsaad.trillium.commands.CommandVanish;
-import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,12 +24,6 @@ public class PlayerJoin implements Listener {
         
         
         Player p = event.getPlayer();
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        try {
-            yml.save(PlayerDatabase.db(p));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         //join message
         if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
@@ -65,11 +56,6 @@ public class PlayerJoin implements Listener {
             for (Player online : Bukkit.getOnlinePlayers()) {
                 online.hidePlayer(p);
             }
-        }
-
-        //initiate AFK
-        if (TrilliumAPI.getInstance().getConfig().getBoolean("AFK.auto afk.enabled")) {
-            CommandAfk.afktimer.put(p.getUniqueId(), 0);
         }
 
         //Send report warning

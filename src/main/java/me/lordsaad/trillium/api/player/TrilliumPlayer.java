@@ -5,10 +5,10 @@ import java.io.IOException;
 
 import me.lordsaad.trillium.api.Configuration;
 import me.lordsaad.trillium.api.TrilliumAPI;
-import me.lordsaad.trillium.api.serializer.Serializer;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -16,6 +16,8 @@ import org.bukkit.entity.Player;
 public class TrilliumPlayer {
     private Player proxy;
     private FileConfiguration config;
+    
+    private Location previousLocation;
 
     private boolean afk;
     private long lastActive;
@@ -74,6 +76,7 @@ public class TrilliumPlayer {
 
     public void dispose() {
         proxy = null;
+        //TODO: Save data
     }
 
     private void load() throws IOException {
@@ -88,7 +91,7 @@ public class TrilliumPlayer {
 
         if (newUser) {
             config.set(Configuration.Player.NICKNAME, proxy.getName());
-            config.set(Configuration.Player.LOCATION, Serializer.LOCATION.serialize(proxy.getLocation()));
+            config.set(Configuration.Player.LOCATION, TrilliumAPI.getSerializer(Location.class).serialize(proxy.getLocation()));
             config.set(Configuration.Player.MUTED, false);
             config.set(Configuration.Player.GOD, false);
             config.set(Configuration.Player.VANISH, false);

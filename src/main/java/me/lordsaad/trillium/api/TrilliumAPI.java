@@ -9,6 +9,8 @@ import me.lordsaad.trillium.Trillium;
 import me.lordsaad.trillium.api.command.Command;
 import me.lordsaad.trillium.api.command.TrilliumCommand;
 import me.lordsaad.trillium.api.player.TrilliumPlayer;
+import me.lordsaad.trillium.api.serializer.Serializer;
+import me.lordsaad.trillium.modules.TrilliumModule;
 
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
@@ -17,12 +19,14 @@ import org.bukkit.plugin.SimplePluginManager;
 public class TrilliumAPI {
     private static Trillium instance;
     private static Map<String, TrilliumPlayer> players;
-
+    private static Map<Class<?>, Serializer<?>> serializers;
+    
     public static void setInstance(Trillium instance) {
         String className = new Throwable().getStackTrace()[1].getClassName();
         if (className.equalsIgnoreCase(Trillium.class.getCanonicalName())) {
             TrilliumAPI.instance = instance;
             TrilliumAPI.players = new HashMap<>();
+            TrilliumAPI.serializers = new HashMap<>();
         } else {
             throw new IllegalStateException("Cannot set instance of TrilliumAPI");
         }
@@ -46,6 +50,20 @@ public class TrilliumAPI {
         } else {
             throw new IllegalStateException(String.format("TrilliumPlayer %s already exists", proxy.getName()));
         }
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <T> Serializer<T> getSerializer(Class<T> clazz) {
+        return (Serializer<T>) serializers.get(clazz);
+    }
+    
+    public static <T> void registerSerializer(Class<T> clazz, Serializer<T> serializer) {
+        serializers.put(clazz, serializer);
+    }
+    
+    public static void registerModule(TrilliumModule module) {
+        instance.getServer().getPluginManager().registerEvents(module, instance);
+        registerCommand(module.getClass());
     }
 
     public static void registerCommand(Class<?> commandClass) {

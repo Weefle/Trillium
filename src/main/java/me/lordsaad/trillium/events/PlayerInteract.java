@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import me.lordsaad.trillium.api.TrilliumAPI;
-import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandCmdBinder;
-import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.databases.CmdBinderDatabase;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
@@ -30,15 +28,6 @@ public class PlayerInteract implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player p = event.getPlayer();
-        if (TrilliumAPI.getInstance().getConfig().getBoolean("AFK.auto unafk")) {
-            if (CommandAfk.afklist.contains(p.getUniqueId())) {
-                if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-                    CommandAfk.afklist.remove(p.getUniqueId());
-                    CommandAfk.afktimer.put(p.getUniqueId(), 0);
-                    Message.b(MType.G, "AFK", p.getName() + " is no longer AFK.");
-                }
-            }
-        }
 
         for (Location loc : CommandCmdBinder.antilagcheckloc) {
             if (event.getClickedBlock().getLocation().getBlockX() == loc.getBlockX()

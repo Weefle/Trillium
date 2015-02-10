@@ -1,23 +1,15 @@
 package me.lordsaad.trillium;
 
-import java.io.IOException;
-import java.util.List;
-
-import me.lordsaad.trillium.api.TrilliumAPI;
-import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandVanish;
-import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import me.lordsaad.trillium.runnables.TpsRunnable;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -90,15 +82,6 @@ public class API {
         return p.getStatistic(Statistic.PLAY_ONE_TICK) / 20;
     }
 
-    public static String lastLocationString(Player p) {
-        YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        int x = pdb.getInt("Last Location.x");
-        int y = pdb.getInt("Last Location.y");
-        int z = pdb.getInt("Last Location.z");
-        String world = pdb.getString("Last Location.world");
-        return world + ", " + x + ", " + y + ", " + z;
-    }
-    
     public static boolean isFlying(Player p) {
         if (p.isOnline()) {
             if (p.isFlying()) {
@@ -108,95 +91,6 @@ public class API {
             }
         } else {
             return false;
-        }
-    }
-
-    public static boolean isGodMode(Player p) {
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        return CommandGodMode.godmodeusers.contains(p.getUniqueId()) || yml.getBoolean("God Mode");
-    }
-
-    public static void setGodMode(boolean b, Player p) {
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        if (b) {
-            if (!CommandGodMode.godmodeusers.contains(p.getUniqueId())) {
-                yml.set("God Mode", true);
-                CommandGodMode.godmodeusers.add(p.getUniqueId());
-                try {
-                    yml.save(PlayerDatabase.db(p));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            if (CommandGodMode.godmodeusers.contains(p.getUniqueId())) {
-                yml.set("God Mode", false);
-                CommandGodMode.godmodeusers.remove(p.getUniqueId());
-                try {
-                    yml.save(PlayerDatabase.db(p));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public static void broadcast(String message) {
-
-        List<String> format = TrilliumAPI.getInstance().getConfig().getStringList("Broadcast");
-
-        for (String s : format) {
-            s = ChatColor.translateAlternateColorCodes('&', s);
-            s = s.replace("[msg]", message);
-            Bukkit.broadcastMessage(s);
-        }
-    }
-
-    public static boolean isVanished(Player p) {
-        return CommandVanish.vanishedusers.contains(p.getUniqueId());
-    }
-
-    public static void setVanished(boolean b, Player p) {
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
-        if (b) {
-            if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-                yml.set("Vanish Mode", true);
-                CommandVanish.vanishedusers.add(p.getUniqueId());
-
-                if (TrilliumAPI.getInstance().getConfig().getBoolean("spectator mode")) {
-                    p.setGameMode(GameMode.SPECTATOR);
-                }
-
-
-                for (Player online : Bukkit.getOnlinePlayers()) {
-                    online.hidePlayer(p);
-                }
-
-                try {
-                    yml.save(PlayerDatabase.db(p));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            if (CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-                yml.set("Vanish Mode", false);
-                CommandVanish.vanishedusers.remove(p.getUniqueId());
-
-                if (TrilliumAPI.getInstance().getConfig().getBoolean("spectator mode")) {
-                    p.setGameMode(GameMode.SURVIVAL);
-                }
-
-                for (Player online : Bukkit.getOnlinePlayers()) {
-                    online.showPlayer(p);
-                }
-
-                try {
-                    yml.save(PlayerDatabase.db(p));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 

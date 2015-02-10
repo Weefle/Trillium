@@ -1,6 +1,6 @@
 author: LordSaad44
 description: The Premium Essentials.
-main: me.lordsaad.trillium.Main
+main: me.lordsaad.trillium.Trillium
 name: Trillium
 version: 0.1
 commands:

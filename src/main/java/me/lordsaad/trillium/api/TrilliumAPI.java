@@ -10,7 +10,6 @@ import me.lordsaad.trillium.api.command.Command;
 import me.lordsaad.trillium.api.command.TrilliumCommand;
 import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.api.serializer.Serializer;
-import me.lordsaad.trillium.modules.TrilliumModule;
 
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;

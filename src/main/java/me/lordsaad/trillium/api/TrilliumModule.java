@@ -1,6 +1,5 @@
-package me.lordsaad.trillium.modules;
+package me.lordsaad.trillium.api;
 
-import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.api.player.TrilliumPlayer;
 
 import org.bukkit.configuration.ConfigurationSection;

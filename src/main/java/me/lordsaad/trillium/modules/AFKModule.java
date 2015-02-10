@@ -1,5 +1,6 @@
 package me.lordsaad.trillium.modules;
 
+import me.lordsaad.trillium.api.TrilliumModule;
 import me.lordsaad.trillium.api.command.Command;
 import me.lordsaad.trillium.api.command.CommandException;
 import me.lordsaad.trillium.api.player.TrilliumPlayer;

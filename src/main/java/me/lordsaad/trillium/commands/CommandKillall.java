@@ -1,15 +1,22 @@
 package me.lordsaad.trillium.commands;
 
+import java.util.List;
+
 import me.lordsaad.trillium.API;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.*;
-
-import java.util.List;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
+import org.bukkit.entity.Player;
 
 public class CommandKillall implements CommandExecutor {
 

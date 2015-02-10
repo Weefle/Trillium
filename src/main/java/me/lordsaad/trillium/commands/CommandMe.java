@@ -3,6 +3,7 @@ package me.lordsaad.trillium.commands;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.Message;
 import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

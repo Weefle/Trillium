@@ -1,6 +1,11 @@
 package me.lordsaad.trillium.events;
 
-import me.lordsaad.trillium.Main;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandCmdBinder;
 import me.lordsaad.trillium.commands.CommandVanish;
@@ -8,6 +13,7 @@ import me.lordsaad.trillium.databases.CmdBinderDatabase;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,17 +25,12 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 public class PlayerInteract implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player p = event.getPlayer();
-        if (Main.plugin.getConfig().getBoolean("AFK.auto_unafk")) {
+        if (TrilliumAPI.getInstance().getConfig().getBoolean("AFK.auto unafk")) {
             if (CommandAfk.afklist.contains(p.getUniqueId())) {
                 if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
                     CommandAfk.afklist.remove(p.getUniqueId());
@@ -47,7 +48,7 @@ public class PlayerInteract implements Listener {
                 if (CommandCmdBinder.touchconsole.containsKey(p.getLocation())) {
                     String cmd = CommandCmdBinder.touchconsole.get(p.getLocation());
                     cmd = cmd.replace("[p]", p.getName());
-                    Bukkit.dispatchCommand(Main.plugin.getServer().getConsoleSender(), cmd);
+                    Bukkit.dispatchCommand(TrilliumAPI.getInstance().getServer().getConsoleSender(), cmd);
                     event.setCancelled(true);
 
                 } else if (CommandCmdBinder.touchplayer.containsKey(p.getLocation())) {
@@ -67,7 +68,7 @@ public class PlayerInteract implements Listener {
                     String cmd = iands.get(item);
                     cmd = cmd.replace("[p]", p.getName());
                     if (p.getItemInHand().equals(item)) {
-                        Bukkit.dispatchCommand(Main.plugin.getServer().getConsoleSender(), cmd);
+                        Bukkit.dispatchCommand(TrilliumAPI.getInstance().getServer().getConsoleSender(), cmd);
                         event.setCancelled(true);
                     }
                 }

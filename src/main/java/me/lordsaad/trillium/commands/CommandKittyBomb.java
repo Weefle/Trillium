@@ -1,9 +1,12 @@
 package me.lordsaad.trillium.commands;
 
-import me.lordsaad.trillium.Main;
+import java.util.Random;
+
+import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.Message;
 import me.lordsaad.trillium.particleeffect.ParticleEffect;
+
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -13,8 +16,6 @@ import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
-import java.util.Random;
 
 public class CommandKittyBomb implements CommandExecutor {
 
@@ -51,7 +52,7 @@ public class CommandKittyBomb implements CommandExecutor {
                                 throwcats(cat.getLocation(), p);
                             }
                         }
-                    }.runTaskTimer(Main.plugin, 1, 1);
+                    }.runTaskTimer(TrilliumAPI.getInstance(), 1, 1);
 
                 } else {
                     Message.e(p, "Kitty Bomb", Crit.P);
@@ -181,6 +182,6 @@ public class CommandKittyBomb implements CommandExecutor {
                     cat8.setHealth(0.0);
                 }
             }
-        }.runTaskTimer(Main.plugin, 1, 1);
+        }.runTaskTimer(TrilliumAPI.getInstance(), 1, 1);
     }
 }

@@ -32,10 +32,10 @@ public class CommandTeleportH implements CommandExecutor {
 
                             YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(target));
 
-                            yml.set("Previous_Location.world", world);
-                            yml.set("Previous_Location.x", x);
-                            yml.set("Previous_Location.y", y);
-                            yml.set("Previous_Location.z", z);
+                            yml.set("Previous Location.world", world);
+                            yml.set("Previous Location.x", x);
+                            yml.set("Previous Location.y", y);
+                            yml.set("Previous Location.z", z);
 
                             try {
                                 yml.save(PlayerDatabase.db(p));

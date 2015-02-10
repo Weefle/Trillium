@@ -1,9 +1,12 @@
 package me.lordsaad.trillium.commands;
 
+import java.io.IOException;
+
 import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,8 +16,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-
-import java.io.IOException;
 
 public class CommandBan implements CommandExecutor {
 
@@ -45,7 +46,7 @@ public class CommandBan implements CommandExecutor {
                         Message.b(MType.W, "Ban", target.getName() + " got banned with reason:");
                         Message.b(MType.W, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
                         YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(target));
-                        pdb.set("Ban_Reason", reason);
+                        pdb.set("Ban Reason", reason);
                         try {
                             pdb.save(PlayerDatabase.db(target));
                         } catch (IOException e) {
@@ -59,7 +60,7 @@ public class CommandBan implements CommandExecutor {
                         Message.b(MType.W, "Ban", offlinetarget.getName() + " got banned with reason:");
                         Message.b(MType.W, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
                         YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(offlinetarget));
-                        pdb.set("Ban_Reason", reason);
+                        pdb.set("Ban Reason", reason);
                         try {
                             pdb.save(PlayerDatabase.db(offlinetarget));
                         } catch (IOException e) {

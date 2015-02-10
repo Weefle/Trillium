@@ -1,13 +1,17 @@
 package me.lordsaad.trillium.events;
 
-import me.lordsaad.trillium.Main;
-import me.lordsaad.trillium.commands.CommandAfk;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import me.lordsaad.trillium.api.TrilliumAPI;
+import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandReport;
 import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,13 +20,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 public class PlayerJoin implements Listener {
-
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        TrilliumPlayer player = TrilliumAPI.createNewPlayer(event.getPlayer());
+        
+        
         Player p = event.getPlayer();
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
         try {
@@ -33,39 +36,39 @@ public class PlayerJoin implements Listener {
 
         //join message
         if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-            String m1 = ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Join.message"));
+            String m1 = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString("Join.message"));
             m1 = m1.replace("[USERNAME]", p.getName());
             event.setJoinMessage(m1);
         }
 
         //motd
-        ArrayList<String> motd = (ArrayList<String>) Main.plugin.getConfig().getStringList("Motd");
+        ArrayList<String> motd = (ArrayList<String>) TrilliumAPI.getInstance().getConfig().getStringList("Motd");
         for (String s : motd) {
             s = ChatColor.translateAlternateColorCodes('&', s);
             s = s.replace("[USERNAME]", p.getName());
-            s = s.replace("[SLOTS]", String.valueOf(Main.plugin.getServer().getMaxPlayers()));
+            s = s.replace("[SLOTS]", String.valueOf(TrilliumAPI.getInstance().getServer().getMaxPlayers()));
             s = s.replace("[ONLINE]", String.valueOf(Bukkit.getOnlinePlayers().size()));
             p.sendMessage(s);
         }
 
         //god mode?
-        if (Main.plugin.getConfig().getBoolean("God Mode")) {
+        if (TrilliumAPI.getInstance().getConfig().getBoolean("God Mode")) {
             CommandGodMode.godmodeusers.add(p.getUniqueId());
-            Message.m(MType.W, p, "God_Mode", "Remember! You are still in god mode!");
+            Message.m(MType.W, p, "God Mode", "Remember! You are still in god mode!");
         } else {
             CommandGodMode.godmodeusers.remove(p.getUniqueId());
         }
 
         //vanish mode?
         if (CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-            Message.m(MType.W, p, "Vanish_Mode", "Remember! You are still in vanish mode!");
+            Message.m(MType.W, p, "Vanish Mode", "Remember! You are still in vanish mode!");
             for (Player online : Bukkit.getOnlinePlayers()) {
                 online.hidePlayer(p);
             }
         }
 
         //initiate AFK
-        if (Main.plugin.getConfig().getBoolean("AFK.auto_afk.enabled")) {
+        if (TrilliumAPI.getInstance().getConfig().getBoolean("AFK.auto afk.enabled")) {
             CommandAfk.afktimer.put(p.getUniqueId(), 0);
         }
 

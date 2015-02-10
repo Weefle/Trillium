@@ -1,16 +1,17 @@
 package me.lordsaad.trillium.commands;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.UUID;
 
 public class CommandFly implements CommandExecutor {
 

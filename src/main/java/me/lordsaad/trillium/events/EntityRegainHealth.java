@@ -1,6 +1,7 @@
 package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.API;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

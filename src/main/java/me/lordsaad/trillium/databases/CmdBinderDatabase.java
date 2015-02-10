@@ -1,15 +1,16 @@
 package me.lordsaad.trillium.databases;
 
-import me.lordsaad.trillium.Main;
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.File;
 import java.io.IOException;
+
+import me.lordsaad.trillium.api.TrilliumAPI;
+
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class CmdBinderDatabase {
 
     public static File cbd() {
-        File file = new File(Main.plugin.getDataFolder() + "CommandBinderDatabase.yml");
+        File file = new File(TrilliumAPI.getInstance().getDataFolder() + "CommandBinderDatabase.yml");
         if (!file.exists()) {
             YamlConfiguration db = YamlConfiguration.loadConfiguration(file);
             db.set("walkconsole", "");

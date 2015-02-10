@@ -1,7 +1,8 @@
 package me.lordsaad.trillium.events;
 
-import me.lordsaad.trillium.Main;
+import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.commands.CommandVanish;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,7 +14,7 @@ public class PlayerPickupItem implements Listener {
     public void onPickup(PlayerPickupItemEvent event) {
         Player p = event.getPlayer();
         if (CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-            if (Main.plugin.getConfig().getBoolean("Vanish.prevent_item_pickup/drop")) {
+            if (TrilliumAPI.getInstance().getConfig().getBoolean("Vanish.prevent item pickup/drop")) {
                 event.setCancelled(true);
             }
         }

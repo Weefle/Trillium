@@ -1,18 +1,19 @@
 package me.lordsaad.trillium.commands;
 
+import java.io.IOException;
+
 import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import net.md_5.bungee.api.ChatColor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-
-import java.io.IOException;
 
 public class CommandNickname implements CommandExecutor {
 
@@ -21,7 +22,7 @@ public class CommandNickname implements CommandExecutor {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (args.length == 1) {
-                    if (p.hasPermission("tr.nickname") && !p.isOp()) {
+                    if (p.hasPermission("tr.nickname")) {
 
                         YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
                         Message.m(MType.G, p, "Nickname", "New nickname set: " + args[0]);
@@ -32,7 +33,7 @@ public class CommandNickname implements CommandExecutor {
                             e.printStackTrace();
                         }
 
-                    } else if (p.hasPermission("tr.nickname.color") || p.isOp()) {
+                    } else if (p.hasPermission("tr.nickname.color")) {
 
                         YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
                         String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
@@ -48,7 +49,7 @@ public class CommandNickname implements CommandExecutor {
                         Message.e(p, "Nickname", Crit.P);
                     }
                 } else if (args.length > 1) {
-                    if (p.hasPermission("tr.nickname.other") && !p.isOp()) {
+                    if (p.hasPermission("tr.nickname.other")) {
 
                         Player target = Bukkit.getPlayer(args[1]);
                         if (target != null) {
@@ -64,7 +65,7 @@ public class CommandNickname implements CommandExecutor {
                         } else {
                             Message.eplayer(p, "Nickname", args[0]);
                         }
-                    } else if (p.hasPermission("tr.nickname.other.color") || !p.isOp()) {
+                    } else if (p.hasPermission("tr.nickname.other.color")) {
 
                         Player target = Bukkit.getPlayer(args[1]);
                         if (target != null) {

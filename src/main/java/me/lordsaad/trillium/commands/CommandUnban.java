@@ -1,9 +1,12 @@
 package me.lordsaad.trillium.commands;
 
+import java.io.IOException;
+
 import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -11,8 +14,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.IOException;
 
 public class CommandUnban implements CommandExecutor {
 
@@ -28,7 +29,7 @@ public class CommandUnban implements CommandExecutor {
                     Bukkit.getBanList(BanList.Type.NAME).pardon(args[0]);
                     Message.b(MType.G, "Unban", target.getName() + " got unbanned.");
                     YamlConfiguration pdb = YamlConfiguration.loadConfiguration(PlayerDatabase.db(target));
-                    pdb.set("Ban_Reason", "");
+                    pdb.set("Ban Reason", "");
                     try {
                         pdb.save(PlayerDatabase.db(target));
                     } catch (IOException e) {

@@ -1,6 +1,7 @@
 package me.lordsaad.trillium.commands;
 
-import me.lordsaad.trillium.Main;
+import me.lordsaad.trillium.api.TrilliumAPI;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,17 +19,17 @@ public class CommandTrillium implements CommandExecutor {
                     sender.sendMessage(ChatColor.GRAY + "       by LordSaad, VortexSeven, and Turbotailz");
                     sender.sendMessage(ChatColor.DARK_RED + "                          ❤");
                     sender.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
-                    sender.sendMessage(ChatColor.GRAY + "Vesion: " + Main.plugin.getDescription().getVersion());
+                    sender.sendMessage(ChatColor.GRAY + "Vesion: " + TrilliumAPI.getInstance().getDescription().getVersion());
                     sender.sendMessage(ChatColor.GRAY + "Configuration Reloaded");
                     sender.sendMessage(ChatColor.GRAY + "Please report any bugs you find to: support@gettrillium.net");
-                    Main.plugin.reloadConfig();
+                    TrilliumAPI.getInstance().reloadConfig();
                 } else {
                     sender.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
                     sender.sendMessage(ChatColor.GRAY + "              Plugin made with love");
                     sender.sendMessage(ChatColor.GRAY + "       by LordSaad, VortexSeven, and Turbotailz");
                     sender.sendMessage(ChatColor.DARK_RED + "                          ❤");
                     sender.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
-                    sender.sendMessage(ChatColor.GRAY + "Vesion: " + Main.plugin.getDescription().getVersion());
+                    sender.sendMessage(ChatColor.GRAY + "Vesion: " + TrilliumAPI.getInstance().getDescription().getVersion());
                     sender.sendMessage(ChatColor.GRAY + "Please report any bugs you find to: support@gettrillium.net");
                 }
             }

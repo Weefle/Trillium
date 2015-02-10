@@ -1,10 +1,13 @@
 package me.lordsaad.trillium.events;
 
-import me.lordsaad.trillium.Main;
+import java.io.IOException;
+
+import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.databases.PlayerDatabase;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,8 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.io.IOException;
 
 public class PlayerLeave implements Listener {
 
@@ -29,12 +30,12 @@ public class PlayerLeave implements Listener {
 
         //leave message
         if (!CommandVanish.vanishedusers.contains(p.getUniqueId())) {
-            String m1 = ChatColor.translateAlternateColorCodes('&', Main.plugin.getConfig().getString("Leave.message"));
+            String m1 = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString("Leave.message"));
             m1 = m1.replace("[USERNAME]", p.getName());
             event.setQuitMessage(m1);
         }
         //remove godmode?
-        if (Main.plugin.getConfig().getBoolean("God_Mode")) {
+        if (TrilliumAPI.getInstance().getConfig().getBoolean("God Mode")) {
             CommandGodMode.godmodeusers.add(p.getUniqueId());
         } else {
             CommandGodMode.godmodeusers.remove(p.getUniqueId());

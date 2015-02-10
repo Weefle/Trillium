@@ -23,10 +23,10 @@ public class CommandBack implements CommandExecutor {
 
                     YamlConfiguration yml = YamlConfiguration.loadConfiguration(PlayerDatabase.db(p));
 
-                    String world = yml.getString("Previous_Location.world");
-                    int x = yml.getInt("Previous_Location.x");
-                    int y = yml.getInt("Previous_Location.y");
-                    int z = yml.getInt("Previous_Location.z");
+                    String world = yml.getString("Previous Location.world");
+                    int x = yml.getInt("Previous Location.x");
+                    int y = yml.getInt("Previous Location.y");
+                    int z = yml.getInt("Previous Location.z");
 
                     Location loc = new Location(Bukkit.getWorld(world), x, y, z);
 

@@ -2,6 +2,7 @@ package me.lordsaad.trillium.api;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -63,6 +64,11 @@ public class TrilliumAPI {
     public static void registerModule(TrilliumModule module) {
         instance.getServer().getPluginManager().registerEvents(module, instance);
         registerCommand(module.getClass());
+        module.register();
+    }
+    
+    public static Collection<? extends TrilliumPlayer> getOnlinePlayers() {
+        return players.values();
     }
 
     public static void registerCommand(Class<?> commandClass) {

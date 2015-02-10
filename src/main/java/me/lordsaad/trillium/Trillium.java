@@ -50,7 +50,6 @@ import me.lordsaad.trillium.events.PlayerPickupItem;
 import me.lordsaad.trillium.events.ServerListPing;
 import me.lordsaad.trillium.modules.AFKModule;
 import me.lordsaad.trillium.modules.PunishModule;
-import me.lordsaad.trillium.runnables.AfkRunnable;
 import me.lordsaad.trillium.runnables.TpsRunnable;
 
 import org.bukkit.Bukkit;
@@ -122,7 +121,6 @@ public class Trillium extends JavaPlugin {
         getCommand("speed").setExecutor(new CommandSpeed());
         getCommand("nickname").setExecutor(new CommandNickname());
 
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkRunnable(), 1, getConfig().getInt("AFK.auto afk.time until idle") * 20);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);
 
         File reports = new File(TrilliumAPI.getInstance().getDataFolder(), "Reports.yml");

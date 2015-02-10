@@ -37,15 +37,6 @@ public class API {
         return p.isOnline() && !CommandVanish.vanishedusers.contains(p.getUniqueId());
     }
 
-    public static String locationString(Player p) {
-        if (p.isOnline()) {
-            Location loc = p.getLocation();
-            return loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ", " + p.getWorld().getName();
-        } else {
-            return "null";
-        }
-    }
-
     public static int getFoodLevel(Player p) {
         if (p.isOnline()) {
             return p.getFoodLevel();

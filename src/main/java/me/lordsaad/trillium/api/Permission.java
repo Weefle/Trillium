@@ -8,4 +8,9 @@ public class Permission {
         public static final String BAN = PREFIX + "ban";
         public static final String UNBAN = PREFIX + "unban";
     }
+    
+    public static class Afk {
+        private static final String PREFIX = "tr.afk.";
+        public static final String USE = PREFIX + "use";
+    }
 }

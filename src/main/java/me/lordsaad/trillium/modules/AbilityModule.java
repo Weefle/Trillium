@@ -1,0 +1,113 @@
+package me.lordsaad.trillium.modules;
+
+import me.lordsaad.trillium.api.Permission;
+import me.lordsaad.trillium.api.TrilliumModule;
+import me.lordsaad.trillium.api.command.Command;
+import me.lordsaad.trillium.api.player.TrilliumPlayer;
+import me.lordsaad.trillium.messageutils.Crit;
+import me.lordsaad.trillium.messageutils.MType;
+import me.lordsaad.trillium.messageutils.Message;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+public class AbilityModule extends TrilliumModule {
+    @Command(command = "back", description = "Teleport to your last active position", usage = "/back")
+    public void back(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer player = player(cs.getName());
+            if (player.getProxy().hasPermission(Permission.Ability.BACK)) {
+                Message.m(MType.G, player.getProxy(), "Back", "You have been sent back to your last location.");
+                player.getProxy().teleport(player.getLastLocation());
+            } else {
+                Message.e(player.getProxy(), "Back", Crit.P);
+            }
+        } else {
+            Message.e(cs, "Back", Crit.C);
+        }
+    }
+
+    @Command(command = "fly", description = "Superman away!", usage = "/fly")
+    public void fly(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer player = player(cs.getName());
+            if (args.length == 0) {
+                if (player.hasPermission(Permission.Ability.FLY)) {
+                    if (!player.isFlying()) {
+                        player.setFlying(true);
+                        Message.m(MType.G, player.getProxy(), "Fly", "You are now in fly mode.");
+                    } else {
+                        player.setFlying(false);
+                        Message.m(MType.G, player.getProxy(), "Fly", "You are no longer in fly mode.");
+                    }
+                } else {
+                    Message.e(player.getProxy(), "Fly", Crit.P);
+                }
+
+            } else {
+                if (player.hasPermission(Permission.Ability.FLY_OTHER)) {
+                    TrilliumPlayer target = player(args[0]);
+                    if (target != null) {
+                        if (target.isFlying()) {
+                            Message.m(MType.G, target.getProxy(), "Fly", player.getProxy().getName() + " removed you from fly mode.");
+                            Message.m(MType.G, player.getProxy(), "Fly", target.getProxy().getName() + " is no longer in fly mode.");
+                            target.setFlying(false);
+                        } else {
+                            Message.m(MType.G, target.getProxy(), "Fly", player.getProxy().getName() + " put you in fly mode.");
+                            Message.m(MType.G, player.getProxy(), "Fly", target.getProxy().getName() + " is now in fly mode.");
+                            target.setFlying(true);
+                        }
+                    } else {
+                        Message.eplayer(player.getProxy(), "Fly", args[0]);
+                    }
+                } else {
+                    Message.earg(player.getProxy(), "Fly", "/fly [player]");
+                }
+            }
+        } else {
+            Message.e(cs, "Fly", Crit.C);
+        }
+    }
+    
+    @Command(command = "god", description = "Invincibility!", usage = "/god")
+    public void god(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer player = player(cs.getName());
+            if (args.length == 0) {
+                if (player.hasPermission(Permission.Ability.GOD)) {
+                    if (!player.isGod()) {
+                        player.setGod(true);
+                        Message.m(MType.G, player.getProxy(), "God", "You are now in god mode.");
+                    } else {
+                        player.setGod(false);
+                        Message.m(MType.G, player.getProxy(), "God", "You are no longer in god mode.");
+                    }
+                } else {
+                    Message.e(player.getProxy(), "God", Crit.P);
+                }
+
+            } else {
+                if (player.hasPermission(Permission.Ability.GOD_OTHER)) {
+                    TrilliumPlayer target = player(args[0]);
+                    if (target != null) {
+                        if (target.isGod()) {
+                            Message.m(MType.G, target.getProxy(), "God", player.getProxy().getName() + " removed you from god mode.");
+                            Message.m(MType.G, player.getProxy(), "God", target.getProxy().getName() + " is no longer in god mode.");
+                            target.setGod(false);
+                        } else {
+                            Message.m(MType.G, target.getProxy(), "God", player.getProxy().getName() + " put you in god mode.");
+                            Message.m(MType.G, player.getProxy(), "God", target.getProxy().getName() + " is now in god mode.");
+                            target.setGod(true);
+                        }
+                    } else {
+                        Message.eplayer(player.getProxy(), "God", args[0]);
+                    }
+                } else {
+                    Message.earg(player.getProxy(), "God", "/god [player]");
+                }
+            }
+        } else {
+            Message.e(cs, "God", Crit.C);
+        }
+    }
+}

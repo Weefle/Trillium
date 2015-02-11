@@ -23,6 +23,8 @@ public class TrilliumPlayer {
     private long lastActive;
     
     private boolean muted;
+    
+    private boolean isGod = false;
 
     public TrilliumPlayer(Player proxy) {
         this.proxy = proxy;
@@ -69,6 +71,34 @@ public class TrilliumPlayer {
     public void unmute() {
         
     }
+    
+    public void setFlying(boolean enabled) {
+        if (enabled) {
+            getProxy().setAllowFlight(true);
+        } else {
+            getProxy().setAllowFlight(false);
+        }
+    }
+    
+    public boolean isFlying() {
+        return getProxy().getAllowFlight() || getProxy().isFlying();
+    }
+    
+    public void setGod(boolean enabled) {
+        if (enabled) {
+            this.isGod = true;
+        } else {
+            this.isGod = false;
+        }
+    }
+    
+    public boolean isGod() {
+        return this.isGod;
+    }
+    
+    public boolean hasPermission(String permission) {
+        return getProxy().hasPermission(permission);
+    }
 
     public void active() {
         lastActive = System.currentTimeMillis();
@@ -97,5 +127,9 @@ public class TrilliumPlayer {
             config.set(Configuration.Player.VANISH, false);
             config.set(Configuration.Player.BAN_REASON, "");
         }
+    }
+
+    public Location getLastLocation() {
+        return this.previousLocation;
     }
 }

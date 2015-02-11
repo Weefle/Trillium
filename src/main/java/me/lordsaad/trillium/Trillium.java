@@ -5,11 +5,8 @@ import java.io.IOException;
 
 import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.api.serializer.LocationSerializer;
-import me.lordsaad.trillium.commands.CommandBroadcast;
 import me.lordsaad.trillium.commands.CommandCmdBinder;
-import me.lordsaad.trillium.commands.CommandFly;
 import me.lordsaad.trillium.commands.CommandGamemode;
-import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandInfo;
 import me.lordsaad.trillium.commands.CommandInventory;
 import me.lordsaad.trillium.commands.CommandKillall;
@@ -28,7 +25,6 @@ import me.lordsaad.trillium.commands.CommandSpawn;
 import me.lordsaad.trillium.commands.CommandSpeed;
 import me.lordsaad.trillium.commands.CommandTrillium;
 import me.lordsaad.trillium.commands.CommandVanish;
-import me.lordsaad.trillium.commands.teleport.CommandBack;
 import me.lordsaad.trillium.commands.teleport.CommandTeleport;
 import me.lordsaad.trillium.commands.teleport.CommandTeleportH;
 import me.lordsaad.trillium.commands.teleport.CommandTeleportR;
@@ -49,6 +45,8 @@ import me.lordsaad.trillium.events.PlayerMove;
 import me.lordsaad.trillium.events.PlayerPickupItem;
 import me.lordsaad.trillium.events.ServerListPing;
 import me.lordsaad.trillium.modules.AFKModule;
+import me.lordsaad.trillium.modules.AbilityModule;
+import me.lordsaad.trillium.modules.AdminModule;
 import me.lordsaad.trillium.modules.PunishModule;
 import me.lordsaad.trillium.runnables.TpsRunnable;
 
@@ -74,6 +72,8 @@ public class Trillium extends JavaPlugin {
         
         TrilliumAPI.registerModule(new AFKModule());
         TrilliumAPI.registerModule(new PunishModule());
+        TrilliumAPI.registerModule(new AbilityModule());
+        TrilliumAPI.registerModule(new AdminModule());
 
         setupcmdbinder();
 
@@ -99,13 +99,9 @@ public class Trillium extends JavaPlugin {
         getCommand("teleporthere").setExecutor(new CommandTeleportH());
         getCommand("teleportrequesthere").setExecutor(new CommandTeleportRH());
         getCommand("gamemode").setExecutor(new CommandGamemode());
-        getCommand("back").setExecutor(new CommandBack());
-        getCommand("god").setExecutor(new CommandGodMode());
         getCommand("inventory").setExecutor(new CommandInventory());
-        getCommand("broadcast").setExecutor(new CommandBroadcast());
         getCommand("info").setExecutor(new CommandInfo());
         getCommand("vanish").setExecutor(new CommandVanish());
-        getCommand("fly").setExecutor(new CommandFly());
         getCommand("message").setExecutor(new CommandMessage());
         getCommand("commandbinder").setExecutor(new CommandCmdBinder());
         getCommand("kittybomb").setExecutor(new CommandKittyBomb());

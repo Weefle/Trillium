@@ -11,7 +11,9 @@ import me.lordsaad.trillium.api.command.Command;
 import me.lordsaad.trillium.api.command.TrilliumCommand;
 import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.api.serializer.Serializer;
+import net.md_5.bungee.api.ChatColor;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.SimplePluginManager;
@@ -20,7 +22,7 @@ public class TrilliumAPI {
     private static Trillium instance;
     private static Map<String, TrilliumPlayer> players;
     private static Map<Class<?>, Serializer<?>> serializers;
-    
+
     public static void setInstance(Trillium instance) {
         String className = new Throwable().getStackTrace()[1].getClassName();
         if (className.equalsIgnoreCase(Trillium.class.getCanonicalName())) {
@@ -35,13 +37,11 @@ public class TrilliumAPI {
     public static Trillium getInstance() {
         return instance;
     }
-    
+
     public static TrilliumPlayer getPlayer(String name) {
-        TrilliumPlayer p = players.get(name);
-        p.active();
-        return p;
+        return players.get(name);
     }
-    
+
     public static TrilliumPlayer createNewPlayer(Player proxy) {
         if (!players.containsKey(proxy.getName())) {
             TrilliumPlayer p = new TrilliumPlayer(proxy);
@@ -51,24 +51,32 @@ public class TrilliumAPI {
             throw new IllegalStateException(String.format("TrilliumPlayer %s already exists", proxy.getName()));
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     public static <T> Serializer<T> getSerializer(Class<T> clazz) {
         return (Serializer<T>) serializers.get(clazz);
     }
-    
+
     public static <T> void registerSerializer(Class<T> clazz, Serializer<T> serializer) {
         serializers.put(clazz, serializer);
     }
-    
+
     public static void registerModule(TrilliumModule module) {
         instance.getServer().getPluginManager().registerEvents(module, instance);
         registerCommand(module.getClass());
         module.register();
     }
-    
+
     public static Collection<? extends TrilliumPlayer> getOnlinePlayers() {
         return players.values();
+    }
+
+    public static void broadcast(String message) {
+        broadcast("&c[&4Broadcast&c]&r", message);
+    }
+
+    public static void broadcast(String prefix, String message) {
+        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', prefix + " " + message));
     }
 
     public static void registerCommand(Class<?> commandClass) {

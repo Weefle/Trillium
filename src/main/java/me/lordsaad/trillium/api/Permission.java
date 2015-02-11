@@ -13,4 +13,18 @@ public class Permission {
         private static final String PREFIX = "tr.afk.";
         public static final String USE = PREFIX + "use";
     }
+    
+    public static class Ability {
+        private static final String PREFIX = "tr.ability.";
+        public static final String BACK = PREFIX + "back";
+        public static final String FLY = PREFIX + "fly";
+        public static final String FLY_OTHER = PREFIX + "fly.other";
+        public static final String GOD = PREFIX + "god";
+        public static final String GOD_OTHER = PREFIX + "god.other";
+    }
+    
+    public static class Admin {
+        private static final String PREFIX = "tr.admin.";
+        public static final String BROADCAST = PREFIX + "broadcast";
+    }
 }

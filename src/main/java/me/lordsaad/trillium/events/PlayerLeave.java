@@ -1,8 +1,6 @@
 package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.api.TrilliumAPI;
-import me.lordsaad.trillium.commands.CommandGodMode;
-import me.lordsaad.trillium.commands.CommandVanish;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -1,13 +1,11 @@
 package me.lordsaad.trillium;
 
-import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import me.lordsaad.trillium.runnables.TpsRunnable;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
@@ -31,10 +29,6 @@ public class API {
             return false;
         }
         return true;
-    }
-
-    public static boolean isOnline(Player p) {
-        return p.isOnline() && !CommandVanish.vanishedusers.contains(p.getUniqueId());
     }
 
     public static int getFoodLevel(Player p) {

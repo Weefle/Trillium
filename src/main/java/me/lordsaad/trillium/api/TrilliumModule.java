@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 public abstract class TrilliumModule implements Listener {
     private ConfigurationSection config;
     
-    protected ConfigurationSection getConfig() {
+    public ConfigurationSection getConfig() {
         return config;
     }
     

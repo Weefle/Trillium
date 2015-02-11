@@ -1,5 +1,6 @@
 package me.lordsaad.trillium.modules;
 
+import me.lordsaad.trillium.api.Configuration;
 import me.lordsaad.trillium.api.Permission;
 import me.lordsaad.trillium.api.TrilliumModule;
 import me.lordsaad.trillium.api.command.Command;
@@ -10,6 +11,12 @@ import me.lordsaad.trillium.messageutils.Message;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 
 public class AbilityModule extends TrilliumModule {
     @Command(command = "back", description = "Teleport to your last active position", usage = "/back")
@@ -68,7 +75,7 @@ public class AbilityModule extends TrilliumModule {
             Message.e(cs, "Fly", Crit.C);
         }
     }
-    
+
     @Command(command = "god", description = "Invincibility!", usage = "/god")
     public void god(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
@@ -108,6 +115,99 @@ public class AbilityModule extends TrilliumModule {
             }
         } else {
             Message.e(cs, "God", Crit.C);
+        }
+    }
+
+    @Command(command = "vanish", description = "Poof! Gone!", usage = "/vanish (player)", aliases = "v")
+    public void vanish(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer player = player(cs.getName());
+            if (args.length == 0) {
+                if (player.hasPermission(Permission.Ability.VANISH)) {
+                    if (!player.isVanished()) {
+                        player.setVanished(true);
+                        Message.m(MType.G, player.getProxy(), "God", "You are now in vanish mode.");
+                    } else {
+                        player.setVanished(false);
+                        Message.m(MType.G, player.getProxy(), "God", "You are no longer in vanish mode.");
+                    }
+                } else {
+                    Message.e(player.getProxy(), "Vanish", Crit.P);
+                }
+            } else {
+                if (player.hasPermission(Permission.Ability.VANISH_OTHER)) {
+                    TrilliumPlayer target = player(args[0]);
+                    if (target != null) {
+                        if (target.isVanished()) {
+                            Message.m(MType.G, target.getProxy(), "Vanish", player.getProxy().getName() + " removed you from vanish mode.");
+                            Message.m(MType.G, player.getProxy(), "Vanish", target.getProxy().getName() + " is no longer in vanish mode.");
+                            target.setVanished(false);
+                        } else {
+                            Message.m(MType.G, target.getProxy(), "Vanish", player.getProxy().getName() + " put you in vanish mode.");
+                            Message.m(MType.G, player.getProxy(), "Vanish", target.getProxy().getName() + " is now in vanish mode.");
+                            target.setVanished(true);
+                        }
+                    } else {
+                        Message.eplayer(player.getProxy(), "Vanish", args[0]);
+                    }
+                } else {
+                    Message.earg(player.getProxy(), "Vanish", "/vanish [player]");
+                }
+            }
+        } else {
+            Message.e(cs, "Vanish", Crit.C);
+        }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player) {
+            TrilliumPlayer player = player(event.getEntity().getName());
+            if (player.isGod()) {
+                event.setCancelled(true);
+            }
+            if (player.isVanished()) {
+                if (getConfig().getBoolean("Vanish.god mode")) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onHunger(FoodLevelChangeEvent event) {
+        TrilliumPlayer player = player(event.getEntity().getName());
+        if (player.isGod()) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onTarget(EntityTargetEvent event) {
+        if (event.getTarget() instanceof Player) {
+            TrilliumPlayer player = player(event.getEntity().getName());
+            if (player.isGod()) {
+                event.setCancelled(true);
+            }
+            if (player.isVanished()) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPickup(PlayerPickupItemEvent event) {
+        TrilliumPlayer player = player(event.getPlayer());
+        if (player.isVanished() && !getConfig().getBoolean(Configuration.Ability.PICK_UP_ITEM)) {
+            event.setCancelled(true);
+        }
+    }
+    
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent event) {
+        TrilliumPlayer player = player(event.getPlayer());
+        if (player.isVanished() && !getConfig().getBoolean(Configuration.Ability.DROP_ITEM)) {
+            event.setCancelled(true);
         }
     }
 }

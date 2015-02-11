@@ -22,6 +22,7 @@ public class TrilliumAPI {
     private static Trillium instance;
     private static Map<String, TrilliumPlayer> players;
     private static Map<Class<?>, Serializer<?>> serializers;
+    private static Map<Class<? extends TrilliumModule>, TrilliumModule> modules;
 
     public static void setInstance(Trillium instance) {
         String className = new Throwable().getStackTrace()[1].getClassName();
@@ -29,6 +30,7 @@ public class TrilliumAPI {
             TrilliumAPI.instance = instance;
             TrilliumAPI.players = new HashMap<>();
             TrilliumAPI.serializers = new HashMap<>();
+            TrilliumAPI.modules = new HashMap<>();
         } else {
             throw new IllegalStateException("Cannot set instance of TrilliumAPI");
         }
@@ -65,6 +67,16 @@ public class TrilliumAPI {
         instance.getServer().getPluginManager().registerEvents(module, instance);
         registerCommand(module.getClass());
         module.register();
+        modules.put(module.getClass(), module);
+    }
+    
+    public static boolean isModuleEnabled(Class<? extends TrilliumModule> module) {
+        return modules.containsKey(module);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <T> T getModule(Class<T> module) {
+        return (T) modules.get(module);
     }
 
     public static Collection<? extends TrilliumPlayer> getOnlinePlayers() {

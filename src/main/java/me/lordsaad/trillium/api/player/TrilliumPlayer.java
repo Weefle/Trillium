@@ -16,15 +16,16 @@ import org.bukkit.entity.Player;
 public class TrilliumPlayer {
     private Player proxy;
     private FileConfiguration config;
-    
+
     private Location previousLocation;
 
     private boolean afk;
     private long lastActive;
-    
+
     private boolean muted;
-    
+
     private boolean isGod = false;
+    private boolean isVanished = false;
 
     public TrilliumPlayer(Player proxy) {
         this.proxy = proxy;
@@ -59,19 +60,19 @@ public class TrilliumPlayer {
             Message.b(MType.G, "AFK", getProxy().getName() + " is no longer AFK.");
         }
     }
-    
+
     public boolean isMuted() {
         return this.muted;
     }
-    
+
     public void mute() {
-        
+
     }
-    
+
     public void unmute() {
-        
+
     }
-    
+
     public void setFlying(boolean enabled) {
         if (enabled) {
             getProxy().setAllowFlight(true);
@@ -79,11 +80,11 @@ public class TrilliumPlayer {
             getProxy().setAllowFlight(false);
         }
     }
-    
+
     public boolean isFlying() {
         return getProxy().getAllowFlight() || getProxy().isFlying();
     }
-    
+
     public void setGod(boolean enabled) {
         if (enabled) {
             this.isGod = true;
@@ -91,11 +92,29 @@ public class TrilliumPlayer {
             this.isGod = false;
         }
     }
-    
+
     public boolean isGod() {
         return this.isGod;
     }
-    
+
+    public void setVanished(boolean enabled) {
+        if (enabled) {
+            this.isVanished = true;
+            for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
+                p.getProxy().hidePlayer(getProxy());
+            }
+        } else {
+            this.isVanished = false;
+            for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
+                p.getProxy().showPlayer(getProxy());
+            }
+        }
+    }
+
+    public boolean isVanished() {
+        return this.isVanished;
+    }
+
     public boolean hasPermission(String permission) {
         return getProxy().hasPermission(permission);
     }

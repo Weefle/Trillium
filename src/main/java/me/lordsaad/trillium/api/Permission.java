@@ -21,6 +21,8 @@ public class Permission {
         public static final String FLY_OTHER = PREFIX + "fly.other";
         public static final String GOD = PREFIX + "god";
         public static final String GOD_OTHER = PREFIX + "god.other";
+        public static final String VANISH = PREFIX + "vanish";
+        public static final String VANISH_OTHER = PREFIX + "vanish.other";
     }
     
     public static class Admin {

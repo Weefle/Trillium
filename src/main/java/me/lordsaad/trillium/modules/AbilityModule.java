@@ -17,6 +17,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class AbilityModule extends TrilliumModule {
     @Command(command = "back", description = "Teleport to your last active position", usage = "/back")
@@ -202,12 +203,20 @@ public class AbilityModule extends TrilliumModule {
             event.setCancelled(true);
         }
     }
-    
+
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
         TrilliumPlayer player = player(event.getPlayer());
         if (player.isVanished() && !getConfig().getBoolean(Configuration.Ability.DROP_ITEM)) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        TrilliumPlayer player = player(e.getPlayer());
+        if (player.isVanished()) {
+            e.setQuitMessage("");
         }
     }
 }

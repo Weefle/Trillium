@@ -15,14 +15,9 @@ public class PlayerMove implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         Player p = event.getPlayer();
-        if (event.getFrom().getBlockX() != event.getTo().getBlockX()
-                || event.getFrom().getBlockY() != event.getTo().getBlockY()
-                || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
-
+        if (event.getFrom().getBlockX() != event.getTo().getBlockX() || event.getFrom().getBlockY() != event.getTo().getBlockY() || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
             for (Location loc : CommandCmdBinder.antilagcheckloc) {
-                if (p.getLocation().getBlockX() == loc.getBlockX()
-                        && p.getLocation().getBlockY() == loc.getBlockY()
-                        && p.getLocation().getBlockZ() == loc.getBlockZ()) {
+                if (p.getLocation().getBlockX() == loc.getBlockX() && p.getLocation().getBlockY() == loc.getBlockY() && p.getLocation().getBlockZ() == loc.getBlockZ()) {
                     if (CommandCmdBinder.walkconsole.containsKey(p.getLocation())) {
                         String cmd = CommandCmdBinder.walkconsole.get(p.getLocation());
                         cmd = cmd.replace("[p]", p.getName());

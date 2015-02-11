@@ -1,6 +1,8 @@
 package me.lordsaad.trillium.commands;
 
 import me.lordsaad.trillium.API;
+import me.lordsaad.trillium.api.TrilliumAPI;
+import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
@@ -22,21 +24,22 @@ public class CommandInfo implements CommandExecutor {
                 } else {
                     Player p = Bukkit.getPlayer(args[0]);
                     if (p != null) {
+                        TrilliumPlayer player = TrilliumAPI.getPlayer(p.getName());
                         p.sendMessage(" ");
                         Message.m(MType.R, sender, "Info", "Displaying Information on: " + ChatColor.AQUA + p.getName());
                         Message.m(MType.R, sender, "Info", "Nickname: " + ChatColor.AQUA + p.getDisplayName());
-                        Message.m(MType.R, sender, "Info", "Online: " + ChatColor.AQUA + API.isOnline(p));
+                        Message.m(MType.R, sender, "Info", "Online: " + ChatColor.AQUA + player.isVanished());
                         Message.m(MType.R, sender, "Info", "Gamemode: " + ChatColor.AQUA + API.getGamemode(p));
                         Message.m(MType.R, sender, "Info", "Banned: " + ChatColor.AQUA + p.isBanned());
                         if (p.isBanned()) {
                             Message.m(MType.R, sender, "Info", "Ban Reason: 'You are the weakest link. Goodbye.'");
                         }
-                        Message.m(MType.R, sender, "Info", "Muted: " + ChatColor.AQUA + API.isMuted(p));
-                        Message.m(MType.R, sender, "Info", "Flying: " + ChatColor.AQUA + API.isFlying(p));
+                        Message.m(MType.R, sender, "Info", "Muted: " + ChatColor.AQUA + player.isMuted());
+                        Message.m(MType.R, sender, "Info", "Flying: " + ChatColor.AQUA + player.isFlying());
                         Message.m(MType.R, sender, "Info", "Ping: " + ChatColor.AQUA + API.getPing(p));
                         Message.m(MType.R, sender, "Info", "Ping: " + ChatColor.AQUA + API.getPingBar(p));
                         Message.m(MType.R, sender, "Info", "Location: " + ChatColor.AQUA + API.locationString(p));
-                        if (!API.isOnline(p)) {
+                        if (player.isVanished()) {
                             Message.m(MType.R, sender, "Info", "Last found at: " + ChatColor.AQUA + API.lastLocationString(p));
                         }
                         Message.m(MType.R, sender, "Info", "Food level: " + ChatColor.AQUA + API.getFoodLevel(p));

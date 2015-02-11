@@ -5,80 +5,11 @@ import me.lordsaad.trillium.messageutils.Message;
 import me.lordsaad.trillium.runnables.TpsRunnable;
 
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class API {
-
-    public static boolean isDouble(String s) {
-        try {
-            Double.parseDouble(s);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isInt(String s) {
-        try {
-            Integer.parseInt(s);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        return true;
-    }
-
-    public static int getFoodLevel(Player p) {
-        if (p.isOnline()) {
-            return p.getFoodLevel();
-        } else {
-            return 0;
-        }
-    }
-
-    public static double getHealthLevel(Player p) {
-        if (p.isOnline()) {
-            return p.getHealthScale();
-        } else {
-            return 0;
-        }
-    }
-
-    public static String getGamemode(Player p) {
-        if (p.isOnline()) {
-            if (p.getGameMode() == GameMode.SURVIVAL) {
-                return "Survival mode";
-            } else if (p.getGameMode() == GameMode.CREATIVE) {
-                return "Creative mode";
-            } else if (p.getGameMode() == GameMode.ADVENTURE) {
-                return "Adventure mode";
-            } else {
-                return "Spectator mode";
-            }
-        } else {
-            return "null";
-        }
-    }
-
-    public static int getTimePlayed(Player p) {
-        return p.getStatistic(Statistic.PLAY_ONE_TICK) / 20;
-    }
-
-    public static boolean isFlying(Player p) {
-        if (p.isOnline()) {
-            if (p.isFlying()) {
-                return true;
-            } else {
-                return true;
-            }
-        } else {
-            return false;
-        }
-    }
-
     public static void printCurrentMemory(CommandSender sender) {
         int free = (int) Runtime.getRuntime().freeMemory() / 1000000;
         int max = (int) Runtime.getRuntime().maxMemory() / 1000000;

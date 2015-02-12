@@ -2,10 +2,8 @@ package me.lordsaad.trillium.api.player;
 
 import me.lordsaad.trillium.api.Configuration;
 import me.lordsaad.trillium.api.TrilliumAPI;
-import me.lordsaad.trillium.api.TrilliumModule;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,7 +12,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 
-public class TrilliumPlayer extends TrilliumModule {
+public class TrilliumPlayer {
     private Player proxy;
 
     private Location previousLocation;
@@ -91,16 +89,10 @@ public class TrilliumPlayer extends TrilliumModule {
             for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
                 p.getProxy().hidePlayer(getProxy());
             }
-            if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
-                getProxy().setGameMode(GameMode.SPECTATOR);
-            }
         } else {
             this.isVanished = false;
             for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
                 p.getProxy().showPlayer(getProxy());
-            }
-            if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
-                getProxy().setGameMode(GameMode.SURVIVAL);
             }
         }
     }

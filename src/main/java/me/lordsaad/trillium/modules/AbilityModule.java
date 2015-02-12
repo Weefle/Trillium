@@ -8,6 +8,7 @@ import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +20,11 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class AbilityModule extends TrilliumModule {
+
+    public AbilityModule() {
+        super("ability");
+    }
+
     @Command(command = "back", description = "Teleport to your last active position", usage = "/back")
     public void back(CommandSender cs) {
         if (cs instanceof Player) {
@@ -127,9 +133,15 @@ public class AbilityModule extends TrilliumModule {
                     if (!player.isVanished()) {
                         player.setVanished(true);
                         Message.m(MType.G, player.getProxy(), "God", "You are now in vanish mode.");
+                        if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
+                            player.getProxy().setGameMode(GameMode.SPECTATOR);
+                        }
                     } else {
                         player.setVanished(false);
                         Message.m(MType.G, player.getProxy(), "God", "You are no longer in vanish mode.");
+                        if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
+                            player.getProxy().setGameMode(GameMode.SURVIVAL);
+                        }
                     }
                 } else {
                     Message.e(player.getProxy(), "Vanish", Crit.P);
@@ -142,10 +154,16 @@ public class AbilityModule extends TrilliumModule {
                             Message.m(MType.G, target.getProxy(), "Vanish", player.getProxy().getName() + " removed you from vanish mode.");
                             Message.m(MType.G, player.getProxy(), "Vanish", target.getProxy().getName() + " is no longer in vanish mode.");
                             target.setVanished(false);
+                            if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
+                                target.getProxy().setGameMode(GameMode.SURVIVAL);
+                            }
                         } else {
                             Message.m(MType.G, target.getProxy(), "Vanish", player.getProxy().getName() + " put you in vanish mode.");
                             Message.m(MType.G, player.getProxy(), "Vanish", target.getProxy().getName() + " is now in vanish mode.");
                             target.setVanished(true);
+                            if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
+                                player.getProxy().setGameMode(GameMode.SPECTATOR);
+                            }
                         }
                     } else {
                         Message.eplayer(player.getProxy(), "Vanish", args[0]);

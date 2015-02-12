@@ -14,7 +14,6 @@ import me.lordsaad.trillium.runnables.TpsRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -114,9 +113,6 @@ public class Trillium extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        HandlerList.unregisterAll();
-        Bukkit.getScheduler().cancelAllTasks();
     }
 
     private void setupcmdbinder() {

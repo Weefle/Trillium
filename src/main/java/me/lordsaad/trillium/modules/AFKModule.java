@@ -24,6 +24,10 @@ import java.util.List;
 
 public class AFKModule extends TrilliumModule {
 
+    public AFKModule() {
+        super("afk");
+    }
+
     @Command(command = "afk", description = "Indicate that you are away from your keyboard.", usage = "/afk")
     public void onCommand(CommandSender sender) throws CommandException {
         if (sender instanceof Player) {

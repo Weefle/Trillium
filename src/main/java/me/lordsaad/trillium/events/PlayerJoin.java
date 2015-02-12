@@ -19,8 +19,11 @@ public class PlayerJoin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         TrilliumPlayer player = TrilliumAPI.createNewPlayer(event.getPlayer());
-
+        
         Player p = event.getPlayer();
+        
+        p.sendMessage("Player: Player join event is working");
+        Bukkit.broadcastMessage("Broadcast: player join event is working");
 
         //join message
         if (!player.isVanished()) {

@@ -1,18 +1,19 @@
 package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.api.Configuration;
-import me.lordsaad.trillium.api.TrilliumModule;
+import me.lordsaad.trillium.api.TrilliumAPI;
+import me.lordsaad.trillium.modules.AbilityModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-public class PlayerDeath extends TrilliumModule implements Listener {
+public class PlayerDeath implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player p = event.getEntity();
-        if (getConfig().getBoolean(Configuration.Ability.AUTO_RESPAWN)) {
+        if (TrilliumAPI.getModule(AbilityModule.class).getConfig().getBoolean(Configuration.Ability.AUTO_RESPAWN)) {
             try {
                 Object nmsPlayer = p.getClass().getMethod("getHandle").invoke(p);
                 Object packet = Class.forName(nmsPlayer.getClass().getPackage().getName() + ".PacketPlayInClientCommand").newInstance();

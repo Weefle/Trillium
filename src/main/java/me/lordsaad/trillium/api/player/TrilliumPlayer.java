@@ -112,7 +112,7 @@ public class TrilliumPlayer {
 
     private void load() throws IOException {
         boolean newUser = false;
-        File dataStore = new File(TrilliumAPI.getInstance().getDataFolder() + File.separator + "players" + File.separator + proxy.getUniqueId() + ".yml");
+        File dataStore = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
         if (!dataStore.exists()) {
             dataStore.createNewFile();
             newUser = true;

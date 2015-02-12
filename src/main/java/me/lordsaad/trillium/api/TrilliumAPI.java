@@ -1,22 +1,25 @@
 package me.lordsaad.trillium.api;
 
-import me.lordsaad.trillium.Trillium;
-import me.lordsaad.trillium.api.command.Command;
-import me.lordsaad.trillium.api.command.TrilliumCommand;
-import me.lordsaad.trillium.api.player.TrilliumPlayer;
-import me.lordsaad.trillium.api.serializer.Serializer;
-import org.bukkit.command.CommandMap;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.SimplePluginManager;
-
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import me.lordsaad.trillium.Trillium;
+import me.lordsaad.trillium.api.command.Command;
+import me.lordsaad.trillium.api.command.TrilliumCommand;
+import me.lordsaad.trillium.api.player.TrilliumPlayer;
+import me.lordsaad.trillium.api.serializer.Serializer;
+
+import org.bukkit.command.CommandMap;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.SimplePluginManager;
+
 public class TrilliumAPI {
     private static Trillium instance;
+    private static File playerFolder;
     private static Map<String, TrilliumPlayer> players;
     private static Map<Class<?>, Serializer<?>> serializers;
     private static Map<Class<? extends TrilliumModule>, TrilliumModule> modules;
@@ -34,6 +37,8 @@ public class TrilliumAPI {
             TrilliumAPI.modules = new HashMap<>();
             
             TrilliumAPI.instance.saveDefaultConfig();
+            TrilliumAPI.playerFolder = new File(getInstance().getDataFolder(), "players");
+            playerFolder.mkdirs();
         } else {
             throw new IllegalStateException("Cannot set instance of TrilliumAPI");
         }
@@ -53,6 +58,10 @@ public class TrilliumAPI {
         }
     }
     
+    public static File getPlayerFolder() {
+        return playerFolder;
+    }
+    
     @SuppressWarnings("unchecked")
     public static <T> Serializer<T> getSerializer(Class<T> clazz) {
         return (Serializer<T>) serializers.get(clazz);
@@ -64,7 +73,7 @@ public class TrilliumAPI {
 
     public static void registerModule(TrilliumModule module) {
         instance.getServer().getPluginManager().registerEvents(module, instance);
-        registerCommand(module.getClass());
+        registerCommand(module);
         module.register();
         modules.put(module.getClass(), module);
     }
@@ -82,16 +91,16 @@ public class TrilliumAPI {
         return players.values();
     }
 
-    public static void registerCommand(Class<?> commandClass) {
+    public static void registerCommand(TrilliumModule module) {
         try {
             Field field = SimplePluginManager.class.getDeclaredField("commandMap");
             field.setAccessible(true);
             CommandMap commandMap = (CommandMap) (field.get(getInstance().getServer().getPluginManager()));
-            for (Method m : commandClass.getDeclaredMethods()) {
+            for (Method m : module.getClass().getDeclaredMethods()) {
                 Command command = m.getAnnotation(Command.class);
                 if (command != null) {
-                    TrilliumCommand c = new TrilliumCommand(command.command(), command.description(), command.usage(), command.aliases(), m);
-                    commandMap.register(command.command(), c);
+                    TrilliumCommand c = new TrilliumCommand(command.command(), command.description(), command.usage(), command.aliases(), m, module);
+                    commandMap.register("trillium", c);
                 }
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {

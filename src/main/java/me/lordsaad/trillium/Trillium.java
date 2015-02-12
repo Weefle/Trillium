@@ -4,15 +4,11 @@ import java.io.File;
 import java.io.IOException;
 
 import me.lordsaad.trillium.api.TrilliumAPI;
-import me.lordsaad.trillium.commands.CommandBan;
-import me.lordsaad.trillium.commands.CommandBroadcast;
+import me.lordsaad.trillium.api.serializer.LocationSerializer;
 import me.lordsaad.trillium.commands.CommandCmdBinder;
-import me.lordsaad.trillium.commands.CommandFly;
 import me.lordsaad.trillium.commands.CommandGamemode;
-import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandInfo;
 import me.lordsaad.trillium.commands.CommandInventory;
-import me.lordsaad.trillium.commands.CommandKick;
 import me.lordsaad.trillium.commands.CommandKillall;
 import me.lordsaad.trillium.commands.CommandKittyBomb;
 import me.lordsaad.trillium.commands.CommandLag;
@@ -28,9 +24,6 @@ import me.lordsaad.trillium.commands.CommandSmite;
 import me.lordsaad.trillium.commands.CommandSpawn;
 import me.lordsaad.trillium.commands.CommandSpeed;
 import me.lordsaad.trillium.commands.CommandTrillium;
-import me.lordsaad.trillium.commands.CommandUnban;
-import me.lordsaad.trillium.commands.CommandVanish;
-import me.lordsaad.trillium.commands.teleport.CommandBack;
 import me.lordsaad.trillium.commands.teleport.CommandTeleport;
 import me.lordsaad.trillium.commands.teleport.CommandTeleportH;
 import me.lordsaad.trillium.commands.teleport.CommandTeleportR;
@@ -38,22 +31,16 @@ import me.lordsaad.trillium.commands.teleport.CommandTeleportRA;
 import me.lordsaad.trillium.commands.teleport.CommandTeleportRD;
 import me.lordsaad.trillium.commands.teleport.CommandTeleportRH;
 import me.lordsaad.trillium.databases.CmdBinderDatabase;
-import me.lordsaad.trillium.events.EntityDamage;
-import me.lordsaad.trillium.events.EntityRegainHealth;
-import me.lordsaad.trillium.events.EntityTarget;
-import me.lordsaad.trillium.events.FoodLevelChange;
-import me.lordsaad.trillium.events.PlayerCommandPreprocess;
 import me.lordsaad.trillium.events.PlayerDeath;
-import me.lordsaad.trillium.events.PlayerDropItem;
 import me.lordsaad.trillium.events.PlayerInteract;
 import me.lordsaad.trillium.events.PlayerJoin;
 import me.lordsaad.trillium.events.PlayerLeave;
 import me.lordsaad.trillium.events.PlayerMove;
-import me.lordsaad.trillium.events.PlayerPickupItem;
 import me.lordsaad.trillium.events.ServerListPing;
 import me.lordsaad.trillium.modules.AFKModule;
+import me.lordsaad.trillium.modules.AbilityModule;
+import me.lordsaad.trillium.modules.AdminModule;
 import me.lordsaad.trillium.modules.PunishModule;
-import me.lordsaad.trillium.runnables.AfkRunnable;
 import me.lordsaad.trillium.runnables.TpsRunnable;
 
 import org.bukkit.Bukkit;
@@ -74,27 +61,20 @@ public class Trillium extends JavaPlugin {
 
     public void onEnable() {
         TrilliumAPI.setInstance(this);
-
-        TrilliumAPI.registerCommand(AFKModule.class);
-        getServer().getPluginManager().registerEvents(new AFKModule(), this);
+        TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
         
-        TrilliumAPI.registerCommand(PunishModule.class);
-        getServer().getPluginManager().registerEvents(new PunishModule(), this);
+        TrilliumAPI.registerModule(new AFKModule());
+        TrilliumAPI.registerModule(new PunishModule());
+        TrilliumAPI.registerModule(new AbilityModule());
+        TrilliumAPI.registerModule(new AdminModule());
 
         setupcmdbinder();
 
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
-        getServer().getPluginManager().registerEvents(new EntityDamage(), this);
-        getServer().getPluginManager().registerEvents(new PlayerPickupItem(), this);
-        getServer().getPluginManager().registerEvents(new PlayerDropItem(), this);
-        getServer().getPluginManager().registerEvents(new EntityTarget(), this);
-        getServer().getPluginManager().registerEvents(new PlayerCommandPreprocess(), this);
         getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
-        getServer().getPluginManager().registerEvents(new EntityRegainHealth(), this);
-        getServer().getPluginManager().registerEvents(new FoodLevelChange(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
         getCommand("trillium").setExecutor(new CommandTrillium());
@@ -106,13 +86,8 @@ public class Trillium extends JavaPlugin {
         getCommand("teleporthere").setExecutor(new CommandTeleportH());
         getCommand("teleportrequesthere").setExecutor(new CommandTeleportRH());
         getCommand("gamemode").setExecutor(new CommandGamemode());
-        getCommand("back").setExecutor(new CommandBack());
-        getCommand("god").setExecutor(new CommandGodMode());
         getCommand("inventory").setExecutor(new CommandInventory());
-        getCommand("broadcast").setExecutor(new CommandBroadcast());
         getCommand("info").setExecutor(new CommandInfo());
-        getCommand("vanish").setExecutor(new CommandVanish());
-        getCommand("fly").setExecutor(new CommandFly());
         getCommand("message").setExecutor(new CommandMessage());
         getCommand("commandbinder").setExecutor(new CommandCmdBinder());
         getCommand("kittybomb").setExecutor(new CommandKittyBomb());
@@ -127,11 +102,7 @@ public class Trillium extends JavaPlugin {
         getCommand("lag").setExecutor(new CommandLag());
         getCommand("speed").setExecutor(new CommandSpeed());
         getCommand("nickname").setExecutor(new CommandNickname());
-        getCommand("ban").setExecutor(new CommandBan());
-        getCommand("unban").setExecutor(new CommandUnban());
-        getCommand("kick").setExecutor(new CommandKick());
 
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkRunnable(), 1, getConfig().getInt("AFK.auto afk.time until idle") * 20);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);
 
         File reports = new File(TrilliumAPI.getInstance().getDataFolder(), "Reports.yml");

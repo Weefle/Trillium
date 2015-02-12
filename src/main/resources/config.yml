@@ -34,13 +34,13 @@ Broadcast:
 ability:
   auto-respawn: false
   vanish:
-    prevent-item-pickup/drop: true
     spectator-mode: true
     god-mode: true
-  afk:
-    auto-afk:
-      enabled: true
-      time-until-idle: 60
-      #seconds
-      kick-on-afk: false
-    auto-unafk: true
+    pick-up-item: true
+afk:
+  auto-afk:
+    enabled: true
+    time-until-idle: 60
+    #seconds
+    kick-on-afk: false
+  auto-unafk: true

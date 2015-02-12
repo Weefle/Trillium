@@ -42,9 +42,6 @@ commands:
   back:
     description: Teleport to the last place you teleported from.
     usage: /back
-  god:
-    description: Become invcible to anything.
-    usage: /god [player]
   inventory:
     description: Open a crafting table or view someone's inventory or enderchest.
     usage: /inv <player [enderchest]/crafting>
@@ -57,17 +54,6 @@ commands:
     description: Show information about a player.
     usage: /info <player>
     aliases: [info]
-  vanish:
-    description: Turn completely invisible and roam the world undetected.
-    usage: /v [player]
-    aliases: [v]
-  fly:
-    description: SOAR THROUGH THE AIR LIKE A MAJESTIC BLOCKY BUTTERFLY!!
-    usage: /fly [player]
-    aliases: [f]
-  afk:
-    description: Indicate you are away from your keyboard.
-    usage: /afk
   message:
     description: Send a message to a player.
     usage: /message <sender> <message>
@@ -116,12 +102,3 @@ commands:
     description: Set a nickname for yourself
     usage: /nick [player]
     aliases: [nick]
-  mute:
-    description: Silence/unsilence someone's voice.
-    usage: /mute <player>
-  ban:
-    description: Ban a player from the server.
-    usage: /ban <player> [reason]
-  unban:
-    description: Unban a banned player.
-    usage: /unban <player>

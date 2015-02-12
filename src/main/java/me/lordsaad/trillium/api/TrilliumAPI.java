@@ -32,6 +32,8 @@ public class TrilliumAPI {
             TrilliumAPI.players = new HashMap<>();
             TrilliumAPI.serializers = new HashMap<>();
             TrilliumAPI.modules = new HashMap<>();
+            
+            TrilliumAPI.instance.saveDefaultConfig();
         } else {
             throw new IllegalStateException("Cannot set instance of TrilliumAPI");
         }
@@ -50,7 +52,7 @@ public class TrilliumAPI {
             throw new IllegalStateException(String.format("TrilliumPlayer %s already exists", proxy.getName()));
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     public static <T> Serializer<T> getSerializer(Class<T> clazz) {
         return (Serializer<T>) serializers.get(clazz);

@@ -14,7 +14,7 @@ public class PlayerLeave implements Listener {
     public void onLeave(PlayerQuitEvent event) {
         Player p = event.getPlayer();
 
-        String m1 = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString("Leave.message"));
+        String m1 = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString("leave.message"));
         m1 = m1.replace("[USERNAME]", p.getName());
         event.setQuitMessage(m1);
 

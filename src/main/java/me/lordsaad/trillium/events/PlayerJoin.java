@@ -24,7 +24,7 @@ public class PlayerJoin implements Listener {
 
         //join message
         if (!player.isVanished()) {
-            String m1 = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString("Join.message"));
+            String m1 = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString("join.message"));
             m1 = m1.replace("[USERNAME]", p.getName());
             event.setJoinMessage(m1);
         }

@@ -1,12 +1,15 @@
 package me.lordsaad.trillium.modules;
 
 import me.lordsaad.trillium.api.Permission;
-import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.api.TrilliumModule;
 import me.lordsaad.trillium.api.command.Command;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.Message;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+
+import java.util.List;
 
 public class AdminModule extends TrilliumModule {
     @Command(command = "broadcast", description = "Broadcast a message to the world", usage = "/broadcast <message>")
@@ -19,7 +22,15 @@ public class AdminModule extends TrilliumModule {
                 for (String arg : args) {
                     sb.append(arg).append(" ");
                 }
-                TrilliumAPI.broadcast(sb.toString().trim());
+                String message = sb.toString().trim();
+
+                List<String> format = getConfig().getStringList("Broadcast");
+
+                for (String s : format) {
+                    s = ChatColor.translateAlternateColorCodes('&', s);
+                    s = s.replace("[msg]", message);
+                    Bukkit.broadcastMessage(s);
+                }
             }
         } else {
             Message.e(cs, "Broadcast", Crit.P);

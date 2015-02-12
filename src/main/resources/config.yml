@@ -4,20 +4,21 @@
 #   | || |  | | | | | |_| | | | | | |
 #   |_||_|  |_|_|_|_|\__,_|_| |_| |_|
 
-#---------------[ Motd ]---------------#
-Server_List_Motd: "&cPlease define a motd in the config.yml"
-Motd:
-  - "&8<<<--->>> &aServer &8<<<--->>>"
-  - "&7Welcome &6[USERNAME]&7!"
-  - "&7There are currently &6[ONLINE]&7/&6[SLOTS] players."
-  - "&7Have fun! ^_^/"
+#---------------[ Server ]---------------#
+server:
+  server-list-motd: "&cPlease define a motd in the config.yml"
+  motd:
+    - "&8<<<--->>> &aServer &8<<<--->>>"
+    - "&7Welcome &6[USERNAME]&7!"
+    - "&7There are currently &6[ONLINE]&7/&6[SLOTS] players."
+    - "&7Have fun! ^_^/"
 
 #---------------[ Player Join ]---------------#
-Join:
+join:
   message: "&b[USERNAME] &9has joined the game!"
 
 #---------------[ Player Leave ]---------------#
-Leave:
+leave:
   message: "&b[USERNAME] &9has left the game!"
 
 #---------------[ Broadcast ]---------------#
@@ -29,21 +30,17 @@ Broadcast:
   - " "
   - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
 
-#---------------[ Vanish ]---------------#
-Vanish:
-  prevent_item_pickup/drop: true
-  spectator_mode: true
-  god_mode: true
-
-#---------------[ AFK ]---------------#
-AFK:
-  auto_afk:
-    enabled: true
-    time_until_idle: 60
-    #Time until idle in seconds.
-    kick_on_afk: false
-  god_mode: true
-  auto_unafk: true
-  #When the player makes any action, it takes them out of afk mode.
-#---------------[ Auto Respawn ]---------------#
-Auto_Respawn: false
+#---------------[ Ability ]---------------#
+ability:
+  auto-respawn: false
+  vanish:
+    prevent-item-pickup/drop: true
+    spectator-mode: true
+    god-mode: true
+  afk:
+    auto-afk:
+      enabled: true
+      time-until-idle: 60
+      #seconds
+      kick-on-afk: false
+    auto-unafk: true

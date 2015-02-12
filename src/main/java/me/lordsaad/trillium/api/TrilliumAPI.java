@@ -5,8 +5,6 @@ import me.lordsaad.trillium.api.command.Command;
 import me.lordsaad.trillium.api.command.TrilliumCommand;
 import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.api.serializer.Serializer;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.SimplePluginManager;
@@ -80,14 +78,6 @@ public class TrilliumAPI {
 
     public static Collection<? extends TrilliumPlayer> getOnlinePlayers() {
         return players.values();
-    }
-
-    public static void broadcast(String message) {
-        broadcast("&c[&4Broadcast&c]&r", message);
-    }
-
-    public static void broadcast(String prefix, String message) {
-        Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', prefix + " " + message));
     }
 
     public static void registerCommand(Class<?> commandClass) {

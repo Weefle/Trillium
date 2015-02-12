@@ -1,3 +1,6 @@
 .classpath
 .project
+.idea/
+.settings/
+Trillium.iml
 /target

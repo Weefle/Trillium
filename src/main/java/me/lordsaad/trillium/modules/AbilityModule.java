@@ -2,12 +2,14 @@ package me.lordsaad.trillium.modules;
 
 import me.lordsaad.trillium.api.Configuration;
 import me.lordsaad.trillium.api.Permission;
+import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.api.TrilliumModule;
 import me.lordsaad.trillium.api.command.Command;
 import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,6 +18,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -232,6 +235,23 @@ public class AbilityModule extends TrilliumModule {
         TrilliumPlayer player = player(e.getPlayer());
         if (player.isVanished()) {
             e.setQuitMessage("");
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        TrilliumPlayer player = player(e.getPlayer());
+        if (player.isVanished()) {
+            e.setJoinMessage("");
+            
+            Message.m(MType.W, player.getProxy(), "Vanish Mode", "Remember! You are still in vanish mode!");
+            for (TrilliumPlayer online : TrilliumAPI.getOnlinePlayers()) {
+                online.getProxy().hidePlayer(player.getProxy());
+            }
+        }
+
+        if (player.isGod()) {
+            Message.m(MType.W, player.getProxy(), "God Mode", "Remember! You are still in god mode!");
         }
     }
 }

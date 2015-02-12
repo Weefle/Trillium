@@ -23,6 +23,8 @@ import java.io.IOException;
 public class Trillium extends JavaPlugin {
 
     public void onEnable() {
+        saveDefaultConfig();
+
         TrilliumAPI.setInstance(this);
         TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
 
@@ -32,7 +34,6 @@ public class Trillium extends JavaPlugin {
         TrilliumAPI.registerModule(new AdminModule());
 
         setupcmdbinder();
-        saveDefaultConfig();
 
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);

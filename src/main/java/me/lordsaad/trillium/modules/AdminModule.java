@@ -28,14 +28,15 @@ public class AdminModule extends TrilliumModule {
                     sb.append(arg).append(" ");
                 }
                 String message = sb.toString().trim();
-                
+
                 List<String> format = getConfig().getStringList("Broadcast");
 
                 for (String s : format) {
                     s = ChatColor.translateAlternateColorCodes('&', s);
                     s = s.replace("[msg]", message);
                     Bukkit.broadcastMessage(s);
-                }            }
+                }
+            }
         } else {
             Message.e(cs, "Broadcast", Crit.P);
         }

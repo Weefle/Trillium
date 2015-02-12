@@ -9,7 +9,6 @@ import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
-
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -243,7 +242,7 @@ public class AbilityModule extends TrilliumModule {
         TrilliumPlayer player = player(e.getPlayer());
         if (player.isVanished()) {
             e.setJoinMessage("");
-            
+
             Message.m(MType.W, player.getProxy(), "Vanish Mode", "Remember! You are still in vanish mode!");
             for (TrilliumPlayer online : TrilliumAPI.getOnlinePlayers()) {
                 online.getProxy().hidePlayer(player.getProxy());

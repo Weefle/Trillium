@@ -16,8 +16,9 @@ public class CommandTrillium implements CommandExecutor {
                 if (sender.hasPermission("tr.admin")) {
                     sender.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
                     sender.sendMessage(ChatColor.GRAY + "              Plugin made with love");
-                    sender.sendMessage(ChatColor.GRAY + "       by LordSaad, VortexSeven, and Turbotailz");
-                    sender.sendMessage(ChatColor.DARK_RED + "                          ❤");
+                    sender.sendMessage(ChatColor.GRAY + "       by LordSaad, VortexSeven, Turbotailz");
+                    sender.sendMessage(ChatColor.GRAY + "               and Samczsun");
+                    sender.sendMessage(ChatColor.DARK_RED + "                     ❤");
                     sender.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
                     sender.sendMessage(ChatColor.GRAY + "Vesion: " + TrilliumAPI.getInstance().getDescription().getVersion());
                     sender.sendMessage(ChatColor.GRAY + "Configuration Reloaded");
@@ -26,8 +27,9 @@ public class CommandTrillium implements CommandExecutor {
                 } else {
                     sender.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
                     sender.sendMessage(ChatColor.GRAY + "              Plugin made with love");
-                    sender.sendMessage(ChatColor.GRAY + "       by LordSaad, VortexSeven, and Turbotailz");
-                    sender.sendMessage(ChatColor.DARK_RED + "                          ❤");
+                    sender.sendMessage(ChatColor.GRAY + "       by LordSaad, VortexSeven, Turbotailz");
+                    sender.sendMessage(ChatColor.GRAY + "               and Samczsun");
+                    sender.sendMessage(ChatColor.DARK_RED + "                     ❤");
                     sender.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
                     sender.sendMessage(ChatColor.GRAY + "Vesion: " + TrilliumAPI.getInstance().getDescription().getVersion());
                     sender.sendMessage(ChatColor.GRAY + "Please report any bugs you find to: support@gettrillium.net");

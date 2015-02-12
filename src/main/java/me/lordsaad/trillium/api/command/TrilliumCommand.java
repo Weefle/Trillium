@@ -1,11 +1,11 @@
 package me.lordsaad.trillium.api.command;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 
 public class TrilliumCommand extends Command {
     private final Method invoke;
@@ -19,11 +19,7 @@ public class TrilliumCommand extends Command {
     public boolean execute(CommandSender paramCommandSender, String paramString, String[] paramArrayOfString) {
         try {
             invoke.invoke(null, paramCommandSender, paramArrayOfString);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return true;

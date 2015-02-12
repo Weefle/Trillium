@@ -23,8 +23,7 @@ public class CommandMe implements CommandExecutor {
                         sb.append(arg).append(" ");
                     }
                     String message = sb.toString().trim();
-
-                    // I think /me really needed a custom format, so i did bukkit.broadcastmessage instead of the message util
+                    
                     Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "** " + ChatColor.GRAY + p.getName() + " " + message + ChatColor.DARK_GRAY + " **");
 
                 } else {

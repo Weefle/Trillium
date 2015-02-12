@@ -1,22 +1,21 @@
 package me.lordsaad.trillium.api;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import me.lordsaad.trillium.Trillium;
 import me.lordsaad.trillium.api.command.Command;
 import me.lordsaad.trillium.api.command.TrilliumCommand;
 import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.api.serializer.Serializer;
 import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.SimplePluginManager;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TrilliumAPI {
     private static Trillium instance;
@@ -69,11 +68,11 @@ public class TrilliumAPI {
         module.register();
         modules.put(module.getClass(), module);
     }
-    
+
     public static boolean isModuleEnabled(Class<? extends TrilliumModule> module) {
         return modules.containsKey(module);
     }
-    
+
     @SuppressWarnings("unchecked")
     public static <T> T getModule(Class<T> module) {
         return (T) modules.get(module);
@@ -103,9 +102,7 @@ public class TrilliumAPI {
                     commandMap.register(command.command(), c);
                 }
             }
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }

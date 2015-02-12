@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-public class API {
+public class Utils {
     public static void printCurrentMemory(CommandSender sender) {
         int free = (int) Runtime.getRuntime().freeMemory() / 1000000;
         int max = (int) Runtime.getRuntime().maxMemory() / 1000000;
@@ -65,5 +65,10 @@ public class API {
         } else {
             return bar(0);
         }
+    }
+
+    public static boolean isNumeric(String str)
+    {
+        return str.matches("-?\\d+(\\.\\d+)?");
     }
 }

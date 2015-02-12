@@ -1,6 +1,6 @@
 package me.lordsaad.trillium.commands;
 
-import me.lordsaad.trillium.API;
+import me.lordsaad.trillium.Utils;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
@@ -29,7 +29,7 @@ public class CommandReports implements CommandExecutor {
                             if (args.length < 2) {
                                 Message.earg(p, "Reports", "/reports remove <index number>");
                             } else {
-                                if (API.isInt(args[1])) {
+                                if (Utils.isNumeric(args[1])) {
                                     int nb = Integer.parseInt(args[1]);
                                     if (nb > 0 && nb <= CommandReport.reportlist.size() + 1) {
                                         Message.m(MType.G, p, "Reports", "Removed: " + nb);

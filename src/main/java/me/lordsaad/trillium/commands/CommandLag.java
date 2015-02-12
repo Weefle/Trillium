@@ -1,6 +1,6 @@
 package me.lordsaad.trillium.commands;
 
-import me.lordsaad.trillium.API;
+import me.lordsaad.trillium.Utils;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
@@ -19,7 +19,7 @@ public class CommandLag implements CommandExecutor {
                 long time = System.currentTimeMillis();
 
                 Message.m(MType.R, sender, "Lag", "Before GC:");
-                API.printCurrentMemory(sender);
+                Utils.printCurrentMemory(sender);
                 sender.sendMessage(" ");
 
                 System.gc();
@@ -27,7 +27,7 @@ public class CommandLag implements CommandExecutor {
 
                 sender.sendMessage(" ");
                 Message.m(MType.R, sender, "Lag", "After GC:");
-                API.printCurrentMemory(sender);
+                Utils.printCurrentMemory(sender);
                 sender.sendMessage(" ");
 
                 long need = System.currentTimeMillis() - time;

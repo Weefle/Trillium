@@ -10,7 +10,7 @@ import me.lordsaad.trillium.messageutils.Message;
 import org.bukkit.command.CommandSender;
 
 public class AdminModule extends TrilliumModule {
-    @Command(command = "broadcast", description = "Broadcast a message to the world", usage = "/broadcast [message]")
+    @Command(command = "broadcast", description = "Broadcast a message to the world", usage = "/broadcast <message>")
     public void broadcast(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Admin.BROADCAST)) {
             if (args.length == 0) {

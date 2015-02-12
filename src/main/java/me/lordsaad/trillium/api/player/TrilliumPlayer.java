@@ -1,28 +1,28 @@
 package me.lordsaad.trillium.api.player;
 
-import java.io.File;
-import java.io.IOException;
-
 import me.lordsaad.trillium.api.Configuration;
 import me.lordsaad.trillium.api.TrilliumAPI;
+import me.lordsaad.trillium.api.TrilliumModule;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
-
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-public class TrilliumPlayer {
+import java.io.File;
+import java.io.IOException;
+
+public class TrilliumPlayer extends TrilliumModule {
     private Player proxy;
-    private FileConfiguration config;
 
     private Location previousLocation;
 
     private boolean afk;
     private long lastActive;
 
-    private boolean muted;
+    private boolean isMuted = false;
 
     private boolean isGod = false;
     private boolean isVanished = false;
@@ -44,10 +44,6 @@ public class TrilliumPlayer {
         return afk;
     }
 
-    public long getLastActive() {
-        return lastActive;
-    }
-
     public long getInactiveTime() {
         return System.currentTimeMillis() - lastActive;
     }
@@ -62,23 +58,15 @@ public class TrilliumPlayer {
     }
 
     public boolean isMuted() {
-        return this.muted;
+        return this.isMuted;
     }
 
-    public void mute() {
-
-    }
-
-    public void unmute() {
-
+    public void setMuted(Boolean enabled) {
+        this.isMuted = enabled;
     }
 
     public void setFlying(boolean enabled) {
-        if (enabled) {
-            getProxy().setAllowFlight(true);
-        } else {
-            getProxy().setAllowFlight(false);
-        }
+        getProxy().setAllowFlight(enabled);
     }
 
     public boolean isFlying() {
@@ -86,11 +74,7 @@ public class TrilliumPlayer {
     }
 
     public void setGod(boolean enabled) {
-        if (enabled) {
-            this.isGod = true;
-        } else {
-            this.isGod = false;
-        }
+        this.isGod = enabled;
     }
 
     public boolean isGod() {
@@ -103,10 +87,16 @@ public class TrilliumPlayer {
             for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
                 p.getProxy().hidePlayer(getProxy());
             }
+            if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
+                getProxy().setGameMode(GameMode.SPECTATOR);
+            }
         } else {
             this.isVanished = false;
             for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
                 p.getProxy().showPlayer(getProxy());
+            }
+            if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
+                getProxy().setGameMode(GameMode.SURVIVAL);
             }
         }
     }
@@ -136,7 +126,7 @@ public class TrilliumPlayer {
             newUser = true;
         }
 
-        config = YamlConfiguration.loadConfiguration(dataStore);
+        FileConfiguration config = YamlConfiguration.loadConfiguration(dataStore);
 
         if (newUser) {
             config.set(Configuration.Player.NICKNAME, proxy.getName());

@@ -1,6 +1,6 @@
 package me.lordsaad.trillium.commands;
 
-import me.lordsaad.trillium.API;
+import me.lordsaad.trillium.Utils;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
@@ -19,7 +19,7 @@ public class CommandSpeed implements CommandExecutor {
                 Player p = (Player) sender;
                 if (p.hasPermission("tr.speed")) {
                     if (args.length > 1) {
-                        if (API.isInt(args[1]) || API.isDouble(args[1])) {
+                        if (Utils.isNumeric(args[1])) {
                             if (args[0].equalsIgnoreCase("fly")) {
                                 double i = Double.parseDouble(args[1]);
                                 if (i <= 10 && i >= -10) {

@@ -1,5 +1,6 @@
 package me.lordsaad.trillium.commands;
 
+import me.lordsaad.trillium.api.Permission;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
@@ -22,7 +23,7 @@ public class CommandAfk implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("afk")) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
-                if (sender.hasPermission("tr.afk")) {
+                if (sender.hasPermission(Permission.Ability.AFK)) {
                     if (!afklist.contains(p.getUniqueId())) {
                         afklist.add(p.getUniqueId());
                         Message.b(MType.G, "AFK", p.getName() + " is now AFK.");

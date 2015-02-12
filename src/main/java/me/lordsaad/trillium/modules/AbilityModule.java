@@ -21,7 +21,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class AbilityModule extends TrilliumModule {
     @Command(command = "back", description = "Teleport to your last active position", usage = "/back")
-    public void back(CommandSender cs, String[] args) {
+    public void back(CommandSender cs) {
         if (cs instanceof Player) {
             TrilliumPlayer player = player(cs.getName());
             if (player.getProxy().hasPermission(Permission.Ability.BACK)) {
@@ -35,7 +35,7 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "fly", description = "Superman away!", usage = "/fly")
+    @Command(command = "fly", description = "SOAR THROUGH THE AIR LIKE A MAJESTIC BUTTERFLY!", usage = "/fly")
     public void fly(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer player = player(cs.getName());
@@ -77,7 +77,7 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "god", description = "Invincibility!", usage = "/god")
+    @Command(command = "god", description = "Become invincible to anything.", usage = "/god")
     public void god(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer player = player(cs.getName());
@@ -119,7 +119,7 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "vanish", description = "Poof! Gone!", usage = "/vanish (player)", aliases = "v")
+    @Command(command = "vanish", description = "Turn completely invisible and roam the world undetected.!", usage = "/vanish [player]", aliases = "v")
     public void vanish(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer player = player(cs.getName());
@@ -167,10 +167,8 @@ public class AbilityModule extends TrilliumModule {
             if (player.isGod()) {
                 event.setCancelled(true);
             }
-            if (player.isVanished()) {
-                if (getConfig().getBoolean("Vanish.god mode")) {
+            if (player.isVanished() && getConfig().getBoolean(Configuration.Ability.GOD)) {
                     event.setCancelled(true);
-                }
             }
         }
     }

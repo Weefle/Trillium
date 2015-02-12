@@ -7,7 +7,6 @@ import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
-
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,7 +17,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class PunishModule extends TrilliumModule {
 
-    @Command(command = "mute", description = "Mute a player", usage = "/mute [player]")
+    @Command(command = "mute", description = "Silence/unsilence someone's voice.", usage = "/mute <player>")
     public void mute(CommandSender sender, String[] args) {
         if (sender.hasPermission(Permission.Punish.MUTE)) {
             if (args.length == 0) {
@@ -28,11 +27,11 @@ public class PunishModule extends TrilliumModule {
                 if (target != null) {
                     TrilliumPlayer player = player(target);
                     if (!player.isMuted()) {
-                        player.mute();
+                        player.setMuted(true);
                         Message.m(MType.G, sender, "Mute", "You muted " + target.getName());
                         Message.m(MType.W, sender, "Mute", sender.getName() + " muted you.");
                     } else {
-                        player.unmute();
+                        player.setMuted(false);
                         Message.m(MType.G, sender, "Mute", "You unmuted " + target.getName());
                         Message.m(MType.G, sender, "Mute", sender.getName() + " unmuted you.");
                     }
@@ -45,37 +44,32 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "kick", description = "Kick a player", usage = "/kick [player]")
+    @Command(command = "kick", description = "Kick a player from the server.", usage = "/kick <player> [reason]")
     public void kick(CommandSender sender, String[] args) {
-        if (sender instanceof Player) {
-            Player p = (Player) sender;
-            if (sender.hasPermission(Permission.Punish.KICK)) {
-                if (args.length < 2) {
-                    Message.earg(p, "Kick", "/kick <player>");
-                } else {
-                    Player target = Bukkit.getPlayer(args[0]);
-                    if (target != null) {
-                        StringBuilder sb = new StringBuilder();
-                        for (int i = 1; i < args.length; i++) {
-                            sb.append(args[i]).append(" ");
-                        }
-                        String reason = sb.toString().trim();
-                        Message.b(MType.W, "Kick", target.getName() + " got kicked for:");
-                        Message.b(MType.W, "Kick", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
-                        p.kickPlayer(reason);
-                    } else {
-                        Message.eplayer(p, "Kick", args[0]);
-                    }
-                }
+        if (sender.hasPermission(Permission.Punish.KICK)) {
+            if (args.length < 2) {
+                Message.earg(sender, "Kick", "/kick <player> [reason]");
             } else {
-                Message.e(p, "Kick", Crit.P);
+                Player target = Bukkit.getPlayer(args[0]);
+                if (target != null) {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 1; i < args.length; i++) {
+                        sb.append(args[i]).append(" ");
+                    }
+                    String reason = sb.toString().trim();
+                    Message.b(MType.W, "Kick", target.getName() + " got kicked for:");
+                    Message.b(MType.W, "Kick", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
+                    target.kickPlayer(reason);
+                } else {
+                    Message.eplayer(sender, "Kick", args[0]);
+                }
             }
         } else {
-            Message.e(sender, "Kick", Crit.C);
+            Message.e(sender, "Kick", Crit.P);
         }
     }
 
-    @Command(command = "ban", description = "Ban a player", usage = "/ban [player]")
+    @Command(command = "ban", description = "Ban a player from the server.", usage = "/ban <player> [reason]")
     public void ban(CommandSender sender, String[] args) {
         if (sender.hasPermission(Permission.Punish.BAN)) {
             if (args.length == 0) {
@@ -109,7 +103,7 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "unban", description = "Unban a player", usage = "/unban [player]")
+    @Command(command = "unban", description = "Unban a player.", usage = "/unban <player>")
     public void unban(CommandSender sender, String[] args) {
         if (sender.hasPermission(Permission.Punish.UNBAN)) {
             if (args.length == 0) {

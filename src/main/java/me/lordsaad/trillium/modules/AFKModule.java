@@ -1,8 +1,6 @@
 package me.lordsaad.trillium.modules;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import me.lordsaad.trillium.api.Configuration;
 import me.lordsaad.trillium.api.Permission;
 import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.api.TrilliumModule;
@@ -12,7 +10,6 @@ import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,13 +19,16 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AFKModule extends TrilliumModule {
 
-    @Command(command = "afk", description = "Toggle your AFK status", usage = "/afk [player]")
-    public void onCommand(CommandSender sender, String[] args) throws CommandException {
+    @Command(command = "afk", description = "Indicate that you are away from your keyboard.", usage = "/afk")
+    public void onCommand(CommandSender sender) throws CommandException {
         if (sender instanceof Player) {
             TrilliumPlayer player = player((Player) sender);
-            if (player.getProxy().hasPermission(Permission.Afk.USE)) {
+            if (player.getProxy().hasPermission(Permission.Ability.AFK)) {
                 player.toggleAfk();
             } else {
                 Message.e(sender, "AFK", Crit.P);
@@ -84,15 +84,16 @@ public class AFKModule extends TrilliumModule {
 
     @Override
     public void register() {
-        if (getConfig().getBoolean("auto_afk.enabled")) {
+        if (getConfig().getBoolean(Configuration.Ability.AUTO_AFK_ENABLED)) {
             TrilliumAPI.getInstance().getServer().getScheduler().runTaskTimer(TrilliumAPI.getInstance(), new Runnable() {
                 private List<TrilliumPlayer> toKick = new ArrayList<>();
+
                 @Override
                 public void run() {
                     for (TrilliumPlayer player : TrilliumAPI.getOnlinePlayers()) {
                         if (!player.isAfk()) {
-                            if (player.getInactiveTime() >= getConfig().getInt("auto_afk.time_until_idle")) {
-                                if (getConfig().getBoolean("auto-afk.kick-on-afk")) {
+                            if (player.getInactiveTime() >= getConfig().getInt(Configuration.Ability.AUTO_AFK_TIME)) {
+                                if (getConfig().getBoolean(Configuration.Ability.AUTO_AFK_KICK)) {
                                     toKick.add(player);
                                 } else {
                                     player.toggleAfk();
@@ -100,12 +101,11 @@ public class AFKModule extends TrilliumModule {
                             }
                         }
                     }
-                    
+
                     for (TrilliumPlayer player : toKick) {
-                        player.getProxy().kickPlayer("You idled for too long. Sorry.");
+                        player.getProxy().kickPlayer("You idled for too long.");
                         Message.b(MType.W, "AFK", player.getProxy().getName() + " got kicked for idling for too long.");
                     }
-                    
                     toKick.clear();
                 }
             }, 0, 20);

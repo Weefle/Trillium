@@ -1,48 +1,16 @@
 package me.lordsaad.trillium;
 
-import java.io.File;
-import java.io.IOException;
-
 import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.api.serializer.LocationSerializer;
-import me.lordsaad.trillium.commands.CommandCmdBinder;
-import me.lordsaad.trillium.commands.CommandGamemode;
-import me.lordsaad.trillium.commands.CommandInfo;
-import me.lordsaad.trillium.commands.CommandInventory;
-import me.lordsaad.trillium.commands.CommandKillall;
-import me.lordsaad.trillium.commands.CommandKittyBomb;
-import me.lordsaad.trillium.commands.CommandLag;
-import me.lordsaad.trillium.commands.CommandMe;
-import me.lordsaad.trillium.commands.CommandMessage;
-import me.lordsaad.trillium.commands.CommandMotd;
-import me.lordsaad.trillium.commands.CommandNickname;
-import me.lordsaad.trillium.commands.CommandReport;
-import me.lordsaad.trillium.commands.CommandReports;
-import me.lordsaad.trillium.commands.CommandSay;
-import me.lordsaad.trillium.commands.CommandSetSpawn;
-import me.lordsaad.trillium.commands.CommandSmite;
-import me.lordsaad.trillium.commands.CommandSpawn;
-import me.lordsaad.trillium.commands.CommandSpeed;
-import me.lordsaad.trillium.commands.CommandTrillium;
-import me.lordsaad.trillium.commands.teleport.CommandTeleport;
-import me.lordsaad.trillium.commands.teleport.CommandTeleportH;
-import me.lordsaad.trillium.commands.teleport.CommandTeleportR;
-import me.lordsaad.trillium.commands.teleport.CommandTeleportRA;
-import me.lordsaad.trillium.commands.teleport.CommandTeleportRD;
-import me.lordsaad.trillium.commands.teleport.CommandTeleportRH;
+import me.lordsaad.trillium.commands.*;
+import me.lordsaad.trillium.commands.teleport.*;
 import me.lordsaad.trillium.databases.CmdBinderDatabase;
-import me.lordsaad.trillium.events.PlayerDeath;
-import me.lordsaad.trillium.events.PlayerInteract;
-import me.lordsaad.trillium.events.PlayerJoin;
-import me.lordsaad.trillium.events.PlayerLeave;
-import me.lordsaad.trillium.events.PlayerMove;
-import me.lordsaad.trillium.events.ServerListPing;
+import me.lordsaad.trillium.events.*;
 import me.lordsaad.trillium.modules.AFKModule;
 import me.lordsaad.trillium.modules.AbilityModule;
 import me.lordsaad.trillium.modules.AdminModule;
 import me.lordsaad.trillium.modules.PunishModule;
 import me.lordsaad.trillium.runnables.TpsRunnable;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -50,14 +18,10 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.IOException;
+
 public class Trillium extends JavaPlugin {
-
-    /*
-     *         if (player.getProxy().hasPermission("trillium.chat.color")) {
-            event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
-        }
-
-     */
 
     public void onEnable() {
         TrilliumAPI.setInstance(this);
@@ -125,7 +89,8 @@ public class Trillium extends JavaPlugin {
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         getLogger().info("           Plugin made with love");
         getLogger().info("   by LordSaad, VortexSeven, and Turbotailz");
-        getLogger().info("                      â�¤");
+        getLogger().info("               and Samczsun");
+        getLogger().info("                     ❤");
         getLogger().info("Version: " + pdf.getVersion());
         getLogger().warning("THIS PLUGIN IS STILL IN PRE-ALPHA.");
         getLogger().warning("WE HIGHLY RECOMMEND YOU DON'T USE IT FOR THE TIME BEING.");
@@ -134,7 +99,7 @@ public class Trillium extends JavaPlugin {
 
         if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
             getLogger().warning("Essentials plugin detected!");
-            getLogger().warning("Essentials might heavily interfere with Trillium");
+            getLogger().warning("Essentials might heavily interfere with Trillium!");
             getLogger().warning("Please consider removing Essentials.");
         }
     }

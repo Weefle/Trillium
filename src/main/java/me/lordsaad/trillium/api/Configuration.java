@@ -9,13 +9,27 @@ public class Configuration {
         public static final String GOD = prefix + "god";
         public static final String VANISH = prefix + "vanish";
         public static final String BAN_REASON = prefix + "banreason";
-    };
+    }
     
     public static class Ability {
         private static String PREFIX = "ability.";
-        private static String VANISH = "vanish.";
-        public static final String VANISH_ENABLED = PREFIX + VANISH + "enabled";
-        public static final String PICK_UP_ITEM = PREFIX + VANISH + "pick-up-item";
-        public static final String DROP_ITEM = PREFIX + VANISH + "drop-item";
-    };
+        private static String VANISH = PREFIX + "vanish.";
+        private static String AFK = PREFIX + "afk.";
+        private static String AUTO_AFK = AFK + "auto-afk.";
+        public static final String GOD = PREFIX + VANISH + "god-mode";
+        public static final String PICK_UP_ITEM = VANISH + "pick-up-item";
+        public static final String DROP_ITEM = VANISH + "drop-item";
+        public static final String SPECTATOR = VANISH + "spectator-mode";
+        public static final String AUTO_AFK_ENABLED = AUTO_AFK + "enabled";
+        public static final String AUTO_AFK_TIME = AUTO_AFK + "time-until-idle";
+        public static final String AUTO_AFK_KICK = AUTO_AFK + "kick-on-afk";
+        public static final String AUTO_UNAFK = AUTO_AFK + "auto-unafk";
+        public static final String AUTO_RESPAWN = PREFIX + "auto-respawn";
+    }
+
+    public static class Server {
+        private static String PREFIX = "server.";
+        public static final String SERVER_LIST_MOTD = PREFIX + "server-list-motd";
+        public static final String INGAME_MOTD = PREFIX + "motd";
+    }
 }

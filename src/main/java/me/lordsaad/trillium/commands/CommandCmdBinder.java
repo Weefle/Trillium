@@ -1,15 +1,9 @@
 package me.lordsaad.trillium.commands;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -18,24 +12,29 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class CommandCmdBinder implements CommandExecutor {
 
-    public static HashMap<UUID, String> tcmdbconsole = new HashMap<UUID, String>();
-    public static HashMap<UUID, String> tcmdbplayer = new HashMap<UUID, String>();
-    public static HashMap<UUID, String> wcmdbplayer = new HashMap<UUID, String>();
-    public static HashMap<UUID, String> wcmdbconsole = new HashMap<UUID, String>();
+    public static HashMap<UUID, String> tcmdbconsole = new HashMap<>();
+    public static HashMap<UUID, String> tcmdbplayer = new HashMap<>();
+    public static HashMap<UUID, String> wcmdbplayer = new HashMap<>();
+    public static HashMap<UUID, String> wcmdbconsole = new HashMap<>();
 
-    public static HashMap<Location, String> touchconsole = new HashMap<Location, String>();
-    public static HashMap<Location, String> touchplayer = new HashMap<Location, String>();
-    public static HashMap<Location, String> walkconsole = new HashMap<Location, String>();
-    public static HashMap<Location, String> walkplayer = new HashMap<Location, String>();
+    public static HashMap<Location, String> touchconsole = new HashMap<>();
+    public static HashMap<Location, String> touchplayer = new HashMap<>();
+    public static HashMap<Location, String> walkconsole = new HashMap<>();
+    public static HashMap<Location, String> walkplayer = new HashMap<>();
 
-    public static Map<UUID, Map<ItemStack, String>> itemconsole = new HashMap<UUID, Map<ItemStack, String>>();
-    public static Map<UUID, Map<ItemStack, String>> itemplayer = new HashMap<UUID, Map<ItemStack, String>>();
+    public static Map<UUID, Map<ItemStack, String>> itemconsole = new HashMap<>();
+    public static Map<UUID, Map<ItemStack, String>> itemplayer = new HashMap<>();
 
-    public static ArrayList<Location> antilagcheckloc = new ArrayList<Location>();
-    public static ArrayList<UUID> antilagcheckcmd = new ArrayList<UUID>();
-    public static ArrayList<UUID> antilagcheckitem = new ArrayList<UUID>();
+    public static ArrayList<Location> antilagcheckloc = new ArrayList<>();
+    public static ArrayList<UUID> antilagcheckcmd = new ArrayList<>();
+    public static ArrayList<UUID> antilagcheckitem = new ArrayList<>();
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("commandbinder")) {

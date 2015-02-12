@@ -16,19 +16,18 @@ public class Configuration {
         private static String VANISH = PREFIX + "vanish.";
         public static final String AUTO_RESPAWN = PREFIX + "auto-respawn";
         public static final String GOD = PREFIX + VANISH + "god-mode";
-        public static final String PICK_UP_ITEM = VANISH + "prevent-item-pickup/drop";
+        public static final String PICK_UP_ITEM = VANISH + "pick-up-item";
         public static final String DROP_ITEM = VANISH + "drop-item";
         public static final String SPECTATOR = VANISH + "spectator-mode";
-
     }
     
-    public static class AFK {
+    public static class Afk {
         private static String AFK = "afk.";
         private static String AUTO_AFK = AFK + "auto-afk.";
         public static final String AUTO_AFK_ENABLED = AUTO_AFK + "enabled";
         public static final String AUTO_AFK_TIME = AUTO_AFK + "time-until-idle";
         public static final String AUTO_AFK_KICK = AUTO_AFK + "kick-on-afk";
-        public static final String AUTO_UNAFK = "auto-unafk";
+        public static final String AUTO_UNAFK = AUTO_AFK + "auto-unafk";
     }
 
     public static class Server {

@@ -88,7 +88,7 @@ public class AFKModule extends TrilliumModule {
 
     @Override
     public void register() {
-        if (getConfig().getBoolean(Configuration.AFK.AUTO_AFK_ENABLED)) {
+        if (getConfig().getBoolean(Configuration.Afk.AUTO_AFK_ENABLED)) {
             TrilliumAPI.getInstance().getServer().getScheduler().runTaskTimer(TrilliumAPI.getInstance(), new Runnable() {
                 private List<TrilliumPlayer> toKick = new ArrayList<>();
 
@@ -96,8 +96,8 @@ public class AFKModule extends TrilliumModule {
                 public void run() {
                     for (TrilliumPlayer player : TrilliumAPI.getOnlinePlayers()) {
                         if (!player.isAfk()) {
-                            if (player.getInactiveTime() >= getConfig().getInt(Configuration.AFK.AUTO_AFK_TIME)) {
-                                if (getConfig().getBoolean(Configuration.AFK.AUTO_AFK_KICK)) {
+                            if (player.getInactiveTime() >= getConfig().getInt(Configuration.Afk.AUTO_AFK_TIME)) {
+                                if (getConfig().getBoolean(Configuration.Afk.AUTO_AFK_KICK)) {
                                     toKick.add(player);
                                 } else {
                                     player.toggleAfk();

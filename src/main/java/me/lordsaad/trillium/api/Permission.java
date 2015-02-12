@@ -8,7 +8,7 @@ public class Permission {
         public static final String BAN = PREFIX + "ban";
         public static final String UNBAN = PREFIX + "unban";
     }
-    
+
     public static class Ability {
         private static final String PREFIX = "tr.ability.";
         public static final String BACK = PREFIX + "back";
@@ -20,7 +20,7 @@ public class Permission {
         public static final String VANISH_OTHER = PREFIX + "vanish.other";
         public static final String AFK = PREFIX + "afk";
     }
-    
+
     public static class Admin {
         private static final String PREFIX = "tr.admin.";
         public static final String BROADCAST = PREFIX + "broadcast";

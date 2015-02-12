@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 public class TrilliumCommand extends Command {
     private final Method invoke;
-    
+
     public TrilliumCommand(String name, String description, String usageMessage, String[] aliases, Method invoke) {
         super(name, description, usageMessage, Arrays.asList(aliases));
         this.invoke = invoke;

@@ -23,6 +23,10 @@ public class TrilliumAPI {
     private static Map<Class<?>, Serializer<?>> serializers;
     private static Map<Class<? extends TrilliumModule>, TrilliumModule> modules;
 
+    public static Trillium getInstance() {
+        return instance;
+    }
+
     public static void setInstance(Trillium instance) {
         String className = new Throwable().getStackTrace()[1].getClassName();
         if (className.equalsIgnoreCase(Trillium.class.getCanonicalName())) {
@@ -33,10 +37,6 @@ public class TrilliumAPI {
         } else {
             throw new IllegalStateException("Cannot set instance of TrilliumAPI");
         }
-    }
-
-    public static Trillium getInstance() {
-        return instance;
     }
 
     public static TrilliumPlayer getPlayer(String name) {

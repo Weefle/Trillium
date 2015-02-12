@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 public class CommandTeleportRA implements CommandExecutor {
 
     //TODO: save last location
-    
+
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         if (cmd.getName().equalsIgnoreCase("teleportrequestaccept")) {

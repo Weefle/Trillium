@@ -6,7 +6,6 @@ import me.lordsaad.trillium.api.TrilliumModule;
 import me.lordsaad.trillium.api.command.Command;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.Message;
-
 import org.bukkit.command.CommandSender;
 
 public class AdminModule extends TrilliumModule {

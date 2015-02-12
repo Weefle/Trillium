@@ -17,11 +17,11 @@ public class CommandMotd implements CommandExecutor {
 
         if (cmd.getName().equalsIgnoreCase("motd")) {
             if (sender.hasPermission("tr.motd")) {
-                    ArrayList<String> motd = (ArrayList<String>) TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Server.INGAME_MOTD);
-                    for (String s : motd) {
-                        s = ChatColor.translateAlternateColorCodes('&', s);
-                        sender.sendMessage(s);
-                    }
+                ArrayList<String> motd = (ArrayList<String>) TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Server.INGAME_MOTD);
+                for (String s : motd) {
+                    s = ChatColor.translateAlternateColorCodes('&', s);
+                    sender.sendMessage(s);
+                }
             } else {
                 Message.e(sender, "Motd", Crit.P);
             }

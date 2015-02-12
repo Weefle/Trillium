@@ -3,7 +3,6 @@ package me.lordsaad.trillium.events;
 import me.lordsaad.trillium.api.Configuration;
 import me.lordsaad.trillium.api.TrilliumAPI;
 import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;

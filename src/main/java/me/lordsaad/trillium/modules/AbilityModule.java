@@ -8,7 +8,6 @@ import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -168,7 +167,7 @@ public class AbilityModule extends TrilliumModule {
                 event.setCancelled(true);
             }
             if (player.isVanished() && getConfig().getBoolean(Configuration.Ability.GOD)) {
-                    event.setCancelled(true);
+                event.setCancelled(true);
             }
         }
     }

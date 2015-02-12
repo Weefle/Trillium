@@ -2,7 +2,6 @@ package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.commands.CommandCmdBinder;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

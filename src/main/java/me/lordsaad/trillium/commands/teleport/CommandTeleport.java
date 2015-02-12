@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 public class CommandTeleport implements CommandExecutor {
 
     //TODO: save last location
-    
+
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         if (cmd.getName().equalsIgnoreCase("teleport")) {
@@ -29,7 +29,7 @@ public class CommandTeleport implements CommandExecutor {
                     if (p.hasPermission("tr.teleport")) {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null) {
-                            
+
                             p.teleport(target);
                             Message.m(MType.G, p, "TP", "You teleported to " + target.getName());
 

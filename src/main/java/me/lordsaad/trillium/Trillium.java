@@ -26,7 +26,7 @@ public class Trillium extends JavaPlugin {
     public void onEnable() {
         TrilliumAPI.setInstance(this);
         TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
-        
+
         TrilliumAPI.registerModule(new AFKModule());
         TrilliumAPI.registerModule(new PunishModule());
         TrilliumAPI.registerModule(new AbilityModule());

@@ -19,7 +19,7 @@ public class PlayerJoin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         TrilliumPlayer player = TrilliumAPI.createNewPlayer(event.getPlayer());
-        
+
         Player p = event.getPlayer();
 
         //join message

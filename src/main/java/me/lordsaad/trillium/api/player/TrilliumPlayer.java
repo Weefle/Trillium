@@ -65,20 +65,24 @@ public class TrilliumPlayer extends TrilliumModule {
         this.isMuted = enabled;
     }
 
+    public boolean isFlying() {
+        return getProxy().getAllowFlight() || getProxy().isFlying();
+    }
+
     public void setFlying(boolean enabled) {
         getProxy().setAllowFlight(enabled);
     }
 
-    public boolean isFlying() {
-        return getProxy().getAllowFlight() || getProxy().isFlying();
+    public boolean isGod() {
+        return this.isGod;
     }
 
     public void setGod(boolean enabled) {
         this.isGod = enabled;
     }
 
-    public boolean isGod() {
-        return this.isGod;
+    public boolean isVanished() {
+        return this.isVanished;
     }
 
     public void setVanished(boolean enabled) {
@@ -99,10 +103,6 @@ public class TrilliumPlayer extends TrilliumModule {
                 getProxy().setGameMode(GameMode.SURVIVAL);
             }
         }
-    }
-
-    public boolean isVanished() {
-        return this.isVanished;
     }
 
     public boolean hasPermission(String permission) {

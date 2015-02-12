@@ -3,7 +3,6 @@ package me.lordsaad.trillium.commands;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.Message;
 import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,7 +22,7 @@ public class CommandMe implements CommandExecutor {
                         sb.append(arg).append(" ");
                     }
                     String message = sb.toString().trim();
-                    
+
                     Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "** " + ChatColor.GRAY + p.getName() + " " + message + ChatColor.DARK_GRAY + " **");
 
                 } else {

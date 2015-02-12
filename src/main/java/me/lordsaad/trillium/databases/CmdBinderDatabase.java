@@ -1,11 +1,10 @@
 package me.lordsaad.trillium.databases;
 
+import me.lordsaad.trillium.api.TrilliumAPI;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.io.IOException;
-
-import me.lordsaad.trillium.api.TrilliumAPI;
-
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class CmdBinderDatabase {
 

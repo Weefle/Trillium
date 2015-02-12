@@ -1,17 +1,14 @@
 package me.lordsaad.trillium.events;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.api.player.TrilliumPlayer;
+import me.lordsaad.trillium.commands.CommandAfk;
 import me.lordsaad.trillium.commands.CommandGodMode;
 import me.lordsaad.trillium.commands.CommandReport;
 import me.lordsaad.trillium.commands.CommandVanish;
 import me.lordsaad.trillium.databases.PlayerDatabase;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,6 +16,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class PlayerJoin implements Listener {
     @EventHandler

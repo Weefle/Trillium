@@ -33,6 +33,7 @@ public class Trillium extends JavaPlugin {
         TrilliumAPI.registerModule(new AdminModule());
 
         setupcmdbinder();
+        saveDefaultConfig();
 
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
@@ -115,7 +116,6 @@ public class Trillium extends JavaPlugin {
         }
 
         HandlerList.unregisterAll();
-        saveDefaultConfig();
         Bukkit.getScheduler().cancelAllTasks();
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 public class AdminModule extends TrilliumModule {
 
     public AdminModule() {
-        super("admin");
+        super("ability");
     }
 
     @Command(command = "broadcast", description = "Broadcast a message to the world", usage = "/broadcast <message>")

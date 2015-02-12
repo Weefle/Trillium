@@ -22,7 +22,7 @@ leave:
   message: "&b[USERNAME] &9has left the game!"
 
 #---------------[ Broadcast ]---------------#
-Broadcast:
+broadcast:
   - " "
   - "&8[&a*&8]&b&m------------------&8[ &a&lBroadcast &8]&b&m------------------&8[&a*&8]"
   - " "
@@ -37,10 +37,10 @@ ability:
     prevent-item-pickup/drop: true
     spectator-mode: true
     god-mode: true
-  afk:
-    auto-afk:
-      enabled: true
-      time-until-idle: 60
-      #seconds
-      kick-on-afk: false
-    auto-unafk: true
+afk:
+  auto-afk:
+    enabled: true
+    time-until-idle: 60
+    #seconds
+    kick-on-afk: false
+  auto-unafk: true

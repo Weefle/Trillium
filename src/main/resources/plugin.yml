@@ -46,10 +46,6 @@ commands:
     description: Open a crafting table or view someone's inventory or enderchest.
     usage: /inv <player [enderchest]/crafting>
     aliases: [inv]
-  broadcast:
-    description: Broadcast a fancy message to the server!
-    usage: /bc <message>
-    aliases: [bc]
   information:
     description: Show information about a player.
     usage: /info <player>
@@ -66,9 +62,6 @@ commands:
     description: KITTEH BAMB!!
     usage: /kittybomb
     aliases: [kittehbamb, kittehbomb, kittybamb, kittyb, kbomb, kb]
-  setspawn:
-    description: Set the world's spawn location.
-    usage: /setspawn
   spawn:
     description: teleport to the spawn location
     usage: /spawn
@@ -95,14 +88,7 @@ commands:
     description: Statistics on server lag and it also clears lag through gc.
     usage: /lag
     aliases: [tps, memory, mem, gc, garbagecollector, tick]
-  speed:
-    description: Change your walk or fly speed.
-    usage: /speed <fly/walk> <speed>
   nickname:
     description: Set a nickname for yourself
     usage: /nick [player]
     aliases: [nick]
-  chestfinder:
-    description: Expose any hidden chests.
-    usage: /chestfinder
-    aliases: [cf]

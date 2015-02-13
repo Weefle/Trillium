@@ -161,7 +161,7 @@ public class AbilityModule extends TrilliumModule {
                             Message.m(MType.G, player.getProxy(), "Vanish", target.getProxy().getName() + " is now in vanish mode.");
                             target.setVanished(true);
                             if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
-                                player.getProxy().setGameMode(GameMode.SPECTATOR);
+                                target.getProxy().setGameMode(GameMode.SPECTATOR);
                             }
                         }
                     } else {

@@ -15,9 +15,9 @@ public class Configuration {
         private static String PREFIX = "ability.";
         public static final String AUTO_RESPAWN = PREFIX + "auto-respawn";
         private static String VANISH = PREFIX + "vanish.";
-        public static final String GOD = PREFIX + VANISH + "god-mode";
-        public static final String PICK_UP_ITEM = VANISH + "pick-up-item";
-        public static final String DROP_ITEM = VANISH + "drop-item";
+        public static final String GOD = VANISH + "god-mode";
+        public static final String PICK_UP_ITEM = VANISH + "pick-up-items";
+        public static final String DROP_ITEM = VANISH + "drop-items";
         public static final String SPECTATOR = VANISH + "spectator-mode";
     }
 

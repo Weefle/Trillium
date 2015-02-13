@@ -36,7 +36,8 @@ ability:
   vanish:
     spectator-mode: true
     god-mode: true
-    pick-up-item: true
+    pick-up-items: false
+    drop-items: false
 afk:
   auto-afk:
     enabled: true

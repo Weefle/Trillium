@@ -29,10 +29,10 @@ public class AFKModule extends TrilliumModule {
     }
 
     @Command(command = "afk", description = "Indicate that you are away from your keyboard.", usage = "/afk")
-    public void onCommand(CommandSender sender) throws CommandException {
+    public void onCommand(CommandSender sender, String[] args) throws CommandException {
         if (sender instanceof Player) {
             TrilliumPlayer player = player((Player) sender);
-            if (player.getProxy().hasPermission(Permission.Ability.AFK)) {
+            if (player.getProxy().hasPermission(Permission.Afk.USE)) {
                 player.toggleAfk();
             } else {
                 Message.e(sender, "AFK", Crit.P);

@@ -18,7 +18,11 @@ public class Permission {
         public static final String GOD_OTHER = PREFIX + "god.other";
         public static final String VANISH = PREFIX + "vanish";
         public static final String VANISH_OTHER = PREFIX + "vanish.other";
-        public static final String AFK = PREFIX + "afk";
+    }
+    
+    public static class Afk {
+        private static final String PREFIX = "tr.afk.";
+        public static final String USE = PREFIX + "use";
     }
 
     public static class Admin {

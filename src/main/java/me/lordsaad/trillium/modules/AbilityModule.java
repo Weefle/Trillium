@@ -135,13 +135,13 @@ public class AbilityModule extends TrilliumModule {
                 if (player.hasPermission(Permission.Ability.VANISH)) {
                     if (!player.isVanished()) {
                         player.setVanished(true);
-                        Message.m(MType.G, player.getProxy(), "God", "You are now in vanish mode.");
+                        Message.m(MType.G, player.getProxy(), "Vanish", "You are now in vanish mode.");
                         if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
                             player.getProxy().setGameMode(GameMode.SPECTATOR);
                         }
                     } else {
                         player.setVanished(false);
-                        Message.m(MType.G, player.getProxy(), "God", "You are no longer in vanish mode.");
+                        Message.m(MType.G, player.getProxy(), "Vanish", "You are no longer in vanish mode.");
                         if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
                             player.getProxy().setGameMode(GameMode.SURVIVAL);
                         }
@@ -204,7 +204,7 @@ public class AbilityModule extends TrilliumModule {
     @EventHandler
     public void onTarget(EntityTargetEvent event) {
         if (event.getTarget() instanceof Player) {
-            TrilliumPlayer player = player(event.getEntity().getName());
+            TrilliumPlayer player = player(event.getTarget().getName());
             if (player.isGod()) {
                 event.setCancelled(true);
             }

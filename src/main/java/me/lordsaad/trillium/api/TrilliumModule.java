@@ -8,6 +8,9 @@ import org.bukkit.event.Listener;
 public abstract class TrilliumModule implements Listener {
     private ConfigurationSection config;
 
+    public TrilliumModule(String name) {
+        this.config = TrilliumAPI.getInstance().getConfig().getConfigurationSection(name);
+    }
 
     public ConfigurationSection getConfig() {
         return config;
@@ -23,9 +26,5 @@ public abstract class TrilliumModule implements Listener {
 
     protected void register() {
 
-    }
-
-    public TrilliumModule(String name) {
-        this.config = TrilliumAPI.getInstance().getConfig().getConfigurationSection(name);
     }
 }

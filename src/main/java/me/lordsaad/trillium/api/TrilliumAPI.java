@@ -58,6 +58,15 @@ public class TrilliumAPI {
         }
     }
     
+    public static void disposePlayer(Player proxy) {
+        if (players.containsKey(proxy.getName())) {
+            TrilliumPlayer player = players.remove(proxy.getName());
+            player.dispose();
+        } else {
+            throw new IllegalStateException(String.format("TrilliumPlayer %s does not exist", proxy.getName()));
+        }
+    }
+    
     public static File getPlayerFolder() {
         return playerFolder;
     }

@@ -89,7 +89,7 @@ public class AdminModule extends TrilliumModule {
                                 chests.clear();
                             }
                             for (Location b : chests) {
-                                ParticleEffect.DRIP_LAVA.display((float) 0.5, (float) 250, (float) 0.5, 0, 0, new Location(p.getProxy().getWorld(), b.getX() + 0.5, b.getY(), b.getZ() + 0.5), 100);
+                                ParticleEffect.DRIP_LAVA.display((float) 0.5, (float) 250, (float) 0.5, 0, 0, new Location(p.getProxy().getWorld(), b.getX() + 0.5, b.getY(), b.getZ() + 0.5), p.getProxy());
                             }
                         }
                     }.runTaskTimer(TrilliumAPI.getInstance(), 30, 30);

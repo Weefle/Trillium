@@ -51,7 +51,7 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "chestfinder", description = "expose any hidden chests.", usage = "/chestfinder")
+    @Command(command = "chestfinder", description = "expose any hidden chests.", usage = "/chestfinder", aliases = "cf")
     public void chestfinder(CommandSender cs) {
         if (cs instanceof Player) {
             final TrilliumPlayer p = player((Player) cs);

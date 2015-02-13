@@ -46,7 +46,6 @@ public class Trillium extends JavaPlugin {
         getCommand("teleportrequestdeny").setExecutor(new CommandTeleportRD());
         getCommand("teleporthere").setExecutor(new CommandTeleportH());
         getCommand("teleportrequesthere").setExecutor(new CommandTeleportRH());
-        getCommand("gamemode").setExecutor(new CommandGamemode());
         getCommand("inventory").setExecutor(new CommandInventory());
         getCommand("info").setExecutor(new CommandInfo());
         getCommand("message").setExecutor(new CommandMessage());
@@ -61,7 +60,6 @@ public class Trillium extends JavaPlugin {
         getCommand("report").setExecutor(new CommandReport());
         getCommand("reports").setExecutor(new CommandReports());
         getCommand("lag").setExecutor(new CommandLag());
-        getCommand("speed").setExecutor(new CommandSpeed());
         getCommand("nickname").setExecutor(new CommandNickname());
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);

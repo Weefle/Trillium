@@ -17,6 +17,8 @@ public class Permission {
         public static final String GOD = PREFIX + "god";
         public static final String GOD_OTHER = PREFIX + "god.other";
         public static final String SPEED = PREFIX + "speed";
+        public static final String GAMEMODE = PREFIX + "gamemode";
+        public static final String GAMEMODE_OTHER = PREFIX + "gamemode.other";
         public static final String VANISH = PREFIX + "vanish";
         public static final String VANISH_OTHER = PREFIX + "vanish.other";
     }

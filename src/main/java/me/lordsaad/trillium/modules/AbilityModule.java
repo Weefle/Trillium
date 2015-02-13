@@ -235,7 +235,93 @@ public class AbilityModule extends TrilliumModule {
             Message.e(cs, "Speed", Crit.C);
         }
     }
-    
+
+    @Command(command = "gamemode", description = "Change your gamemode.", usage = "/gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp] [player]", aliases = "gm")
+    public void gamemode(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = (TrilliumPlayer) cs;
+            if (args.length == 1) {
+                if (p.hasPermission(Permission.Ability.GAMEMODE)) {
+
+                    if (args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c")) {
+                        Message.m(MType.G, p.getProxy(), "Gamemode", "Gamemode set to " + ChatColor.AQUA + "creative");
+                        p.getProxy().setGameMode(GameMode.CREATIVE);
+
+                    } else if (args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0") || args[0].equalsIgnoreCase("s")) {
+                        Message.m(MType.G, p.getProxy(), "Gamemode", "Gamemode set to " + ChatColor.AQUA + "survival");
+                        p.getProxy().setGameMode(GameMode.SURVIVAL);
+
+                    } else if (args[0].equalsIgnoreCase("adventure") || args[0].equalsIgnoreCase("2") || args[0].equalsIgnoreCase("a")) {
+                        Message.m(MType.G, p.getProxy(), "Gamemode", "Gamemode set to " + ChatColor.AQUA + "adventure");
+                        p.getProxy().setGameMode(GameMode.ADVENTURE);
+
+                    } else if (args[0].equalsIgnoreCase("spectator") || args[0].equalsIgnoreCase("3") || args[0].equalsIgnoreCase("sp")) {
+                        Message.m(MType.G, p.getProxy(), "Gamemode", "Gamemode set to " + ChatColor.AQUA + "spectator");
+                        p.getProxy().setGameMode(GameMode.SPECTATOR);
+
+                    } else {
+                        Message.m(MType.W, p.getProxy(), "Gamemode", "Mojang didn't add that gamemode yet...");
+                    }
+
+                } else {
+                    Message.e(p.getProxy(), "Gamemode", Crit.P);
+                }
+
+            } else if (args.length > 1) {
+
+                if (p.hasPermission(Permission.Ability.GAMEMODE_OTHER)) {
+                    TrilliumPlayer pl = player(args[1]);
+                    if (pl != null) {
+
+                        if (args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c")) {
+                            Message.m(MType.G, p.getProxy(), "Gamemode", pl.getProxy().getName() + "'s gamemode set to " + ChatColor.AQUA + "creative");
+                            Message.m(MType.G, pl.getProxy(), "Gamemode", p.getProxy().getName() + "set your gamemode to " + ChatColor.AQUA + "creative");
+                            pl.getProxy().setGameMode(GameMode.CREATIVE);
+
+                        } else if (args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0") || args[0].equalsIgnoreCase("s")) {
+                            Message.m(MType.G, p.getProxy(), "Gamemode", pl.getProxy().getName() + "'s gamemode set to " + ChatColor.AQUA + "survival");
+                            Message.m(MType.G, pl.getProxy(), "Gamemode", p.getProxy().getName() + "set your gamemode to " + ChatColor.AQUA + "survival");
+                            pl.getProxy().setGameMode(GameMode.SURVIVAL);
+
+                        } else if (args[0].equalsIgnoreCase("adventure") || args[0].equalsIgnoreCase("2") || args[0].equalsIgnoreCase("a")) {
+                            Message.m(MType.G, p.getProxy(), "Gamemode", pl.getProxy().getName() + "'s gamemode set to " + ChatColor.AQUA + "adventure");
+                            Message.m(MType.G, pl.getProxy(), "Gamemode", p.getProxy().getName() + "set your gamemode to " + ChatColor.AQUA + "adventure");
+                            pl.getProxy().setGameMode(GameMode.ADVENTURE);
+
+                        } else if (args[0].equalsIgnoreCase("spectator") || args[0].equalsIgnoreCase("3") || args[0].equalsIgnoreCase("sp")) {
+                            Message.m(MType.G, p.getProxy(), "Gamemode", pl.getProxy().getName() + "'s gamemode set to " + ChatColor.AQUA + "spectator");
+                            Message.m(MType.G, pl.getProxy(), "Gamemode", p.getProxy().getName() + "set your gamemode to " + ChatColor.AQUA + "spectator");
+                            pl.getProxy().setGameMode(GameMode.SPECTATOR);
+
+                        } else {
+                            Message.m(MType.W, p.getProxy(), "Gamemode", "Mojang didn't add that gamemode yet...");
+                        }
+
+                    } else {
+                        Message.eplayer(p.getProxy(), "Gamemode", args[1]);
+                    }
+                } else {
+                    Message.earg(p.getProxy(), "Gamemode", "/gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp] [player]");
+
+                }
+
+            } else {
+                if (p.hasPermission(Permission.Ability.GAMEMODE)) {
+                    if (p.getProxy().getGameMode() == GameMode.CREATIVE) {
+                        p.getProxy().setGameMode(GameMode.SURVIVAL);
+                        Message.m(MType.G, p.getProxy(), "Gamemode", "Gamemode set to " + ChatColor.AQUA + "survival.");
+                    } else {
+                        p.getProxy().setGameMode(GameMode.CREATIVE);
+                        Message.m(MType.G, p.getProxy(), "Gamemode", "Gamemode set to " + ChatColor.AQUA + "creative.");
+                    }
+                } else {
+                    Message.e(p.getProxy(), "Gamemode", Crit.P);
+                }
+            }
+        } else {
+            Message.e(cs, "Gamemode", Crit.C);
+        }
+    }
 
 
     @EventHandler

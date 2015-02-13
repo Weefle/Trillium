@@ -33,6 +33,7 @@ public class Permission {
         public static final String BROADCAST = PREFIX + "broadcast";
         public static final String CHESTFINDER = PREFIX + "chestfinder";
         public static final String SETSPAWN = PREFIX + "setspawn";
+        public static final String LAG = PREFIX + "lag";
     }
 
     public static class Teleport {

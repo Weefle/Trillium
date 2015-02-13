@@ -126,7 +126,7 @@ public class AdminModule extends TrilliumModule {
     @Command(command = "lag", description = "Statistics on server lag and also clears lag through gc.", usage = "/lag")
     public void lag(CommandSender cs) {
         Player p = (Player) cs;
-        if (p.hasPermission(Permission.Admin.SETSPAWN)) {
+        if (p.hasPermission(Permission.Admin.LAG)) {
 
             long time = System.currentTimeMillis();
 

@@ -29,7 +29,7 @@ public class AdminModule extends TrilliumModule {
                 }
                 String message = sb.toString().trim();
 
-                List<String> format = getConfig().getStringList("Broadcast");
+                List<String> format = getConfig().getStringList("broadcast");
 
                 for (String s : format) {
                     s = ChatColor.translateAlternateColorCodes('&', s);

@@ -35,7 +35,7 @@ public class CommandInfo implements CommandExecutor {
                             Message.m(MType.R, sender, "Info", "Ban Reason: 'You are the weakest link. Goodbye.'");
                         }
                         Message.m(MType.R, sender, "Info", "Muted: " + ChatColor.AQUA + player.isMuted());
-                        Message.m(MType.R, sender, "Info", "Flying: " + ChatColor.AQUA + player.isFlying());
+                        Message.m(MType.R, sender, "Info", "Flying: " + ChatColor.AQUA + p.isFlying());
                         Message.m(MType.R, sender, "Info", "Ping: " + ChatColor.AQUA + Utils.getPing(p));
                         Message.m(MType.R, sender, "Info", "Ping: " + ChatColor.AQUA + Utils.getPingBar(p));
                         Message.m(MType.R, sender, "Info", "Location: " + ChatColor.AQUA + p.getLocation().getBlockX() + ", " + p.getLocation().getBlockY() + ", " + p.getLocation().getBlockZ());

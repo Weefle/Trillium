@@ -1,5 +1,6 @@
 package me.lordsaad.trillium.modules;
 
+import me.lordsaad.trillium.Utils;
 import me.lordsaad.trillium.api.Configuration;
 import me.lordsaad.trillium.api.Permission;
 import me.lordsaad.trillium.api.TrilliumAPI;
@@ -9,6 +10,7 @@ import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -176,6 +178,66 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
+    @Command(command = "speed", description = "Change your speed without potion effects", usage = "/speed <fly/walk> <speed>")
+    public void speed(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = (TrilliumPlayer) cs;
+            if (p.hasPermission("tr.speed")) {
+                if (args.length != 0) {
+                    if (args[0].equalsIgnoreCase("fly")) {
+                        double i;
+                        if (args.length > 1) {
+                            if (Utils.isNumeric(args[1])) {
+                                i = Double.parseDouble(args[1]);
+                                if (i <= 10 && i >= -10) {
+                                    i = i * 0.1;
+                                    p.getProxy().setFlySpeed((float) i);
+                                    Message.m(MType.G, p.getProxy(), "Speed", "Fly speed set to " + ChatColor.AQUA + args[1]);
+                                } else {
+                                    Message.m(MType.W, p.getProxy(), "Speed", args[1] + " is out of bounds. -10 -> 10 only");
+                                }
+                            } else {
+                                Message.m(MType.W, p.getProxy(), "Speed", args[1] + " is not a number.");
+                            }
+                        } else {
+                            Message.m(MType.G, p.getProxy(), "Speed", "Fly speed set to default: " + ChatColor.AQUA + "1");
+                            p.getProxy().setFlySpeed((float) 0.1);
+                        }
+                    } else if (args[0].equalsIgnoreCase("walk")) {
+                        double i;
+                        if (args.length > 1) {
+                            if (Utils.isNumeric(args[1])) {
+                                i = Double.parseDouble(args[1]);
+                                if (i <= 10 && i >= -10) {
+                                    i = i * 0.1;
+                                    p.getProxy().setWalkSpeed((float) i);
+                                    Message.m(MType.G, p.getProxy(), "Speed", "Walk speed set to " + ChatColor.AQUA + args[1]);
+                                } else {
+                                    Message.m(MType.W, p.getProxy(), "Speed", args[1] + " is out of bounds. -10 -> 10 only");
+                                }
+                            } else {
+                                Message.m(MType.W, p.getProxy(), "Speed", args[1] + " is not a number.");
+                            }
+                        } else {
+                            Message.m(MType.G, p.getProxy(), "Speed", "Walk speed set to default: " + ChatColor.AQUA + "2");
+                            p.getProxy().setFlySpeed((float) 0.2);
+                        }
+                    } else {
+                        Message.earg2(p.getProxy(), "Speed", "/speed <fly/walk> <speed>");
+                    }
+                } else {
+                    Message.earg2(p.getProxy(), "Speed", "/speed <fly/walk> <speed>");
+                }
+            } else {
+                Message.e(cs, "Speed", Crit.P);
+            }
+        } else {
+            Message.e(cs, "Speed", Crit.C);
+        }
+    }
+    
+
+
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
@@ -250,7 +312,7 @@ public class AbilityModule extends TrilliumModule {
             Message.m(MType.W, player.getProxy(), "God Mode", "Remember! You are still in god mode!");
         }
     }
-    
+
     @EventHandler
     public void onTP(PlayerTeleportEvent event) {
         TrilliumPlayer p = player(event.getPlayer());

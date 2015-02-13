@@ -79,9 +79,25 @@ public class CommandTeleport implements CommandExecutor {
                             } else {
                                 if (c1.startsWith("~") && c2.startsWith("~") && c3.startsWith("~")) {
                                     if (Utils.isNumeric(c1.substring(1)) && Utils.isNumeric(c2.substring(1)) && Utils.isNumeric(c3.substring(1))) {
-                                        int c4 = Integer.parseInt(c1.substring(1));
-                                        int c5 = Integer.parseInt(c2.substring(1));
-                                        int c6 = Integer.parseInt(c3.substring(1));
+                                        int c4;
+                                        int c5;
+                                        int c6;
+                                        if (c1.substring(1).equals("")) {
+                                            c4 = 0;
+                                        } else {
+                                            c4 = Integer.parseInt(c1.substring(1));
+                                        }
+                                        if (c2.substring(1).equals("")) {
+                                            c5 = 0;
+                                        } else {
+                                            c5 = Integer.parseInt(c1.substring(1));
+                                        }
+                                        if (c3.substring(1).equals("")) {
+                                            c6 = 0;
+                                        } else {
+                                            c6 = Integer.parseInt(c1.substring(1));
+                                        }
+                                        
                                         Location loc = new Location(p.getWorld(), p.getLocation().getX() + c4, p.getLocation().getY() + c5, p.getLocation().getZ() + c6);
                                         pl.teleport(loc);
                                         Message.m(MType.G, p, "TP", "You teleported to " + ChatColor.AQUA + loc.getX() + ", " + loc.getY() + ", " + loc.getZ());
@@ -89,7 +105,7 @@ public class CommandTeleport implements CommandExecutor {
                                         Message.m(MType.W, p, "TP", "Something isn't a number...");
                                     }
                                 } else {
-                                    Message.earg2(p, "TP", "/tp <player> <x> <y> <z>");
+                                    Message.earg2(p, "TP", "/tp <player> [x] [y] [z]");
                                 }
                             }
                         } else {

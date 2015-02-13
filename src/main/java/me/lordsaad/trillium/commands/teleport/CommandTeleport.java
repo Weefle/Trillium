@@ -97,7 +97,7 @@ public class CommandTeleport implements CommandExecutor {
                                         } else {
                                             c6 = Integer.parseInt(c1.substring(1));
                                         }
-                                        
+
                                         Location loc = new Location(p.getWorld(), p.getLocation().getX() + c4, p.getLocation().getY() + c5, p.getLocation().getZ() + c6);
                                         pl.teleport(loc);
                                         Message.m(MType.G, p, "TP", "You teleported to " + ChatColor.AQUA + loc.getX() + ", " + loc.getY() + ", " + loc.getZ());

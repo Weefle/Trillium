@@ -61,9 +61,6 @@ commands:
   me:
     description: Share your feelings/thoughts to everyone.
     usage: /me <message>
-  say:
-    description: Say something from the console. Not for players.
-    usage: /say <message>
   killall:
     description: Kill anything in a radius.
     usage: /killall <radius> <mobs/players/animals/monsters/items/everything>

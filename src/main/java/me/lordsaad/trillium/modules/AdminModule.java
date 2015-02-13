@@ -109,14 +109,14 @@ public class AdminModule extends TrilliumModule {
     @Command(command = "setspawn", description = "Set the spawn of the server.", usage = "/setspawn")
     public void setspawn(CommandSender cs) {
         if (cs instanceof Player) {
-            Player p = (Player) cs;
+            TrilliumPlayer p = (TrilliumPlayer) cs;
             if (p.hasPermission(Permission.Admin.SETSPAWN)) {
 
-                p.getWorld().setSpawnLocation(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
-                Message.m(MType.G, p, "Set Spawn", "Spawn location set. " + ChatColor.AQUA + p.getLocation().getBlockX() + ", " + p.getLocation().getBlockY() + ", " + p.getLocation().getBlockZ());
+                p.getProxy().getWorld().setSpawnLocation(p.getProxy().getLocation().getBlockX(), p.getProxy().getLocation().getBlockY(), p.getProxy().getLocation().getBlockZ());
+                Message.m(MType.G, p.getProxy(), "Set Spawn", "Spawn location set. " + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ());
 
             } else {
-                Message.e(p, "Set Spawn", Crit.P);
+                Message.e(p.getProxy(), "Set Spawn", Crit.P);
             }
         } else {
             Message.e(cs, "Set Spawn", Crit.C);
@@ -125,8 +125,7 @@ public class AdminModule extends TrilliumModule {
 
     @Command(command = "lag", description = "Statistics on server lag and also clears lag through gc.", usage = "/lag")
     public void lag(CommandSender cs) {
-        Player p = (Player) cs;
-        if (p.hasPermission(Permission.Admin.LAG)) {
+        if (cs.hasPermission(Permission.Admin.LAG)) {
 
             long time = System.currentTimeMillis();
 
@@ -146,7 +145,24 @@ public class AdminModule extends TrilliumModule {
             Message.m(MType.R, cs, "Lag", "GC took " + need / 1000L + " seconds.");
 
         } else {
-            Message.e(p, "Lag", Crit.P);
+            Message.e(cs, "Lag", Crit.P);
+        }
+    }
+
+    @Command(command = "say", description = "Talk from the console", usage = "/say")
+    public void say(CommandSender cs, String[] args) {
+        if (!(cs instanceof Player)) {
+
+            StringBuilder sb = new StringBuilder();
+            for (String arg : args) {
+                sb.append(arg).append(" ");
+            }
+            String message = sb.toString().trim();
+
+            Message.b(MType.R, ChatColor.LIGHT_PURPLE + "Console", message);
+
+        } else {
+            Message.m(MType.W, cs, "Say", "Say is for the console. Not you.");
         }
     }
 }

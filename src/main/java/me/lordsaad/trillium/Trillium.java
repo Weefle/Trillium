@@ -58,7 +58,6 @@ public class Trillium extends JavaPlugin {
         getCommand("smite").setExecutor(new CommandSmite());
         getCommand("report").setExecutor(new CommandReport());
         getCommand("reports").setExecutor(new CommandReports());
-        getCommand("lag").setExecutor(new CommandLag());
         getCommand("nickname").setExecutor(new CommandNickname());
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);

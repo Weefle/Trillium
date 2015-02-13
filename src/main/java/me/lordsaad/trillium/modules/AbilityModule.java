@@ -16,10 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
 public class AbilityModule extends TrilliumModule {
 
@@ -251,6 +248,15 @@ public class AbilityModule extends TrilliumModule {
 
         if (player.isGod()) {
             Message.m(MType.W, player.getProxy(), "God Mode", "Remember! You are still in god mode!");
+        }
+    }
+    
+    @EventHandler
+    public void onTP(PlayerTeleportEvent event) {
+        TrilliumPlayer p = player(event.getPlayer());
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND
+                || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
+            p.setLastLocation(event.getFrom());
         }
     }
 }

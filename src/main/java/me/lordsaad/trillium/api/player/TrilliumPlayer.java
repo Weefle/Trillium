@@ -133,4 +133,8 @@ public class TrilliumPlayer {
     public Location getLastLocation() {
         return this.previousLocation;
     }
+
+    public void setLastLocation(Location loc) {
+        this.previousLocation = loc;
+    }
 }

@@ -34,4 +34,9 @@ public class Permission {
         public static final String CHESTFINDER = PREFIX + "chestfinder";
         public static final String SETSPAWN = PREFIX + "setspawn";
     }
+
+    public static class Teleport {
+        private static final String PREFIX = "tr.teleport.";
+        public static final String SPAWN = PREFIX + "spawn";
+    }
 }

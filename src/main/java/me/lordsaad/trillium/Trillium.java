@@ -28,6 +28,7 @@ public class Trillium extends JavaPlugin {
         TrilliumAPI.registerModule(new AbilityModule());
         TrilliumAPI.registerModule(new AdminModule());
         TrilliumAPI.registerModule(new CoreModule());
+        TrilliumAPI.registerModule(new TeleportModule());
 
         setupcmdbinder();
 
@@ -51,8 +52,6 @@ public class Trillium extends JavaPlugin {
         getCommand("message").setExecutor(new CommandMessage());
         getCommand("commandbinder").setExecutor(new CommandCmdBinder());
         getCommand("kittybomb").setExecutor(new CommandKittyBomb());
-        getCommand("setspawn").setExecutor(new CommandSetSpawn());
-        getCommand("spawn").setExecutor(new CommandSpawn());
         getCommand("me").setExecutor(new CommandMe());
         getCommand("say").setExecutor(new CommandSay());
         getCommand("killall").setExecutor(new CommandKillall());

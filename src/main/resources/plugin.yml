@@ -58,9 +58,6 @@ commands:
     description: KITTEH BAMB!!
     usage: /kittybomb
     aliases: [kittehbamb, kittehbomb, kittybamb, kittyb, kbomb, kb]
-  spawn:
-    description: teleport to the spawn location
-    usage: /spawn
   me:
     description: Share your feelings/thoughts to everyone.
     usage: /me <message>

@@ -5,7 +5,6 @@ import me.lordsaad.trillium.api.Permission;
 import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.api.TrilliumModule;
 import me.lordsaad.trillium.api.command.Command;
-import me.lordsaad.trillium.api.command.CommandException;
 import me.lordsaad.trillium.api.player.TrilliumPlayer;
 import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
@@ -29,10 +28,10 @@ public class AFKModule extends TrilliumModule {
     }
 
     @Command(command = "afk", description = "Indicate that you are away from your keyboard.", usage = "/afk")
-    public void onCommand(CommandSender sender, String[] args) throws CommandException {
+    public void afk(CommandSender sender) {
         if (sender instanceof Player) {
             TrilliumPlayer player = player((Player) sender);
-            if (player.getProxy().hasPermission(Permission.Afk.USE)) {
+            if (player.hasPermission(Permission.Afk.USE)) {
                 player.toggleAfk();
             } else {
                 Message.e(sender, "AFK", Crit.P);

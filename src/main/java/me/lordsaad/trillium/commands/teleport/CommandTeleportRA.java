@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 public class CommandTeleportRA implements CommandExecutor {
 
     //TODO: save last location
+    //TODO: Fix. It generates an NPE at line 23
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 

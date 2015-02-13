@@ -182,7 +182,7 @@ public class AbilityModule extends TrilliumModule {
     public void speed(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = (TrilliumPlayer) cs;
-            if (p.hasPermission("tr.speed")) {
+            if (p.hasPermission(Permission.Ability.SPEED)) {
                 if (args.length != 0) {
                     if (args[0].equalsIgnoreCase("fly")) {
                         double i;

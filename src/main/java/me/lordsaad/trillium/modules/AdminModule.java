@@ -9,8 +9,8 @@ import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import me.lordsaad.trillium.particleeffect.ParticleEffect;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -104,4 +104,22 @@ public class AdminModule extends TrilliumModule {
             Message.e(cs, "Chest Finder", Crit.C);
         }
     }
+
+    @Command(command = "setspawn", description = "Set the spawn of the server.", usage = "/setspawn")
+    public void setspawn(CommandSender cs) {
+        if (cs instanceof Player) {
+            Player p = (Player) cs;
+            if (p.hasPermission(Permission.Admin.SETSPAWN)) {
+
+                p.getWorld().setSpawnLocation(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
+                Message.m(MType.G, p, "Set Spawn", "Spawn location set. " + ChatColor.AQUA + p.getLocation().getBlockX() + ", " + p.getLocation().getBlockY() + ", " + p.getLocation().getBlockZ());
+
+            } else {
+                Message.e(p, "Set Spawn", Crit.P);
+            }
+        } else {
+            Message.e(cs, "Set Spawn", Crit.C);
+        }
+    }
 }
+

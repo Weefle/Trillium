@@ -16,6 +16,7 @@ public class Permission {
         public static final String FLY_OTHER = PREFIX + "fly.other";
         public static final String GOD = PREFIX + "god";
         public static final String GOD_OTHER = PREFIX + "god.other";
+        public static final String SPEED = PREFIX + "speed";
         public static final String VANISH = PREFIX + "vanish";
         public static final String VANISH_OTHER = PREFIX + "vanish.other";
     }
@@ -29,5 +30,6 @@ public class Permission {
         private static final String PREFIX = "tr.admin.";
         public static final String BROADCAST = PREFIX + "broadcast";
         public static final String CHESTFINDER = PREFIX + "chestfinder";
+        public static final String SETSPAWN = PREFIX + "setspawn";
     }
 }

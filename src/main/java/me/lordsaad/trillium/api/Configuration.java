@@ -13,14 +13,14 @@ public class Configuration {
 
     public static class Ability {
         private static String PREFIX = "ability.";
-        private static String VANISH = PREFIX + "vanish.";
         public static final String AUTO_RESPAWN = PREFIX + "auto-respawn";
+        private static String VANISH = PREFIX + "vanish.";
         public static final String GOD = PREFIX + VANISH + "god-mode";
         public static final String PICK_UP_ITEM = VANISH + "pick-up-item";
         public static final String DROP_ITEM = VANISH + "drop-item";
         public static final String SPECTATOR = VANISH + "spectator-mode";
     }
-    
+
     public static class Afk {
         private static String AFK = "afk.";
         private static String AUTO_AFK = AFK + "auto-afk.";

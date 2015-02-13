@@ -12,7 +12,7 @@ public class AsyncPlayerChat implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         TrilliumPlayer p = TrilliumAPI.getPlayer(event.getPlayer().getName());
-        
+
         if (p.hasPermission("tr.chatcolor")) {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
         }

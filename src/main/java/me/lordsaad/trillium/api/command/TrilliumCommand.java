@@ -1,13 +1,12 @@
 package me.lordsaad.trillium.api.command;
 
+import me.lordsaad.trillium.api.TrilliumModule;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-
-import me.lordsaad.trillium.api.TrilliumModule;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 
 public class TrilliumCommand extends Command {
     private final Method invoke;

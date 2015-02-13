@@ -1,21 +1,20 @@
 package me.lordsaad.trillium.api;
 
+import me.lordsaad.trillium.Trillium;
+import me.lordsaad.trillium.api.command.Command;
+import me.lordsaad.trillium.api.command.TrilliumCommand;
+import me.lordsaad.trillium.api.player.TrilliumPlayer;
+import me.lordsaad.trillium.api.serializer.Serializer;
+import org.bukkit.command.CommandMap;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.SimplePluginManager;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import me.lordsaad.trillium.Trillium;
-import me.lordsaad.trillium.api.command.Command;
-import me.lordsaad.trillium.api.command.TrilliumCommand;
-import me.lordsaad.trillium.api.player.TrilliumPlayer;
-import me.lordsaad.trillium.api.serializer.Serializer;
-
-import org.bukkit.command.CommandMap;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.SimplePluginManager;
 
 public class TrilliumAPI {
     private static Trillium instance;
@@ -35,7 +34,7 @@ public class TrilliumAPI {
             TrilliumAPI.players = new HashMap<>();
             TrilliumAPI.serializers = new HashMap<>();
             TrilliumAPI.modules = new HashMap<>();
-            
+
             TrilliumAPI.instance.saveDefaultConfig();
             TrilliumAPI.playerFolder = new File(getInstance().getDataFolder(), "players");
             playerFolder.mkdirs();
@@ -70,7 +69,7 @@ public class TrilliumAPI {
     public static File getPlayerFolder() {
         return playerFolder;
     }
-    
+
     @SuppressWarnings("unchecked")
     public static <T> Serializer<T> getSerializer(Class<T> clazz) {
         return (Serializer<T>) serializers.get(clazz);

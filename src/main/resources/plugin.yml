@@ -102,3 +102,7 @@ commands:
     description: Set a nickname for yourself
     usage: /nick [player]
     aliases: [nick]
+  chestfinder:
+    description: Expose any hidden chests.
+    usage: /chestfinder
+    aliases: [cf]

@@ -9,6 +9,7 @@ import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class Utils {
+
     public static void printCurrentMemory(CommandSender sender) {
         int free = (int) Runtime.getRuntime().freeMemory() / 1000000;
         int max = (int) Runtime.getRuntime().maxMemory() / 1000000;
@@ -19,7 +20,7 @@ public class Utils {
         Message.m(MType.R, sender, "Lag", "Used memory: " + bar(i));
         Message.m(MType.R, sender, "Lag", "Free memory: " + free + "MB");
         Message.m(MType.R, sender, "Lag", "TPS: " + TpsRunnable.getTPS());
-        Message.m(MType.R, sender, "TPS", "Lag Rate: " + bar((int) Math.round((1.0D - TpsRunnable.getTPS() / 20.0D) * 100.0D)));
+        Message.m(MType.R, sender, "Lag", "Lag Rate: " + bar((int) Math.round((1.0D - TpsRunnable.getTPS() / 20.0D) * 100.0D)));
     }
 
     public static String bar(int percent) {
@@ -69,4 +70,5 @@ public class Utils {
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");
     }
+
 }

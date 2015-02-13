@@ -28,5 +28,6 @@ public class Permission {
     public static class Admin {
         private static final String PREFIX = "tr.admin.";
         public static final String BROADCAST = PREFIX + "broadcast";
+        public static final String CHESTFINDER = PREFIX + "chestfinder";
     }
 }

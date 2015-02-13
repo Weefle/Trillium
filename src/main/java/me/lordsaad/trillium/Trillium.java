@@ -85,7 +85,7 @@ public class Trillium extends JavaPlugin {
         PluginDescriptionFile pdf = getDescription();
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         getLogger().info("           Plugin made with love");
-        getLogger().info("   by LordSaad, VortexSeven, and Turbotailz");
+        getLogger().info( "   by LordSaad, VortexSeven, Turbotailz");
         getLogger().info("               and Samczsun");
         getLogger().info("                     ❤");
         getLogger().info("Version: " + pdf.getVersion());

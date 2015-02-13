@@ -56,7 +56,7 @@ public class TrilliumAPI {
             throw new IllegalStateException(String.format("TrilliumPlayer %s already exists", proxy.getName()));
         }
     }
-    
+
     public static void disposePlayer(Player proxy) {
         if (players.containsKey(proxy.getName())) {
             TrilliumPlayer player = players.remove(proxy.getName());
@@ -65,7 +65,7 @@ public class TrilliumAPI {
             throw new IllegalStateException(String.format("TrilliumPlayer %s does not exist", proxy.getName()));
         }
     }
-    
+
     public static File getPlayerFolder() {
         return playerFolder;
     }

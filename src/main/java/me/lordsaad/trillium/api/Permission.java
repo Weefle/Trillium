@@ -19,7 +19,7 @@ public class Permission {
         public static final String VANISH = PREFIX + "vanish";
         public static final String VANISH_OTHER = PREFIX + "vanish.other";
     }
-    
+
     public static class Afk {
         private static final String PREFIX = "tr.afk.";
         public static final String USE = PREFIX + "use";

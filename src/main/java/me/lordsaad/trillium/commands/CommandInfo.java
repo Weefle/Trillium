@@ -56,5 +56,4 @@ public class CommandInfo implements CommandExecutor {
         }
         return true;
     }
-
 }

@@ -27,8 +27,8 @@ public class PlayerJoin implements Listener {
         for (String s : motd) {
             s = ChatColor.translateAlternateColorCodes('&', s);
             s = s.replace("[USERNAME]", p.getName());
-            s = s.replace("[SLOTS]", String.valueOf(TrilliumAPI.getInstance().getServer().getMaxPlayers()));
-            s = s.replace("[ONLINE]", String.valueOf(Bukkit.getOnlinePlayers().size()));
+            s = s.replace("[SLOTS]", "" + Bukkit.getMaxPlayers());
+            s = s.replace("[ONLINE]", "" + Bukkit.getOnlinePlayers().size());
             p.sendMessage(s);
         }
 

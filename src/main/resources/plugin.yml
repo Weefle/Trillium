@@ -8,9 +8,6 @@ commands:
     description: The main command of the plugin.
     usage: /trillium
     aliases: [tr]
-  motd:
-    description: View/Edit the motd.
-    usage: /motd
   back:
     description: Teleport to the last place you teleported from.
     usage: /back
@@ -18,10 +15,6 @@ commands:
     description: Open a crafting table or view someone's inventory or enderchest.
     usage: /inv <player [enderchest]/crafting>
     aliases: [inv]
-  information:
-    description: Show information about a player.
-    usage: /info <player>
-    aliases: [info]
   message:
     description: Send a message to a player.
     usage: /message <sender> <message>

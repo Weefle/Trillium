@@ -10,7 +10,6 @@ import me.lordsaad.trillium.messageutils.Crit;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
 import me.lordsaad.trillium.particleeffect.ParticleEffect;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,37 +18,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AdminModule extends TrilliumModule {
 
     public AdminModule() {
         super("ability");
-    }
-
-    @Command(command = "broadcast", description = "Broadcast a message to the world", usage = "/broadcast <message>")
-    public void broadcast(CommandSender cs, String[] args) {
-        if (cs.hasPermission(Permission.Admin.BROADCAST)) {
-            if (args.length == 0) {
-                Message.earg(cs, "Broadcast", "Too few arguments. /broadcast <message>");
-            } else {
-                StringBuilder sb = new StringBuilder();
-                for (String arg : args) {
-                    sb.append(arg).append(" ");
-                }
-                String message = sb.toString().trim();
-
-                List<String> format = getConfig().getStringList("broadcast");
-
-                for (String s : format) {
-                    s = ChatColor.translateAlternateColorCodes('&', s);
-                    s = s.replace("[msg]", message);
-                    Bukkit.broadcastMessage(s);
-                }
-            }
-        } else {
-            Message.e(cs, "Broadcast", Crit.P);
-        }
     }
 
     @Command(command = "chestfinder", description = "expose any hidden chests.", usage = "/chestfinder", aliases = "cf")
@@ -146,23 +119,6 @@ public class AdminModule extends TrilliumModule {
 
         } else {
             Message.e(cs, "Lag", Crit.P);
-        }
-    }
-
-    @Command(command = "say", description = "Talk from the console", usage = "/say")
-    public void say(CommandSender cs, String[] args) {
-        if (!(cs instanceof Player)) {
-
-            StringBuilder sb = new StringBuilder();
-            for (String arg : args) {
-                sb.append(arg).append(" ");
-            }
-            String message = sb.toString().trim();
-
-            Message.b(MType.R, ChatColor.LIGHT_PURPLE + "Console", message);
-
-        } else {
-            Message.m(MType.W, cs, "Say", "Say is for the console. Not you.");
         }
     }
 }

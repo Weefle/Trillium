@@ -16,10 +16,6 @@ commands:
     description: KITTEH BAMB!!
     usage: /kittybomb
     aliases: [kittehbamb, kittehbomb, kittybamb, kittyb, kbomb, kb]
-  smite:
-    description: Strike lightning upon someone .
-    usage: /smite [player]
-    aliases: [thor, lightning, thunder]
   report:
     description: Send a report to the admins/mods
     usage: /report <msg>

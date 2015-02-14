@@ -169,7 +169,7 @@ public class AbilityModule extends TrilliumModule {
     @Command(command = "speed", description = "Change your speed without potion effects", usage = "/speed <fly/walk> <speed>")
     public void speed(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
-            TrilliumPlayer p = (TrilliumPlayer) cs;
+            TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Ability.SPEED)) {
                 if (args.length != 0) {
                     if (args[0].equalsIgnoreCase("fly")) {
@@ -227,7 +227,7 @@ public class AbilityModule extends TrilliumModule {
     @Command(command = "gamemode", description = "Change your gamemode.", usage = "/gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp] [player]", aliases = "gm")
     public void gamemode(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
-            TrilliumPlayer p = (TrilliumPlayer) cs;
+            TrilliumPlayer p = player((Player) cs);
             if (args.length == 1) {
                 if (p.hasPermission(Permission.Ability.GAMEMODE)) {
 

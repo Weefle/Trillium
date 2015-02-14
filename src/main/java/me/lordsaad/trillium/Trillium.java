@@ -42,7 +42,6 @@ public class Trillium extends JavaPlugin {
         getCommand("inventory").setExecutor(new CommandInventory());
         getCommand("commandbinder").setExecutor(new CommandCmdBinder());
         getCommand("kittybomb").setExecutor(new CommandKittyBomb());
-        getCommand("smite").setExecutor(new CommandSmite());
         getCommand("report").setExecutor(new CommandReport());
         getCommand("reports").setExecutor(new CommandReports());
 

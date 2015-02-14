@@ -61,4 +61,9 @@ public class Permission {
         public static final String NICK_COLOR = PREFIX + "nickname.color";
         public static final String NICK_OTHER_COLOR = PREFIX + "nickname.other.color";
     }
+
+    public static class Fun {
+        private static final String PREFIX = "tr.fun.";
+        public static final String SMITE = PREFIX + "smite";
+    }
 }

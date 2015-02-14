@@ -30,10 +30,11 @@ public class Permission {
 
     public static class Admin {
         private static final String PREFIX = "tr.admin.";
-        public static final String BROADCAST = PREFIX + "broadcast";
         public static final String CHESTFINDER = PREFIX + "chestfinder";
         public static final String SETSPAWN = PREFIX + "setspawn";
         public static final String LAG = PREFIX + "lag";
+        public static final String TRILLIUM = PREFIX + "trillium";
+        public static final String KILLALL = PREFIX + "killall";
     }
 
     public static class Teleport {
@@ -53,5 +54,7 @@ public class Permission {
         public static final String BROADCAST = PREFIX + "broadcast";
         public static final String MOTD = PREFIX + "motd";
         public static final String INFO = PREFIX + "information";
+        public static final String ME = PREFIX + "me";
+        public static final String MESSAGE = PREFIX + "message";
     }
 }

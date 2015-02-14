@@ -39,13 +39,9 @@ public class Trillium extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
-        getCommand("trillium").setExecutor(new CommandTrillium());
         getCommand("inventory").setExecutor(new CommandInventory());
-        getCommand("message").setExecutor(new CommandMessage());
         getCommand("commandbinder").setExecutor(new CommandCmdBinder());
         getCommand("kittybomb").setExecutor(new CommandKittyBomb());
-        getCommand("me").setExecutor(new CommandMe());
-        getCommand("killall").setExecutor(new CommandKillall());
         getCommand("smite").setExecutor(new CommandSmite());
         getCommand("report").setExecutor(new CommandReport());
         getCommand("reports").setExecutor(new CommandReports());
@@ -74,7 +70,6 @@ public class Trillium extends JavaPlugin {
         getLogger().info("           Plugin made with love");
         getLogger().info("   by LordSaad, VortexSeven, Turbotailz");
         getLogger().info("               and Samczsun");
-        getLogger().info("                     ❤");
         getLogger().info("Version: " + pdf.getVersion());
         getLogger().warning("THIS PLUGIN IS STILL IN PRE-ALPHA.");
         getLogger().warning("WE HIGHLY RECOMMEND YOU DON'T USE IT FOR THE TIME BEING.");

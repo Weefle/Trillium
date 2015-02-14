@@ -14,10 +14,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdminModule extends TrilliumModule {
 
@@ -121,5 +122,74 @@ public class AdminModule extends TrilliumModule {
             Message.e(cs, "Lag", Crit.P);
         }
     }
-}
 
+    @Command(command = "killall", description = "Kill everything in a radius.", usage = "/killall <radius> <mobs/players/animals/monsters/items/everything>")
+    public void killall(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = (TrilliumPlayer) cs;
+            if (p.hasPermission(Permission.Admin.KILLALL)) {
+                if (args.length <= 1) {
+                    Message.earg(p.getProxy(), "Killall", "/killall <radius> <mobs/players/animals/monsters/items/everything>");
+                } else {
+                    if (Utils.isNumeric(args[0])) {
+                        List<Entity> entities = p.getProxy().getNearbyEntities(Double.parseDouble(args[0]), Double.parseDouble(args[0]), Double.parseDouble(args[0]));
+                        if (args[1].equalsIgnoreCase("mobs")
+                                || args[1].equalsIgnoreCase("animals")
+                                || args[1].equalsIgnoreCase("players")
+                                || args[1].equalsIgnoreCase("monsters")) {
+                            Message.m(MType.G, p.getProxy(), "Killall", "Successfully murdered all " + args[1] + " in a radius of " + args[0]);
+                        } else if (args[1].equalsIgnoreCase("items")) {
+                            Message.m(MType.G, p.getProxy(), "Killall", "Successfully destroyed all items in a radius of " + args[0]);
+                        } else if (args[1].equalsIgnoreCase("everything")) {
+                            Message.m(MType.G, p.getProxy(), "Killall", "Successfully destroyed and murdered everything... you monster...");
+                        } else {
+                            p.getProxy().sendMessage("");
+                        }
+                        for (Entity e : entities) {
+                            if (args[1].equalsIgnoreCase("mobs")) {
+                                if (e instanceof Monster || e instanceof Animals) {
+                                    ((LivingEntity) e).setHealth(0D);
+                                }
+                            } else if (args[1].equalsIgnoreCase("monsters")) {
+                                if (e instanceof Monster) {
+                                    ((LivingEntity) e).setHealth(0D);
+                                }
+                            } else if (args[1].equalsIgnoreCase("animals")) {
+                                if (e instanceof Animals) {
+                                    ((LivingEntity) e).setHealth(0D);
+                                }
+                            } else if (args[1].equalsIgnoreCase("players")) {
+                                if (e instanceof Player) {
+                                    ((LivingEntity) e).setHealth(0D);
+                                }
+                            } else if (args[1].equalsIgnoreCase("items")) {
+                                if (e instanceof Item) {
+                                    e.remove();
+                                }
+                            } else if (args[1].equalsIgnoreCase("everything")) {
+                                if (e instanceof Damageable) {
+                                    ((Damageable) e).setHealth(0D);
+                                } else {
+                                    e.remove();
+                                }
+                            } else {
+                                Message.m(MType.W, p.getProxy(), "Killall", "Unknown argument: " + args[1]);
+                            }
+                        }
+                    } else {
+                        Message.m(MType.W, p.getProxy(), "Killall", args[0] + " is not a number.");
+                    }
+                }
+            } else {
+                Message.e(p.getProxy(), "Killall", Crit.P);
+            }
+        } else {
+            Message.e(cs, "Killall", Crit.C);
+        }
+    }
+
+    @Command(command = "nickname", description = "Change your nickname to anything you want.", usage = "/nick <nickname> [player]", aliases = "nick")
+    public void nickname(CommandSender cs, String[] args) {
+        
+    }
+}

@@ -13,6 +13,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -26,6 +28,21 @@ public class TeleportModule extends TrilliumModule {
         super("teleport");
     }
 
+    @Command(command = "back", description = "Teleport to your last active position", usage = "/back")
+    public void back(CommandSender cs) {
+        if (cs instanceof Player) {
+            TrilliumPlayer player = player(cs.getName());
+            if (player.getProxy().hasPermission(Permission.Ability.BACK)) {
+                Message.m(MType.G, player.getProxy(), "Back", "You have been sent back to your last location.");
+                player.getProxy().teleport(player.getLastLocation());
+            } else {
+                Message.e(player.getProxy(), "Back", Crit.P);
+            }
+        } else {
+            Message.e(cs, "Back", Crit.C);
+        }
+    }
+    
     @Command(command = "spawn", description = "Teleport to the server's spawn.", usage = "/spawn")
     public void spawn(CommandSender cs) {
         if (cs instanceof Player) {
@@ -289,6 +306,15 @@ public class TeleportModule extends TrilliumModule {
             }
         } else {
             Message.e(cs, "TPRD", Crit.C);
+        }
+    }
+
+    @EventHandler
+    public void onTP(PlayerTeleportEvent event) {
+        TrilliumPlayer p = player(event.getPlayer());
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND
+                || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
+            p.setLastLocation(event.getFrom());
         }
     }
 }

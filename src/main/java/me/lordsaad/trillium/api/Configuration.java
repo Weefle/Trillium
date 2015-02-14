@@ -27,7 +27,6 @@ public class Configuration {
         public static final String AUTO_AFK_ENABLED = AUTO_AFK + "enabled";
         public static final String AUTO_AFK_TIME = AUTO_AFK + "time-until-idle";
         public static final String AUTO_AFK_KICK = AUTO_AFK + "kick-on-afk";
-        public static final String AUTO_UNAFK = AUTO_AFK + "auto-unafk";
     }
 
     public static class Server {

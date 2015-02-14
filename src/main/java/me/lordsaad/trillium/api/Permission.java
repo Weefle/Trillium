@@ -7,6 +7,8 @@ public class Permission {
         public static final String KICK = PREFIX + "kick";
         public static final String BAN = PREFIX + "ban";
         public static final String UNBAN = PREFIX + "unban";
+        public static final String BANIP = PREFIX + "banip";
+        public static final String UNBANIP = PREFIX + "unbanip";
     }
 
     public static class Ability {

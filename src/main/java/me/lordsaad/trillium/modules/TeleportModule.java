@@ -122,17 +122,17 @@ public class TeleportModule extends TrilliumModule {
                                     int c4;
                                     int c5;
                                     int c6;
-                                    if (c1.substring(1).equals("")) {
+                                    if (c1.substring(1).equals("") || c1.substring(1).equals(" ")) {
                                         c4 = 0;
                                     } else {
                                         c4 = Integer.parseInt(c1.substring(1));
                                     }
-                                    if (c2.substring(1).equals("")) {
+                                    if (c2.substring(1).equals("") || c2.substring(1).equals(" ")) {
                                         c5 = 0;
                                     } else {
                                         c5 = Integer.parseInt(c1.substring(1));
                                     }
-                                    if (c3.substring(1).equals("")) {
+                                    if (c3.substring(1).equals("") || c3.substring(1).equals(" ")) {
                                         c6 = 0;
                                     } else {
                                         c6 = Integer.parseInt(c1.substring(1));
@@ -315,6 +315,63 @@ public class TeleportModule extends TrilliumModule {
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND
                 || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
             p.setLastLocation(event.getFrom());
+        }
+    }
+
+    @Command(command = "teleportcoordinates", description = "Teleport to a set of coordinates.", usage = "/tpc <x> <y> <z>", aliases = "tpc")
+    public void teleportcoordinates(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = player((Player) cs);
+            if (p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
+                if (args.length >= 3) {
+                    String c1 = args[1];
+                    String c2 = args[2];
+                    String c3 = args[3];
+                    if (Utils.isNumeric(c1) && Utils.isNumeric(c2) && Utils.isNumeric(c3)) {
+                        int c4 = Integer.parseInt(c1);
+                        int c5 = Integer.parseInt(c2);
+                        int c6 = Integer.parseInt(c3);
+                        Location loc = new Location(p.getProxy().getWorld(), c4, c5, c6);
+                        p.getProxy().teleport(loc);
+                        Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + c4 + ", " + c5 + ", " + c6);
+                    } else {
+                        if (c1.startsWith("~") && c2.startsWith("~") && c3.startsWith("~")) {
+                            if (Utils.isNumeric(c1.substring(1)) && Utils.isNumeric(c2.substring(1)) && Utils.isNumeric(c3.substring(1))) {
+                                int c4;
+                                int c5;
+                                int c6;
+                                if (c1.substring(1).equals("") || c1.substring(1).equals(" ")) {
+                                    c4 = 0;
+                                } else {
+                                    c4 = Integer.parseInt(c1.substring(1));
+                                }
+                                if (c2.substring(1).equals("") || c2.substring(1).equals(" ")) {
+                                    c5 = 0;
+                                } else {
+                                    c5 = Integer.parseInt(c1.substring(1));
+                                }
+                                if (c3.substring(1).equals("") || c3.substring(1).equals(" ")) {
+                                    c6 = 0;
+                                } else {
+                                    c6 = Integer.parseInt(c1.substring(1));
+                                }
+
+                                Location loc = new Location(p.getProxy().getWorld(), p.getProxy().getLocation().getX() + c4, p.getProxy().getLocation().getY() + c5, p.getProxy().getLocation().getZ() + c6);
+                                p.getProxy().teleport(loc);
+                                Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + loc.getX() + ", " + loc.getY() + ", " + loc.getZ());
+                            } else {
+                                Message.m(MType.W, p.getProxy(), "TP", "Something isn't a number...");
+                            }
+                        } else {
+                            Message.earg2(p.getProxy(), "TP", "/tp <player> [x] [y] [z]");
+                        }
+                    }
+                } else {
+                    Message.earg(p.getProxy(), "TP", "/tp <x> <y> <z>");
+                }
+            } else {
+                Message.e(p.getProxy(), "TP", Crit.P);
+            }
         }
     }
 }

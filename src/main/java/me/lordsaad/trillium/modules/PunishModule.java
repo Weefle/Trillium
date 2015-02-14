@@ -107,7 +107,7 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "unban", description = "Unban a player.", usage = "/unban <player>")
+    @Command(command = "unban", description = "Unban a player.", usage = "/unban <player>", aliases = "pardon")
     public void unban(CommandSender sender, String[] args) {
         if (sender.hasPermission(Permission.Punish.UNBAN)) {
             if (args.length == 0) {
@@ -127,6 +127,54 @@ public class PunishModule extends TrilliumModule {
         if (player.isMuted()) {
             e.setCancelled(true);
             Message.m(MType.W, player.getProxy(), "Mute", "Your voice has been silenced.");
+        }
+    }
+
+    @Command(command = "banip", description = "Ban the ip of a player from the server.", usage = "/banip <player> [reason]")
+    public void banip(CommandSender sender, String[] args) {
+        if (sender.hasPermission(Permission.Punish.BAN)) {
+            if (args.length == 0) {
+                Message.earg(sender, "BanIP", "/banip <player> [reason]");
+            } else {
+                Player target = Bukkit.getPlayer(args[0]);
+                String reason;
+                if (args.length > 1) {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 1; i < args.length; i++) {
+                        sb.append(args[i]).append(" ");
+                    }
+                    reason = sb.toString().trim();
+                } else {
+                    reason = "You are the weakest link. Good bye.";
+                }
+
+                if (target != null) {
+                    Bukkit.getBanList(BanList.Type.IP).addBan(String.valueOf(target.getAddress()), reason, null, sender.getName());
+                    target.kickPlayer(ChatColor.DARK_RED + "You got banned with reason: \n" + reason);
+                    Message.b(MType.W, "BanIP", target.getName() + " got banned with reason:");
+                    Message.b(MType.W, "BanIP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
+                } else {
+                    Bukkit.getBanList(BanList.Type.NAME).addBan(args[0], reason, null, sender.getName());
+                    Message.b(MType.W, "BanIP", args[0] + " got banned with reason:");
+                    Message.b(MType.W, "BanIP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
+                }
+            }
+        } else {
+            Message.e(sender, "BanIP", Crit.P);
+        }
+    }
+
+    @Command(command = "unbanip", description = "Unban the IP of a player.", usage = "/unbanip <IP>", aliases = "pardonip")
+    public void unbanip(CommandSender sender, String[] args) {
+        if (sender.hasPermission(Permission.Punish.UNBANIP)) {
+            if (args.length == 0) {
+                Message.earg(sender, "Unban", "/unbanip <IP>");
+            } else {
+                Bukkit.getBanList(BanList.Type.IP).pardon(args[0]);
+                Message.b(MType.G, "Unban", args[0] + " got unbanned.");
+            }
+        } else {
+            Message.e(sender, "Unban", Crit.P);
         }
     }
 }

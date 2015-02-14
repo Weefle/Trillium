@@ -42,7 +42,7 @@ public class TeleportModule extends TrilliumModule {
             Message.e(cs, "Back", Crit.C);
         }
     }
-    
+
     @Command(command = "spawn", description = "Teleport to the server's spawn.", usage = "/spawn")
     public void spawn(CommandSender cs) {
         if (cs instanceof Player) {

@@ -3,18 +3,3 @@ description: The Premium Essentials.
 main: me.lordsaad.trillium.Trillium
 name: Trillium
 version: 0.3
-commands:
-  commandbinder:
-    description: Bind a command to a block to activate that command when it's either touched or walked through.
-    usage: /cb <touch/walk> <console/player> <command>
-    aliases: [cmdbinder, cmdb, cb, cbinder, cbind]
-  kittybomb:
-    description: KITTEH BAMB!!
-    usage: /kittybomb
-    aliases: [kittehbamb, kittehbomb, kittybamb, kittyb, kbomb, kb]
-  report:
-    description: Send a report to the admins/mods
-    usage: /report <msg>
-  reports:
-    description: View the reports, remove a report, or clear the report list.
-    usage: /reports [remove <index number>/clear]

@@ -38,6 +38,9 @@ public class Permission {
         public static final String INV_CRAFTING = PREFIX + "inventory.crafting";
         public static final String INV_PLAYER = PREFIX + "inventory.player";
         public static final String INV_ENDERCHEST = PREFIX + "inventory.enderchest";
+        public static final String REPORT = PREFIX + "report";
+        public static final String REPORT_RECEIVER = PREFIX + "reportreceiver";
+        public static final String CMDBINDER = PREFIX + "commandbinder";
     }
 
     public static class Teleport {
@@ -68,5 +71,6 @@ public class Permission {
     public static class Fun {
         private static final String PREFIX = "tr.fun.";
         public static final String SMITE = PREFIX + "smite";
+        public static final String KITTYBOMB = PREFIX + "kittybomb";
     }
 }

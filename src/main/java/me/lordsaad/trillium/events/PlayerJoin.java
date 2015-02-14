@@ -1,9 +1,9 @@
 package me.lordsaad.trillium.events;
 
 import me.lordsaad.trillium.api.TrilliumAPI;
-import me.lordsaad.trillium.commands.CommandReport;
 import me.lordsaad.trillium.messageutils.MType;
 import me.lordsaad.trillium.messageutils.Message;
+import me.lordsaad.trillium.modules.AdminModule;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -34,8 +34,8 @@ public class PlayerJoin implements Listener {
 
         //Send report warning
         if (p.hasPermission("tr.reportreceiver")) {
-            if (CommandReport.reportlist.size() > 0) {
-                Message.m(MType.W, p, "Reports", "There are " + CommandReport.reportlist.size() + " reports available for revision.");
+            if (AdminModule.reportlist.size() > 0) {
+                Message.m(MType.W, p, "Reports", "There are " + AdminModule.reportlist.size() + " reports available for revision.");
                 Message.m(MType.W, p, "Reports", "/reports to view them.");
             }
         }

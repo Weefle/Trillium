@@ -22,6 +22,8 @@ import java.util.List;
 
 public class AdminModule extends TrilliumModule {
 
+    public static ArrayList<String> reportlist = new ArrayList<>();
+
     public AdminModule() {
         super("ability");
     }
@@ -238,6 +240,99 @@ public class AdminModule extends TrilliumModule {
             }
         } else {
             Message.e(cs, "Inventory", Crit.C);
+        }
+    }
+
+    @Command(command = "report", description = "Send a report to the staff.", usage = "/report <msg>")
+    public void report(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = (TrilliumPlayer) cs;
+            if (p.hasPermission(Permission.Admin.REPORT) || p.hasPermission(Permission.Admin.REPORT_RECEIVER)) {
+                if (args.length != 0) {
+
+                    StringBuilder sb = new StringBuilder();
+                    for (String arg : args) {
+                        sb.append(arg).append(" ");
+                    }
+                    String msg = sb.toString().trim();
+
+                    String big = ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "Reports" + ChatColor.DARK_GRAY + "]"
+                            + ChatColor.BLUE + " {"
+                            + ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + ", "
+                            + ChatColor.AQUA + p.getProxy().getWorld().getName() + ChatColor.BLUE + ", "
+                            + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ChatColor.BLUE + ", "
+                            + ChatColor.AQUA + p.getProxy().getLocation().getBlockY() + ChatColor.BLUE + ", "
+                            + ChatColor.AQUA + p.getProxy().getLocation().getBlockZ() + ChatColor.BLUE + "} >> "
+                            + ChatColor.GRAY + msg;
+
+                    reportlist.add(big);
+                    Message.m(MType.G, p.getProxy(), "Report", "Your report was submitted successfully.");
+                    p.getProxy().sendMessage(ChatColor.YELLOW + "'" + ChatColor.GRAY + msg + ChatColor.YELLOW + "'");
+
+                    for (TrilliumPlayer pl : TrilliumAPI.getOnlinePlayers()) {
+                        if (pl.hasPermission(Permission.Admin.REPORT_RECEIVER) && !pl.getProxy().getName().equals(p.getProxy().getName())) {
+
+                            Message.m(MType.W, pl.getProxy(), "Report", "A new report was submitted by: " + p.getProxy().getName());
+                            pl.getProxy().sendMessage(big);
+                            Message.m(MType.R, pl.getProxy(), "Report", "/reports for a list of all reports.");
+                        }
+                    }
+                } else {
+                    Message.m(MType.W, p.getProxy(), "Report", "What's your report? /report <msg>");
+                }
+            } else {
+                Message.e(p.getProxy(), "Report", Crit.P);
+            }
+        } else {
+            Message.e(cs, "Report", Crit.C);
+        }
+    }
+
+    @Command(command = "reports", description = "View the list of submitted reports. Clear reports & remove a report.", usage = "/reports [clear/remove <index>]")
+    public void reports(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = (TrilliumPlayer) cs;
+            if (p.hasPermission(Permission.Admin.REPORT_RECEIVER)) {
+                if (args.length != 0) {
+                    if (args[0].equalsIgnoreCase("clear")) {
+                        reportlist.clear();
+                        Message.m(MType.G, p.getProxy(), "Reports", "Cleared Report List.");
+
+                    } else if (args[0].equalsIgnoreCase("remove")) {
+                        if (args.length < 2) {
+                            Message.earg(p.getProxy(), "Reports", "/reports remove <index number>");
+                        } else {
+                            if (Utils.isNumeric(args[1])) {
+                                int nb = Integer.parseInt(args[1]);
+                                if (nb > 0 && nb <= reportlist.size() + 1) {
+                                    Message.m(MType.G, p.getProxy(), "Reports", "Removed: " + nb);
+                                    p.getProxy().sendMessage(reportlist.get(nb - 1));
+                                    reportlist.remove(nb - 1);
+
+                                } else {
+                                    Message.m(MType.W, p.getProxy(), "Reports", args[1] + " is either larger than the list index or smaller than 0");
+                                }
+                            } else {
+                                Message.m(MType.W, p.getProxy(), "Reports", args[1] + " is not a number.");
+                            }
+                        }
+                    } else {
+                        Message.earg(p.getProxy(), "Reports", "/reports [remove <index>/clear]");
+                    }
+
+                } else {
+                    p.getProxy().sendMessage(ChatColor.BLUE + "Report List:");
+                    int nb = 0;
+                    for (String big : reportlist) {
+                        nb++;
+                        p.getProxy().sendMessage(ChatColor.GRAY + "-" + ChatColor.AQUA + nb + ChatColor.GRAY + "- " + big);
+                    }
+                }
+            } else {
+                Message.e(p.getProxy(), "Report", Crit.P);
+            }
+        } else {
+            Message.e(cs, "Report", Crit.C);
         }
     }
 }

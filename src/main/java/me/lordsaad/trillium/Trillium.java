@@ -2,12 +2,11 @@ package me.lordsaad.trillium;
 
 import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.api.serializer.LocationSerializer;
-import me.lordsaad.trillium.commands.CommandCmdBinder;
-import me.lordsaad.trillium.commands.CommandKittyBomb;
-import me.lordsaad.trillium.commands.CommandReport;
-import me.lordsaad.trillium.commands.CommandReports;
 import me.lordsaad.trillium.databases.CmdBinderDatabase;
-import me.lordsaad.trillium.events.*;
+import me.lordsaad.trillium.events.PlayerDeath;
+import me.lordsaad.trillium.events.PlayerJoin;
+import me.lordsaad.trillium.events.PlayerLeave;
+import me.lordsaad.trillium.events.ServerListPing;
 import me.lordsaad.trillium.modules.*;
 import me.lordsaad.trillium.runnables.TpsRunnable;
 import org.bukkit.Bukkit;
@@ -22,6 +21,7 @@ import java.io.IOException;
 public class Trillium extends JavaPlugin {
 
     public void onEnable() {
+
         TrilliumAPI.setInstance(this);
         TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
 
@@ -32,20 +32,15 @@ public class Trillium extends JavaPlugin {
         TrilliumAPI.registerModule(new CoreModule());
         TrilliumAPI.registerModule(new TeleportModule());
         TrilliumAPI.registerModule(new ChatModule());
+        TrilliumAPI.registerModule(new FunModule());
+        TrilliumAPI.registerModule(new CmdBinderModule());
 
         setupcmdbinder();
 
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
-        getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
-        getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
-
-        getCommand("commandbinder").setExecutor(new CommandCmdBinder());
-        getCommand("kittybomb").setExecutor(new CommandKittyBomb());
-        getCommand("report").setExecutor(new CommandReport());
-        getCommand("reports").setExecutor(new CommandReports());
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);
 
@@ -62,7 +57,7 @@ public class Trillium extends JavaPlugin {
         YamlConfiguration ymlreports = YamlConfiguration.loadConfiguration(reports);
 
         for (String s : ymlreports.getStringList("Reports")) {
-            CommandReport.reportlist.add(s);
+            AdminModule.reportlist.add(s);
         }
 
         PluginDescriptionFile pdf = getDescription();
@@ -86,7 +81,7 @@ public class Trillium extends JavaPlugin {
     public void onDisable() {
         File reports = new File(TrilliumAPI.getInstance().getDataFolder(), "Reports.yml");
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(reports);
-        yml.set("Reports", CommandReport.reportlist);
+        yml.set("Reports", AdminModule.reportlist);
         try {
             yml.save(reports);
         } catch (IOException e) {
@@ -105,8 +100,8 @@ public class Trillium extends JavaPlugin {
             Location loc = new Location(Bukkit.getWorld(w), x, y, z);
             String cmd = s.split("/")[1];
 
-            CommandCmdBinder.touchconsole.put(loc, cmd);
-            CommandCmdBinder.antilagcheckloc.add(loc);
+            CmdBinderModule.touchconsole.put(loc, cmd);
+            CmdBinderModule.antilagcheckloc.add(loc);
         }
 
         for (String s : yml.getStringList("touchplayer")) {
@@ -117,8 +112,8 @@ public class Trillium extends JavaPlugin {
             Location loc = new Location(Bukkit.getWorld(w), x, y, z);
             String cmd = s.split("/")[1];
 
-            CommandCmdBinder.touchplayer.put(loc, cmd);
-            CommandCmdBinder.antilagcheckloc.add(loc);
+            CmdBinderModule.touchplayer.put(loc, cmd);
+            CmdBinderModule.antilagcheckloc.add(loc);
         }
 
         for (String s : yml.getStringList("walkconsole")) {
@@ -129,8 +124,8 @@ public class Trillium extends JavaPlugin {
             Location loc = new Location(Bukkit.getWorld(w), x, y, z);
             String cmd = s.split("/")[1];
 
-            CommandCmdBinder.walkconsole.put(loc, cmd);
-            CommandCmdBinder.antilagcheckloc.add(loc);
+            CmdBinderModule.walkconsole.put(loc, cmd);
+            CmdBinderModule.antilagcheckloc.add(loc);
         }
 
         for (String s : yml.getStringList("walkplayer")) {
@@ -141,8 +136,8 @@ public class Trillium extends JavaPlugin {
             Location loc = new Location(Bukkit.getWorld(w), x, y, z);
             String cmd = s.split("/")[1];
 
-            CommandCmdBinder.walkplayer.put(loc, cmd);
-            CommandCmdBinder.antilagcheckloc.add(loc);
+            CmdBinderModule.walkplayer.put(loc, cmd);
+            CmdBinderModule.antilagcheckloc.add(loc);
         }
     }
 }

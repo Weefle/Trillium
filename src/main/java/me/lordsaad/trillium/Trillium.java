@@ -2,7 +2,10 @@ package me.lordsaad.trillium;
 
 import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.api.serializer.LocationSerializer;
-import me.lordsaad.trillium.commands.*;
+import me.lordsaad.trillium.commands.CommandCmdBinder;
+import me.lordsaad.trillium.commands.CommandKittyBomb;
+import me.lordsaad.trillium.commands.CommandReport;
+import me.lordsaad.trillium.commands.CommandReports;
 import me.lordsaad.trillium.databases.CmdBinderDatabase;
 import me.lordsaad.trillium.events.*;
 import me.lordsaad.trillium.modules.*;
@@ -39,7 +42,6 @@ public class Trillium extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
-        getCommand("inventory").setExecutor(new CommandInventory());
         getCommand("commandbinder").setExecutor(new CommandCmdBinder());
         getCommand("kittybomb").setExecutor(new CommandKittyBomb());
         getCommand("report").setExecutor(new CommandReport());

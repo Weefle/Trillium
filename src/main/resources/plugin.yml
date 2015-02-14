@@ -4,10 +4,6 @@ main: me.lordsaad.trillium.Trillium
 name: Trillium
 version: 0.3
 commands:
-  inventory:
-    description: Open a crafting table or view someone's inventory or enderchest.
-    usage: /inv <player [enderchest]/crafting>
-    aliases: [inv]
   commandbinder:
     description: Bind a command to a block to activate that command when it's either touched or walked through.
     usage: /cb <touch/walk> <console/player> <command>

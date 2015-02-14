@@ -35,6 +35,9 @@ public class Permission {
         public static final String LAG = PREFIX + "lag";
         public static final String TRILLIUM = PREFIX + "trillium";
         public static final String KILLALL = PREFIX + "killall";
+        public static final String INV_CRAFTING = PREFIX + "inventory.crafting";
+        public static final String INV_PLAYER = PREFIX + "inventory.player";
+        public static final String INV_ENDERCHEST = PREFIX + "inventory.enderchest";
     }
 
     public static class Teleport {

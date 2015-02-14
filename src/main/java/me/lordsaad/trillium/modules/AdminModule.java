@@ -187,4 +187,57 @@ public class AdminModule extends TrilliumModule {
             Message.e(cs, "Killall", Crit.C);
         }
     }
+
+    @Command(command = "inventory", description = "Open a crafting table GUI, or someone else's inventory or enderchest.", usage = "/inv <player [enderchest]/crafting>", aliases = "inv")
+    public void inventory(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = (TrilliumPlayer) cs;
+            if (args.length == 1) {
+                if (args[0].equalsIgnoreCase("crafting") || args[0].equalsIgnoreCase("cv")) {
+                    if (p.hasPermission(Permission.Admin.INV_CRAFTING)) {
+                        p.getProxy().openWorkbench(p.getProxy().getLocation(), true);
+                        Message.m(MType.G, p.getProxy(), "Inventory", "Now viewing a crafting table.");
+                    } else {
+                        Message.e(p.getProxy(), "Inventory", Crit.P);
+                    }
+                } else {
+                    if (p.hasPermission(Permission.Admin.INV_PLAYER)) {
+                        TrilliumPlayer target = player(args[0]);
+
+                        if (target != null) {
+                            p.getProxy().openInventory(target.getProxy().getInventory());
+                            Message.m(MType.G, p.getProxy(), "Inventory", "You are now viewing " + target.getProxy().getName() + "'s inventory");
+                        } else {
+                            Message.eplayer(p.getProxy(), "Inventory", args[0]);
+                        }
+                    } else {
+                        Message.e(p.getProxy(), "Inventory", Crit.P);
+                    }
+                }
+
+            } else if (args.length > 1) {
+                if (args[1].equalsIgnoreCase("enderchest") || args[1].equalsIgnoreCase("ec")) {
+                    if (p.hasPermission(Permission.Admin.INV_ENDERCHEST)) {
+                        TrilliumPlayer target = player(args[0]);
+
+                        if (target != null) {
+                            p.getProxy().openInventory(target.getProxy().getEnderChest());
+                            Message.m(MType.G, p.getProxy(), "Inventory", "Now viewing " + args[0] + "'s ender chest.");
+
+                        } else {
+                            Message.eplayer(p.getProxy(), "Inventory", args[0]);
+                        }
+                    } else {
+                        Message.e(p.getProxy(), "Inventory", Crit.P);
+                    }
+                } else {
+                    Message.m(MType.W, p.getProxy(), "Inventory", "What is that? /inventory <player [enderchest]/crafting>");
+                }
+            } else {
+                Message.earg(p.getProxy(), "Inventory", " /inventory <player [enderchest]/crafting>");
+            }
+        } else {
+            Message.e(cs, "Inventory", Crit.C);
+        }
+    }
 }

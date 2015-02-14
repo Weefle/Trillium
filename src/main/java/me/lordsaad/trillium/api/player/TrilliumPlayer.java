@@ -14,23 +14,22 @@ import java.io.IOException;
 
 public class TrilliumPlayer {
     private Player proxy;
-
     private Location previousLocation;
+    private String nickname = proxy.getName();
 
-    private boolean afk;
     private long lastActive;
-
+    private boolean afk;
     private boolean isMuted = false;
-
     private boolean isGod = false;
     private boolean isVanished = false;
+    private boolean hasnickname = false;
 
     public TrilliumPlayer(Player proxy) {
         this.proxy = proxy;
         try {
             load();
         } catch (IOException e) {
-            e.printStackTrace(); //TODO: Warn
+            System.out.println("Failed to generate player: " + proxy.getName() + "'s files! Something went wrong.");
         }
     }
 
@@ -59,7 +58,7 @@ public class TrilliumPlayer {
         return this.isMuted;
     }
 
-    public void setMuted(Boolean enabled) {
+    public void setMuted(boolean enabled) {
         this.isMuted = enabled;
     }
 
@@ -79,6 +78,20 @@ public class TrilliumPlayer {
         this.isGod = enabled;
     }
 
+    public String getNickname() {
+        return this.nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+        getProxy().setDisplayName(proxy.getName());
+        this.hasnickname = !nickname.equals(proxy.getName());
+    }
+
+    public boolean hasNickname() {
+        return this.hasnickname;
+    }
+    
     public boolean isVanished() {
         return this.isVanished;
     }
@@ -106,8 +119,21 @@ public class TrilliumPlayer {
     }
 
     public void dispose() {
+        File dataStore = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
+        FileConfiguration config = YamlConfiguration.loadConfiguration(dataStore);
+
+        config.set(Configuration.Player.NICKNAME, this.nickname);
+        config.set(Configuration.Player.LOCATION, TrilliumAPI.getSerializer(Location.class).serialize(proxy.getLocation()));
+        config.set(Configuration.Player.MUTED, this.isMuted);
+        config.getBoolean(Configuration.Player.GOD, this.isGod);
+        config.getBoolean(Configuration.Player.VANISH, this.isVanished);
+        try {
+            config.save(dataStore);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         proxy = null;
-        //TODO: Save data
     }
 
     private void load() throws IOException {
@@ -121,12 +147,23 @@ public class TrilliumPlayer {
         FileConfiguration config = YamlConfiguration.loadConfiguration(dataStore);
 
         if (newUser) {
-            config.set(Configuration.Player.NICKNAME, proxy.getName());
+            config.set(Configuration.Player.NICKNAME, nickname);
             config.set(Configuration.Player.LOCATION, TrilliumAPI.getSerializer(Location.class).serialize(proxy.getLocation()));
-            config.set(Configuration.Player.MUTED, false);
-            config.set(Configuration.Player.GOD, false);
-            config.set(Configuration.Player.VANISH, false);
+            config.set(Configuration.Player.MUTED, isMuted());
+            config.set(Configuration.Player.GOD, isGod());
+            config.set(Configuration.Player.VANISH, isVanished);
             config.set(Configuration.Player.BAN_REASON, "");
+        } else {
+            setNickname(config.getString(Configuration.Player.NICKNAME));
+            setLastLocation(TrilliumAPI.getSerializer(Location.class).deserialize(config.getString(Configuration.Player.LOCATION)));
+            setMuted(config.getBoolean(Configuration.Player.MUTED));
+            setGod(config.getBoolean(Configuration.Player.GOD));
+            setVanished(config.getBoolean(Configuration.Player.VANISH));
+        }
+        try {
+            config.save(dataStore);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

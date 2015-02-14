@@ -73,13 +73,15 @@ player-settings:
 
   nicknames:
 
-    ops-color-code: b
+    ops-color-code: "b"
     # If an operator on the server doesn't have a nickname, their name will be the color above.
     # Color codes are between 0-9 or a-f.
+    # "" to remove the op color.
   
     prefix: "~"
     # If a player has a nickname, they will have the above symbol before their nickname.
     # example with "~": ~LordSaadCustomNick: Hello!
+    # "" to remove prefixes.
   
     character-limit: 25
     # The max length a nickname is allowed to be.

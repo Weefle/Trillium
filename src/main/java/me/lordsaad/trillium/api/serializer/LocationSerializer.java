@@ -8,7 +8,7 @@ public class LocationSerializer extends Serializer<Location> {
         if (l == null) {
             return null;
         }
-        return new StringBuilder(l.getWorld().getName()).append('~').append(l.getX()).append('~').append(l.getY()).append('~').append(l.getZ()).append('~').append(l.getYaw()).append('~').append(l.getPitch()).toString();
+        return l.getWorld().getName() + '~' + l.getX() + '~' + l.getY() + '~' + l.getZ() + '~' + l.getYaw() + '~' + l.getPitch();
     }
 
     public Location deserialize(String in) {

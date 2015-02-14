@@ -34,4 +34,11 @@ public class Configuration {
         public static final String SERVER_LIST_MOTD = PREFIX + "server-list-motd";
         public static final String INGAME_MOTD = PREFIX + "motd";
     }
+
+    public static class PlayerSettings {
+        private static String PREFIX = "player-settings.";
+        private static String NICKNAME = PREFIX + "nicknames.";
+        public static final String CHARLIMIT = NICKNAME + "character-limit";
+        public static final String PREF = NICKNAME + "prefix";
+    }
 }

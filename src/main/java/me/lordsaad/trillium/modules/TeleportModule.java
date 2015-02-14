@@ -14,7 +14,13 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class TeleportModule extends TrilliumModule {
+
+    public static HashMap<UUID, UUID> tpr = new HashMap<>();
+    public static HashMap<UUID, UUID> tprh = new HashMap<>();
 
     public TeleportModule() {
         super("teleport");
@@ -34,7 +40,7 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "teleport", description = "Teleport to a person or a set of coordinates.", usage = "/tp <player> [<x>, <y>, <z>]", aliases = "tp")
+    @Command(command = "teleport", description = "Teleport to a person or a set of coordinates.", usage = "/tp <player> [player / <x>, <y>, <z>]", aliases = "tp")
     public void spawn(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
@@ -134,6 +140,155 @@ public class TeleportModule extends TrilliumModule {
             }
         } else {
             Message.e(cs, "TP", Crit.C);
+        }
+    }
+
+    @Command(command = "teleporthere", description = "Teleport a player to you.", usage = "/tph <player>", aliases = "tph")
+    public void teleporthere(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = player((Player) cs);
+            if (p.hasPermission(Permission.Teleport.TPHERE)) {
+                if (args.length != 0) {
+                    TrilliumPlayer target = player(args[0]);
+                    if (target != null) {
+
+                        target.getProxy().teleport(p.getProxy());
+                        Message.m(MType.G, p.getProxy(), "TPH", "You teleported " + target.getProxy().getName() + " to you.");
+                        Message.m(MType.G, target.getProxy(), "TPH", p.getProxy().getName() + " teleported you to them.");
+
+                    } else {
+                        Message.eplayer(p.getProxy(), "TPH", args[0]);
+                    }
+                } else {
+                    Message.earg(p.getProxy(), "TPH", "/tphere <player>");
+                }
+            } else {
+                Message.e(p.getProxy(), "TPH", Crit.P);
+            }
+        } else {
+            Message.e(cs, "TPH", Crit.C);
+        }
+    }
+
+    @Command(command = "teleportrequest", description = "Request permission to teleport to a player.", usage = "/tpr <player>", aliases = "tpr")
+    public void teleportrequest(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = player((Player) cs);
+            if (p.hasPermission(Permission.Teleport.TPREQEST)) {
+                if (args.length != 0) {
+                    TrilliumPlayer target = player(args[0]);
+                    if (target != null) {
+
+                        Message.m(MType.R, p.getProxy(), "TPR", target.getProxy().getName() + " is now pending. Please stand by.");
+
+                        Message.m(MType.R, target.getProxy(), "TPR", p.getProxy().getName() + " would like to teleport to you.");
+                        Message.m(MType.R, target.getProxy(), "TPR", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.");
+                        Message.m(MType.R, target.getProxy(), "TPR", ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.");
+
+                        tpr.put(p.getProxy().getUniqueId(), target.getProxy().getUniqueId());
+
+                    } else {
+                        Message.eplayer(p.getProxy(), "TPR", args[0]);
+                    }
+                } else {
+                    Message.earg(p.getProxy(), "TPR", "/tpr <player>");
+                }
+            } else {
+                Message.e(p.getProxy(), "TPR", Crit.P);
+            }
+        } else {
+            Message.e(cs, "TPR", Crit.C);
+        }
+    }
+
+    @Command(command = "teleportrequesthere", description = "Request permission to teleport a player to you.", usage = "/tprh <player>", aliases = "tprh")
+    public void teleportrequesthere(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = player((Player) cs);
+            if (p.hasPermission(Permission.Teleport.TPREQESTHERE)) {
+                if (args.length != 0) {
+                    TrilliumPlayer target = player(args[0]);
+                    if (target != null) {
+
+                        Message.m(MType.R, p.getProxy(), "TPRH", "Teleport request for " + target.getProxy().getName() + " to here is now pending. Please stand by.");
+                        Message.m(MType.R, target.getProxy(), "TPRH", p.getProxy().getName() + ChatColor.BLUE + " would like you to teleport to him");
+                        Message.m(MType.R, target.getProxy(), "TPRH", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.");
+                        Message.m(MType.R, target.getProxy(), "TPRH", ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.");
+                        tprh.put(p.getProxy().getUniqueId(), target.getProxy().getUniqueId());
+
+                    } else {
+                        Message.eplayer(p.getProxy(), "TPRH", args[0]);
+                    }
+                } else {
+                    Message.earg(p.getProxy(), "TPRH", "/tprh <player>");
+                }
+            } else {
+                Message.e(p.getProxy(), "TPRH", Crit.P);
+            }
+        }
+    }
+
+    @Command(command = "teleportrequestaccept", description = "Accept a teleport request.", usage = "/tpra", aliases = "tpra")
+    public void teleportrequestaccept(CommandSender cs) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = player((Player) cs);
+            if (p.hasPermission(Permission.Teleport.TPRRESPOND)) {
+                if (tpr.containsValue(p.getProxy().getUniqueId())) {
+
+                    TrilliumPlayer requester = player(Bukkit.getPlayer(tpr.get(p.getProxy().getUniqueId())));
+
+                    requester.getProxy().teleport(p.getProxy());
+                    Message.m(MType.G, p.getProxy(), "TPRA", "You teleported " + requester.getProxy().getName() + " to you.");
+                    Message.m(MType.G, requester.getProxy(), "TPRA", p.getProxy().getName() + " accepted your teleport request.");
+
+                } else if (tprh.containsValue(p.getProxy().getUniqueId())) {
+
+                    TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getProxy().getUniqueId())));
+
+                    p.getProxy().teleport(requester.getProxy());
+                    Message.m(MType.G, p.getProxy(), "TPRA", "You teleported to " + requester.getProxy().getName());
+                    Message.m(MType.G, requester.getProxy(), "TPRA", p.getProxy().getName() + " accepted to teleport to you.");
+
+                } else {
+                    Message.m(MType.W, p.getProxy(), "TPRA", "No pending teleport requests to accept.");
+                }
+            } else {
+                Message.e(p.getProxy(), "TPRA", Crit.P);
+            }
+        } else {
+            Message.e(cs, "TPRA", Crit.C);
+        }
+    }
+
+    @Command(command = "teleportrequestdeny", description = "Deny a teleport request.", usage = "/tprd", aliases = "tprd")
+    public void teleportrequestdeny(CommandSender cs) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = player((Player) cs);
+            if (p.hasPermission(Permission.Teleport.TPRRESPOND)) {
+                if (tpr.containsValue(p.getProxy().getUniqueId())) {
+
+                    TrilliumPlayer requester = player(Bukkit.getPlayer(tpr.get(p.getProxy().getUniqueId())));
+
+                    Message.m(MType.G, p.getProxy(), "TPRD", "You denied " + ChatColor.AQUA + requester.getProxy().getName() + "'s teleport request.");
+                    Message.m(MType.G, requester.getProxy(), "TPRD", p.getProxy().getName() + " denied your teleport request.");
+                    tpr.remove(p.getProxy().getUniqueId());
+
+                } else if (tprh.containsValue(p.getProxy().getUniqueId())) {
+
+                    TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getProxy().getUniqueId())));
+
+                    Message.m(MType.G, p.getProxy(), "TPRD", "You denied " + ChatColor.AQUA + requester.getProxy().getName() + "'s teleport request.");
+                    Message.m(MType.G, requester.getProxy(), "TPRD", p.getProxy().getName() + " denied your teleport request.");
+                    tprh.remove(p.getProxy().getUniqueId());
+
+                } else {
+                    Message.m(MType.W, p.getProxy(), "TPRD", "No pending teleport requests to deny.");
+                }
+            } else {
+                Message.e(p.getProxy(), "TPRD", Crit.P);
+            }
+        } else {
+            Message.e(cs, "TPRD", Crit.C);
         }
     }
 }

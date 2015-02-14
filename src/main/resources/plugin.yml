@@ -11,30 +11,6 @@ commands:
   motd:
     description: View/Edit the motd.
     usage: /motd
-  teleport:
-    description: Teleport to any player.
-    usage: /tp <player> [player]
-    aliases: [tp]
-  teleportrequest:
-    description: Request permission to teleport to any player.
-    usage: /tpr <player>
-    aliases: [tpr]
-  teleportrequestaccept:
-    description: Accept to have a player teleport to you.
-    usage: /tpra
-    aliases: [tpra]
-  teleportrequestdeny:
-    description: Deny a player teleport request.
-    usage: /tprd
-    aliases: [tprd]
-  teleportrequesthere:
-    description: Request permission to have a player teleport to you.
-    usage: /tprh <player>
-    aliases: [tprh]
-  teleporthere:
-    description: Teleport a player to you.
-    usage: /tph <player>
-    aliases: [tph]
   back:
     description: Teleport to the last place you teleported from.
     usage: /back

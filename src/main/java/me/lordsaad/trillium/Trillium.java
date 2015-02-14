@@ -3,7 +3,6 @@ package me.lordsaad.trillium;
 import me.lordsaad.trillium.api.TrilliumAPI;
 import me.lordsaad.trillium.api.serializer.LocationSerializer;
 import me.lordsaad.trillium.commands.*;
-import me.lordsaad.trillium.commands.teleport.*;
 import me.lordsaad.trillium.databases.CmdBinderDatabase;
 import me.lordsaad.trillium.events.*;
 import me.lordsaad.trillium.modules.*;
@@ -41,12 +40,6 @@ public class Trillium extends JavaPlugin {
 
         getCommand("trillium").setExecutor(new CommandTrillium());
         getCommand("motd").setExecutor(new CommandMotd());
-        getCommand("teleport").setExecutor(new CommandTeleport());
-        getCommand("teleportrequest").setExecutor(new CommandTeleportR());
-        getCommand("teleportrequestaccept").setExecutor(new CommandTeleportRA());
-        getCommand("teleportrequestdeny").setExecutor(new CommandTeleportRD());
-        getCommand("teleporthere").setExecutor(new CommandTeleportH());
-        getCommand("teleportrequesthere").setExecutor(new CommandTeleportRH());
         getCommand("inventory").setExecutor(new CommandInventory());
         getCommand("info").setExecutor(new CommandInfo());
         getCommand("message").setExecutor(new CommandMessage());

@@ -42,5 +42,9 @@ public class Permission {
         public static final String TP = PREFIX + "tp";
         public static final String TP_OTHER = PREFIX + "tp.other";
         public static final String TP_COORDS = PREFIX + "tp.coords";
+        public static final String TPHERE = PREFIX + "tphere";
+        public static final String TPREQEST = PREFIX + "tprequest";
+        public static final String TPREQESTHERE = PREFIX + "tprequesthere";
+        public static final String TPRRESPOND = PREFIX + "tprequest.respond";
     }
 }

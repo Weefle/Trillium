@@ -39,5 +39,8 @@ public class Permission {
     public static class Teleport {
         private static final String PREFIX = "tr.teleport.";
         public static final String SPAWN = PREFIX + "spawn";
+        public static final String TP = PREFIX + "tp";
+        public static final String TP_OTHER = PREFIX + "tp.other";
+        public static final String TP_COORDS = PREFIX + "tp.coords";
     }
 }

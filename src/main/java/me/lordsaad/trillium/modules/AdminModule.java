@@ -187,9 +187,4 @@ public class AdminModule extends TrilliumModule {
             Message.e(cs, "Killall", Crit.C);
         }
     }
-
-    @Command(command = "nickname", description = "Change your nickname to anything you want.", usage = "/nick <nickname> [player]", aliases = "nick")
-    public void nickname(CommandSender cs, String[] args) {
-        
-    }
 }

@@ -26,7 +26,3 @@ commands:
   reports:
     description: View the reports, remove a report, or clear the report list.
     usage: /reports [remove <index number>/clear]
-  nickname:
-    description: Set a nickname for yourself
-    usage: /nick [player]
-    aliases: [nick]

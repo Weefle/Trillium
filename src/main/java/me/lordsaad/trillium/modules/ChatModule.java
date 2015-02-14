@@ -206,4 +206,60 @@ public class ChatModule extends TrilliumModule {
             Message.e(cs, "MSG", Crit.C);
         }
     }
+
+    @Command(command = "nickname", description = "Change your nickname to anything you want.", usage = "/nick <nickname> [player]", aliases = "nick")
+    public void nickname(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = player((Player) cs);
+            if (args.length == 1) {
+                if (p.hasPermission(Permission.Chat.NICK) && !p.getProxy().isOp()) {
+
+                    Message.m(MType.G, p.getProxy(), "Nickname", "New nickname set: " + args[0]);
+                    p.getProxy().setDisplayName(args[0]);
+
+                } else if (p.hasPermission(Permission.Chat.NICK_COLOR)) {
+
+                    String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
+                    Message.m(MType.G, p.getProxy(), "Nickname", "New nickname set: " + nick);
+                    p.getProxy().setDisplayName(args[0]);
+
+                } else {
+                    Message.e(p.getProxy(), "Nickname", Crit.P);
+                }
+
+            } else if (args.length > 1) {
+                if (p.hasPermission(Permission.Chat.NICK_OTHER) && !p.getProxy().isOp()) {
+
+                    TrilliumPlayer target = player(args[1]);
+                    if (target != null) {
+                        target.getProxy().setDisplayName(args[0]);
+                        Message.m(MType.G, target.getProxy(), "Nickname", ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " set your nickname to: " + args[0]);
+                        Message.m(MType.G, p.getProxy(), "Nickname", "You set " + ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " to: " + args[0]);
+
+                    } else {
+                        Message.eplayer(p.getProxy(), "Nickname", args[0]);
+                    }
+
+                } else if (p.hasPermission(Permission.Chat.NICK_OTHER_COLOR)) {
+
+                    TrilliumPlayer target = player(args[1]);
+                    if (target != null) {
+                        String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
+                        target.getProxy().setDisplayName(nick);
+                        Message.m(MType.G, target.getProxy(), "Nickname", ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " set your nickname to: " + nick);
+                        Message.m(MType.G, p.getProxy(), "Nickname", "You set " + ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " to: " + nick);
+
+                    } else {
+                        Message.eplayer(p.getProxy(), "Nickname", args[0]);
+                    }
+                } else {
+                    Message.e(p.getProxy(), "Nickname", Crit.P);
+                }
+            } else {
+                Message.earg(p.getProxy(), "Nickname", "/nick <nickname> [player]");
+            }
+        } else {
+            Message.e(cs, "Nickname", Crit.C);
+        }
+    }
 }

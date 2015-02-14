@@ -56,5 +56,9 @@ public class Permission {
         public static final String INFO = PREFIX + "information";
         public static final String ME = PREFIX + "me";
         public static final String MESSAGE = PREFIX + "message";
+        public static final String NICK = PREFIX + "nickname";
+        public static final String NICK_OTHER = PREFIX + "nickname.other";
+        public static final String NICK_COLOR = PREFIX + "nickname.color";
+        public static final String NICK_OTHER_COLOR = PREFIX + "nickname.other.color";
     }
 }

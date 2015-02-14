@@ -215,8 +215,14 @@ public class ChatModule extends TrilliumModule {
 
                     if (args[0].equalsIgnoreCase("remove")) {
                         if (p.hasNickname()) {
-                            p.setNickname(p.getProxy().getName());
+                            if (p.getProxy().isOp()) {
+                                String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getProxy().getName();
+                                p.setNickname(ChatColor.translateAlternateColorCodes('&', opcolor));
+                            } else {
+                                p.setNickname(p.getProxy().getName());
+                            }
                             return;
+
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "You don't have a nickname set.");
                         }
@@ -237,8 +243,14 @@ public class ChatModule extends TrilliumModule {
 
                     if (args[0].equalsIgnoreCase("remove")) {
                         if (p.hasNickname()) {
-                            p.setNickname(p.getProxy().getName());
+                            if (p.getProxy().isOp()) {
+                                String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getProxy().getName();
+                                p.setNickname(ChatColor.translateAlternateColorCodes('&', opcolor));
+                            } else {
+                                p.setNickname(p.getProxy().getName());
+                            }
                             return;
+
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "You don't have a nickname set.");
                         }
@@ -265,8 +277,14 @@ public class ChatModule extends TrilliumModule {
 
                     if (args[0].equalsIgnoreCase("remove")) {
                         if (p.hasNickname()) {
-                            p.setNickname(p.getProxy().getName());
+                            if (p.getProxy().isOp()) {
+                                String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getProxy().getName();
+                                p.setNickname(ChatColor.translateAlternateColorCodes('&', opcolor));
+                            } else {
+                                p.setNickname(p.getProxy().getName());
+                            }
                             return;
+
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "You don't have a nickname set.");
                         }
@@ -293,8 +311,14 @@ public class ChatModule extends TrilliumModule {
 
                     if (args[0].equalsIgnoreCase("remove")) {
                         if (p.hasNickname()) {
-                            p.setNickname(p.getProxy().getName());
+                            if (p.getProxy().isOp()) {
+                                String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getProxy().getName();
+                                p.setNickname(ChatColor.translateAlternateColorCodes('&', opcolor));
+                            } else {
+                                p.setNickname(p.getProxy().getName());
+                            }
                             return;
+
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "You don't have a nickname set.");
                         }

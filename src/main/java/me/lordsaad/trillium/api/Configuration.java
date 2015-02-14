@@ -40,5 +40,6 @@ public class Configuration {
         private static String NICKNAME = PREFIX + "nicknames.";
         public static final String CHARLIMIT = NICKNAME + "character-limit";
         public static final String PREF = NICKNAME + "prefix";
+        public static final String OPCOLOR = NICKNAME + "ops-color-code";
     }
 }

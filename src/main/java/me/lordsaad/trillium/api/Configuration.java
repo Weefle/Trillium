@@ -33,6 +33,10 @@ public class Configuration {
         private static String PREFIX = "server.";
         public static final String SERVER_LIST_MOTD = PREFIX + "server-list-motd";
         public static final String INGAME_MOTD = PREFIX + "motd";
+        private static String CHATCHANNEL = PREFIX + "chat-channels.";
+        public static final String CCENABLED = CHATCHANNEL + "enabled";
+        public static final String CCFORMAT = CHATCHANNEL + "format";
+        public static final String CCCOLOR = CHATCHANNEL + "allow-color-codes";
     }
 
     public static class PlayerSettings {

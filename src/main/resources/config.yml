@@ -56,6 +56,21 @@ server:
     
   disable-death-messages: false
   # If set to true, death messages in minecraft will not appear.
+  
+  chat-channels:
+      
+      enabled: true
+      # Chat channels are basically private chat groups. Anyone in channel x will see any messages sent to channel x.
+      # They can be used for player groups, staff chats, etc...
+      # To make a new channel, simply give permission to whoever you want to have ability to chat in a channel the following:
+      # "tr.chat.chatchannel.<CHANNEL NAME>"
+      # When the player types /cc <channel name> <msg>" they will send the message to anyone else with that permission.
+      # For example: If you give permission to x, y, and z "tr.chat.chatchannel.staffchat"
+      # When x or y or z types "/cc staffchat blah blah", blah blah will be seen to x, y, and z.
+      
+      format: "&8[&9[CHANNELNAME]&8] &b[USERNAME] &9>> &7[MESSAGE]"
+      
+      allow-color-codes: true
     
 #---------------[ Player Settings ]---------------#
 player-settings:

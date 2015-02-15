@@ -276,7 +276,7 @@ public class ChatModule extends TrilliumModule {
                                 + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
                                 + " is the limit.");
                     }
-                    
+
                 } else {
                     Message.e(p.getProxy(), "Nickname", Crit.P);
                 }
@@ -368,6 +368,51 @@ public class ChatModule extends TrilliumModule {
             }
         } else {
             Message.e(cs, "Nickname", Crit.C);
+        }
+    }
+
+    @Command(command = "chatchannel", description = "Talk to a group of people in private.", usage = "/cc <channel> <msg>", aliases = "cc")
+    public void chatchannel(CommandSender cs, String[] args) {
+        if (getConfig().getBoolean(Configuration.Server.CCENABLED)) {
+            if (cs instanceof Player) {
+                TrilliumPlayer p = player((Player) cs);
+                if (args.length >= 2) {
+                    if (p.hasPermission(Permission.Chat.CHATCHANNEL + args[0])) {
+
+                        for (TrilliumPlayer pl : TrilliumAPI.getOnlinePlayers()) {
+                            if (pl.hasPermission(Permission.Chat.CHATCHANNEL + args[0])) {
+
+                                StringBuilder sb = new StringBuilder();
+                                for (String arg : args) {
+                                    sb.append(arg).append(" ");
+                                }
+
+                                String msg = sb.toString().trim();
+                                String f = getConfig().getString(Configuration.Server.CCFORMAT);
+
+                                f = f.replace("[CHANNELNAME", args[0]);
+                                f = f.replace("[USERNAME]", p.getProxy().getName());
+                                if (getConfig().getBoolean(Configuration.Server.CCCOLOR)) {
+                                    f = ChatColor.translateAlternateColorCodes('&', msg);
+                                }
+                                f = f.replace("[MESSAGE]", msg);
+
+                                pl.getProxy().sendMessage(f);
+
+                            }
+                        }
+
+                    } else {
+                        Message.e(p.getProxy(), "Chat Channel", Crit.P);
+                    }
+                } else {
+                    Message.earg(p.getProxy(), "Chat Channel", "/cc <channel> <msg>");
+                }
+            } else {
+                Message.e(cs, "Chat Channel", Crit.C);
+            }
+        } else {
+            Message.m(MType.W, cs, "Chat Channel", "This feature has been disabled.");
         }
     }
 }

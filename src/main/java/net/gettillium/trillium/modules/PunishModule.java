@@ -132,7 +132,7 @@ public class PunishModule extends TrilliumModule {
 
     @Command(command = "banip", description = "Ban the ip of a player from the server.", usage = "/banip <player> [reason]")
     public void banip(CommandSender sender, String[] args) {
-        if (sender.hasPermission(Permission.Punish.BAN)) {
+        if (sender.hasPermission(Permission.Punish.BANIP)) {
             if (args.length == 0) {
                 Message.earg(sender, "BanIP", "/banip <player> [reason]");
             } else {

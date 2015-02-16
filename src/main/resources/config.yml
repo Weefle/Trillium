@@ -72,6 +72,20 @@ server:
       
       allow-color-codes: true
     
+#---------------[ Group Manager ]---------------#
+group-manager:
+
+  enabled: true
+  # Trillium comes with it's own fully functional group and user manager to
+  # set permissions to a group or a specific player. Permissions can be ANYTHING.
+  # Literally ANY permission from ANY plugin is compatable with Trillium's group manager.
+  
+  auto-reload-frequency: 60
+  # In minutes.
+  # The time interval in which the group manager reloads the group files and
+  # refreshes permissions automatically. (basically automatic reload)
+  # NO NEGATIVE NUMBERS AND NO LETTERS
+  
 #---------------[ Player Settings ]---------------#
 player-settings:
 

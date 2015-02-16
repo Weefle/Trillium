@@ -1,0 +1,44 @@
+default:
+  prefix: "&7Default"
+  permissions:
+    - "tr.teleport.spawn"
+    - "tr.teleport.tprequest"
+    - "tr.teleport.tprequesthere"
+    - "tr.teleport.respond"
+    - "tr.afk.use"
+    - "tr.ability.back"
+    - "tr.chat.motd"
+    - "tr.chat.information"
+    - "tr.chat.me
+    - "tr.chat.message"
+    - "tr.admin.report"
+
+moderator:
+  prefix: "&aMod"
+  inherit: "default"
+  permissions:
+    - "tr.chat.nickname.color"
+    - "tr.chat.chatchannel.staff"
+    - "tr.chat.broadcast"
+    - "tr.teleport.tp"
+    - "tr.teleport.coords"
+    - "tr.admin.inventory.crafting"
+    - "tr.admin.inventory.reportreceiever"
+    - "tr.ability.fly"
+    - "tr.ability.god"
+    - "tr.ability.gamemode"
+    - "tr.ability.vanish"
+    - "tr.punish.mute"
+    - "tr.punish.kick"
+    - "tr.punish.kittybomb"
+    
+administrator:
+  prefix: "&4Admin"
+  inherit: "moderator"
+  permissions:
+    - "tr.*"
+
+owner:
+  prefix: "&bOwner"
+  permissions:
+  - "*"

@@ -9,7 +9,7 @@ import java.io.IOException;
 public class CmdBinderDatabase {
 
     public static File cbd() {
-        File file = new File(TrilliumAPI.getInstance().getDataFolder() + "CommandBinderDatabase.yml");
+        File file = new File(TrilliumAPI.getInstance().getDataFolder(), "CommandBinderDatabase.yml");
         if (!file.exists()) {
             YamlConfiguration db = YamlConfiguration.loadConfiguration(file);
             db.set("walkconsole", "");

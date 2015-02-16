@@ -17,6 +17,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class Trillium extends JavaPlugin {
 
@@ -34,8 +36,10 @@ public class Trillium extends JavaPlugin {
         TrilliumAPI.registerModule(new ChatModule());
         TrilliumAPI.registerModule(new FunModule());
         TrilliumAPI.registerModule(new CmdBinderModule());
+        TrilliumAPI.registerModule(new GroupManagerModule());
 
         setupcmdbinder();
+        generateFiles();
 
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
@@ -44,21 +48,6 @@ public class Trillium extends JavaPlugin {
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);
 
-        File reports = new File(TrilliumAPI.getInstance().getDataFolder(), "Reports.yml");
-
-        if (!reports.exists()) {
-            try {
-                reports.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        YamlConfiguration ymlreports = YamlConfiguration.loadConfiguration(reports);
-
-        for (String s : ymlreports.getStringList("Reports")) {
-            AdminModule.reportlist.add(s);
-        }
 
         PluginDescriptionFile pdf = getDescription();
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
@@ -138,6 +127,49 @@ public class Trillium extends JavaPlugin {
 
             CmdBinderModule.walkplayer.put(loc, cmd);
             CmdBinderModule.antilagcheckloc.add(loc);
+        }
+    }
+
+    private void generateFiles() {
+
+        File reports = new File(getDataFolder(), "Reports.yml");
+
+        if (!reports.exists()) {
+            try {
+                reports.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        YamlConfiguration ymlreports = YamlConfiguration.loadConfiguration(reports);
+
+        for (String s : ymlreports.getStringList("Reports")) {
+            AdminModule.reportlist.add(s);
+        }
+
+        URL url = Trillium.class.getResource("/resources/");
+
+        File dir = null;
+        try {
+            dir = new File(url.toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        if (dir != null) {
+            for (File file : dir.listFiles()) {
+                if (!file.getName().equals("config.yml") && !file.getName().equals("plugin.yml")) {
+                    if (file.isDirectory()) {
+                        file.mkdirs();
+                    } else {
+                        try {
+                            file.createNewFile();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
         }
     }
 }

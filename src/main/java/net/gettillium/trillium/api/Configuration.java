@@ -46,4 +46,10 @@ public class Configuration {
         public static final String PREF = NICKNAME + "prefix";
         public static final String OPCOLOR = NICKNAME + "ops-color-code";
     }
+
+    public static class GM {
+        private static String PREFIX = "group-manager.";
+        public static final String ENABLED = PREFIX + "enabled";
+        public static final String RELOAD = PREFIX + "auto-reload-frequency";
+    }
 }

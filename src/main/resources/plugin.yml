@@ -1,5 +1,5 @@
 author: LordSaad44
 description: The Premium Essentials.
-main: me.lordsaad.trillium.Trillium
+main: net.gettrillium.trillium.Trillium
 name: Trillium
-version: 0.3
+version: 0.3.0

@@ -275,7 +275,7 @@ public class TrilliumPlayer {
                 perms.remove(perm);
                 yml.set("permissions", perms);
             } else {
-                perms.add(" -" + perm);
+                perms.add("-" + perm);
                 yml.set("permissions", perms);
             }
         }
@@ -299,7 +299,7 @@ public class TrilliumPlayer {
                 perms.remove(perm);
                 yml.set("permissions", perms);
             } else {
-                perms.add(" -" + perm);
+                perms.add("-" + perm);
                 yml.set("permissions", perms);
             }
         }
@@ -326,7 +326,9 @@ public class TrilliumPlayer {
                     if (f.getName().equalsIgnoreCase(getProxy().getName())) {
                         YamlConfiguration yml = YamlConfiguration.loadConfiguration(f);
                         for (String perms : yml.getStringList("permissions")) {
-                            addPermission(perms);
+                            if (!perms.contains("-")) {
+                                addPermission(perms);
+                            }
                         }
                     }
                 }
@@ -336,7 +338,9 @@ public class TrilliumPlayer {
                 if (f != null && f.isFile()) {
                     if (f.getName().equals(this.proxy.getWorld().getName())) {
                         for (String perms : getPermissions(f)) {
-                            addPermission(perms);
+                            if (!perms.contains("-")) {
+                                addPermission(perms);
+                            }
                         }
                     }
                 }
@@ -350,11 +354,15 @@ public class TrilliumPlayer {
             if (key != null) {
                 if (key.equals("inherit")) {
                     for (String perm : getheritage(yml, key)) {
-                        perms.add(perm);
+                        if (!perms.contains("-")) {
+                            perms.add(perm);
+                        }
                     }
                 } else if (key.equals("permissions")) {
                     for (String perm : yml.getStringList(group + ".permissions")) {
-                        perms.add(perm);
+                        if (!perms.contains("-")) {
+                            perms.add(perm);
+                        }
                     }
                 }
             }
@@ -369,11 +377,15 @@ public class TrilliumPlayer {
             if (key != null) {
                 if (key.equals("inherit")) {
                     for (String perm : getheritage(yml, key)) {
-                        perms.add(perm);
+                        if (!perms.contains("-")) {
+                            perms.add(perm);
+                        }
                     }
                 } else if (key.equals("permissions")) {
                     for (String perm : yml.getStringList(group + ".permissions")) {
-                        perms.add(perm);
+                        if (!perms.contains("-")) {
+                            perms.add(perm);
+                        }
                     }
                 }
             }

@@ -9,6 +9,7 @@ public class Configuration {
         public static final String GOD = prefix + "god";
         public static final String VANISH = prefix + "vanish";
         public static final String BAN_REASON = prefix + "banreason";
+        public static final String GROUP = prefix + "group";
     }
 
     public static class Ability {

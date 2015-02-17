@@ -43,6 +43,7 @@ public class Permission {
         public static final String REPORT = PREFIX + "report";
         public static final String REPORT_RECEIVER = PREFIX + "reportreceiver";
         public static final String CMDBINDER = PREFIX + "commandbinder";
+        public static final String TGM = PREFIX + "trilliumgroupmanager";
     }
 
     public static class Teleport {

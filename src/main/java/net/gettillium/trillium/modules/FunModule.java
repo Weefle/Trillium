@@ -10,6 +10,7 @@ import net.gettillium.trillium.messageutils.MType;
 import net.gettillium.trillium.messageutils.Message;
 import net.gettillium.trillium.particleeffect.ParticleEffect;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Ocelot;
@@ -17,7 +18,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class FunModule extends TrilliumModule {
 
@@ -31,7 +34,13 @@ public class FunModule extends TrilliumModule {
             TrilliumPlayer p = player((Player) cs);
             if (cs.hasPermission(Permission.Fun.SMITE)) {
                 if (args.length == 0) {
-                    Location loc = p.getProxy().getTargetBlock(null, 100).getLocation();
+                    Set<Material> mats = new HashSet<>();
+                    for (Material m : Material.values()) {
+                        if (m.isTransparent()) {
+                            mats.add(m);
+                        }
+                    }
+                    Location loc = p.getProxy().getTargetBlock(mats, 100).getLocation();
                     p.getProxy().getWorld().strikeLightning(loc);
                 } else {
                     TrilliumPlayer target = player(args[0]);

@@ -199,8 +199,7 @@ public class TrilliumPlayer {
 
     public void removeAttachment() {
         if (hasAttachment()) {
-            PermissionAttachment attachment = this.attachmentlist.get(this.proxy.getUniqueId());
-            this.attachmentlist.remove(getProxy().getUniqueId());
+            this.attachmentlist.remove(this.proxy.getUniqueId());
         }
     }
 
@@ -315,9 +314,11 @@ public class TrilliumPlayer {
 
     public void refreshPermissions() {
         if (hasAttachment()) {
-            PermissionAttachment attachment = this.attachmentlist.get(this.proxy.getUniqueId());
-            attachment.getPermissions().clear();
 
+            removeAttachment();
+
+            addAttachment();
+            
             File players = new File(TrilliumAPI.getInstance().getDataFolder(), "/Trillium Group Manager/players");
             File worlds = new File(TrilliumAPI.getInstance().getDataFolder(), "/Trillium Group Manager/worlds");
 

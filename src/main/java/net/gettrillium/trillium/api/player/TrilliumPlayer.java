@@ -216,7 +216,7 @@ public class TrilliumPlayer {
 
     public void addPermissionPlayer(String perm) {
         if (hasAttachment()) {
-            File player = new File(TrilliumAPI.getInstance().getDataFolder(), "/Trillium Group Manager/players/" + getProxy().getName() + ".yml");
+            File player = new File(TrilliumAPI.getInstance().getDataFolder() + "/Trillium Group Manager/players/" + getProxy().getName() + ".yml");
             if (!player.exists()) {
                 try {
                     player.createNewFile();
@@ -259,7 +259,7 @@ public class TrilliumPlayer {
 
     public void removePermissionPlayer(String perm) {
         if (hasAttachment()) {
-            File player = new File(TrilliumAPI.getInstance().getDataFolder(), "/Trillium Group Manager/players/" + getProxy().getName() + ".yml");
+            File player = new File(TrilliumAPI.getInstance().getDataFolder() + "/Trillium Group Manager/players/" + getProxy().getName() + ".yml");
             if (!player.exists()) {
                 try {
                     player.createNewFile();
@@ -318,9 +318,9 @@ public class TrilliumPlayer {
             removeAttachment();
 
             addAttachment();
-            
-            File players = new File(TrilliumAPI.getInstance().getDataFolder(), "/Trillium Group Manager/players");
-            File worlds = new File(TrilliumAPI.getInstance().getDataFolder(), "/Trillium Group Manager/worlds");
+
+            File players = new File(TrilliumAPI.getInstance().getDataFolder() + "/Trillium Group Manager/players");
+            File worlds = new File(TrilliumAPI.getInstance().getDataFolder() + "/Trillium Group Manager/worlds");
 
             for (File f : players.listFiles()) {
                 if (f != null && f.isFile()) {

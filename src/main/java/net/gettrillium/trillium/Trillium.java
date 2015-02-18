@@ -16,22 +16,16 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.io.InputStream;
 
 public class Trillium extends JavaPlugin {
 
     public void onEnable() {
 
         saveDefaultConfig();
-        
+
         TrilliumAPI.setInstance(this);
         TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
 
@@ -47,11 +41,7 @@ public class Trillium extends JavaPlugin {
         TrilliumAPI.registerModule(new GroupManagerModule());
 
         setupcmdbinder();
-        try {
-            generateFiles();
-        } catch (URISyntaxException | IOException e) {
-            e.printStackTrace();
-        }
+        generateFiles();
 
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
@@ -69,8 +59,8 @@ public class Trillium extends JavaPlugin {
         getLogger().info("Version: " + pdf.getVersion());
         getLogger().warning("THIS PLUGIN IS STILL IN PRE-ALPHA.");
         getLogger().warning("WE HIGHLY RECOMMEND YOU DON'T USE IT FOR THE TIME BEING.");
-        getLogger().warning("WE ARE FULLY AWARE OF ALL THE BUGS YOU MAY FIND.");
-        getLogger().info("<<<--------------------------------------->>>");
+        getLogger().warning("WE ARE FULLY AWARE OF ALL THE BUGS YOU MIGHT FIND.");
+        getLogger().info("<<<-------------------------------------->>>");
 
         if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
             getLogger().warning("Essentials plugin detected!");
@@ -142,7 +132,7 @@ public class Trillium extends JavaPlugin {
         }
     }
 
-    private void generateFiles() throws URISyntaxException, IOException {
+    private void generateFiles() {
 
         File reports = new File(getDataFolder(), "Reports.yml");
 
@@ -160,54 +150,46 @@ public class Trillium extends JavaPlugin {
             AdminModule.reportlist.add(s);
         }
 
-        File file = new File("resources/Trillium Group Manager");
-        String absolutePath = file.getAbsolutePath();
-        String[] files = getResourceListing(Trillium.class, absolutePath);
-
-        for (String s : files) {
-            File f = new File(s);
-            if (!f.getName().equalsIgnoreCase("config") || !f.getName().equalsIgnoreCase("plugin")) {
-                if (f.isDirectory()) {
-                    f.mkdirs();
-                } else {
-                    f.createNewFile();
-                }
-            }
-        }
+        saveResource(this.getDataFolder() + "Trillium Group Manager", "/resources/exampleworld.yml", true);
+        saveResource(this.getDataFolder() + "Trillium Group Manager", "/resources/LordSaad.yml", true);
+        
     }
 
-    private String[] getResourceListing(Class clazz, String path) throws URISyntaxException, IOException {
-        URL dirURL = clazz.getClassLoader().getResource(path);
-        if (dirURL != null && dirURL.getProtocol().equals("file")) {
-            return new File(dirURL.toURI()).list();
-        }
-
-        if (dirURL == null) {
-
-            String me = clazz.getName().replace(".", "/") + ".class";
-            dirURL = clazz.getClassLoader().getResource(me);
-        }
-
-        if (dirURL != null) {
-            if (dirURL.getProtocol().equals("jar")) {
-                String jarPath = dirURL.getPath().substring(5, dirURL.getPath().indexOf("!"));
-                JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
-                Enumeration<JarEntry> entries = jar.entries();
-                Set<String> result = new HashSet<>();
-                while (entries.hasMoreElements()) {
-                    String name = entries.nextElement().getName();
-                    if (name.startsWith(path)) {
-                        String entry = name.substring(path.length());
-                        int checkSubdir = entry.indexOf("/");
-                        if (checkSubdir >= 0) {
-                            entry = entry.substring(0, checkSubdir);
-                        }
-                        result.add(entry);
-                    }
+    private void saveResource(String from, String resourcePath, boolean replace) {
+        if (resourcePath != null && !resourcePath.equals("")) {
+            resourcePath = resourcePath.replace('\\', '/');
+            InputStream in = this.getResource(resourcePath);
+            if (in == null) {
+                throw new IllegalArgumentException("The embedded resource \'" + resourcePath + "\' cannot be found in ");
+            } else {
+                File outFile = new File(from, resourcePath);
+                int lastIndex = resourcePath.lastIndexOf(47);
+                File outDir = new File(from, resourcePath.substring(0, lastIndex >= 0 ? lastIndex : 0));
+                if (!outDir.exists()) {
+                    outDir.mkdirs();
                 }
-                return result.toArray(new String[result.size()]);
+
+                try {
+                    if (outFile.exists() && !replace) {
+                        System.out.println("Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
+                    } else {
+                        FileOutputStream ex = new FileOutputStream(outFile);
+                        byte[] buf = new byte[1024];
+
+                        int len;
+                        while ((len = in.read(buf)) > 0) {
+                            ex.write(buf, 0, len);
+                        }
+
+                        ex.close();
+                        in.close();
+                    }
+                } catch (IOException var10) {
+                    System.out.println("Could not save " + outFile.getName() + " to " + outFile);
+                }
             }
+        } else {
+            throw new IllegalArgumentException("ResourcePath cannot be null or empty");
         }
-        throw new UnsupportedOperationException("Cannot list files for URL " + dirURL);
     }
 }

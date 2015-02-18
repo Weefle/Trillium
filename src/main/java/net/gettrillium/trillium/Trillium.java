@@ -9,6 +9,7 @@ import net.gettrillium.trillium.events.PlayerLeave;
 import net.gettrillium.trillium.events.ServerListPing;
 import net.gettrillium.trillium.modules.*;
 import net.gettrillium.trillium.runnables.TpsRunnable;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,9 +17,8 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URL;
 
 public class Trillium extends JavaPlugin {
 
@@ -57,15 +57,18 @@ public class Trillium extends JavaPlugin {
         getLogger().info("   by LordSaad, VortexSeven, Turbotailz");
         getLogger().info("               and Samczsun");
         getLogger().info("Version: " + pdf.getVersion());
-        getLogger().warning("THIS PLUGIN IS STILL IN PRE-ALPHA.");
-        getLogger().warning("WE HIGHLY RECOMMEND YOU DON'T USE IT FOR THE TIME BEING.");
-        getLogger().warning("WE ARE FULLY AWARE OF ALL THE BUGS YOU MIGHT FIND.");
         getLogger().info("<<<-------------------------------------->>>");
+        getLogger().warning("THIS PLUGIN IS STILL IN PRE-ALPHA.");
+        getLogger().warning("WE HIGHLY RECOMMEND YOU DON'T USE IT FOR NOW");
+        getLogger().warning("UNTIL AN OFFICIAL RELEASE IS OUT.");
+        getLogger().warning("WE ARE FULLY AWARE OF ALL THE BUGS YOU MIGHT FIND.");
 
         if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
+            getLogger().info("<<<-------------------------------------->>>");
             getLogger().warning("Essentials plugin detected!");
             getLogger().warning("Essentials might heavily interfere with Trillium!");
             getLogger().warning("Please consider removing Essentials.");
+            getLogger().info("<<<-------------------------------------->>>");
         }
     }
 
@@ -150,46 +153,20 @@ public class Trillium extends JavaPlugin {
             AdminModule.reportlist.add(s);
         }
 
-        saveResource(this.getDataFolder() + "Trillium Group Manager", "/resources/exampleworld.yml", true);
-        saveResource(this.getDataFolder() + "Trillium Group Manager", "/resources/LordSaad.yml", true);
-        
-    }
+        URL Url = getClass().getResource("/exampleworld.yml");
+        File dest = new File(getDataFolder() + "/Trillium Group Manager/worlds/exampleworlds.yml");
+        try {
+            FileUtils.copyURLToFile(Url, dest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-    private void saveResource(String from, String resourcePath, boolean replace) {
-        if (resourcePath != null && !resourcePath.equals("")) {
-            resourcePath = resourcePath.replace('\\', '/');
-            InputStream in = this.getResource(resourcePath);
-            if (in == null) {
-                throw new IllegalArgumentException("The embedded resource \'" + resourcePath + "\' cannot be found in ");
-            } else {
-                File outFile = new File(from, resourcePath);
-                int lastIndex = resourcePath.lastIndexOf(47);
-                File outDir = new File(from, resourcePath.substring(0, lastIndex >= 0 ? lastIndex : 0));
-                if (!outDir.exists()) {
-                    outDir.mkdirs();
-                }
-
-                try {
-                    if (outFile.exists() && !replace) {
-                        System.out.println("Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
-                    } else {
-                        FileOutputStream ex = new FileOutputStream(outFile);
-                        byte[] buf = new byte[1024];
-
-                        int len;
-                        while ((len = in.read(buf)) > 0) {
-                            ex.write(buf, 0, len);
-                        }
-
-                        ex.close();
-                        in.close();
-                    }
-                } catch (IOException var10) {
-                    System.out.println("Could not save " + outFile.getName() + " to " + outFile);
-                }
-            }
-        } else {
-            throw new IllegalArgumentException("ResourcePath cannot be null or empty");
+        URL Url2 = getClass().getResource("/LordSaad.yml");
+        File dest2 = new File(getDataFolder() + "/Trillium Group Manager/players/LordSaad.yml");
+        try {
+            FileUtils.copyURLToFile(Url2, dest2);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

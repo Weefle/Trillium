@@ -1,5 +1,7 @@
 # *Trillium*
 
+[![Build Status](https://travis-ci.org/TeamTrillium/Trillium.svg)](https://travis-ci.org/TeamTrillium/Trillium)
+
 The Premium Essentials
 -----
 Features:

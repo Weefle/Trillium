@@ -23,7 +23,7 @@ public class TrilliumPlayer {
 
     private Player proxy;
     private Location previousLocation;
-    private String nickname = proxy.getName();
+    private String nickname;
 
     private long lastActive;
     private boolean afk;
@@ -36,6 +36,7 @@ public class TrilliumPlayer {
 
     public TrilliumPlayer(Player proxy) {
         this.proxy = proxy;
+        this.nickname = proxy.getName();
         try {
             load();
         } catch (IOException e) {

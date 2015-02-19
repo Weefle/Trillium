@@ -10,6 +10,7 @@ import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.messageutils.Crit;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
+
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
@@ -20,6 +21,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -313,7 +315,7 @@ public class AbilityModule extends TrilliumModule {
     }
 
     @Command(command = "pvp", description = "Toggle your pvp status whether you want to disable/enable pvp for yourself.", usage = "/pvp")
-    public void pvp(CommandSender cs) {
+    public void pvp(CommandSender cs, String[] args) {
         if (getConfig().getBoolean(Configuration.Server.PVPENABLE)) {
             if (getConfig().getBoolean(Configuration.Server.TOGGLEPVP)) {
                 if (cs instanceof Player) {
@@ -449,6 +451,14 @@ public class AbilityModule extends TrilliumModule {
 
         if (player.isGod()) {
             Message.m(MType.W, player.getProxy(), "God Mode", "Remember! You are still in god mode!");
+        }
+    }
+    
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent event) {
+        TrilliumPlayer p = player(event.getPlayer());
+        if (p.hasPermission(Permission.Ability.TRANSLATE_COLORS)) {
+            event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
         }
     }
 }

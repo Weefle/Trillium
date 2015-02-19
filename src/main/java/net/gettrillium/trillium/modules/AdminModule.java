@@ -29,7 +29,7 @@ public class AdminModule extends TrilliumModule {
     }
 
     @Command(command = "chestfinder", description = "expose any hidden chests.", usage = "/chestfinder", aliases = "cf")
-    public void chestfinder(CommandSender cs) {
+    public void chestfinder(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             final TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Admin.CHESTFINDER)) {
@@ -83,7 +83,7 @@ public class AdminModule extends TrilliumModule {
     }
 
     @Command(command = "setspawn", description = "Set the spawn of the server.", usage = "/setspawn")
-    public void setspawn(CommandSender cs) {
+    public void setspawn(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = (TrilliumPlayer) cs;
             if (p.hasPermission(Permission.Admin.SETSPAWN)) {
@@ -100,7 +100,7 @@ public class AdminModule extends TrilliumModule {
     }
 
     @Command(command = "lag", description = "Statistics on server lag and also clears lag through gc.", usage = "/lag")
-    public void lag(CommandSender cs) {
+    public void lag(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Admin.LAG)) {
 
             long time = System.currentTimeMillis();

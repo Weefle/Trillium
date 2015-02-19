@@ -8,6 +8,7 @@ import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.messageutils.Crit;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -29,7 +30,7 @@ public class TeleportModule extends TrilliumModule {
     }
 
     @Command(command = "back", description = "Teleport to your last active position", usage = "/back")
-    public void back(CommandSender cs) {
+    public void back(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer player = player(cs.getName());
             if (player.getProxy().hasPermission(Permission.Ability.BACK)) {
@@ -44,7 +45,7 @@ public class TeleportModule extends TrilliumModule {
     }
 
     @Command(command = "spawn", description = "Teleport to the server's spawn.", usage = "/spawn")
-    public void spawn(CommandSender cs) {
+    public void spawn(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Teleport.SPAWN)) {
@@ -58,7 +59,7 @@ public class TeleportModule extends TrilliumModule {
     }
 
     @Command(command = "teleport", description = "Teleport to a person or a set of coordinates.", usage = "/tp <player> [player / <x>, <y>, <z>]", aliases = "tp")
-    public void spawn(CommandSender cs, String[] args) {
+    public void tp(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
             if (args.length == 0) {

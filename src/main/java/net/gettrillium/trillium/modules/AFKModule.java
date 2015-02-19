@@ -28,7 +28,7 @@ public class AFKModule extends TrilliumModule {
     }
 
     @Command(command = "afk", description = "Indicate that you are away from your keyboard.", usage = "/afk")
-    public void afk(CommandSender sender) {
+    public void afk(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
             TrilliumPlayer player = player((Player) sender);
             if (player.hasPermission(Permission.Afk.USE)) {

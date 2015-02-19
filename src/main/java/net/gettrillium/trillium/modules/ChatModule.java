@@ -10,6 +10,7 @@ import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.messageutils.Crit;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Statistic;
@@ -68,7 +69,7 @@ public class ChatModule extends TrilliumModule {
     }
 
     @Command(command = "motd", description = "View the server's motd", usage = "/motd")
-    public void motd(CommandSender cs) {
+    public void motd(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Chat.MOTD)) {
             ArrayList<String> motd = (ArrayList<String>) TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Server.INGAME_MOTD);
             for (String s : motd) {
@@ -145,13 +146,13 @@ public class ChatModule extends TrilliumModule {
     }
 
     @Command(command = "trillium", description = "The main command of the plugin.", usage = "/tr", aliases = "tr")
-    public void trillium(CommandSender cs) {
+    public void trillium(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Admin.TRILLIUM)) {
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
             cs.sendMessage(ChatColor.GRAY + "              Plugin made with love");
             cs.sendMessage(ChatColor.GRAY + "       by LordSaad, VortexSeven, Turbotailz");
-            cs.sendMessage(ChatColor.GRAY + "               and Samczsun");
-            cs.sendMessage(ChatColor.DARK_RED + "                     ❤");
+            cs.sendMessage(ChatColor.GRAY + "               and samczsun");
+            cs.sendMessage(ChatColor.DARK_RED + "                     <3");
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
             cs.sendMessage(ChatColor.GRAY + "Vesion: " + TrilliumAPI.getInstance().getDescription().getVersion());
             cs.sendMessage(ChatColor.GRAY + "Configuration Reloaded");
@@ -163,8 +164,8 @@ public class ChatModule extends TrilliumModule {
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
             cs.sendMessage(ChatColor.GRAY + "              Plugin made with love");
             cs.sendMessage(ChatColor.GRAY + "       by LordSaad, VortexSeven, Turbotailz");
-            cs.sendMessage(ChatColor.GRAY + "               and Samczsun");
-            cs.sendMessage(ChatColor.DARK_RED + "                     ❤");
+            cs.sendMessage(ChatColor.GRAY + "               and samczsun");
+            cs.sendMessage(ChatColor.DARK_RED + "                     <3");
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
             cs.sendMessage(ChatColor.GRAY + "Vesion: " + TrilliumAPI.getInstance().getDescription().getVersion());
             cs.sendMessage(ChatColor.GRAY + "Support email: support@gettrillium.net");

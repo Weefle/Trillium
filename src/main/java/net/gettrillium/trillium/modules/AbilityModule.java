@@ -378,7 +378,15 @@ public class AbilityModule extends TrilliumModule {
                 }
             }
         } else {
-            event.setCancelled(true);
+            if (event.getEntity() instanceof Player) {
+                TrilliumPlayer p = player((Player) event.getEntity());
+                if (event.getDamager() instanceof Player) {
+                    TrilliumPlayer pl = player((Player) event.getDamager());
+                    if (p.getProxy().getUniqueId() != pl.getProxy().getUniqueId()) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
         }
     }
 

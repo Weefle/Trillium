@@ -10,9 +10,10 @@ public class TpsRunnable implements Runnable {
     }
 
     public static double getTPS(int ticks) {
-        if (TickCount < ticks) {
+        if (TickCount <= ticks) {
             return 20.0D;
         }
+
         int target = (TickCount - 1 - ticks) % Ticks.length;
         long elapsed = System.currentTimeMillis() - Ticks[target];
 

@@ -23,9 +23,6 @@ import java.net.URL;
 public class Trillium extends JavaPlugin {
 
     public void onEnable() {
-
-        saveDefaultConfig();
-
         TrilliumAPI.setInstance(this);
         TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
 

@@ -30,35 +30,27 @@
 
 #---------------[ Server ]---------------#
 server:
-
   server-list-motd: "&cPlease define a motd in the config.yml"
   # The server list motd is the message you see on the server icon on the multiplayer menu.
-  
   motd:
     - "&8<<<----->>> &aServer &8<<<----->>>"
     - "&7Welcome &6[USERNAME]&7!"
     - "&7There are currently &6[ONLINE]&7/&6[SLOTS] players."
     - "&7Have fun! ^_^/"
     #The ingame motd. When a player logs on, they will see this message.
-    
   spawn:
-  
     spawn-per-group: false
-    
-      perm-for-each-spawn:
-        - "spawn1"
-        - "spawn2"
-        - "spawn3"
-        - "spawn4"
-      # These convert to: tr.server.customspawn.spawn1 | tr.server.customspawn.spawn2 | etc...
-      # Will not work if spawn-per-group is set to false. instead 1 default spawn will be set if it's false.
-      # If enabled, each group will have their own spawn.
-    
+    perm-for-each-spawn:
+    - "spawn1"
+    - "spawn2"
+    - "spawn3"
+    - "spawn4"
+    # These convert to: tr.server.customspawn.spawn1 | tr.server.customspawn.spawn2 | etc...
+    # Will not work if spawn-per-group is set to false. instead 1 default spawn will be set if it's false.
+    # If enabled, each group will have their own spawn.
   disable-death-messages: false
   # If set to true, death messages in minecraft will not appear.
-  
   chat-channels:
-      
       enabled: true
       # Chat channels are basically private chat groups. Anyone in channel x will see any messages sent to channel x.
       # They can be used for player groups, staff chats, etc...
@@ -67,28 +59,20 @@ server:
       # When the player types /cc <channel name> <msg>" they will send the message to anyone else with that permission.
       # For example: If you give permission to x, y, and z "tr.chat.chatchannel.staffchat"
       # When x or y or z types "/cc staffchat blah blah", blah blah will be seen to x, y, and z.
-      
       format: "&8[&9[CHANNELNAME]&8] &b[USERNAME] &9>> &7[MESSAGE]"
-      
       allow-color-codes: true
-      
   pvp:
-
     enabled: true
     # Enable or disable global pvp on the server.
-
     enable-toggle-pvp: true
     # Toggle pvp allows players to run the /togglepvp command in which they can choose to disable
     # pvp for themselves only. Other players can't damage them and they can't damage others.
-    
 #---------------[ Group Manager ]---------------#
 group-manager:
-
   enabled: true
   # Trillium comes with it's own fully functional group and user manager to
   # set permissions to a group or a specific player. Permissions can be ANYTHING.
   # Literally ANY permission from ANY plugin is compatable with Trillium's group manager.
-  
   auto-reload-frequency: 60
   # In minutes.
   # The time interval in which the group manager reloads the group files and
@@ -97,64 +81,47 @@ group-manager:
   
 #---------------[ Player Settings ]---------------#
 player-settings:
-
   bed-spawn:
-
     enabled: true
     # When a player right clicks their bed, their bed spawn will be saved.
- 
     force-save-if-daytime: true
     # The bed spawn will save if they right click a bed and it's not night time yet.
-  
     on-death-respawn-to-bed: true
     # If a player has a bed spawn saved, when they die, they will respawn to their bed and NOT the spawn point.
-
   nicknames:
-
     ops-color-code: "b"
     # If an operator on the server doesn't have a nickname, their name will be the color above.
     # Color codes are between 0-9 or a-f.
     # "" to remove the op color.
-  
     prefix: "~"
     # If a player has a nickname, they will have the above symbol before their nickname.
     # example with "~": ~LordSaadCustomNick: Hello!
     # "" to remove prefixes.
-  
     character-limit: 25
     # The max length a nickname is allowed to be.
 
 #---------------[ Player Join ]---------------#
 join:
-
   message: "&b[USERNAME] &9has joined the game!"
   # Change the message that tells everyone x player joined the server.
-  
   new-players:
-  
     new-player-message: "&9Welcome &b[USERNAME] &9 to the server!"
     # Change the message that tells everyone x player joined the server for the first time.
-    
     commands-to-run:
      # - "give [p] stone_pickaxe"
      # - "give [p] stone_sword"
      # - "give [p] apple 10"
     # When a new player joins the server, you can have any command run in the list.
     # Examples are within the #, [p] is for the player.
-    
   temp-god-mode:
-  
     enabled: true
       # When a player joins, they might need a bit of time until they can load the world.
       # Help them by giving them temporary invincibility. (Nothing can harm them and they can't harm anything)
-      
     time-until-temp-is-over: 30
     # Time in seconds
 
-
 #---------------[ Player Leave ]---------------#
 leave:
-
   message: "&b[USERNAME] &9has left the game!"
   # Change the message that tells everyone x player left the server.
 
@@ -171,35 +138,25 @@ broadcast:
 
 #---------------[ Ability ]---------------#
 ability:
-
   auto-respawn: false
   # When a player dies. The respawn screen wont appear and they will respawn instantly!
-  
   vanish:
-  
     spectator-mode: true
     # Players in vanish mode will be put into spectator mode, aka: /gamemode 3
-    
     god-mode: true
     # Players in vanish mode will be invincible and immune to any damage.
-    
     pick-up-items: false
     # Players in vanish mode will not be able to pickup items on the ground. (if set to false)
-    
     drop-items: false
     # Players in vanish mode will not be able to drop items on the ground. (if set to false)
 
 #---------------[ AFK ]---------------#
 afk:
-
   auto-afk:
-  
     enabled: true
     # If a player stands perfectly still for x seconds, they will be marked has AFK automatically.
-    
     time-until-idle: 60
     # If auto AFK is true, this will be the time needed to indicate the player is AFK automatically.
     # In seconds.
-    
     kick-on-afk: false
     # If a player is AFK (auto AFK-ed). they will be kicked from the server.

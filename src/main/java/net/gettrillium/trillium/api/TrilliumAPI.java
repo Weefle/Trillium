@@ -44,6 +44,7 @@ public class TrilliumAPI {
     }
 
     public static TrilliumPlayer getPlayer(String name) {
+        System.out.println("Getting TrilliumPlayer " + name + " and got " + players.get(name));
         return players.get(name);
     }
 

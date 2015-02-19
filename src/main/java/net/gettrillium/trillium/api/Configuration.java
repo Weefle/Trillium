@@ -10,6 +10,7 @@ public class Configuration {
         public static final String VANISH = prefix + "vanish";
         public static final String BAN_REASON = prefix + "banreason";
         public static final String GROUP = prefix + "group";
+        public static final String PVP = prefix + "pvp";
     }
 
     public static class Ability {
@@ -34,10 +35,14 @@ public class Configuration {
         private static String PREFIX = "server.";
         public static final String SERVER_LIST_MOTD = PREFIX + "server-list-motd";
         public static final String INGAME_MOTD = PREFIX + "motd";
+        private static final String PVP = PREFIX + "pvp.";
+        public static final String PVPENABLE = PVP + "enabled";
+        public static final String TOGGLEPVP = PVP + "enable-toggle-pvp";
         private static String CHATCHANNEL = PREFIX + "chat-channels.";
         public static final String CCENABLED = CHATCHANNEL + "enabled";
         public static final String CCFORMAT = CHATCHANNEL + "format";
         public static final String CCCOLOR = CHATCHANNEL + "allow-color-codes";
+
     }
 
     public static class PlayerSettings {

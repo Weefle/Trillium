@@ -23,6 +23,7 @@ public class Permission {
         public static final String GAMEMODE_OTHER = PREFIX + "gamemode.other";
         public static final String VANISH = PREFIX + "vanish";
         public static final String VANISH_OTHER = PREFIX + "vanish.other";
+        public static final String PVP = PREFIX + "pvp";
     }
 
     public static class Afk {

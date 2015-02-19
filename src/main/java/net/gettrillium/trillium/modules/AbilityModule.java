@@ -14,7 +14,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -36,12 +38,11 @@ public class AbilityModule extends TrilliumModule {
             if (args.length == 0) {
                 if (player.hasPermission(Permission.Ability.FLY)) {
                     if (!player.isFlying()) {
-                        player.setFlying(true);
                         Message.m(MType.G, player.getProxy(), "Fly", "You are now in fly mode.");
                     } else {
-                        player.setFlying(false);
                         Message.m(MType.G, player.getProxy(), "Fly", "You are no longer in fly mode.");
                     }
+                    player.setFlying(!player.isFlying());
                 } else {
                     Message.e(player.getProxy(), "Fly", Crit.P);
                 }
@@ -311,6 +312,31 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
+    @Command(command = "pvp", description = "Toggle your pvp status whether you want to disable/enable pvp for yourself.", usage = "/pvp")
+    public void pvp(CommandSender cs) {
+        if (getConfig().getBoolean(Configuration.Server.PVPENABLE)) {
+            if (getConfig().getBoolean(Configuration.Server.TOGGLEPVP)) {
+                if (cs instanceof Player) {
+                    TrilliumPlayer p = player((Player) cs);
+                    if (p.hasPermission(Permission.Ability.PVP)) {
+                        if (p.canPvp()) {
+                            Message.m(MType.R, p.getProxy(), "PVP", "Pvp has been enabled for you.");
+                        } else {
+                            Message.m(MType.R, p.getProxy(), "PVP", "Pvp has been disabled for you.");
+                        }
+                        p.setPvp(!p.canPvp());
+
+                    }
+                } else {
+                    Message.e(cs, "PVP", Crit.C);
+                }
+            } else {
+                Message.m(MType.W, cs, "PVP", "This feature is disabled.");
+            }
+        } else {
+            Message.m(MType.W, cs, "PVP", "PVP is completely disabled.");
+        }
+    }
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
@@ -322,6 +348,37 @@ public class AbilityModule extends TrilliumModule {
             if (player.isVanished() && getConfig().getBoolean(Configuration.Ability.GOD)) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onDamageEntity(EntityDamageByEntityEvent event) {
+        if (getConfig().getBoolean(Configuration.Server.PVPENABLE)) {
+            if (getConfig().getBoolean(Configuration.Server.TOGGLEPVP)) {
+                if (event.getEntity() instanceof Player) {
+                    TrilliumPlayer p = player((Player) event.getEntity());
+                    if (event.getDamager() instanceof Player) {
+                        TrilliumPlayer pl = player((Player) event.getDamager());
+                        if (!p.canPvp() || !pl.canPvp()) {
+                            if (p.getProxy().getUniqueId() != pl.getProxy().getUniqueId()) {
+                                event.setCancelled(true);
+                            }
+                        }
+                    } else if (event.getDamager() instanceof Projectile) {
+                        Projectile arrow = (Projectile) event.getDamager();
+                        if (arrow.getShooter() instanceof Player) {
+                            TrilliumPlayer pl = player((Player) arrow.getShooter());
+                            if (!p.canPvp() || !pl.canPvp()) {
+                                if (p.getProxy().getUniqueId() != pl.getProxy().getUniqueId()) {
+                                    event.setCancelled(true);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            event.setCancelled(true);
         }
     }
 

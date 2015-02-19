@@ -32,6 +32,7 @@ public class TrilliumPlayer {
     private boolean isVanished = false;
     private boolean hasnickname = false;
     private String group = "default";
+    private boolean pvp;
 
     public TrilliumPlayer(Player proxy) {
         this.proxy = proxy;
@@ -160,6 +161,7 @@ public class TrilliumPlayer {
             config.set(Configuration.Player.LOCATION, TrilliumAPI.getSerializer(Location.class).serialize(proxy.getLocation()));
             config.set(Configuration.Player.MUTED, isMuted());
             config.set(Configuration.Player.GOD, isGod());
+            config.set(Configuration.Player.PVP, canPvp());
             config.set(Configuration.Player.VANISH, isVanished);
             config.set(Configuration.Player.BAN_REASON, "");
             if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
@@ -170,6 +172,7 @@ public class TrilliumPlayer {
             setLastLocation(TrilliumAPI.getSerializer(Location.class).deserialize(config.getString(Configuration.Player.LOCATION)));
             setMuted(config.getBoolean(Configuration.Player.MUTED));
             setGod(config.getBoolean(Configuration.Player.GOD));
+            setPvp(config.getBoolean(Configuration.Player.PVP));
             setVanished(config.getBoolean(Configuration.Player.VANISH));
             if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
                 setGroup(config.getString(Configuration.Player.GROUP));
@@ -371,7 +374,7 @@ public class TrilliumPlayer {
         return perms;
     }
 
-    private List<String> getPermissions(File f) {
+    public List<String> getPermissions(File f) {
         List<String> perms = new ArrayList<>();
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(f);
         for (String key : yml.getConfigurationSection(getGroup()).getKeys(false)) {
@@ -392,6 +395,14 @@ public class TrilliumPlayer {
             }
         }
         return perms;
+    }
+
+    public void setPvp(boolean b) {
+        this.pvp = b;
+    }
+
+    public boolean canPvp() {
+        return this.pvp;
     }
 }
 

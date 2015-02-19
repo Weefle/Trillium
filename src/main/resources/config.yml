@@ -35,7 +35,7 @@ server:
   # The server list motd is the message you see on the server icon on the multiplayer menu.
   
   motd:
-    - "&8<<<--->>> &aServer &8<<<--->>>"
+    - "&8<<<----->>> &aServer &8<<<----->>>"
     - "&7Welcome &6[USERNAME]&7!"
     - "&7There are currently &6[ONLINE]&7/&6[SLOTS] players."
     - "&7Have fun! ^_^/"
@@ -45,14 +45,14 @@ server:
   
     spawn-per-group: false
     
-    perm-for-each-spawn:
-      - "spawn1"
-      - "spawn2"
-      - "spawn3"
-      - "spawn4"
-    # These convert to: tr.server.customspawn.spawn1 | tr.server.customspawn.spawn2 | etc...
-    # Will not work if spawn-per-group is set to false. instead 1 default spawn will be set if it's false.
-    # If enabled, each group will have their own spawn.
+      perm-for-each-spawn:
+        - "spawn1"
+        - "spawn2"
+        - "spawn3"
+        - "spawn4"
+      # These convert to: tr.server.customspawn.spawn1 | tr.server.customspawn.spawn2 | etc...
+      # Will not work if spawn-per-group is set to false. instead 1 default spawn will be set if it's false.
+      # If enabled, each group will have their own spawn.
     
   disable-death-messages: false
   # If set to true, death messages in minecraft will not appear.
@@ -71,6 +71,15 @@ server:
       format: "&8[&9[CHANNELNAME]&8] &b[USERNAME] &9>> &7[MESSAGE]"
       
       allow-color-codes: true
+      
+  pvp:
+
+    enabled: true
+    # Enable or disable global pvp on the server.
+
+    enable-toggle-pvp: true
+    # Toggle pvp allows players to run the /togglepvp command in which they can choose to disable
+    # pvp for themselves only. Other players can't damage them and they can't damage others.
     
 #---------------[ Group Manager ]---------------#
 group-manager:
@@ -125,7 +134,14 @@ join:
   
     new-player-message: "&9Welcome &b[USERNAME] &9 to the server!"
     # Change the message that tells everyone x player joined the server for the first time.
-  
+    
+    commands-to-run:
+     # - "give [p] stone_pickaxe"
+     # - "give [p] stone_sword"
+     # - "give [p] apple 10"
+    # When a new player joins the server, you can have any command run in the list.
+    # Examples are within the #, [p] is for the player.
+    
   temp-god-mode:
   
     enabled: true
@@ -144,7 +160,6 @@ leave:
 
 #---------------[ Broadcast ]---------------#
 broadcast:
-
   - " "
   - "&8[&a*&8]&b&m------------------&8[ &a&lBroadcast &8]&b&m------------------&8[&a*&8]"
   - " "
@@ -152,7 +167,7 @@ broadcast:
   - " "
   - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
   # When you type /broadcast <message to broadcast here>, the message will appear
-  # in that format.
+  # in this format.
 
 #---------------[ Ability ]---------------#
 ability:
@@ -161,6 +176,7 @@ ability:
   # When a player dies. The respawn screen wont appear and they will respawn instantly!
   
   vanish:
+  
     spectator-mode: true
     # Players in vanish mode will be put into spectator mode, aka: /gamemode 3
     
@@ -183,7 +199,7 @@ afk:
     
     time-until-idle: 60
     # If auto AFK is true, this will be the time needed to indicate the player is AFK automatically.
-    
     # In seconds.
+    
     kick-on-afk: false
     # If a player is AFK (auto AFK-ed). they will be kicked from the server.

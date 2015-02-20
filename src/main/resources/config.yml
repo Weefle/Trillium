@@ -30,14 +30,6 @@
 
 #---------------[ Server ]---------------#
 server:
-  server-list-motd: "&cPlease define a motd in the config.yml"
-  # The server list motd is the message you see on the server icon on the multiplayer menu.
-  motd:
-    - "&8<<<----->>> &aServer &8<<<----->>>"
-    - "&7Welcome &6[USERNAME]&7!"
-    - "&7There are currently &6[ONLINE]&7/&6[SLOTS] players."
-    - "&7Have fun! ^_^/"
-    #The ingame motd. When a player logs on, they will see this message.
   spawn:
     spawn-per-group: false
     perm-for-each-spawn:
@@ -48,7 +40,7 @@ server:
     # These convert to: tr.server.customspawn.spawn1 | tr.server.customspawn.spawn2 | etc...
     # Will not work if spawn-per-group is set to false. instead 1 default spawn will be set if it's false.
     # If enabled, each group will have their own spawn.
-  disable-death-messages: false
+  enable-death-messages: true
   # If set to true, death messages in minecraft will not appear.
   chat-channels:
       enabled: true
@@ -67,6 +59,27 @@ server:
     enable-toggle-pvp: true
     # Toggle pvp allows players to run the /togglepvp command in which they can choose to disable
     # pvp for themselves only. Other players can't damage them and they can't damage others.
+    
+#---------------[ Chat ]---------------#
+chat:
+  server-list-motd: "&cPlease define a motd in the config.yml"
+  # The server list motd is the message you see on the server icon on the multiplayer menu.
+  motd:
+    - "&8<<<----->>> &aServer &8<<<----->>>"
+    - "&7Welcome &6[USERNAME]&7!"
+    - "&7There are currently &6[ONLINE]&7/&6[SLOTS] players."
+    - "&7Have fun! ^_^/"
+    #The ingame motd. When a player logs on, they will see this message.
+  broadcast-format:
+    - " "
+    - "&8[&a*&8]&b&m------------------&8[ &a&lBroadcast &8]&b&m------------------&8[&a*&8]"
+    - " "
+    - "[msg]"
+    - " "
+    - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
+    # When you type /broadcast <message to broadcast here>, the message will appear
+    # in this format.
+    
 #---------------[ Group Manager ]---------------#
 group-manager:
   enabled: true
@@ -99,42 +112,27 @@ player-settings:
     # "" to remove prefixes.
     character-limit: 25
     # The max length a nickname is allowed to be.
-
-#---------------[ Player Join ]---------------#
-join:
-  message: "&b[USERNAME] &9has joined the game!"
-  # Change the message that tells everyone x player joined the server.
-  new-players:
-    new-player-message: "&9Welcome &b[USERNAME] &9 to the server!"
-    # Change the message that tells everyone x player joined the server for the first time.
-    commands-to-run:
-     # - "give [p] stone_pickaxe"
-     # - "give [p] stone_sword"
-     # - "give [p] apple 10"
-    # When a new player joins the server, you can have any command run in the list.
-    # Examples are within the #, [p] is for the player.
-  temp-god-mode:
-    enabled: true
-      # When a player joins, they might need a bit of time until they can load the world.
-      # Help them by giving them temporary invincibility. (Nothing can harm them and they can't harm anything)
-    time-until-temp-is-over: 30
-    # Time in seconds
-
-#---------------[ Player Leave ]---------------#
-leave:
-  message: "&b[USERNAME] &9has left the game!"
-  # Change the message that tells everyone x player left the server.
-
-#---------------[ Broadcast ]---------------#
-broadcast:
-  - " "
-  - "&8[&a*&8]&b&m------------------&8[ &a&lBroadcast &8]&b&m------------------&8[&a*&8]"
-  - " "
-  - "[msg]"
-  - " "
-  - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
-  # When you type /broadcast <message to broadcast here>, the message will appear
-  # in this format.
+  join:
+    message: "&b[USERNAME] &9has joined the game!"
+    # Change the message that tells everyone x player joined the server.
+    new-players:
+      new-player-message: "&9Welcome &b[USERNAME] &9 to the server!"
+      # Change the message that tells everyone x player joined the server for the first time.
+      commands-to-run:
+       # - "give [p] stone_pickaxe"
+       # - "give [p] stone_sword"
+       # - "give [p] apple 10"
+      # When a new player joins the server, you can have any command run in the list.
+      # Examples are within the #, [p] is for the player.
+    temp-god-mode:
+      enabled: true
+        # When a player joins, they might need a bit of time until they can load the world.
+        # Help them by giving them temporary invincibility. (Nothing can harm them and they can't harm anything)
+      time-until-temp-is-over: 30
+      # Time in seconds
+  leave:
+    message: "&b[USERNAME] &9has left the game!"
+    # Change the message that tells everyone x player left the server.
 
 #---------------[ Ability ]---------------#
 ability:

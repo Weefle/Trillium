@@ -8,7 +8,6 @@ import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.messageutils.Crit;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -50,6 +49,7 @@ public class TeleportModule extends TrilliumModule {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Teleport.SPAWN)) {
                 p.getProxy().teleport(p.getProxy().getWorld().getSpawnLocation());
+                Message.m(MType.G, p.getProxy(), "Spawn", "You were successfully teleported to the spawn point.");
             } else {
                 Message.e(p.getProxy(), "Spawn", Crit.P);
             }
@@ -106,9 +106,9 @@ public class TeleportModule extends TrilliumModule {
             } else {
                 if (p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
                     Player pl = Bukkit.getPlayer(args[0]);
-                    String c1 = args[1];
-                    String c2 = args[2];
-                    String c3 = args[3];
+                    String c1 = args[0];
+                    String c2 = args[1];
+                    String c3 = args[2];
                     if (pl != null) {
                         if (Utils.isNumeric(c1) && Utils.isNumeric(c2) && Utils.isNumeric(c3)) {
                             int c4 = Integer.parseInt(c1);
@@ -247,7 +247,7 @@ public class TeleportModule extends TrilliumModule {
     }
 
     @Command(command = "teleportrequestaccept", description = "Accept a teleport request.", usage = "/tpra", aliases = "tpra")
-    public void teleportrequestaccept(CommandSender cs) {
+    public void teleportrequestaccept(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Teleport.TPRRESPOND)) {
@@ -279,7 +279,7 @@ public class TeleportModule extends TrilliumModule {
     }
 
     @Command(command = "teleportrequestdeny", description = "Deny a teleport request.", usage = "/tprd", aliases = "tprd")
-    public void teleportrequestdeny(CommandSender cs) {
+    public void teleportrequestdeny(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Teleport.TPRRESPOND)) {
@@ -307,15 +307,6 @@ public class TeleportModule extends TrilliumModule {
             }
         } else {
             Message.e(cs, "TPRD", Crit.C);
-        }
-    }
-
-    @EventHandler
-    public void onTP(PlayerTeleportEvent event) {
-        TrilliumPlayer p = player(event.getPlayer());
-        if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND
-                || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
-            p.setLastLocation(event.getFrom());
         }
     }
 
@@ -373,6 +364,15 @@ public class TeleportModule extends TrilliumModule {
             } else {
                 Message.e(p.getProxy(), "TP", Crit.P);
             }
+        }
+    }
+
+    @EventHandler
+    public void onTP(PlayerTeleportEvent event) {
+        TrilliumPlayer p = player(event.getPlayer());
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND
+                || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
+            p.setLastLocation(event.getFrom());
         }
     }
 }

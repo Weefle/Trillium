@@ -47,12 +47,12 @@ public class Trillium extends JavaPlugin {
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);
 
-
         PluginDescriptionFile pdf = getDescription();
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
-        getLogger().info("           Plugin made with love");
-        getLogger().info("   by LordSaad, VortexSeven, Turbotailz");
-        getLogger().info("               and Samczsun");
+        getLogger().info("        Plugin made with love by:");
+        getLogger().info("    LordSaad, VortexSeven, Turbotailz,");
+        getLogger().info("           samczsun, and hintss");
+        getLogger().info("                    ❤");
         getLogger().info("Version: " + pdf.getVersion());
         getLogger().info("<<<-------------------------------------->>>");
         getLogger().warning("THIS PLUGIN IS STILL IN PRE-ALPHA.");

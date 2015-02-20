@@ -291,7 +291,7 @@ public class AdminModule extends TrilliumModule {
     @Command(command = "reports", description = "View the list of submitted reports. Clear reports & remove a report.", usage = "/reports [clear/remove <index>]")
     public void reports(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
-            TrilliumPlayer p = (TrilliumPlayer) cs;
+            TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Admin.REPORT_RECEIVER)) {
                 if (args.length != 0) {
                     if (args[0].equalsIgnoreCase("clear")) {

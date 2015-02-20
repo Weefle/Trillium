@@ -36,6 +36,7 @@ public class Configuration {
         public static final String BROADCASTFORMAT = PREFIX + "broadcast-format";
         public static final String INGAME_MOTD = PREFIX + "motd";
         public static final String SERVER_LIST_MOTD = PREFIX + "server-list-motd";
+        public static final String ENABLE_DEATH_MESSAGES = PREFIX + "enable-death-messages";
     }
 
     public static class Server {

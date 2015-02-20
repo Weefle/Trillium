@@ -40,8 +40,6 @@ server:
     # These convert to: tr.server.customspawn.spawn1 | tr.server.customspawn.spawn2 | etc...
     # Will not work if spawn-per-group is set to false. instead 1 default spawn will be set if it's false.
     # If enabled, each group will have their own spawn.
-  enable-death-messages: true
-  # If set to true, death messages in minecraft will not appear.
   chat-channels:
       enabled: true
       # Chat channels are basically private chat groups. Anyone in channel x will see any messages sent to channel x.
@@ -79,6 +77,8 @@ chat:
     - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
     # When you type /broadcast <message to broadcast here>, the message will appear
     # in this format.
+  enable-death-messages: true
+  # If set to true, death messages in minecraft will not appear.
     
 #---------------[ Group Manager ]---------------#
 group-manager:

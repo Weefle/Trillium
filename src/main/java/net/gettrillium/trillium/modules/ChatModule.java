@@ -10,12 +10,13 @@ import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.messageutils.Crit;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -412,6 +413,15 @@ public class ChatModule extends TrilliumModule {
             }
         } else {
             Message.m(MType.W, cs, "Chat Channel", "This feature has been disabled.");
+        }
+    }
+
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent event) {
+        TrilliumPlayer p = player(event.getPlayer());
+        if (p.hasPermission(Permission.Chat.COLOR)) {
+            event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
         }
     }
 }

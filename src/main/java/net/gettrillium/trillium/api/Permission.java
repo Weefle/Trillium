@@ -24,7 +24,6 @@ public class Permission {
         public static final String VANISH = PREFIX + "vanish";
         public static final String VANISH_OTHER = PREFIX + "vanish.other";
         public static final String PVP = PREFIX + "pvp";
-        public static final String TRANSLATE_COLORS = PREFIX + "translate-colors";
     }
 
     public static class Afk {
@@ -72,6 +71,7 @@ public class Permission {
         public static final String NICK_COLOR = PREFIX + "nickname.color";
         public static final String NICK_OTHER_COLOR = PREFIX + "nickname.other.color";
         public static final String CHATCHANNEL = PREFIX + "chatchannel.";
+        public static final String COLOR = PREFIX + "color";
     }
 
     public static class Fun {

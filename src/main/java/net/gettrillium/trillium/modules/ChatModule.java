@@ -18,7 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ChatModule extends TrilliumModule {
@@ -72,7 +71,7 @@ public class ChatModule extends TrilliumModule {
     @Command(command = "motd", description = "View the server's motd", usage = "/motd")
     public void motd(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Chat.MOTD)) {
-            ArrayList<String> motd = (ArrayList<String>) TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Server.INGAME_MOTD);
+            List<String> motd = getConfig().getStringList(Configuration.Server.INGAME_MOTD);
             for (String s : motd) {
                 s = ChatColor.translateAlternateColorCodes('&', s);
                 s = ChatColor.translateAlternateColorCodes('&', s);
@@ -415,7 +414,6 @@ public class ChatModule extends TrilliumModule {
             Message.m(MType.W, cs, "Chat Channel", "This feature has been disabled.");
         }
     }
-
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {

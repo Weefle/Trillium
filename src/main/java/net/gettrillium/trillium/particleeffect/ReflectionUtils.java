@@ -9,8 +9,26 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+ * this wasn't made by us, DarkBlade12 is the one who wrote it and included this disclaimer:
+ *
+ * ReflectionUtils
+ *
+ * This class provides useful methods which makes dealing with reflection much easier, especially when working with Bukkit
+ *
+ * You are welcome to use it, modify it and redistribute it under the following conditions:
+ *
+ * Don't claim this class as your own
+ * Don't remove this disclaimer
+ *
+ * It would be nice if you provide credit to me if you use this class in a published project</i>
+ *
+ * author DarkBlade12
+ * version 1.1
+ */
+
 public final class ReflectionUtils {
-    // Prevent accidental construction
+
     private ReflectionUtils() {
     }
 

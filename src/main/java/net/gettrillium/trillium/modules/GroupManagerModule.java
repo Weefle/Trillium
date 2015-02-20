@@ -1,8 +1,6 @@
 package net.gettrillium.trillium.modules;
 
-import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.Permission;
-import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
@@ -91,7 +89,7 @@ public class GroupManagerModule extends TrilliumModule {
         }
     }
 
-    @Override
+  /*  @Override
     public void register() {
         TrilliumAPI.getInstance().getServer().getScheduler().runTaskTimer(TrilliumAPI.getInstance(), new Runnable() {
 
@@ -102,5 +100,5 @@ public class GroupManagerModule extends TrilliumModule {
                 }
             }
         }, 0, getConfig().getInt(Configuration.GM.RELOAD) * 20 * 3600);
-    }
+    }*/
 }

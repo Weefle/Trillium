@@ -84,36 +84,36 @@ public enum ParticleEffect {
 
     public static ParticleEffect fromName(String name) {
         for (Entry<String, ParticleEffect> entry : NAME_MAP.entrySet()) {
-            if (!entry.getKey().equalsIgnoreCase(name)) {
-                continue;
+            if (entry.getKey().equalsIgnoreCase(name)) {
+                return entry.getValue();
             }
-            return entry.getValue();
         }
+
         return null;
     }
 
     public static ParticleEffect fromId(int id) {
         for (Entry<Integer, ParticleEffect> entry : ID_MAP.entrySet()) {
-            if (entry.getKey() != id) {
-                continue;
+            if (entry.getKey() == id) {
+                return entry.getValue();
             }
-            return entry.getValue();
         }
+
         return null;
     }
 
     private static boolean isWater(Location location) {
         Material material = location.getBlock().getType();
-        return material == Material.WATER || material == Material.STATIONARY_WATER;
+        return (material == Material.WATER || material == Material.STATIONARY_WATER);
     }
 
     private static boolean isLongDistance(Location location, List<Player> players) {
         for (Player player : players) {
-            if (player.getLocation().distanceSquared(location) < 65536) {
-                continue;
+            if (player.getLocation().distanceSquared(location) >= 65536) {
+                return true;
             }
-            return true;
         }
+
         return false;
     }
 
@@ -303,13 +303,9 @@ public enum ParticleEffect {
     }
 
     public static enum ParticleProperty {
-
         REQUIRES_WATER,
-
         REQUIRES_DATA,
-
         DIRECTIONAL,
-
         COLORABLE;
     }
 
@@ -363,9 +359,7 @@ public enum ParticleEffect {
     public static abstract class ParticleColor {
 
         public abstract float getValueX();
-
         public abstract float getValueY();
-
         public abstract float getValueZ();
     }
 

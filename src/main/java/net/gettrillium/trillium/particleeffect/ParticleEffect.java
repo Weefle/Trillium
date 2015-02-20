@@ -15,31 +15,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-/*
- * this wasn't made by us, DarkBlade12 is the one who wrote it and included this disclaimer:
- *
- * ParticleEffect Library
- *
+/**
+ * <b>ParticleEffect Library</b>
+ * <p>
  * This library was created by @DarkBlade12 and allows you to display all Minecraft particle effects on a Bukkit server
- *
+ * <p>
  * You are welcome to use it, modify it and redistribute it under the following conditions:
- *
- * Don't claim this class as your own
- * Don't remove this disclaimer
- *
+ * <ul>
+ * <li>Don't claim this class as your own
+ * <li>Don't remove this disclaimer
+ * </ul>
+ * <p>
  * Special thanks:
+ * <ul>
+ * <li>@microgeek (original idea, names and packet parameters)
+ * <li>@ShadyPotato (1.8 names, ids and packet parameters)
+ * <li>@RingOfStorms (particle behavior)
+ * <li>@Cybermaxke (particle behavior)
+ * </ul>
+ * <p>
+ * <i>It would be nice if you provide credit to me if you use this class in a published project</i>
  *
- * microgeek (original idea, names and packet parameters)
- * ShadyPotato (1.8 names, ids and packet parameters)
- * RingOfStorms (particle behavior)
- * Cybermaxke (particle behavior)
- *
- * It would be nice if you provide credit to me if you use this class in a published project</i>
- * 
- * author DarkBlade12
- * version 1.7
+ * @author DarkBlade12
+ * @version 1.7
  */
-
 public enum ParticleEffect {
     EXPLOSION_NORMAL("explode", 0, -1, ParticleProperty.DIRECTIONAL),
     EXPLOSION_LARGE("largeexplode", 1, -1),
@@ -384,9 +383,7 @@ public enum ParticleEffect {
     public static abstract class ParticleColor {
 
         public abstract float getValueX();
-
         public abstract float getValueY();
-
         public abstract float getValueZ();
     }
 

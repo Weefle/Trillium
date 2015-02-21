@@ -393,7 +393,7 @@ public class AbilityModule extends TrilliumModule {
 
     @EventHandler
     public void onHunger(FoodLevelChangeEvent event) {
-        TrilliumPlayer player = player(event.getEntity().getName());
+        TrilliumPlayer player = player((Player) event.getEntity());
         if (player.isGod()) {
             event.setCancelled(true);
         }

@@ -13,7 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerJoin implements Listener {
     @EventHandler
@@ -25,13 +25,15 @@ public class PlayerJoin implements Listener {
         event.setJoinMessage(joinMessage);
 
         //motd
-        ArrayList<String> motd = (ArrayList<String>) TrilliumAPI.getInstance().getConfig().getStringList("Motd");
-        for (String s : motd) {
-            s = ChatColor.translateAlternateColorCodes('&', s);
-            s = s.replace("[USERNAME]", p.getName());
-            s = s.replace("[SLOTS]", "" + Bukkit.getMaxPlayers());
-            s = s.replace("[ONLINE]", "" + Bukkit.getOnlinePlayers().size());
-            p.sendMessage(s);
+        if (p.hasPermission(Permission.Chat.MOTD)) {
+            List<String> motd = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
+            for (String s : motd) {
+                s = ChatColor.translateAlternateColorCodes('&', s);
+                s = s.replace("[USERNAME]", p.getName());
+                s = s.replace("[SLOTS]", "" + Bukkit.getMaxPlayers());
+                s = s.replace("[ONLINE]", "" + Bukkit.getOnlinePlayers().size());
+                p.sendMessage(s);
+            }
         }
 
         //Send report warning

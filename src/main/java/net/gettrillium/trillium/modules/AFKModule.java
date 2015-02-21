@@ -34,6 +34,7 @@ public class AFKModule extends TrilliumModule {
             TrilliumPlayer player = player((Player) sender);
             if (player.hasPermission(Permission.Afk.USE)) {
                 player.toggleAfk();
+                player.active();
             } else {
                 Message.e(sender, "AFK", Crit.P);
             }
@@ -48,8 +49,10 @@ public class AFKModule extends TrilliumModule {
         if (player.isAfk()) {
             if (!player.isVanished()) {
                 player.toggleAfk();
+                player.active();
             }
         }
+        player.active();
     }
 
     @EventHandler
@@ -58,8 +61,10 @@ public class AFKModule extends TrilliumModule {
         if (player.isAfk()) {
             if (!player.isVanished()) {
                 player.toggleAfk();
+                player.active();
             }
         }
+        player.active();
     }
 
     @EventHandler
@@ -69,8 +74,10 @@ public class AFKModule extends TrilliumModule {
             if (player.isAfk()) {
                 if (!player.isVanished()) {
                     player.toggleAfk();
+                    player.active();
                 }
             }
+            player.active();
         }
     }
 
@@ -80,8 +87,10 @@ public class AFKModule extends TrilliumModule {
         if (player.isAfk()) {
             if (!player.isVanished()) {
                 player.toggleAfk();
+                player.active();
             }
         }
+        player.active();
     }
 
     @EventHandler
@@ -92,6 +101,7 @@ public class AFKModule extends TrilliumModule {
                 player.toggleAfk();
             }
         }
+        player.active();
     }
 
     @Override
@@ -116,6 +126,7 @@ public class AFKModule extends TrilliumModule {
                                 toKick.add(player);
                             } else {
                                 player.toggleAfk();
+                                player.active();
                             }
                         }
                     }

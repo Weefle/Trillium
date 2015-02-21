@@ -17,7 +17,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.List;
 
@@ -418,22 +417,6 @@ public class ChatModule extends TrilliumModule {
         TrilliumPlayer p = player(event.getPlayer());
         if (p.hasPermission(Permission.Chat.COLOR)) {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
-        }
-    }
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        TrilliumPlayer p = player(event.getPlayer());
-        if (p.hasPermission(Permission.Chat.MOTD)) {
-            List<String> motd = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
-            for (String s : motd) {
-                s = ChatColor.translateAlternateColorCodes('&', s);
-                s = s.replace("[USERNAME]", p.getProxy().getName());
-                s = s.replace("[SLOTS]", "" + Bukkit.getMaxPlayers());
-                s = s.replace("[ONLINE]", "" + Bukkit.getOnlinePlayers().size());
-                p.getProxy().sendMessage(s);
-            }
-
         }
     }
 }

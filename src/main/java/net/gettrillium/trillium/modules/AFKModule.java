@@ -17,6 +17,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,21 +101,25 @@ public class AFKModule extends TrilliumModule {
     @Override
     public void register() {
         if (getConfig().getBoolean(Configuration.Afk.AUTO_AFK_ENABLED)) {
-            TrilliumAPI.getInstance().getServer().getScheduler().runTaskTimer(TrilliumAPI.getInstance(), new Runnable() {
-                private List<TrilliumPlayer> toKick = new ArrayList<>();
-
+            new BukkitRunnable() {
                 @Override
                 public void run() {
+                    List<TrilliumPlayer> toKick = new ArrayList<>();
+
                     for (TrilliumPlayer player : TrilliumAPI.getOnlinePlayers()) {
-                        if (!player.isAfk()) {
-                            if (!player.isVanished()) {
-                                if (player.getInactiveTime() >= getConfig().getInt(Configuration.Afk.AUTO_AFK_TIME)) {
-                                    if (getConfig().getBoolean(Configuration.Afk.AUTO_AFK_KICK)) {
-                                        toKick.add(player);
-                                    } else {
-                                        player.toggleAfk();
-                                    }
-                                }
+                        if (player.isAfk()) {
+                            continue;
+                        }
+
+                        if (player.isVanished()) {
+                            continue;
+                        }
+
+                        if (player.getInactiveTime() >= getConfig().getInt(Configuration.Afk.AUTO_AFK_TIME)) {
+                            if (getConfig().getBoolean(Configuration.Afk.AUTO_AFK_KICK)) {
+                                toKick.add(player);
+                            } else {
+                                player.toggleAfk();
                             }
                         }
                     }
@@ -123,9 +128,8 @@ public class AFKModule extends TrilliumModule {
                         player.getProxy().kickPlayer("You idled for too long.");
                         Message.b(MType.W, "AFK", player.getProxy().getName() + " got kicked for idling for too long.");
                     }
-                    toKick.clear();
                 }
-            }, 0, 20);
+            }.runTaskTimer(TrilliumAPI.getInstance(), 20, 20);
         }
     }
 }

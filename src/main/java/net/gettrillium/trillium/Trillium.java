@@ -148,8 +148,8 @@ public class Trillium extends JavaPlugin {
             AdminModule.reportlist.add(s);
         }
 
-        URL Url = getClass().getResource("/exampleworld.yml");
-        File dest = new File(getDataFolder() + "/Trillium Group Manager/worlds/exampleworlds.yml");
+        URL Url = getClass().getResource("/world.yml");
+        File dest = new File(getDataFolder() + "/Trillium Group Manager/worlds/world.yml");
         try {
             FileUtils.copyURLToFile(Url, dest);
         } catch (IOException e) {

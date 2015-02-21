@@ -40,7 +40,7 @@ public class AbilityModule extends TrilliumModule {
 
         TrilliumPlayer player = player(cs.getName());
         if (args.length == 0) {
-            if (player.hasPermission(Permission.Ability.FLY)) {
+            if (player.hasPermission(Permission.Ability.FLY) || player.hasPermission(Permission.Ability.FLY_OTHER)) {
                 if (!player.isFlying()) {
                     Message.m(MType.G, player.getProxy(), "Fly", "You are now in fly mode.");
                 } else {

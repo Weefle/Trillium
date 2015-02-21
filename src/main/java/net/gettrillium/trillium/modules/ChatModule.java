@@ -382,19 +382,19 @@ public class ChatModule extends TrilliumModule {
                             if (pl.hasPermission(Permission.Chat.CHATCHANNEL + args[0])) {
 
                                 StringBuilder sb = new StringBuilder();
-                                for (String arg : args) {
-                                    sb.append(arg).append(" ");
+                                for (int i = 1; i <= args.length; i++) {
+                                    sb.append(i).append(" ");
                                 }
 
                                 String msg = sb.toString().trim();
                                 String f = getConfig().getString(Configuration.Server.CCFORMAT);
 
-                                f = f.replace("[CHANNELNAME", args[0]);
+                                f = f.replace("[CHANNELNAME]", args[0]);
                                 f = f.replace("[USERNAME]", p.getProxy().getName());
+                                f = f.replace("[MESSAGE]", msg);
                                 if (getConfig().getBoolean(Configuration.Server.CCCOLOR)) {
                                     f = ChatColor.translateAlternateColorCodes('&', msg);
                                 }
-                                f = f.replace("[MESSAGE]", msg);
 
                                 pl.getProxy().sendMessage(f);
                             }

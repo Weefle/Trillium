@@ -86,14 +86,10 @@ public class AFKModule extends TrilliumModule {
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
-        if (event.getFrom().getBlockX() != event.getTo().getBlockX()
-                || event.getFrom().getBlockY() != event.getTo().getBlockY()
-                || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
-            TrilliumPlayer player = player(event.getPlayer());
-            if (player.isAfk()) {
-                if (!player.isVanished()) {
-                    player.toggleAfk();
-                }
+        TrilliumPlayer player = player(event.getPlayer());
+        if (player.isAfk()) {
+            if (!player.isVanished()) {
+                player.toggleAfk();
             }
         }
     }

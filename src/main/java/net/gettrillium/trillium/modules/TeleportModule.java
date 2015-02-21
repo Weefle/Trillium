@@ -328,14 +328,6 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @EventHandler
-    public void onTP(PlayerTeleportEvent event) {
-        TrilliumPlayer p = player(event.getPlayer());
-        if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
-            p.setLastLocation(event.getFrom());
-        }
-    }
-
     @Command(command = "teleportcoordinates", description = "Teleport to a set of coordinates.", usage = "/tpc <x> <y> <z>", aliases = "tpc")
     public void teleportcoordinates(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
@@ -402,6 +394,14 @@ public class TeleportModule extends TrilliumModule {
             Location loc = p.getProxy().getLocation();
             p.getProxy().teleport(new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z));
             Message.m(MType.G, p.getProxy(), "TPC", "You teleported to " + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ());
+        }
+    }
+
+    @EventHandler
+    public void onTP(PlayerTeleportEvent event) {
+        TrilliumPlayer p = player(event.getPlayer());
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
+            p.setLastLocation(event.getFrom());
         }
     }
 }

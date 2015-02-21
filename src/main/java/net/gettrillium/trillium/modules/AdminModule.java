@@ -99,11 +99,12 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "lag", description = "Statistics on server lag and also clears lag through gc.", usage = "/lag")
+    @Command(command = "lag", description = "Statistics on server lag and also clears lag through gc.", usage = "/lag [clear]")
     public void lag(final CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Admin.LAG)) {
             if (args.length != 0) {
                 if (args[0].equalsIgnoreCase("clear")) {
+
                     final long time = System.currentTimeMillis();
 
                     Message.m(MType.R, cs, "Lag", "Before GC:");

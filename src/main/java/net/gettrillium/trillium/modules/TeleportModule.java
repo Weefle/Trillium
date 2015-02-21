@@ -16,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -60,132 +61,154 @@ public class TeleportModule extends TrilliumModule {
 
     @Command(command = "teleport", description = "Teleport to a person or a set of coordinates.", usage = "/tp <player> [player / <x>, <y>, <z>]", aliases = "tp")
     public void tp(CommandSender cs, String[] args) {
-        if (cs instanceof Player) {
-            TrilliumPlayer p = player((Player) cs);
-            if (args.length == 0) {
-                if (p.hasPermission(Permission.Teleport.TP)) {
-                    Message.earg(p.getProxy(), "TP", "/tp <player> [player]");
-                }
-            } else if (args.length == 1) {
-                if (p.hasPermission(Permission.Teleport.TP)) {
-                    Player target = Bukkit.getPlayer(args[0]);
-                    if (target != null) {
-
-                        p.getProxy().teleport(target);
-                        Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + target.getName());
-
-                    } else {
-                        Message.eplayer(p.getProxy(), "TP", args[0]);
-                    }
-                } else {
-                    Message.e(p.getProxy(), "TP", Crit.P);
-                }
-
-            } else if (args.length == 2) {
-                if (p.hasPermission(Permission.Teleport.TP_OTHER)) {
-                    TrilliumPlayer target1 = player(args[0]);
-                    TrilliumPlayer target2 = player(args[1]);
-                    if (target1 != null) {
-                        if (target2 != null) {
-
-
-                            target1.getProxy().teleport(target2.getProxy());
-                            Message.m(MType.G, p.getProxy(), "TP", "You teleported " + target1.getProxy().getName() + " to " + target2.getProxy().getName());
-                            Message.m(MType.G, target1.getProxy(), "TP", p.getProxy().getName() + " teleported you to " + target2.getProxy().getName());
-
-                        } else {
-                            Message.eplayer(p.getProxy(), "TP", args[1]);
-                        }
-                    } else {
-                        Message.eplayer(p.getProxy(), "TP", args[2]);
-                    }
-                } else {
-                    Message.e(p.getProxy(), "TP", Crit.P);
-                }
-
-            } else {
-                if (p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
-                    Player pl = Bukkit.getPlayer(args[0]);
-                    String c1 = args[1];
-                    String c2 = args[2];
-                    String c3 = args[3];
-                    if (pl != null) {
-                        if (Utils.isNumeric(c1) && Utils.isNumeric(c2) && Utils.isNumeric(c3)) {
-                            int c4 = Integer.parseInt(c1);
-                            int c5 = Integer.parseInt(c2);
-                            int c6 = Integer.parseInt(c3);
-                            Location loc = new Location(p.getProxy().getWorld(), c4, c5, c6);
-                            pl.teleport(loc);
-                            Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + c4 + ", " + c5 + ", " + c6);
-                        } else {
-                            if (c1.startsWith("~") && c2.startsWith("~") && c3.startsWith("~")) {
-                                if (Utils.isNumeric(c1.substring(1)) && Utils.isNumeric(c2.substring(1)) && Utils.isNumeric(c3.substring(1))) {
-                                    int c4;
-                                    int c5;
-                                    int c6;
-                                    if (c1.substring(1).equals("") || c1.substring(1).equals(" ")) {
-                                        c4 = 0;
-                                    } else {
-                                        c4 = Integer.parseInt(c1.substring(1));
-                                    }
-                                    if (c2.substring(1).equals("") || c2.substring(1).equals(" ")) {
-                                        c5 = 0;
-                                    } else {
-                                        c5 = Integer.parseInt(c1.substring(1));
-                                    }
-                                    if (c3.substring(1).equals("") || c3.substring(1).equals(" ")) {
-                                        c6 = 0;
-                                    } else {
-                                        c6 = Integer.parseInt(c1.substring(1));
-                                    }
-
-                                    Location loc = new Location(p.getProxy().getWorld(), p.getProxy().getLocation().getX() + c4, p.getProxy().getLocation().getY() + c5, p.getProxy().getLocation().getZ() + c6);
-                                    pl.teleport(loc);
-                                    Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + loc.getX() + ", " + loc.getY() + ", " + loc.getZ());
-                                } else {
-                                    Message.m(MType.W, p.getProxy(), "TP", "Something isn't a number...");
-                                }
-                            } else {
-                                Message.earg2(p.getProxy(), "TP", "/tp <player> [x] [y] [z]");
-                            }
-                        }
-                    } else {
-                        Message.eplayer(p.getProxy(), "TP", args[0]);
-                    }
-                } else {
-                    Message.e(p.getProxy(), "TP", Crit.P);
-                }
-            }
-        } else {
+        if (!(cs instanceof Player)) {
             Message.e(cs, "TP", Crit.C);
+            return;
+        }
+
+        TrilliumPlayer p = player((Player) cs);
+
+        if (args.length == 0) {
+            if (!p.hasPermission(Permission.Teleport.TP)) {
+                Message.e(p.getProxy(), "TP", Crit.P);
+                return;
+            }
+
+            Message.earg(p.getProxy(), "TP", "/tp <player> [player]");
+        } else if (args.length == 1) {
+            if (!p.hasPermission(Permission.Teleport.TP)) {
+                Message.e(p.getProxy(), "TP", Crit.P);
+                return;
+            }
+
+            Player target = Bukkit.getPlayer(args[0]);
+
+            if (target == null) {
+                Message.eplayer(p.getProxy(), "TP", args[0]);
+                return;
+            }
+
+            p.getProxy().teleport(target);
+            Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + target.getName());
+        } else if (args.length == 2) {
+            if (!p.hasPermission(Permission.Teleport.TP_OTHER)) {
+                Message.e(p.getProxy(), "TP", Crit.P);
+                return;
+            }
+
+            TrilliumPlayer target1 = player(args[0]);
+            TrilliumPlayer target2 = player(args[1]);
+
+            if (target1 == null) {
+                Message.eplayer(p.getProxy(), "TP", args[1]);
+                return;
+            }
+
+            if (target2 == null) {
+                Message.eplayer(p.getProxy(), "TP", args[2]);
+                return;
+            }
+
+            target1.getProxy().teleport(target2.getProxy());
+            Message.m(MType.G, p.getProxy(), "TP", "You teleported " + target1.getProxy().getName() + " to " + target2.getProxy().getName());
+            Message.m(MType.G, target1.getProxy(), "TP", p.getProxy().getName() + " teleported you to " + target2.getProxy().getName());
+        } else {
+            if (!p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
+                Message.e(p.getProxy(), "TP", Crit.P);
+                return;
+            }
+
+            Player pl = Bukkit.getPlayer(args[0]);
+
+            if (pl == null) {
+                Message.eplayer(p.getProxy(), "TP", args[0]);
+                return;
+            }
+
+            String xArg = args[1];
+            String yArg = args[2];
+            String zArg = args[3];
+
+            if (Utils.isNumeric(xArg) && Utils.isNumeric(yArg) && Utils.isNumeric(zArg)) {
+                int x = Integer.parseInt(xArg);
+                int y = Integer.parseInt(yArg);
+                int z = Integer.parseInt(zArg);
+
+                Location loc = new Location(p.getProxy().getWorld(), x, y, z);
+
+                pl.teleport(loc);
+                Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + x + ", " + y + ", " + z);
+            } else {
+                if (!xArg.startsWith("~") || !yArg.startsWith("~") || !zArg.startsWith("~")) {
+                    Message.earg2(p.getProxy(), "TP", "/tp <player> [x] [y] [z]");
+                    return;
+                }
+
+                if (!Utils.isNumeric(xArg.substring(1)) || !Utils.isNumeric(yArg.substring(1)) || !Utils.isNumeric(zArg.substring(1))) {
+                    Message.m(MType.W, p.getProxy(), "TP", "Something isn't a number...");
+                    return;
+                }
+
+                int x;
+                int y;
+                int z;
+
+                if (xArg.substring(1).equals("") || xArg.substring(1).equals(" ")) {
+                    x = 0;
+                } else {
+                    x = Integer.parseInt(xArg.substring(1));
+                }
+
+                if (yArg.substring(1).equals("") || yArg.substring(1).equals(" ")) {
+                    y = 0;
+                } else {
+                    y = Integer.parseInt(xArg.substring(1));
+                }
+
+                if (zArg.substring(1).equals("") || zArg.substring(1).equals(" ")) {
+                    z = 0;
+                } else {
+                    z = Integer.parseInt(xArg.substring(1));
+                }
+
+                Vector vector = new Vector(x, y, z);
+
+                Location loc = p.getProxy().getLocation().add(vector);
+                pl.teleport(loc);
+                Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + loc.getX() + ", " + loc.getY() + ", " + loc.getZ());
+            }
         }
     }
 
     @Command(command = "teleporthere", description = "Teleport a player to you.", usage = "/tph <player>", aliases = "tph")
     public void teleporthere(CommandSender cs, String[] args) {
-        if (cs instanceof Player) {
-            TrilliumPlayer p = player((Player) cs);
-            if (p.hasPermission(Permission.Teleport.TPHERE)) {
-                if (args.length != 0) {
-                    TrilliumPlayer target = player(args[0]);
-                    if (target != null) {
-
-                        target.getProxy().teleport(p.getProxy());
-                        Message.m(MType.G, p.getProxy(), "TPH", "You teleported " + target.getProxy().getName() + " to you.");
-                        Message.m(MType.G, target.getProxy(), "TPH", p.getProxy().getName() + " teleported you to them.");
-
-                    } else {
-                        Message.eplayer(p.getProxy(), "TPH", args[0]);
-                    }
-                } else {
-                    Message.earg(p.getProxy(), "TPH", "/tphere <player>");
-                }
-            } else {
-                Message.e(p.getProxy(), "TPH", Crit.P);
-            }
-        } else {
+        if (!(cs instanceof Player)) {
             Message.e(cs, "TPH", Crit.C);
+            return;
         }
+
+        TrilliumPlayer p = player((Player) cs);
+
+        if (!p.hasPermission(Permission.Teleport.TPHERE)) {
+            Message.e(p.getProxy(), "TPH", Crit.P);
+            return;
+        }
+
+        if (args.length == 0) {
+            Message.earg(p.getProxy(), "TPH", "/tphere <player>");
+            return;
+        }
+
+        TrilliumPlayer target = player(args[0]);
+
+        if (target == null) {
+            Message.eplayer(p.getProxy(), "TPH", args[0]);
+            return;
+        }
+
+        target.getProxy().teleport(p.getProxy());
+        Message.m(MType.G, p.getProxy(), "TPH", "You teleported " + target.getProxy().getName() + " to you.");
+        Message.m(MType.G, target.getProxy(), "TPH", p.getProxy().getName() + " teleported you to them.");
     }
 
     @Command(command = "teleportrequest", description = "Request permission to teleport to a player.", usage = "/tpr <player>", aliases = "tpr")
@@ -280,99 +303,110 @@ public class TeleportModule extends TrilliumModule {
 
     @Command(command = "teleportrequestdeny", description = "Deny a teleport request.", usage = "/tprd", aliases = "tprd")
     public void teleportrequestdeny(CommandSender cs) {
-        if (cs instanceof Player) {
-            TrilliumPlayer p = player((Player) cs);
-            if (p.hasPermission(Permission.Teleport.TPRRESPOND)) {
-                if (tpr.containsValue(p.getProxy().getUniqueId())) {
-
-                    TrilliumPlayer requester = player(Bukkit.getPlayer(tpr.get(p.getProxy().getUniqueId())));
-
-                    Message.m(MType.G, p.getProxy(), "TPRD", "You denied " + ChatColor.AQUA + requester.getProxy().getName() + "'s teleport request.");
-                    Message.m(MType.G, requester.getProxy(), "TPRD", p.getProxy().getName() + " denied your teleport request.");
-                    tpr.remove(p.getProxy().getUniqueId());
-
-                } else if (tprh.containsValue(p.getProxy().getUniqueId())) {
-
-                    TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getProxy().getUniqueId())));
-
-                    Message.m(MType.G, p.getProxy(), "TPRD", "You denied " + ChatColor.AQUA + requester.getProxy().getName() + "'s teleport request.");
-                    Message.m(MType.G, requester.getProxy(), "TPRD", p.getProxy().getName() + " denied your teleport request.");
-                    tprh.remove(p.getProxy().getUniqueId());
-
-                } else {
-                    Message.m(MType.W, p.getProxy(), "TPRD", "No pending teleport requests to deny.");
-                }
-            } else {
-                Message.e(p.getProxy(), "TPRD", Crit.P);
-            }
-        } else {
+        if (!(cs instanceof Player)) {
             Message.e(cs, "TPRD", Crit.C);
+        }
+
+        TrilliumPlayer p = player((Player) cs);
+
+        if (!p.hasPermission(Permission.Teleport.TPRRESPOND)) {
+            Message.e(p.getProxy(), "TPRD", Crit.P);
+            return;
+        }
+
+        if (tpr.containsValue(p.getProxy().getUniqueId())) {
+            TrilliumPlayer requester = player(Bukkit.getPlayer(tpr.get(p.getProxy().getUniqueId())));
+
+            Message.m(MType.G, p.getProxy(), "TPRD", "You denied " + ChatColor.AQUA + requester.getProxy().getName() + "'s teleport request.");
+            Message.m(MType.G, requester.getProxy(), "TPRD", p.getProxy().getName() + " denied your teleport request.");
+            tpr.remove(p.getProxy().getUniqueId());
+        } else if (tprh.containsValue(p.getProxy().getUniqueId())) {
+            TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getProxy().getUniqueId())));
+
+            Message.m(MType.G, p.getProxy(), "TPRD", "You denied " + ChatColor.AQUA + requester.getProxy().getName() + "'s teleport request.");
+            Message.m(MType.G, requester.getProxy(), "TPRD", p.getProxy().getName() + " denied your teleport request.");
+            tprh.remove(p.getProxy().getUniqueId());
+        } else {
+            Message.m(MType.W, p.getProxy(), "TPRD", "No pending teleport requests to deny.");
         }
     }
 
     @EventHandler
     public void onTP(PlayerTeleportEvent event) {
         TrilliumPlayer p = player(event.getPlayer());
-        if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND
-                || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
             p.setLastLocation(event.getFrom());
         }
     }
 
     @Command(command = "teleportcoordinates", description = "Teleport to a set of coordinates.", usage = "/tpc <x> <y> <z>", aliases = "tpc")
     public void teleportcoordinates(CommandSender cs, String[] args) {
-        if (cs instanceof Player) {
-            TrilliumPlayer p = player((Player) cs);
-            if (p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
-                if (args.length >= 3) {
-                    String c1 = args[1];
-                    String c2 = args[2];
-                    String c3 = args[3];
-                    if (Utils.isNumeric(c1) && Utils.isNumeric(c2) && Utils.isNumeric(c3)) {
-                        int c4 = Integer.parseInt(c1);
-                        int c5 = Integer.parseInt(c2);
-                        int c6 = Integer.parseInt(c3);
-                        Location loc = new Location(p.getProxy().getWorld(), c4, c5, c6);
-                        p.getProxy().teleport(loc);
-                        Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + c4 + ", " + c5 + ", " + c6);
-                    } else {
-                        if (c1.startsWith("~") && c2.startsWith("~") && c3.startsWith("~")) {
-                            if (Utils.isNumeric(c1.substring(1)) && Utils.isNumeric(c2.substring(1)) && Utils.isNumeric(c3.substring(1))) {
-                                int c4;
-                                int c5;
-                                int c6;
-                                if (c1.substring(1).equals("") || c1.substring(1).equals(" ")) {
-                                    c4 = 0;
-                                } else {
-                                    c4 = Integer.parseInt(c1.substring(1));
-                                }
-                                if (c2.substring(1).equals("") || c2.substring(1).equals(" ")) {
-                                    c5 = 0;
-                                } else {
-                                    c5 = Integer.parseInt(c1.substring(1));
-                                }
-                                if (c3.substring(1).equals("") || c3.substring(1).equals(" ")) {
-                                    c6 = 0;
-                                } else {
-                                    c6 = Integer.parseInt(c1.substring(1));
-                                }
+        if (!(cs instanceof Player)) {
+            return;
+        }
 
-                                Location loc = new Location(p.getProxy().getWorld(), p.getProxy().getLocation().getX() + c4, p.getProxy().getLocation().getY() + c5, p.getProxy().getLocation().getZ() + c6);
-                                p.getProxy().teleport(loc);
-                                Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + loc.getX() + ", " + loc.getY() + ", " + loc.getZ());
-                            } else {
-                                Message.m(MType.W, p.getProxy(), "TP", "Something isn't a number...");
-                            }
-                        } else {
-                            Message.earg2(p.getProxy(), "TP", "/tp <player> [x] [y] [z]");
-                        }
-                    }
-                } else {
-                    Message.earg(p.getProxy(), "TP", "/tp <x> <y> <z>");
-                }
-            } else {
-                Message.e(p.getProxy(), "TP", Crit.P);
+        TrilliumPlayer p = player((Player) cs);
+
+        if (!p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
+            Message.e(p.getProxy(), "TP", Crit.P);
+            return;
+        }
+
+        if (args.length < 3) {
+            Message.earg(p.getProxy(), "TP", "/tp <x> <y> <z>");
+            return;
+        }
+
+        String xArg = args[1];
+        String yArg = args[2];
+        String zArg = args[3];
+        
+        if (Utils.isNumeric(xArg) && Utils.isNumeric(yArg) && Utils.isNumeric(zArg)) {
+            int x = Integer.parseInt(xArg);
+            int y = Integer.parseInt(yArg);
+            int z = Integer.parseInt(zArg);
+            
+            Location loc = new Location(p.getProxy().getWorld(), x, y, z);
+            p.getProxy().teleport(loc);
+            Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + x + ", " + y + ", " + z);
+        } else {
+            if (!xArg.startsWith("~") || !yArg.startsWith("~") || !zArg.startsWith("~")) {
+                Message.earg2(p.getProxy(), "TP", "/tp <player> [x] [y] [z]");
+                return;
             }
+
+            if (!Utils.isNumeric(xArg.substring(1)) || !Utils.isNumeric(yArg.substring(1)) || !Utils.isNumeric(zArg.substring(1))) {
+                Message.m(MType.W, p.getProxy(), "TP", "Something isn't a number...");
+                return;
+            }
+
+            int x;
+            int y;
+            int z;
+
+            if (xArg.substring(1).equals("") || xArg.substring(1).equals(" ")) {
+                x = 0;
+            } else {
+                x = Integer.parseInt(xArg.substring(1));
+            }
+
+            if (yArg.substring(1).equals("") || yArg.substring(1).equals(" ")) {
+                y = 0;
+            } else {
+                y = Integer.parseInt(xArg.substring(1));
+            }
+
+            if (zArg.substring(1).equals("") || zArg.substring(1).equals(" ")) {
+                z = 0;
+            } else {
+                z = Integer.parseInt(xArg.substring(1));
+            }
+
+            Vector vector = new Vector(x, y, z);
+
+            Location loc = p.getProxy().getLocation().add(vector);
+            p.getProxy().teleport(loc);
+            Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + loc.getX() + ", " + loc.getY() + ", " + loc.getZ());
         }
     }
 }

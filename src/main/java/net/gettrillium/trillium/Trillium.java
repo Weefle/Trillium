@@ -71,11 +71,6 @@ public class Trillium extends JavaPlugin {
         File reports = new File(TrilliumAPI.getInstance().getDataFolder(), "Reports.yml");
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(reports);
         yml.set("Reports", AdminModule.reportlist);
-        try {
-            yml.save(reports);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void setupcmdbinder() {

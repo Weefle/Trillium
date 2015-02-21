@@ -94,9 +94,9 @@ public class TrilliumPlayer {
     }
 
     public void setNickname(String nickname) {
-        this.nickname = nickname;
+        this.nickname = nickname + "§f";
+        this.hasnickname = !nickname.equalsIgnoreCase(proxy.getName());
         getProxy().setDisplayName(proxy.getName());
-        this.hasnickname = !nickname.equals(proxy.getName());
     }
 
     public boolean hasNickname() {

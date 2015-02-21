@@ -20,7 +20,7 @@ public class PlayerJoin implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player p = event.getPlayer();
 
-        String joinMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString("join.message"));
+        String joinMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.JOINMESSAGE));
         joinMessage = joinMessage.replace("[USERNAME]", p.getName());
         event.setJoinMessage(joinMessage);
 
@@ -28,10 +28,10 @@ public class PlayerJoin implements Listener {
         if (p.hasPermission(Permission.Chat.MOTD)) {
             List<String> motd = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
             for (String s : motd) {
-                s = ChatColor.translateAlternateColorCodes('&', s);
                 s = s.replace("[USERNAME]", p.getName());
                 s = s.replace("[SLOTS]", "" + Bukkit.getMaxPlayers());
                 s = s.replace("[ONLINE]", "" + Bukkit.getOnlinePlayers().size());
+                s = ChatColor.translateAlternateColorCodes('&', s);
                 p.sendMessage(s);
             }
         }

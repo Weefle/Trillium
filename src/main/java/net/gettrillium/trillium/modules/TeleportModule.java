@@ -8,7 +8,6 @@ import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.messageutils.Crit;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -16,7 +15,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -172,11 +170,9 @@ public class TeleportModule extends TrilliumModule {
                     z = Integer.parseInt(xArg.substring(1));
                 }
 
-                Vector vector = new Vector(x, y, z);
-
-                Location loc = p.getProxy().getLocation().add(vector);
-                pl.teleport(loc);
-                Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + loc.getX() + ", " + loc.getY() + ", " + loc.getZ());
+                Location loc = p.getProxy().getLocation();
+                pl.teleport(new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z));
+                Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ());
             }
         }
     }
@@ -390,6 +386,22 @@ public class TeleportModule extends TrilliumModule {
             } else {
                 x = Integer.parseInt(xArg.substring(1));
             }
+
+            if (yArg.substring(1).equals("") || yArg.substring(1).equals(" ")) {
+                y = 0;
+            } else {
+                y = Integer.parseInt(xArg.substring(1));
+            }
+
+            if (zArg.substring(1).equals("") || zArg.substring(1).equals(" ")) {
+                z = 0;
+            } else {
+                z = Integer.parseInt(xArg.substring(1));
+            }
+
+            Location loc = p.getProxy().getLocation();
+            p.getProxy().teleport(new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z));
+            Message.m(MType.G, p.getProxy(), "TPC", "You teleported to " + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ());
         }
     }
 }

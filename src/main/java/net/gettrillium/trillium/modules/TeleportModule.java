@@ -51,6 +51,7 @@ public class TeleportModule extends TrilliumModule {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Teleport.SPAWN)) {
                 p.getProxy().teleport(p.getProxy().getWorld().getSpawnLocation());
+                Message.m(MType.G, p.getProxy(), "Spawn", "You were successfully teleported to the spawn point.");
             } else {
                 Message.e(p.getProxy(), "Spawn", Crit.P);
             }
@@ -270,7 +271,7 @@ public class TeleportModule extends TrilliumModule {
     }
 
     @Command(command = "teleportrequestaccept", description = "Accept a teleport request.", usage = "/tpra", aliases = "tpra")
-    public void teleportrequestaccept(CommandSender cs) {
+    public void teleportrequestaccept(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Teleport.TPRRESPOND)) {
@@ -302,7 +303,7 @@ public class TeleportModule extends TrilliumModule {
     }
 
     @Command(command = "teleportrequestdeny", description = "Deny a teleport request.", usage = "/tprd", aliases = "tprd")
-    public void teleportrequestdeny(CommandSender cs) {
+    public void teleportrequestdeny(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
             Message.e(cs, "TPRD", Crit.C);
         }
@@ -389,24 +390,6 @@ public class TeleportModule extends TrilliumModule {
             } else {
                 x = Integer.parseInt(xArg.substring(1));
             }
-
-            if (yArg.substring(1).equals("") || yArg.substring(1).equals(" ")) {
-                y = 0;
-            } else {
-                y = Integer.parseInt(xArg.substring(1));
-            }
-
-            if (zArg.substring(1).equals("") || zArg.substring(1).equals(" ")) {
-                z = 0;
-            } else {
-                z = Integer.parseInt(xArg.substring(1));
-            }
-
-            Vector vector = new Vector(x, y, z);
-
-            Location loc = p.getProxy().getLocation().add(vector);
-            p.getProxy().teleport(loc);
-            Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + loc.getX() + ", " + loc.getY() + ", " + loc.getZ());
         }
     }
 }

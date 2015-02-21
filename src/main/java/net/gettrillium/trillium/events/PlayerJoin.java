@@ -1,5 +1,7 @@
 package net.gettrillium.trillium.events;
 
+import net.gettrillium.trillium.api.Configuration;
+import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
@@ -33,7 +35,7 @@ public class PlayerJoin implements Listener {
         }
 
         //Send report warning
-        if (p.hasPermission("tr.reportreceiver")) {
+        if (p.hasPermission(Permission.Admin.REPORT_RECEIVER)) {
             if (AdminModule.reportlist.size() > 0) {
                 Message.m(MType.W, p, "Reports", "There are " + AdminModule.reportlist.size() + " reports available for revision.");
                 Message.m(MType.W, p, "Reports", "/reports to view them.");

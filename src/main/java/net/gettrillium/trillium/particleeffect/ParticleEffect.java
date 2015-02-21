@@ -17,15 +17,15 @@ import java.util.Map.Entry;
 
 /**
  * <b>ParticleEffect Library</b>
- * <p>
+ * <p/>
  * This library was created by @DarkBlade12 and allows you to display all Minecraft particle effects on a Bukkit server
- * <p>
+ * <p/>
  * You are welcome to use it, modify it and redistribute it under the following conditions:
  * <ul>
  * <li>Don't claim this class as your own
  * <li>Don't remove this disclaimer
  * </ul>
- * <p>
+ * <p/>
  * Special thanks:
  * <ul>
  * <li>@microgeek (original idea, names and packet parameters)
@@ -33,7 +33,7 @@ import java.util.Map.Entry;
  * <li>@RingOfStorms (particle behavior)
  * <li>@Cybermaxke (particle behavior)
  * </ul>
- * <p>
+ * <p/>
  * <i>It would be nice if you provide credit to me if you use this class in a published project</i>
  *
  * @author DarkBlade12
@@ -383,7 +383,9 @@ public enum ParticleEffect {
     public static abstract class ParticleColor {
 
         public abstract float getValueX();
+
         public abstract float getValueY();
+
         public abstract float getValueZ();
     }
 

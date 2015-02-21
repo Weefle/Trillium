@@ -9,7 +9,7 @@ public abstract class TrilliumModule implements Listener {
     private ConfigurationSection config;
 
     public TrilliumModule(String name) {
-        this.config = TrilliumAPI.getInstance().getConfig().getConfigurationSection(name);
+        this.config = TrilliumAPI.getInstance().getConfig();
     }
 
     public ConfigurationSection getConfig() {

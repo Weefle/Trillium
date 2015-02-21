@@ -1,5 +1,6 @@
 package net.gettrillium.trillium.events;
 
+import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -13,7 +14,7 @@ public class PlayerLeave implements Listener {
     public void onLeave(PlayerQuitEvent event) {
         Player p = event.getPlayer();
 
-        String quitMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString("leave.message"));
+        String quitMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.LEAVEMESSAGE));
         quitMessage = quitMessage.replace("[USERNAME]", p.getName());
         event.setQuitMessage(quitMessage);
     }

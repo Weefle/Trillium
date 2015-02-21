@@ -340,7 +340,7 @@ public class AbilityModule extends TrilliumModule {
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
-            TrilliumPlayer player = player(event.getEntity().getName());
+            TrilliumPlayer player = player((Player) event.getEntity());
             if (player.isGod()) {
                 event.setCancelled(true);
             }

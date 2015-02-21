@@ -3,6 +3,7 @@ package net.gettrillium.trillium.events;
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.modules.AbilityModule;
+import net.gettrillium.trillium.modules.ChatModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,6 +31,10 @@ public class PlayerDeath implements Listener {
             } catch (Throwable t) {
                 t.printStackTrace();
             }
+        }
+
+        if (!TrilliumAPI.getModule(ChatModule.class).getConfig().getBoolean(Configuration.Chat.ENABLE_DEATH_MESSAGES)) {
+            event.setDeathMessage("");
         }
     }
 }

@@ -31,10 +31,16 @@ public class Configuration {
         public static final String AUTO_AFK_KICK = AUTO_AFK + "kick-on-afk";
     }
 
+    public static class Chat {
+        private static String PREFIX = "chat.";
+        public static final String BROADCASTFORMAT = PREFIX + "broadcast-format";
+        public static final String INGAME_MOTD = PREFIX + "motd";
+        public static final String SERVER_LIST_MOTD = PREFIX + "server-list-motd";
+        public static final String ENABLE_DEATH_MESSAGES = PREFIX + "enable-death-messages";
+    }
+
     public static class Server {
         private static String PREFIX = "server.";
-        public static final String SERVER_LIST_MOTD = PREFIX + "server-list-motd";
-        public static final String INGAME_MOTD = PREFIX + "motd";
         private static final String PVP = PREFIX + "pvp.";
         public static final String PVPENABLE = PVP + "enabled";
         public static final String TOGGLEPVP = PVP + "enable-toggle-pvp";
@@ -47,6 +53,8 @@ public class Configuration {
 
     public static class PlayerSettings {
         private static String PREFIX = "player-settings.";
+        public static final String JOINMESSAGE = PREFIX + "join.message";
+        public static final String LEAVEMESSAGE = PREFIX + "leave.message";
         private static String NICKNAME = PREFIX + "nicknames.";
         public static final String CHARLIMIT = NICKNAME + "character-limit";
         public static final String PREF = NICKNAME + "prefix";

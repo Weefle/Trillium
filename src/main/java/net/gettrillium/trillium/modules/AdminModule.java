@@ -128,7 +128,7 @@ public class AdminModule extends TrilliumModule {
     @Command(command = "killall", description = "Kill everything in a radius.", usage = "/killall <radius> <mobs/players/animals/monsters/items/everything>")
     public void killall(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
-            TrilliumPlayer p = (TrilliumPlayer) cs;
+            TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Admin.KILLALL)) {
                 if (args.length <= 1) {
                     Message.earg(p.getProxy(), "Killall", "/killall <radius> <mobs/players/animals/monsters/items/everything>");
@@ -193,7 +193,7 @@ public class AdminModule extends TrilliumModule {
     @Command(command = "inventory", description = "Open a crafting table GUI, or someone else's inventory or enderchest.", usage = "/inv <player [enderchest]/crafting>", aliases = "inv")
     public void inventory(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
-            TrilliumPlayer p = (TrilliumPlayer) cs;
+            TrilliumPlayer p = player((Player) cs);
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("crafting") || args[0].equalsIgnoreCase("cv")) {
                     if (p.hasPermission(Permission.Admin.INV_CRAFTING)) {
@@ -246,7 +246,7 @@ public class AdminModule extends TrilliumModule {
     @Command(command = "report", description = "Send a report to the staff.", usage = "/report <msg>")
     public void report(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
-            TrilliumPlayer p = (TrilliumPlayer) cs;
+            TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Admin.REPORT) || p.hasPermission(Permission.Admin.REPORT_RECEIVER)) {
                 if (args.length != 0) {
 
@@ -291,7 +291,7 @@ public class AdminModule extends TrilliumModule {
     @Command(command = "reports", description = "View the list of submitted reports. Clear reports & remove a report.", usage = "/reports [clear/remove <index>]")
     public void reports(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
-            TrilliumPlayer p = (TrilliumPlayer) cs;
+            TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Admin.REPORT_RECEIVER)) {
                 if (args.length != 0) {
                     if (args[0].equalsIgnoreCase("clear")) {

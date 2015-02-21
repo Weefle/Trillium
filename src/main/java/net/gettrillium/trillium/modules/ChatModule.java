@@ -17,6 +17,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class ChatModule extends TrilliumModule {
                 }
                 String message = sb.toString().trim();
 
-                List<String> format = getConfig().getStringList("broadcast");
+                List<String> format = getConfig().getStringList(Configuration.Chat.BROADCASTFORMAT);
 
                 for (String s : format) {
                     s = ChatColor.translateAlternateColorCodes('&', s);
@@ -71,7 +72,7 @@ public class ChatModule extends TrilliumModule {
     @Command(command = "motd", description = "View the server's motd", usage = "/motd")
     public void motd(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Chat.MOTD)) {
-            List<String> motd = getConfig().getStringList(Configuration.Server.INGAME_MOTD);
+            List<String> motd = getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
             for (String s : motd) {
                 s = ChatColor.translateAlternateColorCodes('&', s);
                 s = ChatColor.translateAlternateColorCodes('&', s);
@@ -149,10 +150,10 @@ public class ChatModule extends TrilliumModule {
     public void trillium(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Admin.TRILLIUM)) {
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
-            cs.sendMessage(ChatColor.GRAY + "              Plugin made with love");
-            cs.sendMessage(ChatColor.GRAY + "       by LordSaad, VortexSeven, Turbotailz");
-            cs.sendMessage(ChatColor.GRAY + "               and samczsun");
-            cs.sendMessage(ChatColor.DARK_RED + "                     <3");
+            cs.sendMessage(ChatColor.GRAY + "        Plugin made with love by:");
+            cs.sendMessage(ChatColor.GRAY + "    LordSaad, VortexSeven, Turbotailz,");
+            cs.sendMessage(ChatColor.GRAY + "           samczsun, and hintss");
+            cs.sendMessage(ChatColor.DARK_RED + "                    ❤");
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
             cs.sendMessage(ChatColor.GRAY + "Vesion: " + TrilliumAPI.getInstance().getDescription().getVersion());
             cs.sendMessage(ChatColor.GRAY + "Configuration Reloaded");
@@ -162,10 +163,10 @@ public class ChatModule extends TrilliumModule {
             TrilliumAPI.getInstance().reloadConfig();
         } else {
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
-            cs.sendMessage(ChatColor.GRAY + "              Plugin made with love");
-            cs.sendMessage(ChatColor.GRAY + "       by LordSaad, VortexSeven, Turbotailz");
-            cs.sendMessage(ChatColor.GRAY + "               and samczsun");
-            cs.sendMessage(ChatColor.DARK_RED + "                     <3");
+            cs.sendMessage(ChatColor.GRAY + "        Plugin made with love by:");
+            cs.sendMessage(ChatColor.GRAY + "    LordSaad, VortexSeven, Turbotailz,");
+            cs.sendMessage(ChatColor.GRAY + "           samczsun, and hintss");
+            cs.sendMessage(ChatColor.DARK_RED + "                    ❤");
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
             cs.sendMessage(ChatColor.GRAY + "Vesion: " + TrilliumAPI.getInstance().getDescription().getVersion());
             cs.sendMessage(ChatColor.GRAY + "Support email: support@gettrillium.net");
@@ -226,22 +227,22 @@ public class ChatModule extends TrilliumModule {
                             } else {
                                 p.setNickname(p.getProxy().getName());
                             }
-                            return;
 
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "You don't have a nickname set.");
                         }
-                    }
-
-                    if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
-
-                        Message.m(MType.G, p.getProxy(), "Nickname", "New nickname set: " + args[0]);
-                        p.setNickname(getConfig().getInt(Configuration.PlayerSettings.PREF) + args[0]);
-
                     } else {
-                        Message.m(MType.W, p.getProxy(), "Nickname", "Too many characters. "
-                                + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
-                                + " is the limit.");
+
+                        if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
+
+                            Message.m(MType.G, p.getProxy(), "Nickname", "New nickname set: " + args[0]);
+                            p.setNickname(getConfig().getInt(Configuration.PlayerSettings.PREF) + args[0]);
+
+                        } else {
+                            Message.m(MType.W, p.getProxy(), "Nickname", "Too many characters. "
+                                    + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
+                                    + " is the limit.");
+                        }
                     }
 
                 } else if (p.hasPermission(Permission.Chat.NICK_COLOR)) {
@@ -258,24 +259,23 @@ public class ChatModule extends TrilliumModule {
                             } else {
                                 p.setNickname(p.getProxy().getName());
                             }
-                            return;
 
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "You don't have a nickname set.");
                         }
-                    }
-
-
-                    if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
-
-                        String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
-                        Message.m(MType.G, p.getProxy(), "Nickname", "New nickname set: " + nick);
-                        p.getProxy().setDisplayName(getConfig().getInt(Configuration.PlayerSettings.PREF) + nick);
-
                     } else {
-                        Message.m(MType.W, p.getProxy(), "Nickname", "Too many characters. "
-                                + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
-                                + " is the limit.");
+
+                        if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
+
+                            String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
+                            Message.m(MType.G, p.getProxy(), "Nickname", "New nickname set: " + nick);
+                            p.getProxy().setDisplayName(getConfig().getInt(Configuration.PlayerSettings.PREF) + nick);
+
+                        } else {
+                            Message.m(MType.W, p.getProxy(), "Nickname", "Too many characters. "
+                                    + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
+                                    + " is the limit.");
+                        }
                     }
 
                 } else {
@@ -297,29 +297,28 @@ public class ChatModule extends TrilliumModule {
                             } else {
                                 p.setNickname(p.getProxy().getName());
                             }
-                            return;
 
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "You don't have a nickname set.");
                         }
-                    }
-
-
-                    if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
-
-                        TrilliumPlayer target = player(args[1]);
-                        if (target != null) {
-                            target.getProxy().setDisplayName(getConfig().getInt(Configuration.PlayerSettings.PREF) + args[0]);
-                            Message.m(MType.G, target.getProxy(), "Nickname", ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " set your nickname to: " + args[0]);
-                            Message.m(MType.G, p.getProxy(), "Nickname", "You set " + ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " to: " + args[0]);
-
-                        } else {
-                            Message.eplayer(p.getProxy(), "Nickname", args[0]);
-                        }
                     } else {
-                        Message.m(MType.W, p.getProxy(), "Nickname", "Too many characters. "
-                                + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
-                                + " is the limit.");
+
+                        if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
+
+                            TrilliumPlayer target = player(args[1]);
+                            if (target != null) {
+                                target.getProxy().setDisplayName(getConfig().getInt(Configuration.PlayerSettings.PREF) + args[0]);
+                                Message.m(MType.G, target.getProxy(), "Nickname", ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " set your nickname to: " + args[0]);
+                                Message.m(MType.G, p.getProxy(), "Nickname", "You set " + ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " to: " + args[0]);
+
+                            } else {
+                                Message.eplayer(p.getProxy(), "Nickname", args[0]);
+                            }
+                        } else {
+                            Message.m(MType.W, p.getProxy(), "Nickname", "Too many characters. "
+                                    + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
+                                    + " is the limit.");
+                        }
                     }
 
                 } else if (p.hasPermission(Permission.Chat.NICK_OTHER_COLOR)) {
@@ -336,30 +335,29 @@ public class ChatModule extends TrilliumModule {
                             } else {
                                 p.setNickname(p.getProxy().getName());
                             }
-                            return;
 
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "You don't have a nickname set.");
                         }
-                    }
-
-
-                    if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
-
-                        TrilliumPlayer target = player(args[1]);
-                        if (target != null) {
-                            String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
-                            target.getProxy().setDisplayName(getConfig().getInt(Configuration.PlayerSettings.PREF) + nick);
-                            Message.m(MType.G, target.getProxy(), "Nickname", ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " set your nickname to: " + nick);
-                            Message.m(MType.G, p.getProxy(), "Nickname", "You set " + ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " to: " + nick);
-
-                        } else {
-                            Message.eplayer(p.getProxy(), "Nickname", args[0]);
-                        }
                     } else {
-                        Message.m(MType.W, p.getProxy(), "Nickname", "Too many characters. "
-                                + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
-                                + " is the limit.");
+
+                        if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
+
+                            TrilliumPlayer target = player(args[1]);
+                            if (target != null) {
+                                String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
+                                target.getProxy().setDisplayName(getConfig().getInt(Configuration.PlayerSettings.PREF) + nick);
+                                Message.m(MType.G, target.getProxy(), "Nickname", ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " set your nickname to: " + nick);
+                                Message.m(MType.G, p.getProxy(), "Nickname", "You set " + ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " to: " + nick);
+
+                            } else {
+                                Message.eplayer(p.getProxy(), "Nickname", args[0]);
+                            }
+                        } else {
+                            Message.m(MType.W, p.getProxy(), "Nickname", "Too many characters. "
+                                    + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
+                                    + " is the limit.");
+                        }
                     }
                 } else {
                     Message.e(p.getProxy(), "Nickname", Crit.P);
@@ -420,6 +418,22 @@ public class ChatModule extends TrilliumModule {
         TrilliumPlayer p = player(event.getPlayer());
         if (p.hasPermission(Permission.Chat.COLOR)) {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        TrilliumPlayer p = player(event.getPlayer());
+        if (p.hasPermission(Permission.Chat.MOTD)) {
+            List<String> motd = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
+            for (String s : motd) {
+                s = ChatColor.translateAlternateColorCodes('&', s);
+                s = s.replace("[USERNAME]", p.getProxy().getName());
+                s = s.replace("[SLOTS]", "" + Bukkit.getMaxPlayers());
+                s = s.replace("[ONLINE]", "" + Bukkit.getOnlinePlayers().size());
+                p.getProxy().sendMessage(s);
+            }
+
         }
     }
 }

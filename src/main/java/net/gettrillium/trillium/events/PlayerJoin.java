@@ -18,9 +18,9 @@ public class PlayerJoin implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player p = event.getPlayer();
 
-        String m1 = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString("join.message"));
-        m1 = m1.replace("[USERNAME]", p.getName());
-        event.setJoinMessage(m1);
+        String joinMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString("join.message"));
+        joinMessage = joinMessage.replace("[USERNAME]", p.getName());
+        event.setJoinMessage(joinMessage);
 
         //motd
         ArrayList<String> motd = (ArrayList<String>) TrilliumAPI.getInstance().getConfig().getStringList("Motd");

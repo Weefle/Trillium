@@ -11,8 +11,8 @@ public class ServerListPing implements Listener {
 
     @EventHandler
     public void onPing(ServerListPingEvent event) {
-        String s = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SERVER_LIST_MOTD);
-        s = ChatColor.translateAlternateColorCodes('&', s);
-        event.setMotd(s);
+        String motd = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SERVER_LIST_MOTD);
+        motd = ChatColor.translateAlternateColorCodes('&', motd);
+        event.setMotd(motd);
     }
 }

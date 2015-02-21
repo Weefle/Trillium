@@ -33,42 +33,42 @@ public class AbilityModule extends TrilliumModule {
 
     @Command(command = "fly", description = "SOAR THROUGH THE AIR LIKE A MAJESTIC BUTTERFLY!", usage = "/fly")
     public void fly(CommandSender cs, String[] args) {
-        if (cs instanceof Player) {
-            TrilliumPlayer player = player(cs.getName());
-            if (args.length == 0) {
-                if (player.hasPermission(Permission.Ability.FLY)) {
-                    if (!player.isFlying()) {
-                        Message.m(MType.G, player.getProxy(), "Fly", "You are now in fly mode.");
-                    } else {
-                        Message.m(MType.G, player.getProxy(), "Fly", "You are no longer in fly mode.");
-                    }
-                    player.setFlying(!player.isFlying());
-                } else {
-                    Message.e(player.getProxy(), "Fly", Crit.P);
-                }
+        if (!(cs instanceof Player)) {
+            Message.e(cs, "Fly", Crit.C);
+            return;
+        }
 
-            } else {
-                if (player.hasPermission(Permission.Ability.FLY_OTHER)) {
-                    TrilliumPlayer target = player(args[0]);
-                    if (target != null) {
-                        if (target.isFlying()) {
-                            Message.m(MType.G, target.getProxy(), "Fly", player.getProxy().getName() + " removed you from fly mode.");
-                            Message.m(MType.G, player.getProxy(), "Fly", target.getProxy().getName() + " is no longer in fly mode.");
-                            target.setFlying(false);
-                        } else {
-                            Message.m(MType.G, target.getProxy(), "Fly", player.getProxy().getName() + " put you in fly mode.");
-                            Message.m(MType.G, player.getProxy(), "Fly", target.getProxy().getName() + " is now in fly mode.");
-                            target.setFlying(true);
-                        }
-                    } else {
-                        Message.eplayer(player.getProxy(), "Fly", args[0]);
-                    }
+        TrilliumPlayer player = player(cs.getName());
+        if (args.length == 0) {
+            if (player.hasPermission(Permission.Ability.FLY)) {
+                if (!player.isFlying()) {
+                    Message.m(MType.G, player.getProxy(), "Fly", "You are now in fly mode.");
                 } else {
-                    Message.earg(player.getProxy(), "Fly", "/fly [player]");
+                    Message.m(MType.G, player.getProxy(), "Fly", "You are no longer in fly mode.");
                 }
+                player.setFlying(!player.isFlying());
+            } else {
+                Message.e(player.getProxy(), "Fly", Crit.P);
             }
         } else {
-            Message.e(cs, "Fly", Crit.C);
+            if (player.hasPermission(Permission.Ability.FLY_OTHER)) {
+                TrilliumPlayer target = player(args[0]);
+                if (target != null) {
+                    if (target.isFlying()) {
+                        Message.m(MType.G, target.getProxy(), "Fly", player.getProxy().getName() + " removed you from fly mode.");
+                        Message.m(MType.G, player.getProxy(), "Fly", target.getProxy().getName() + " is no longer in fly mode.");
+                        target.setFlying(false);
+                    } else {
+                        Message.m(MType.G, target.getProxy(), "Fly", player.getProxy().getName() + " put you in fly mode.");
+                        Message.m(MType.G, player.getProxy(), "Fly", target.getProxy().getName() + " is now in fly mode.");
+                        target.setFlying(true);
+                    }
+                } else {
+                    Message.eplayer(player.getProxy(), "Fly", args[0]);
+                }
+            } else {
+                Message.earg(player.getProxy(), "Fly", "/fly [player]");
+            }
         }
     }
 
@@ -325,7 +325,6 @@ public class AbilityModule extends TrilliumModule {
                             Message.m(MType.R, p.getProxy(), "PVP", "Pvp has been disabled for you.");
                         }
                         p.setPvp(!p.canPvp());
-
                     }
                 } else {
                     Message.e(cs, "PVP", Crit.C);
@@ -353,39 +352,41 @@ public class AbilityModule extends TrilliumModule {
 
     @EventHandler
     public void onDamageEntity(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+
+        if (!(event.getDamager() instanceof Player) && !(event.getDamager() instanceof Projectile)) {
+            return;
+        }
+
+        TrilliumPlayer p = player((Player) event.getEntity());
+        TrilliumPlayer damager;
+
+        if (event.getDamager() instanceof Player) {
+            damager = player((Player) event.getDamager());
+        } else {
+            Projectile arrow = (Projectile) event.getDamager();
+            damager = player((Player) arrow.getShooter());
+        }
+
         if (getConfig().getBoolean(Configuration.Server.PVPENABLE)) {
-            if (getConfig().getBoolean(Configuration.Server.TOGGLEPVP)) {
-                if (event.getEntity() instanceof Player) {
-                    TrilliumPlayer p = player((Player) event.getEntity());
-                    if (event.getDamager() instanceof Player) {
-                        TrilliumPlayer pl = player((Player) event.getDamager());
-                        if (!p.canPvp() || !pl.canPvp()) {
-                            if (p.getProxy().getUniqueId() != pl.getProxy().getUniqueId()) {
-                                event.setCancelled(true);
-                            }
-                        }
-                    } else if (event.getDamager() instanceof Projectile) {
-                        Projectile arrow = (Projectile) event.getDamager();
-                        if (arrow.getShooter() instanceof Player) {
-                            TrilliumPlayer pl = player((Player) arrow.getShooter());
-                            if (!p.canPvp() || !pl.canPvp()) {
-                                if (p.getProxy().getUniqueId() != pl.getProxy().getUniqueId()) {
-                                    event.setCancelled(true);
-                                }
-                            }
-                        }
-                    }
+            if (!getConfig().getBoolean(Configuration.Server.TOGGLEPVP)) {
+                return;
+            }
+
+            if (!p.canPvp() || !damager.canPvp()) {
+                if (p.getProxy().getUniqueId() != damager.getProxy().getUniqueId()) {
+                    event.setCancelled(true);
                 }
             }
         } else {
-            if (event.getEntity() instanceof Player) {
-                TrilliumPlayer p = player((Player) event.getEntity());
-                if (event.getDamager() instanceof Player) {
-                    TrilliumPlayer pl = player((Player) event.getDamager());
-                    if (p.getProxy().getUniqueId() != pl.getProxy().getUniqueId()) {
-                        event.setCancelled(true);
-                    }
-                }
+            if (!(event.getDamager() instanceof Player)) {
+                return;
+            }
+
+            if (p.getProxy().getUniqueId() != damager.getProxy().getUniqueId()) {
+                event.setCancelled(true);
             }
         }
     }
@@ -400,14 +401,17 @@ public class AbilityModule extends TrilliumModule {
 
     @EventHandler
     public void onTarget(EntityTargetEvent event) {
-        if (event.getTarget() instanceof Player) {
-            TrilliumPlayer player = player(event.getTarget().getName());
-            if (player.isGod()) {
-                event.setCancelled(true);
-            }
-            if (player.isVanished()) {
-                event.setCancelled(true);
-            }
+        if (!(event.getTarget() instanceof Player)) {
+            return;
+        }
+
+        TrilliumPlayer player = player(event.getTarget().getName());
+        if (player.isGod()) {
+            event.setCancelled(true);
+        }
+
+        if (player.isVanished()) {
+            event.setCancelled(true);
         }
     }
 
@@ -431,7 +435,7 @@ public class AbilityModule extends TrilliumModule {
     public void onQuit(PlayerQuitEvent e) {
         TrilliumPlayer player = player(e.getPlayer());
         if (player.isVanished()) {
-            e.setQuitMessage("");
+            e.setQuitMessage(null);
         }
     }
 
@@ -439,7 +443,7 @@ public class AbilityModule extends TrilliumModule {
     public void onJoin(PlayerJoinEvent e) {
         TrilliumPlayer player = player(e.getPlayer());
         if (player.isVanished()) {
-            e.setJoinMessage("");
+            e.setJoinMessage(null);
 
             Message.m(MType.W, player.getProxy(), "Vanish Mode", "Remember! You are still in vanish mode!");
             for (TrilliumPlayer online : TrilliumAPI.getOnlinePlayers()) {

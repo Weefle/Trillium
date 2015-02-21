@@ -100,26 +100,37 @@ public class AdminModule extends TrilliumModule {
     }
 
     @Command(command = "lag", description = "Statistics on server lag and also clears lag through gc.", usage = "/lag")
-    public void lag(CommandSender cs, String[] args) {
+    public void lag(final CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Admin.LAG)) {
+            if (args.length != 0) {
+                if (args[0].equalsIgnoreCase("clear")) {
+                    final long time = System.currentTimeMillis();
 
-            long time = System.currentTimeMillis();
+                    Message.m(MType.R, cs, "Lag", "Before GC:");
+                    Utils.printCurrentMemory(cs);
+                    cs.sendMessage(" ");
 
-            Message.m(MType.R, cs, "Lag", "Before GC:");
-            Utils.printCurrentMemory(cs);
-            cs.sendMessage(" ");
+                    System.gc();
+                    Message.m(MType.G, cs, "Lag", "GC complete.");
 
-            System.gc();
-            Message.m(MType.G, cs, "Lag", "GC complete.");
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            cs.sendMessage(" ");
+                            Message.m(MType.R, cs, "Lag", "After GC:");
+                            Utils.printCurrentMemory(cs);
 
-            cs.sendMessage(" ");
-            Message.m(MType.R, cs, "Lag", "After GC:");
-            Utils.printCurrentMemory(cs);
-            cs.sendMessage(" ");
+                            long need = System.currentTimeMillis() - time;
+                            Message.m(MType.R, cs, "Lag", "GC took " + need / 1000L + " seconds.");
 
-            long need = System.currentTimeMillis() - time;
-            Message.m(MType.R, cs, "Lag", "GC took " + need / 1000L + " seconds.");
+                        }
+                    }.runTaskLater(TrilliumAPI.getInstance(), 5);
+                }
+            } else {
 
+                Message.m(MType.R, cs, "Lag", "Server Statistics:");
+                Utils.printCurrentMemory(cs);
+            }
         } else {
             Message.e(cs, "Lag", Crit.P);
         }

@@ -68,7 +68,12 @@ public class Utils {
     }
 
     public static boolean isNumeric(String str) {
-        return str.matches("-?\\d+(\\.\\d+)?");
-    }
+        for (char c : str.toCharArray()) {
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
 
+        return true;
+    }
 }

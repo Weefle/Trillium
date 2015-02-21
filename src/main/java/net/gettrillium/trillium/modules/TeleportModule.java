@@ -349,12 +349,12 @@ public class TeleportModule extends TrilliumModule {
         String xArg = args[1];
         String yArg = args[2];
         String zArg = args[3];
-        
+
         if (Utils.isNumeric(xArg) && Utils.isNumeric(yArg) && Utils.isNumeric(zArg)) {
             int x = Integer.parseInt(xArg);
             int y = Integer.parseInt(yArg);
             int z = Integer.parseInt(zArg);
-            
+
             Location loc = new Location(p.getProxy().getWorld(), x, y, z);
             p.getProxy().teleport(loc);
             Message.m(MType.G, p.getProxy(), "TP", "You teleported to " + ChatColor.AQUA + x + ", " + y + ", " + z);

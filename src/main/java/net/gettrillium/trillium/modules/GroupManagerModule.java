@@ -1,6 +1,8 @@
 package net.gettrillium.trillium.modules;
 
+import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.Permission;
+import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
@@ -13,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class GroupManagerModule extends TrilliumModule {
 
@@ -107,16 +110,17 @@ public class GroupManagerModule extends TrilliumModule {
         }
     }
 
-  /*  @Override
+    @Override
     public void register() {
-        TrilliumAPI.getInstance().getServer().getScheduler().runTaskTimer(TrilliumAPI.getInstance(), new Runnable() {
-
-            @Override
-            public void run() {
-                for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
-                    p.refreshPermissions();
+        if (getConfig().getBoolean(Configuration.GM.ENABLED)) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
+                        p.refreshPermissions();
+                    }
                 }
-            }
-        }, 0, getConfig().getInt(Configuration.GM.RELOAD) * 20 * 3600);
-    }*/
+            }.runTaskTimer(TrilliumAPI.getInstance(), 20, getConfig().getInt(Configuration.GM.RELOAD) * 20 * 3600);
+        }
+    }
 }

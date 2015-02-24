@@ -319,7 +319,7 @@ public class AbilityModule extends TrilliumModule {
                 if (cs instanceof Player) {
                     TrilliumPlayer p = player((Player) cs);
                     if (p.hasPermission(Permission.Ability.PVP)) {
-                        if (p.canPvp()) {
+                        if (!p.canPvp()) {
                             Message.m(MType.R, p.getProxy(), "PVP", "Pvp has been enabled for you.");
                         } else {
                             Message.m(MType.R, p.getProxy(), "PVP", "Pvp has been disabled for you.");

@@ -16,6 +16,7 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +29,24 @@ public class AdminModule extends TrilliumModule {
         super("ability");
     }
 
-    @Command(command = "chestfinder", description = "expose any hidden chests.", usage = "/chestfinder", aliases = "cf")
+    @Command(command = "chestfinder", description = "Track down any hidden chests.", usage = "/chestfinder [radius]", aliases = "cf")
     public void chestfinder(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             final TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Admin.CHESTFINDER)) {
 
                 Location loc = p.getProxy().getLocation();
-                int radius = 50;
+                int radius;
+                if (args.length != 0) {
+                    if (Utils.isNumeric(args[0])) {
+                        radius = Integer.parseInt(args[0]);
+                    } else {
+                        Message.m(MType.W, cs, "Chest Finder", args[0] + " is not a number. Setting radius to 50");
+                        radius = 50;
+                    }
+                } else {
+                    radius = 50;
+                }
                 final ArrayList<Location> chests = new ArrayList<>();
 
                 for (int X = loc.getBlockX() - radius; X <= loc.getBlockX() + radius; X++) {
@@ -65,11 +76,26 @@ public class AdminModule extends TrilliumModule {
                                 cancel();
                                 chests.clear();
                             }
+
                             for (Location b : chests) {
-                                ParticleEffect.DRIP_LAVA.display((float) 0.5, (float) 250, (float) 0.5, 0, 0, new Location(p.getProxy().getWorld(), b.getX() + 0.5, b.getY(), b.getZ() + 0.5), p.getProxy());
+                                Vector v1 = p.getProxy().getLocation().clone().toVector();
+                                Vector v2 = b.toVector();
+                                Vector diff = v2.subtract(v1);
+
+                                double dist = diff.length();
+                                double dx = (diff.getX() / dist) * 0.5;
+                                double dy = (diff.getY() / dist) * 0.5;
+                                double dz = (diff.getZ() / dist) * 0.5;
+
+                                Location loc = p.getProxy().getLocation().clone();
+
+                                for (double d = 0; d <= dist; d += 0.5) {
+                                    loc.add(dx, dy, dz);
+                                    ParticleEffect.FLAME.display(0, 0, 0, 0, 1, loc, p.getProxy());
+                                }
                             }
                         }
-                    }.runTaskTimer(TrilliumAPI.getInstance(), 30, 30);
+                    }.runTaskTimer(TrilliumAPI.getInstance(), 5, 5);
 
                 } else {
                     Message.m(MType.W, p.getProxy(), "Chest Finder", "No chests found.");

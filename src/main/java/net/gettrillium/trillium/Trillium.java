@@ -50,7 +50,7 @@ public class Trillium extends JavaPlugin {
         getLogger().info("        Plugin made with love by:");
         getLogger().info("    LordSaad, VortexSeven, Turbotailz,");
         getLogger().info("           samczsun, and hintss");
-        getLogger().info("                    ❤");
+        getLogger().info("                    <3");
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("<<<-------------------------------------->>>");
         getLogger().warning("THIS PLUGIN IS STILL IN PRE-ALPHA.");

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.lordsaad</groupId>
+    <groupId>net.gettrillium</groupId>
     <artifactId>Trillium</artifactId>
     <version>0.3.0</version>
 
@@ -12,6 +12,10 @@
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>bukkit-repo</id>
+            <url>http://r.zk.ms/content/repositories/bukkit/</url>
         </repository>
     </repositories>
 
@@ -21,15 +25,11 @@
             <artifactId>spigot-api</artifactId>
             <version>1.8-R0.1-SNAPSHOT</version>
         </dependency>
-
         <dependency>
-            <groupId>craftbukkit-1.8</groupId>
-            <artifactId>craftbukkit-1.8</artifactId>
-            <scope>system</scope>
-            <version>1.8</version>
-            <systemPath>${basedir}\src\lib\craftbukkit-1.8.jar</systemPath>
+            <groupId>org.bukkit</groupId>
+            <artifactId>CB1_8_R1</artifactId>
+            <version>0.0.1</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -45,5 +45,4 @@
             </plugin>
         </plugins>
     </build>
-    
 </project>

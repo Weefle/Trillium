@@ -43,31 +43,6 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "broadcast", description = "Broadcast a message to the world", usage = "/broadcast <message>")
-    public void broadcast(CommandSender cs, String[] args) {
-        if (cs.hasPermission(Permission.Chat.BROADCAST)) {
-            if (args.length == 0) {
-                Message.earg(cs, "Broadcast", "Too few arguments. /broadcast <message>");
-            } else {
-                StringBuilder sb = new StringBuilder();
-                for (String arg : args) {
-                    sb.append(arg).append(" ");
-                }
-                String message = sb.toString().trim();
-
-                List<String> format = getConfig().getStringList(Configuration.Chat.BROADCASTFORMAT);
-
-                for (String s : format) {
-                    s = s.replace("[msg]", message);
-                    s = ChatColor.translateAlternateColorCodes('&', s);
-                    Bukkit.broadcastMessage(s);
-                }
-            }
-        } else {
-            Message.e(cs, "Broadcast", Crit.P);
-        }
-    }
-
     @Command(command = "motd", description = "View the server's motd", usage = "/motd")
     public void motd(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Chat.MOTD)) {

@@ -3,6 +3,7 @@ package net.gettrillium.trillium;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
 import net.gettrillium.trillium.runnables.TpsRunnable;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
@@ -69,5 +70,11 @@ public class Utils {
 
     public static boolean isNumeric(String str) {
         return str.matches("-?\\d+(\\.\\d+)?");
+    }
+
+    public static String centerText(String text) {
+        int maxWidth = 80,
+                spaces = (int) Math.round((maxWidth - 1.4 * ChatColor.stripColor(text).length()) / 2);
+        return StringUtils.repeat(" ", spaces) + text;
     }
 }

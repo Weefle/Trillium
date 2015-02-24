@@ -35,6 +35,7 @@ public class Trillium extends JavaPlugin {
         TrilliumAPI.registerModule(new FunModule());
         TrilliumAPI.registerModule(new CmdBinderModule());
         TrilliumAPI.registerModule(new GroupManagerModule());
+        TrilliumAPI.registerModule(new BroadcastModule());
 
         setupcmdbinder();
         generateFiles();

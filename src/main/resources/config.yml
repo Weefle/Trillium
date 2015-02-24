@@ -77,6 +77,9 @@ chat:
     - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
     # When you type /broadcast <message to broadcast here>, the message will appear
     # in this format.
+  centralize-broadcasts: true
+  # The text will be midalized/centralized in the center of the chat and will
+  # use more lines of necessary. It looks cool!
   enable-death-messages: true
   # If set to true, death messages in minecraft will not appear.
     

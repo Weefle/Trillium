@@ -80,6 +80,11 @@ chat:
   centralize-broadcasts: true
   # The text will be midalized/centralized in the center of the chat and will
   # use more lines of necessary. It looks cool!
+  color-to-use: "&e&l"
+  # This will set the default broadcast color (overridable with color codes)
+  # HOWEVER! You CANNOT override this color code if you have centralized broadcasts!
+  # The centralized broadcasts will strip any color code in the text and will use the
+  # color code you specify here.
   enable-death-messages: true
   # If set to true, death messages in minecraft will not appear.
     

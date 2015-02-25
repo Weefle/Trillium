@@ -37,7 +37,8 @@ public class Configuration {
         public static final String INGAME_MOTD = PREFIX + "motd";
         public static final String SERVER_LIST_MOTD = PREFIX + "server-list-motd";
         public static final String ENABLE_DEATH_MESSAGES = PREFIX + "enable-death-messages";
-        public static final String CENTRALIZE = PREFIX + "centralize-broadcasts";
+        public static final String CENTRALIZE_BROADCAST = PREFIX + "centralize-broadcasts";
+        public static final String COLORIZE_BROADCAST = PREFIX + "color-to-use";
     }
 
     public static class Server {

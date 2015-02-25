@@ -1,5 +1,7 @@
 package net.gettrillium.trillium;
 
+import net.gettrillium.trillium.api.Configuration;
+import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
 import net.gettrillium.trillium.runnables.TpsRunnable;
@@ -8,6 +10,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Utils {
 
@@ -68,13 +74,28 @@ public class Utils {
         }
     }
 
-    public static boolean isNumeric(String str) {
-        return str.matches("-?\\d+(\\.\\d+)?");
+    public static boolean isNumeric(String input) {
+        return input.matches("-?\\d+(\\.\\d+)?");
     }
 
-    public static String centerText(String text) {
-        int maxWidth = 80,
-                spaces = (int) Math.round((maxWidth - 1.4 * ChatColor.stripColor(text).length()) / 2);
-        return StringUtils.repeat(" ", spaces) + text;
+    public static List<String> centerText(String input) {
+        List<String> s = stringSplitter(input, 50);
+        ArrayList<String> centered = new ArrayList<>();
+        for (String slices : s) {
+            int maxWidth = 80, spaces = (int) Math.round((maxWidth - 1.4 * ChatColor.stripColor(slices).length()) / 2);
+            centered.add(StringUtils.repeat(" ", spaces) + slices);
+        }
+        return centered;
+    }
+
+    public static List<String> stringSplitter(String input, int maxLength) {
+        String[] slices = input.split("(?<=\\G.{" + maxLength + "})");
+        ArrayList<String> l = new ArrayList<>();
+        for (String colorize : slices) {
+            String color = TrilliumAPI.getInstance().getConfig().getString(Configuration.Chat.COLORIZE_BROADCAST).trim();
+            colorize = color + colorize;
+            Collections.addAll(l, ChatColor.translateAlternateColorCodes('&', colorize));
+        }
+        return l;
     }
 }

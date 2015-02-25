@@ -31,16 +31,30 @@ public class BroadcastModule extends TrilliumModule {
                 }
                 String message = sb.toString().trim();
 
-                if (getConfig().getBoolean(Configuration.Chat.CENTRALIZE)) {
-                    message = Utils.centerText(message);
-                }
+                if (getConfig().getBoolean(Configuration.Chat.CENTRALIZE_BROADCAST)) {
 
-                List<String> format = getConfig().getStringList(Configuration.Chat.BROADCASTFORMAT);
+                    List<String> centered = Utils.centerText(message);
+                    List<String> format = getConfig().getStringList(Configuration.Chat.BROADCASTFORMAT);
+                    for (String s : format) {
+                        if (s.contains("[msg]")) {
+                            for (String slices : centered) {
+                                s = s.replace("[msg]", "");
+                                s = ChatColor.translateAlternateColorCodes('&', s);
+                                Bukkit.broadcastMessage(slices);
+                            }
+                        } else {
+                            s = ChatColor.translateAlternateColorCodes('&', s);
+                            Bukkit.broadcastMessage(s);
+                        }
+                    }
+                } else {
 
-                for (String s : format) {
-                    s = s.replace("[msg]", message);
-                    s = ChatColor.translateAlternateColorCodes('&', s);
-                    Bukkit.broadcastMessage(s);
+                    List<String> format = getConfig().getStringList(Configuration.Chat.BROADCASTFORMAT);
+                    for (String s : format) {
+                        s = s.replace("[msg]", ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.Chat.COLORIZE_BROADCAST) + message));
+                        s = ChatColor.translateAlternateColorCodes('&', s);
+                        Bukkit.broadcastMessage(s);
+                    }
                 }
             }
         } else {

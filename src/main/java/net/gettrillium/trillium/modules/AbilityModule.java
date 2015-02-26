@@ -1,6 +1,5 @@
 package net.gettrillium.trillium.modules;
 
-import net.gettrillium.trillium.Utils;
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumAPI;
@@ -10,6 +9,7 @@ import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.messageutils.Crit;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
@@ -176,7 +176,7 @@ public class AbilityModule extends TrilliumModule {
                     if (args[0].equalsIgnoreCase("fly")) {
                         double i;
                         if (args.length > 1) {
-                            if (Utils.isNumeric(args[1])) {
+                            if (StringUtils.isNumeric(args[1])) {
                                 i = Double.parseDouble(args[1]);
                                 if (i <= 10 && i >= -10) {
                                     i = i * 0.1;
@@ -195,7 +195,7 @@ public class AbilityModule extends TrilliumModule {
                     } else if (args[0].equalsIgnoreCase("walk")) {
                         double i;
                         if (args.length > 1) {
-                            if (Utils.isNumeric(args[1])) {
+                            if (StringUtils.isNumeric(args[1])) {
                                 i = Double.parseDouble(args[1]);
                                 if (i <= 10 && i >= -10) {
                                     i = i * 0.1;

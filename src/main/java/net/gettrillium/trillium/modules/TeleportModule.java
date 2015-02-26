@@ -1,6 +1,5 @@
 package net.gettrillium.trillium.modules;
 
-import net.gettrillium.trillium.Utils;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
@@ -8,6 +7,7 @@ import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.messageutils.Crit;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -128,7 +128,7 @@ public class TeleportModule extends TrilliumModule {
             String yArg = args[2];
             String zArg = args[3];
 
-            if (Utils.isNumeric(xArg) && Utils.isNumeric(yArg) && Utils.isNumeric(zArg)) {
+            if (StringUtils.isNumeric(xArg) && StringUtils.isNumeric(yArg) && StringUtils.isNumeric(zArg)) {
                 int x = Integer.parseInt(xArg);
                 int y = Integer.parseInt(yArg);
                 int z = Integer.parseInt(zArg);
@@ -143,7 +143,7 @@ public class TeleportModule extends TrilliumModule {
                     return;
                 }
 
-                if (!Utils.isNumeric(xArg.substring(1)) || !Utils.isNumeric(yArg.substring(1)) || !Utils.isNumeric(zArg.substring(1))) {
+                if (!StringUtils.isNumeric(xArg.substring(1)) || !StringUtils.isNumeric(yArg.substring(1)) || !StringUtils.isNumeric(zArg.substring(1))) {
                     Message.m(MType.W, p.getProxy(), "TP", "Something isn't a number...");
                     return;
                 }
@@ -346,11 +346,11 @@ public class TeleportModule extends TrilliumModule {
             return;
         }
 
-        String xArg = args[1];
-        String yArg = args[2];
-        String zArg = args[3];
+        String xArg = args[0];
+        String yArg = args[1];
+        String zArg = args[2];
 
-        if (Utils.isNumeric(xArg) && Utils.isNumeric(yArg) && Utils.isNumeric(zArg)) {
+        if (StringUtils.isNumeric(xArg) && StringUtils.isNumeric(yArg) && StringUtils.isNumeric(zArg)) {
             int x = Integer.parseInt(xArg);
             int y = Integer.parseInt(yArg);
             int z = Integer.parseInt(zArg);
@@ -364,7 +364,7 @@ public class TeleportModule extends TrilliumModule {
                 return;
             }
 
-            if (!Utils.isNumeric(xArg.substring(1)) || !Utils.isNumeric(yArg.substring(1)) || !Utils.isNumeric(zArg.substring(1))) {
+            if (!StringUtils.isNumeric(xArg.substring(1)) || !StringUtils.isNumeric(yArg.substring(1)) || !StringUtils.isNumeric(zArg.substring(1))) {
                 Message.m(MType.W, p.getProxy(), "TP", "Something isn't a number...");
                 return;
             }

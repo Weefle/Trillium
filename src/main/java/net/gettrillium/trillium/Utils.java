@@ -12,7 +12,6 @@ import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Utils {
@@ -74,28 +73,13 @@ public class Utils {
         }
     }
 
-    public static boolean isNumeric(String input) {
-        return input.matches("-?\\d+(\\.\\d+)?");
-    }
-
     public static List<String> centerText(String input) {
-        List<String> s = stringSplitter(input, 50);
+        String[] s = StringUtils.splitPreserveAllTokens(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.Chat.COLORIZE_BROADCAST).trim()) + ChatColor.stripColor(input));
         ArrayList<String> centered = new ArrayList<>();
         for (String slices : s) {
             int maxWidth = 80, spaces = (int) Math.round((maxWidth - 1.4 * ChatColor.stripColor(slices).length()) / 2);
             centered.add(StringUtils.repeat(" ", spaces) + slices);
         }
         return centered;
-    }
-
-    public static List<String> stringSplitter(String input, int maxLength) {
-        String[] slices = input.split("(?<=\\G.{" + maxLength + "})");
-        ArrayList<String> l = new ArrayList<>();
-        for (String colorize : slices) {
-            String color = TrilliumAPI.getInstance().getConfig().getString(Configuration.Chat.COLORIZE_BROADCAST).trim();
-            colorize = color + colorize;
-            Collections.addAll(l, ChatColor.translateAlternateColorCodes('&', colorize));
-        }
-        return l;
     }
 }

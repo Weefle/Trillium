@@ -10,6 +10,7 @@ import net.gettrillium.trillium.messageutils.Crit;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,7 +39,7 @@ public class AdminModule extends TrilliumModule {
                 Location loc = p.getProxy().getLocation();
                 int radius;
                 if (args.length != 0) {
-                    if (Utils.isNumeric(args[0])) {
+                    if (StringUtils.isNumeric(args[0])) {
                         radius = Integer.parseInt(args[0]);
                     } else {
                         Message.m(MType.W, cs, "Chest Finder", args[0] + " is not a number. Setting radius to 50");
@@ -111,7 +112,7 @@ public class AdminModule extends TrilliumModule {
     @Command(command = "setspawn", description = "Set the spawn of the server.", usage = "/setspawn")
     public void setspawn(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
-            TrilliumPlayer p = (TrilliumPlayer) cs;
+            TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Admin.SETSPAWN)) {
 
                 p.getProxy().getWorld().setSpawnLocation(p.getProxy().getLocation().getBlockX(), p.getProxy().getLocation().getBlockY(), p.getProxy().getLocation().getBlockZ());
@@ -171,7 +172,7 @@ public class AdminModule extends TrilliumModule {
                 if (args.length <= 1) {
                     Message.earg(p.getProxy(), "Killall", "/killall <radius> <mobs/players/animals/monsters/items/everything>");
                 } else {
-                    if (Utils.isNumeric(args[0])) {
+                    if (StringUtils.isNumeric(args[0])) {
                         List<Entity> entities = p.getProxy().getNearbyEntities(Double.parseDouble(args[0]), Double.parseDouble(args[0]), Double.parseDouble(args[0]));
                         if (args[1].equalsIgnoreCase("mobs")
                                 || args[1].equalsIgnoreCase("animals")
@@ -340,7 +341,7 @@ public class AdminModule extends TrilliumModule {
                         if (args.length < 2) {
                             Message.earg(p.getProxy(), "Reports", "/reports remove <index number>");
                         } else {
-                            if (Utils.isNumeric(args[1])) {
+                            if (StringUtils.isNumeric(args[1])) {
                                 int nb = Integer.parseInt(args[1]);
                                 if (nb > 0 && nb <= reportlist.size() + 1) {
                                     Message.m(MType.G, p.getProxy(), "Reports", "Removed: " + nb);

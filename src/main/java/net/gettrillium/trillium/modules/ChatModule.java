@@ -390,8 +390,7 @@ public class ChatModule extends TrilliumModule {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-        TrilliumPlayer p = player(event.getPlayer());
-        if (p.hasPermission(Permission.Chat.COLOR)) {
+        if (event.getPlayer().hasPermission(Permission.Chat.COLOR)) {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
         }
     }

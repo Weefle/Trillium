@@ -21,8 +21,8 @@ import java.util.UUID;
 
 public class TeleportModule extends TrilliumModule {
 
-    public static HashMap<UUID, UUID> tpr = new HashMap<>();
-    public static HashMap<UUID, UUID> tprh = new HashMap<>();
+    HashMap<UUID, UUID> tpr = new HashMap<>();
+    HashMap<UUID, UUID> tprh = new HashMap<>();
 
     public TeleportModule() {
         super("teleport");

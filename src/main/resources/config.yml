@@ -63,7 +63,7 @@ chat:
   server-list-motd: "&cPlease define a motd in the config.yml"
   # The server list motd is the message you see on the server icon on the multiplayer menu.
   motd:
-    - "&8<<<----->>> &aServer &8<<<----->>>"
+    - "&8<<<---{[0]}--->>> &aServer <<<---{[0]}--->>>"
     - "&7Welcome &6[USERNAME]&7!"
     - "&7There are currently &6[ONLINE]&7/&6[SLOTS] players."
     - "&7Have fun! ^_^/"

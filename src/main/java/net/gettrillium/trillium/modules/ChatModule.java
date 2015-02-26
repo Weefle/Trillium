@@ -202,16 +202,15 @@ public class ChatModule extends TrilliumModule {
                             } else {
                                 p.setNickname(p.getProxy().getName());
                             }
-
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "You don't have a nickname to remove.");
                         }
                     } else {
 
-                        if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
+                        if (ChatColor.stripColor(args[0]).length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
 
                             Message.m(MType.G, p.getProxy(), "Nickname", "New nickname set: " + args[0]);
-                            p.setNickname(getConfig().getInt(Configuration.PlayerSettings.PREF) + args[0]);
+                            p.setNickname(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + args[0]);
 
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "Too many characters. "
@@ -234,17 +233,16 @@ public class ChatModule extends TrilliumModule {
                             } else {
                                 p.setNickname(p.getProxy().getName());
                             }
-
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "You don't have a nickname set.");
                         }
                     } else {
 
-                        if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
+                        if (ChatColor.stripColor(args[0]).length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
 
                             String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
                             Message.m(MType.G, p.getProxy(), "Nickname", "New nickname set: " + nick);
-                            p.setNickname(getConfig().getInt(Configuration.PlayerSettings.PREF) + nick);
+                            p.setNickname(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + nick);
 
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "Too many characters. "
@@ -272,7 +270,6 @@ public class ChatModule extends TrilliumModule {
                             } else {
                                 p.setNickname(p.getProxy().getName());
                             }
-
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "You don't have a nickname set.");
                         }
@@ -282,7 +279,7 @@ public class ChatModule extends TrilliumModule {
 
                             TrilliumPlayer target = player(args[1]);
                             if (target != null) {
-                                target.setNickname(getConfig().getInt(Configuration.PlayerSettings.PREF) + args[0]);
+                                target.setNickname(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + args[0]);
                                 Message.m(MType.G, target.getProxy(), "Nickname", ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " set your nickname to: " + args[0]);
                                 Message.m(MType.G, p.getProxy(), "Nickname", "You set " + ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " to: " + args[0]);
 
@@ -310,7 +307,6 @@ public class ChatModule extends TrilliumModule {
                             } else {
                                 p.setNickname(p.getProxy().getName());
                             }
-
                         } else {
                             Message.m(MType.W, p.getProxy(), "Nickname", "You don't have a nickname set.");
                         }
@@ -321,7 +317,7 @@ public class ChatModule extends TrilliumModule {
                             TrilliumPlayer target = player(args[1]);
                             if (target != null) {
                                 String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
-                                target.setNickname(getConfig().getInt(Configuration.PlayerSettings.PREF) + nick);
+                                target.setNickname(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + nick);
                                 Message.m(MType.G, target.getProxy(), "Nickname", ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " set your nickname to: " + nick);
                                 Message.m(MType.G, p.getProxy(), "Nickname", "You set " + ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " to: " + nick);
 

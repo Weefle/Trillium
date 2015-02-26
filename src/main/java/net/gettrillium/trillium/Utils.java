@@ -1,7 +1,5 @@
 package net.gettrillium.trillium;
 
-import net.gettrillium.trillium.api.Configuration;
-import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
 import net.gettrillium.trillium.runnables.TpsRunnable;
@@ -74,12 +72,29 @@ public class Utils {
     }
 
     public static List<String> centerText(String input) {
-        String[] s = StringUtils.splitPreserveAllTokens(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.Chat.COLORIZE_BROADCAST).trim()) + ChatColor.stripColor(input));
+        String desturated = ChatColor.stripColor(input);
+        String[] s = stringSplitter(desturated, 40);
         ArrayList<String> centered = new ArrayList<>();
         for (String slices : s) {
-            int maxWidth = 80, spaces = (int) Math.round((maxWidth - 1.4 * ChatColor.stripColor(slices).length()) / 2);
-            centered.add(StringUtils.repeat(" ", spaces) + slices);
+            centered.add(StringUtils.center(slices, 60));
         }
         return centered;
+    }
+
+    // http://stackoverflow.com/a/12297231/4327834
+    // #viva la efficiency
+    public static String[] stringSplitter(String s, int interval) {
+        int arrayLength = (int) Math.ceil(((s.length() / (double) interval)));
+        String[] result = new String[arrayLength];
+
+        int j = 0;
+        int lastIndex = result.length - 1;
+        for (int i = 0; i < lastIndex; i++) {
+            result[i] = s.substring(j, j + interval);
+            j += interval;
+        }
+        result[lastIndex] = s.substring(j);
+
+        return result;
     }
 }

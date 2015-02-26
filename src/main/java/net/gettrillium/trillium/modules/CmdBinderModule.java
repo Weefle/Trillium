@@ -27,19 +27,19 @@ import java.util.*;
 
 public class CmdBinderModule extends TrilliumModule {
 
-    public static HashMap<UUID, String> tcmdbconsole = new HashMap<>();
-    public static HashMap<UUID, String> tcmdbplayer = new HashMap<>();
-    public static HashMap<UUID, String> wcmdbplayer = new HashMap<>();
-    public static HashMap<UUID, String> wcmdbconsole = new HashMap<>();
-    public static HashMap<Location, String> touchconsole = new HashMap<>();
-    public static HashMap<Location, String> touchplayer = new HashMap<>();
-    public static HashMap<Location, String> walkconsole = new HashMap<>();
-    public static HashMap<Location, String> walkplayer = new HashMap<>();
-    public static Map<UUID, Map<ItemStack, String>> itemconsole = new HashMap<>();
-    public static Map<UUID, Map<ItemStack, String>> itemplayer = new HashMap<>();
-    public static ArrayList<Location> antilagcheckloc = new ArrayList<>();
-    public static ArrayList<UUID> antilagcheckcmd = new ArrayList<>();
-    public static ArrayList<UUID> antilagcheckitem = new ArrayList<>();
+    HashMap<UUID, String> tcmdbconsole = new HashMap<>();
+    HashMap<UUID, String> tcmdbplayer = new HashMap<>();
+    HashMap<UUID, String> wcmdbplayer = new HashMap<>();
+    HashMap<UUID, String> wcmdbconsole = new HashMap<>();
+    HashMap<Location, String> touchconsole = new HashMap<>();
+    HashMap<Location, String> touchplayer = new HashMap<>();
+    HashMap<Location, String> walkconsole = new HashMap<>();
+    HashMap<Location, String> walkplayer = new HashMap<>();
+    Map<UUID, Map<ItemStack, String>> itemconsole = new HashMap<>();
+    Map<UUID, Map<ItemStack, String>> itemplayer = new HashMap<>();
+    ArrayList<Location> antilagcheckloc = new ArrayList<>();
+    ArrayList<UUID> antilagcheckcmd = new ArrayList<>();
+    ArrayList<UUID> antilagcheckitem = new ArrayList<>();
 
     public CmdBinderModule() {
         super("cmdbinder");

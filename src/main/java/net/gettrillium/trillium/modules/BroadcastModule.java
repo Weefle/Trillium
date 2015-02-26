@@ -11,6 +11,7 @@ import net.gettrillium.trillium.messageutils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -57,7 +58,11 @@ public class BroadcastModule extends TrilliumModule {
                                 s = s.replace("[msg]", "");
                                 s = ChatColor.translateAlternateColorCodes('&', s);
                                 if (perm != null) {
-                                    Bukkit.broadcast(defaultcolor + slices, perm);
+                                    for (Player p : Bukkit.getOnlinePlayers()) {
+                                        if (p.hasPermission(perm)) {
+                                            p.sendMessage(defaultcolor + slices);
+                                        }
+                                    }
                                 } else {
                                     Bukkit.broadcastMessage(defaultcolor + slices);
                                 }
@@ -65,7 +70,11 @@ public class BroadcastModule extends TrilliumModule {
                         } else {
                             s = ChatColor.translateAlternateColorCodes('&', s);
                             if (perm != null) {
-                                Bukkit.broadcast(s, perm);
+                                for (Player p : Bukkit.getOnlinePlayers()) {
+                                    if (p.hasPermission(perm)) {
+                                        p.sendMessage(defaultcolor + s);
+                                    }
+                                }
                             } else {
                                 Bukkit.broadcastMessage(s);
                             }
@@ -78,7 +87,11 @@ public class BroadcastModule extends TrilliumModule {
                         s = s.replace("[msg]", ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.Chat.COLORIZE_BROADCAST) + message));
                         s = ChatColor.translateAlternateColorCodes('&', s);
                         if (perm != null) {
-                            Bukkit.broadcast(s, perm);
+                            for (Player p : Bukkit.getOnlinePlayers()) {
+                                if (p.hasPermission(perm)) {
+                                    p.sendMessage(defaultcolor + s);
+                                }
+                            }
                         } else {
                             Bukkit.broadcastMessage(s);
                         }

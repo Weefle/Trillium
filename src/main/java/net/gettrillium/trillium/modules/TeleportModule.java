@@ -1,5 +1,7 @@
 package net.gettrillium.trillium.modules;
 
+import net.gettrillium.trillium.Utils;
+import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
@@ -400,8 +402,13 @@ public class TeleportModule extends TrilliumModule {
     @EventHandler
     public void onTP(PlayerTeleportEvent event) {
         TrilliumPlayer p = player(event.getPlayer());
-        if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND || event.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
             p.setLastLocation(event.getFrom());
+        }
+        if (getConfig().getBoolean(Configuration.Broadcast.IMP_ENABLED)) {
+            if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND) {
+                Utils.broadcastImportantMessage();
+            }
         }
     }
 }

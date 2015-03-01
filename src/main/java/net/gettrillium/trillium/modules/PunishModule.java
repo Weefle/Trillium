@@ -121,15 +121,6 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @EventHandler
-    public void onChat(AsyncPlayerChatEvent e) {
-        TrilliumPlayer player = player(e.getPlayer());
-        if (player.isMuted()) {
-            e.setCancelled(true);
-            Message.m(MType.W, player.getProxy(), "Mute", "Your voice has been silenced.");
-        }
-    }
-
     @Command(command = "banip", description = "Ban the ip of a player from the server.", usage = "/banip <player> [reason]")
     public void banip(CommandSender sender, String[] args) {
         if (sender.hasPermission(Permission.Punish.BANIP)) {
@@ -175,6 +166,15 @@ public class PunishModule extends TrilliumModule {
             }
         } else {
             Message.e(sender, "Unban", Crit.P);
+        }
+    }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent e) {
+        TrilliumPlayer player = player(e.getPlayer());
+        if (player.isMuted()) {
+            e.setCancelled(true);
+            Message.m(MType.W, player.getProxy(), "Mute", "Your voice has been silenced.");
         }
     }
 }

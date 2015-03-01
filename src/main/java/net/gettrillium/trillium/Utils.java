@@ -1,9 +1,12 @@
 package net.gettrillium.trillium;
 
+import net.gettrillium.trillium.api.Configuration;
+import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.messageutils.MType;
 import net.gettrillium.trillium.messageutils.Message;
 import net.gettrillium.trillium.runnables.TpsRunnable;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
@@ -97,4 +100,44 @@ public class Utils {
 
         return result;
     }
+
+    public static int timeToTickConverter(String time) {
+        int seconds = 0;
+        int hours = 0;
+        int minutes = 0;
+        int days = 0;
+
+        if (time.contains("s")) {
+            if (StringUtils.isNumeric(time.split("s")[0])) {
+                seconds = Integer.parseInt(time.split("s")[0]);
+            }
+        }
+        if (time.contains("m")) {
+            if (StringUtils.isNumeric(time.split("m")[0])) {
+                minutes = Integer.parseInt(time.split("m")[0]);
+            }
+        }
+        if (time.contains("h")) {
+            if (StringUtils.isNumeric(time.split("h")[0])) {
+                hours = Integer.parseInt(time.split("h")[0]);
+            }
+        }
+        if (time.contains("d")) {
+            if (StringUtils.isNumeric(time.split("d")[0])) {
+                days = Integer.parseInt(time.split("d")[0]);
+            }
+        }
+
+        return (seconds * 20) + (hours * 3600 * 20) + (minutes * 60 * 20) + (days * 24 * 3600 * 60 * 20);
+    }
+
+    public static void broadcastImportantMessage() {
+        List<String> list = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Broadcast.IMP_BROADCAST2);
+        for (String s : list) {
+            s = ChatColor.translateAlternateColorCodes('&', s);
+            Bukkit.broadcastMessage(s);
+        }
+    }
+
+
 }

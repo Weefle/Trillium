@@ -79,4 +79,9 @@ public class Permission {
         public static final String SMITE = PREFIX + "smite";
         public static final String KITTYBOMB = PREFIX + "kittybomb";
     }
+
+    public static class Kit {
+        private static final String PREFIX = "tr.kit";
+        public static final String USE = PREFIX + ".";
+    }
 }

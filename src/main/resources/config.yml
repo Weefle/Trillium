@@ -68,38 +68,74 @@ chat:
     - "&7There are currently &6[ONLINE]&7/&6[SLOTS] players."
     - "&7Have fun! ^_^/"
     #The ingame motd. When a player logs on, they will see this message.
-  broadcast-format:
-    - " "
-    - "&8[&a*&8]&b&m------------------&8[ &a&lBroadcast &8]&b&m------------------&8[&a*&8]"
-    - " "
-    - "[msg]"
-    - " "
-    - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
-    # When you type /broadcast <message to broadcast here>, the message will appear
-    # in this format.
-  centralize-broadcasts: true
-  # The text will be midalized/centralized in the center of the chat and will
-  # use more lines of necessary. It looks cool!
-  color-to-use: "&e&l"
-  # This will set the default broadcast color (overridable with color codes)
-  # HOWEVER! You CANNOT override this color code if you have centralized broadcasts!
-  # The centralized broadcasts will strip any color code in the text and will use the
-  # color code you specify here.
   enable-death-messages: true
   # If set to true, death messages in minecraft will not appear.
     
+#---------------[ Broadcast ]---------------#
+broadcast:
+  regular-broadcasts:
+    broadcast-format:
+      - " "
+      - "&8[&a*&8]&b&m------------------&8[ &a&lBroadcast &8]&b&m------------------&8[&a*&8]"
+      - " "
+      - "[msg]"
+      - " "
+      - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
+      # When you type /broadcast <message to broadcast here>, the message will appear
+      # in this format.
+    centralize-broadcasts: true
+    # The text will be midalized/centralized in the center of the chat and will
+    # use more lines of necessary. It looks cool!
+    color-to-use: "&e&l"
+    # This will set the default broadcast color (overridable with color codes)
+    # HOWEVER! You CANNOT override this color code if you have centralized broadcasts!
+    # The centralized broadcasts will strip any color code in the text and will use the
+    # color code you specify here.
+  auto-broadcast:
+    enabled: false
+    # Auto broadcasts will broadcast the below messages to everyone in a periodical
+    # frequency. PLEASE BECAREFUL because players can get sick of seeing the same messages
+    # over and over again. Consider changing the color scheme or text every once in a while.
+    frequency: "10m"
+    # Time interval between each auto broadcast. Default is 10m.
+    # You can use s for seconds, m for minutes, and h for hours.
+    broadcasts:
+    # You can add more by adding to the below pattern.
+    # To add more broacasts, you HAVE to add to the incrememnting numbers. They represent the queue
+      - 1:
+        - "&8[&a*&8]&b&m---------------&8[ &a&lAuto Broadcast1 &8]&b&m---------------&8[&a*&8]"
+        - "&9 Lorem ipsum dolor sit amet."
+      - 2:
+        - "&8[&a*&8]&b&m---------------&8[ &a&lAuto Broadcast2 &8]&b&m---------------&8[&a*&8]"
+        - "&9 Trillium is awesome."
+  important-broadcast:
+    enabled: false
+    # Important broadcasts will show up every time a player does something unique such as
+    # joining the game. An important broadcast keeps getting sent to the players as a very
+    # VERY important note that they NEED to read. Only use this when you really need to send
+    # a message to all your players.
+    broadcast:
+      - " "
+      - "&8[&a*&8]&b&m-----&8[ &a&lImportant Broadcast Example &8]&b&m-----&8[&a*&8]"
+      - " "
+      - "&9 ATTENTION EVERYONE! The server's map is going to RESET soon!"
+      - "&9 Don't worry though! Everyone will get a copy of the current map."
+      - "&9 The map will be uploaded once the new map is installed."
+      - "&9 Thank you."
+      - " "
+      - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
+
 #---------------[ Group Manager ]---------------#
 group-manager:
   enabled: true
   # Trillium comes with it's own fully functional group and user manager to
   # set permissions to a group or a specific player. Permissions can be ANYTHING.
   # Literally ANY permission from ANY plugin is compatable with Trillium's group manager.
-  auto-reload-frequency: 60
-  # In minutes.
+  auto-reload-frequency: 1m
   # The time interval in which the group manager reloads the group files and
   # refreshes permissions automatically. (basically automatic reload)
-  # NO NEGATIVE NUMBERS AND NO LETTERS
-  
+  # You can use s for seconds, m for minutes, and h for hours.
+
 #---------------[ Player Settings ]---------------#
 player-settings:
   bed-spawn:
@@ -142,6 +178,32 @@ player-settings:
     message: "&b[USERNAME] &9has left the game!"
     # Change the message that tells everyone x player left the server.
 
+#---------------[ Kits ]---------------#
+kits:
+  enabled: false
+  kit-maker:
+    "test-kit-1":
+      cool-down: 10d
+      items:
+        - stone_sword:
+          - name: "&aThe mighty half broken stone sword"
+          - durability: 50
+        - stone_pickaxe:
+          - name: "&aA cool pick"
+        - stone_axe:
+          - name: "&aWood Chopa"
+        - stone_shovel:
+          - name: "&aDiggy diggy hole"
+        - apple:
+          - name: "&4Yummy fresh apples"
+          - lore: "&aSome say that these apples;&awhere indorced from the;&aheavens!"
+          - amount: 20
+        - written_book:
+          - book: "example-book.txt"
+          - title: "&b&lWELCOME GUIDE"
+          - author: "Santa"
+          - lore: "&eThe awesome example guide!;&eSome say that Santa himself wrote this book!"
+          
 #---------------[ Ability ]---------------#
 ability:
   auto-respawn: false
@@ -161,8 +223,8 @@ afk:
   auto-afk:
     enabled: true
     # If a player stands perfectly still for x seconds, they will be marked has AFK automatically.
-    time-until-idle: 60
+    time-until-idle: 1m
     # If auto AFK is true, this will be the time needed to indicate the player is AFK automatically.
-    # In seconds.
+    # You can use s for seconds, m for minutes, and h for hours.
     kick-on-afk: false
     # If a player is AFK (auto AFK-ed). they will be kicked from the server.

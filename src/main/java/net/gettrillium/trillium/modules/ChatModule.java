@@ -384,6 +384,88 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
+    @Command(command = "broadcast", description = "Broadcast a message to the world", usage = "/broadcast <message>", aliases = "bc")
+    public void broadcast(CommandSender cs, String[] args) {
+        if (cs.hasPermission(Permission.Chat.BROADCAST)) {
+            if (args.length == 0) {
+                Message.earg(cs, "Broadcast", "Too few arguments. /broadcast <message>");
+            } else {
+                String perm = null;
+                int argsToStartWith = 0;
+                if (args[0].startsWith("-p")) {
+                    if (args.length <= 2) {
+                        Message.earg(cs, "Broadcast", "Too few arguments. /broadcast <message>");
+                    } else {
+                        perm = args[1];
+                        argsToStartWith = 2;
+                    }
+                }
+
+                String defaultcolor = ChatColor.translateAlternateColorCodes(
+                        '&', TrilliumAPI.getInstance().getConfig().getString(
+                                Configuration.Broadcast.COLOR_TO_USE).trim());
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = argsToStartWith; i < args.length; i++) {
+                    sb.append(args[i]).append(" ");
+                }
+                String message = sb.toString().trim();
+
+                if (getConfig().getBoolean(Configuration.Broadcast.CENTRALIZE)) {
+
+                    List<String> centered = Utils.centerText(message);
+                    List<String> format = getConfig().getStringList(Configuration.Broadcast.FORMAT);
+                    for (String s : format) {
+                        if (s.contains("[msg]")) {
+                            for (String slices : centered) {
+                                s = s.replace("[msg]", "");
+                                s = ChatColor.translateAlternateColorCodes('&', s);
+                                if (perm != null) {
+                                    for (Player p : Bukkit.getOnlinePlayers()) {
+                                        if (p.hasPermission(perm)) {
+                                            p.sendMessage(defaultcolor + slices);
+                                        }
+                                    }
+                                } else {
+                                    Bukkit.broadcastMessage(defaultcolor + slices);
+                                }
+                            }
+                        } else {
+                            s = ChatColor.translateAlternateColorCodes('&', s);
+                            if (perm != null) {
+                                for (Player p : Bukkit.getOnlinePlayers()) {
+                                    if (p.hasPermission(perm)) {
+                                        p.sendMessage(defaultcolor + s);
+                                    }
+                                }
+                            } else {
+                                Bukkit.broadcastMessage(s);
+                            }
+                        }
+                    }
+                } else {
+
+                    List<String> format = getConfig().getStringList(Configuration.Broadcast.FORMAT);
+                    for (String s : format) {
+                        s = s.replace("[msg]", ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.Broadcast.COLOR_TO_USE) + message));
+                        s = ChatColor.translateAlternateColorCodes('&', s);
+                        if (perm != null) {
+                            for (Player p : Bukkit.getOnlinePlayers()) {
+                                if (p.hasPermission(perm)) {
+                                    p.sendMessage(defaultcolor + s);
+                                }
+                            }
+                        } else {
+                            Bukkit.broadcastMessage(s);
+                        }
+                    }
+                }
+            }
+        } else {
+            Message.e(cs, "Broadcast", Crit.P);
+        }
+    }
+    
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         if (event.getPlayer().hasPermission(Permission.Chat.COLOR)) {

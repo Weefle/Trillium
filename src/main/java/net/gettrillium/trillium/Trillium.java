@@ -1,13 +1,15 @@
 package net.gettrillium.trillium;
 
+import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.serializer.LocationSerializer;
 import net.gettrillium.trillium.databases.CmdBinderDatabase;
 import net.gettrillium.trillium.events.PlayerDeath;
-import net.gettrillium.trillium.events.PlayerJoin;
-import net.gettrillium.trillium.events.PlayerLeave;
 import net.gettrillium.trillium.events.ServerListPing;
 import net.gettrillium.trillium.modules.*;
+import net.gettrillium.trillium.runnables.AFKRunnable;
+import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
+import net.gettrillium.trillium.runnables.GroupManagerRunnable;
 import net.gettrillium.trillium.runnables.TpsRunnable;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
@@ -35,17 +37,18 @@ public class Trillium extends JavaPlugin {
         TrilliumAPI.registerModule(new FunModule());
         TrilliumAPI.registerModule(new CmdBinderModule());
         TrilliumAPI.registerModule(new GroupManagerModule());
-        TrilliumAPI.registerModule(new BroadcastModule());
+        TrilliumAPI.registerModule(new KitModule());
 
         setupcmdbinder();
         generateFiles();
 
-        getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
-        getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoBroadcastRunnable(), Utils.timeToTickConverter(getConfig().getString(Configuration.Broadcast.FREQUENCY)), 1);
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AFKRunnable(), 1, 20);
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new GroupManagerRunnable(), 1, Utils.timeToTickConverter(getConfig().getString(Configuration.GM.RELOAD)));
 
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         getLogger().info("        Plugin made with love by:");
@@ -69,7 +72,7 @@ public class Trillium extends JavaPlugin {
     }
 
     public void onDisable() {
-        File reports = new File(TrilliumAPI.getInstance().getDataFolder(), "Reports.yml");
+        File reports = new File(getDataFolder(), "Reports.yml");
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(reports);
         yml.set("Reports", AdminModule.reportlist);
     }

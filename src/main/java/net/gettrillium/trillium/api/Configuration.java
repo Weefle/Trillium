@@ -33,14 +33,27 @@ public class Configuration {
 
     public static class Chat {
         private static String PREFIX = "chat.";
-        public static final String BROADCASTFORMAT = PREFIX + "broadcast-format";
         public static final String INGAME_MOTD = PREFIX + "motd";
         public static final String SERVER_LIST_MOTD = PREFIX + "server-list-motd";
         public static final String ENABLE_DEATH_MESSAGES = PREFIX + "enable-death-messages";
-        public static final String CENTRALIZE_BROADCAST = PREFIX + "centralize-broadcasts";
-        public static final String COLORIZE_BROADCAST = PREFIX + "color-to-use";
     }
 
+    public static class Broadcast {
+        public static String FORMAT = PRE_NORMAL + "broadcast-format";
+        public static String CENTRALIZE = PRE_NORMAL + "centralize-broadcasts";
+        public static String COLOR_TO_USE = PRE_NORMAL + "color-to-use";
+        private static String PREFIX = "broadcast.";
+        public static String PRE_NORMAL = PREFIX + "regular-broadcasts.";
+        private static String AUTO_BROADCAST = PREFIX + "auto-broadcast.";
+        public static String AUTO_ENABLED = AUTO_BROADCAST + "enabled";
+        public static String FREQUENCY = AUTO_BROADCAST + "frequency";
+        public static String AUTO_BROADCASTS = AUTO_BROADCAST + "broadcasts";
+        private static String IMP_BROADCAST = PREFIX + "important-broadcast.";
+        public static String IMP_ENABLED = IMP_BROADCAST + "enabled";
+        public static String IMP_BROADCAST2 = IMP_BROADCAST + "broadcast";
+
+    }
+    
     public static class Server {
         private static String PREFIX = "server.";
         private static final String PVP = PREFIX + "pvp.";
@@ -67,5 +80,12 @@ public class Configuration {
         private static String PREFIX = "group-manager.";
         public static final String ENABLED = PREFIX + "enabled";
         public static final String RELOAD = PREFIX + "auto-reload-frequency";
+    }
+
+    public static class Kit {
+        private static final String PREFIX = "kits.";
+        public static String ENABLED = PREFIX + "enabled";
+        public static String KIT_MAKER = PREFIX + "kit-maker.";
+
     }
 }

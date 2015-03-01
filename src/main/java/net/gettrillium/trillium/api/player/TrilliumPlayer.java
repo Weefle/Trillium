@@ -40,7 +40,7 @@ public class TrilliumPlayer {
         try {
             load();
         } catch (IOException e) {
-            System.out.println("Failed to generate player: " + proxy.getName() + "'s files! Something went wrong.");
+            TrilliumAPI.getInstance().getLogger().warning("Failed to generate player: " + proxy.getName() + "'s files! Something went wrong.");
         }
     }
 
@@ -52,10 +52,6 @@ public class TrilliumPlayer {
         return afk;
     }
 
-    public long getInactiveTime() {
-        return System.currentTimeMillis() - lastActive;
-    }
-
     public void toggleAfk() {
         this.afk = !this.afk;
         if (this.afk) {
@@ -63,6 +59,14 @@ public class TrilliumPlayer {
         } else {
             Message.b(MType.G, "AFK", getProxy().getName() + " is no longer AFK.");
         }
+    }
+
+    public long getInactiveTime() {
+        return System.currentTimeMillis() - lastActive;
+    }
+
+    public void active() {
+        lastActive = System.currentTimeMillis();
     }
 
     public boolean isMuted() {
@@ -123,10 +127,6 @@ public class TrilliumPlayer {
 
     public boolean hasPermission(String permission) {
         return getProxy().hasPermission(permission);
-    }
-
-    public void active() {
-        lastActive = System.currentTimeMillis();
     }
 
     public void dispose() {

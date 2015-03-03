@@ -35,7 +35,7 @@ public class KitModule extends TrilliumModule {
                             Kit kit = new Kit(args[0]);
                             kit.giveTo(p.getProxy());
 
-                            Message.m(MType.G, p.getProxy(), "Kit", "You successfully received: " + args[0]);
+                            Message.m(MType.G, p.getProxy(), "Kit", "You successfully received kit: " + args[0]);
 
                         } else {
                             Message.m(MType.W, p.getProxy(), "KIT", "You don't have permission to use that kit.");

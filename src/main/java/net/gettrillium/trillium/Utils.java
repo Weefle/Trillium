@@ -128,7 +128,7 @@ public class Utils {
             }
         }
 
-        return (seconds * 20) + (hours * 3600 * 20) + (minutes * 60 * 20) + (days * 24 * 3600 * 60 * 20);
+        return (seconds * 20) + (hours * 3600 * 20) + (minutes * 60 * 20) + (days * 24 * 3600 * 20);
     }
 
     public static void broadcastImportantMessage() {

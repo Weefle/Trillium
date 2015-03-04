@@ -53,7 +53,7 @@ public class Configuration {
         public static String IMP_BROADCAST2 = IMP_BROADCAST + "broadcast";
 
     }
-    
+
     public static class Server {
         private static String PREFIX = "server.";
         private static final String PVP = PREFIX + "pvp.";

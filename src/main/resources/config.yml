@@ -85,7 +85,9 @@ broadcast:
       # in this format.
     centralize-broadcasts: true
     # The text will be midalized/centralized in the center of the chat and will
-    # use more lines of necessary. It looks cool!
+    # use more lines if necessary. It looks cool!
+    # Beware, This feature might not work properly if the client has a resource pack
+    # with a custom font installed.
     color-to-use: "&e&l"
     # This will set the default broadcast color (overridable with color codes)
     # HOWEVER! You CANNOT override this color code if you have centralized broadcasts!

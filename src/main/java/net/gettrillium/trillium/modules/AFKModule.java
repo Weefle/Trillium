@@ -4,8 +4,7 @@ import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
-import net.gettrillium.trillium.messageutils.Crit;
-import net.gettrillium.trillium.messageutils.Message;
+import net.gettrillium.trillium.messageutils.M;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,17 +21,17 @@ public class AFKModule extends TrilliumModule {
     }
 
     @Command(command = "afk", description = "Indicate that you are away from your keyboard.", usage = "/afk")
-    public void afk(CommandSender sender, String[] args) {
-        if (sender instanceof Player) {
-            TrilliumPlayer player = player((Player) sender);
+    public void afk(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer player = player((Player) cs);
             if (player.hasPermission(Permission.Afk.USE)) {
                 player.toggleAfk();
                 player.active();
             } else {
-                Message.e(sender, "AFK", Crit.P);
+                M.e("AFK", cs);
             }
         } else {
-            Message.e(sender, "AFK", Crit.C);
+            M.e("AFK", cs);
         }
     }
 

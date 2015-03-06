@@ -6,9 +6,8 @@ import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.databases.CmdBinderDatabase;
-import net.gettrillium.trillium.messageutils.Crit;
-import net.gettrillium.trillium.messageutils.MType;
-import net.gettrillium.trillium.messageutils.Message;
+import net.gettrillium.trillium.messageutils.M;
+import net.gettrillium.trillium.messageutils.T;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -52,9 +51,9 @@ public class CmdBinderModule extends TrilliumModule {
             if (p.hasPermission(Permission.Admin.CMDBINDER)) {
 
                 if (args.length < 3) {
-                    Message.earg(p.getProxy(), "Cmd Binder", "/cb <touch/walk/item> <console/player> <command>");
-                    Message.m(MType.W, p.getProxy(), "Cmd Binder", "or /cb <t/w/i> <c/p> <command>");
-                    Message.m(MType.W, p.getProxy(), "Cmd Binder", "Example: /cb t c tp [p] 110 45 247");
+                    M.e(p.getProxy(), "Cmd Binder", true, "/cb <touch/walk/item> <console/player> <command>");
+                    M.m(T.W, p.getProxy(), "Cmd Binder", true, "or /cb <t/w/i> <c/p> <command>");
+                    M.m(T.W, p.getProxy(), "Cmd Binder", true, "Example: /cb t c tp [p] 110 45 247");
                 } else {
 
                     if (args[0].equalsIgnoreCase("touch") || args[0].equalsIgnoreCase("t")) {
@@ -68,10 +67,10 @@ public class CmdBinderModule extends TrilliumModule {
 
                             tcmdbconsole.put(p.getProxy().getUniqueId(), msg);
 
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "Punch a block to bind the command to it.");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "WARNING: Do not touch anything aimlessly!");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "The first thing you touch now will bind the command you want");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "to the block you punch next. Be careful where you punch!");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "Punch a block to bind the command to it.");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "WARNING: Do not touch anything aimlessly!");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "The first thing you touch now will bind the command you want");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "to the block you punch next. Be careful where you punch!");
                             antilagcheckcmd.add(p.getProxy().getUniqueId());
 
                         } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
@@ -84,10 +83,10 @@ public class CmdBinderModule extends TrilliumModule {
 
                             tcmdbplayer.put(p.getProxy().getUniqueId(), msg);
 
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "Punch a block to bind the command to it.");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "WARNING: Do not touch anything aimlessly!");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "The first thing you touch now will bind the command you want");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "to the block you punch next. Be careful where you punch!");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "Punch a block to bind the command to it.");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "WARNING: Do not touch anything aimlessly!");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "The first thing you touch now will bind the command you want");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "to the block you punch next. Be careful where you punch!");
                             antilagcheckcmd.add(p.getProxy().getUniqueId());
 
                         }
@@ -103,11 +102,11 @@ public class CmdBinderModule extends TrilliumModule {
 
                             wcmdbconsole.put(p.getProxy().getUniqueId(), msg);
 
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "Right click a block to bind the command to it.");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "WARNING: Do not touch anything aimlessly!");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "The first block you right click will bind the command to the adjacent empty side");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "so walking through that empty air block adjacent to the block you right clicked");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "will make the command get run.");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "Right click a block to bind the command to it.");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "WARNING: Do not touch anything aimlessly!");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "The first block you right click will bind the command to the adjacent empty side");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "so walking through that empty air block adjacent to the block you right clicked");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "will make the command get run.");
                             antilagcheckcmd.add(p.getProxy().getUniqueId());
 
                         } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
@@ -120,11 +119,11 @@ public class CmdBinderModule extends TrilliumModule {
 
                             wcmdbplayer.put(p.getProxy().getUniqueId(), msg);
 
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "Right click a block to bind the command to it.");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "WARNING: Do not touch anything aimlessly!");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "The first block you right click will bind the command to the adjacent empty side");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "so walking through that empty air block adjacent to the block you right clicked");
-                            Message.m(MType.R, p.getProxy(), "Cmd Binder", "will make the command get run.");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "Right click a block to bind the command to it.");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "WARNING: Do not touch anything aimlessly!");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "The first block you right click will bind the command to the adjacent empty side");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "so walking through that empty air block adjacent to the block you right clicked");
+                            M.m(T.R, p.getProxy(), "Cmd Binder", true, "will make the command get run.");
                             antilagcheckcmd.add(p.getProxy().getUniqueId());
 
                         }
@@ -145,8 +144,8 @@ public class CmdBinderModule extends TrilliumModule {
                                 iands.put(p.getProxy().getItemInHand(), msg);
                                 itemconsole.put(p.getProxy().getUniqueId(), iands);
                                 antilagcheckitem.add(p.getProxy().getUniqueId());
-                                Message.m(MType.G, p.getProxy(), "Cmd Binder", "Command successfully bound to item.");
-                                Message.m(MType.G, p.getProxy(), "Cmd Binder", ChatColor.AQUA + tcmdbconsole.get(p.getProxy().getUniqueId()));
+                                M.m(T.G, p.getProxy(), "Cmd Binder", true, "Command successfully bound to item.");
+                                M.m(T.G, p.getProxy(), "Cmd Binder", true, ChatColor.AQUA + tcmdbconsole.get(p.getProxy().getUniqueId()));
                             }
 
                         } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
@@ -164,19 +163,19 @@ public class CmdBinderModule extends TrilliumModule {
                                 iands.put(p.getProxy().getItemInHand(), msg);
                                 itemplayer.put(p.getProxy().getUniqueId(), iands);
                                 antilagcheckitem.add(p.getProxy().getUniqueId());
-                                Message.m(MType.G, p.getProxy(), "Cmd Binder", "Command successfully bound to item.");
-                                Message.m(MType.G, p.getProxy(), "Cmd Binder", ChatColor.AQUA + tcmdbconsole.get(p.getProxy().getUniqueId()));
+                                M.m(T.G, p.getProxy(), "Cmd Binder", true, "Command successfully bound to item.");
+                                M.m(T.G, p.getProxy(), "Cmd Binder", true, ChatColor.AQUA + tcmdbconsole.get(p.getProxy().getUniqueId()));
                             }
                         }
                     } else {
-                        Message.earg(p.getProxy(), "Cmd Binder", "/cb <touch/walk/item> <console/player> <command>");
+                        M.e(p.getProxy(), "Cmd Binder", true, "/cb <touch/walk/item> <console/player> <command>");
                     }
                 }
             } else {
-                Message.e(p.getProxy(), "Cmd Binder", Crit.P);
+                M.e("Cmd Binder", cs);
             }
         } else {
-            Message.e(cs, "Cmd Binder", Crit.C);
+            M.e("Cmd Binder", cs);
         }
     }
 
@@ -244,8 +243,8 @@ public class CmdBinderModule extends TrilliumModule {
                     l.add(yml.getString("touchconsole"));
                     l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + tcmdbconsole.get(p.getUniqueId()));
                     yml.set("touchconsole", l);
-                    Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to block.");
-                    Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + tcmdbconsole.get(p.getUniqueId()));
+                    M.m(T.G, p, "Cmd Binder", true, "Command successfully bound to block.");
+                    M.m(T.G, p, "Cmd Binder", true, ChatColor.AQUA + tcmdbconsole.get(p.getUniqueId()));
                     event.setCancelled(true);
                     tcmdbconsole.remove(p.getUniqueId());
                     try {
@@ -265,8 +264,8 @@ public class CmdBinderModule extends TrilliumModule {
                     l.add(yml.getString("touchplayer"));
                     l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + tcmdbplayer.get(p.getUniqueId()));
                     yml.set("touchplayer", l);
-                    Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to block.");
-                    Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + tcmdbconsole.get(p.getUniqueId()));
+                    M.m(T.G, p, "Cmd Binder", true, "Command successfully bound to block.");
+                    M.m(T.G, p, "Cmd Binder", true, ChatColor.AQUA + tcmdbconsole.get(p.getUniqueId()));
                     event.setCancelled(true);
                     tcmdbplayer.remove(p.getUniqueId());
                     try {
@@ -287,8 +286,8 @@ public class CmdBinderModule extends TrilliumModule {
                         l.add(yml.getString("walkconsole"));
                         l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + wcmdbconsole.get(p.getUniqueId()));
                         yml.set("walkconsole", l);
-                        Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to air block.");
-                        Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + tcmdbconsole.get(p.getUniqueId()));
+                        M.m(T.G, p, "Cmd Binder", true, "Command successfully bound to air block.");
+                        M.m(T.G, p, "Cmd Binder", true, ChatColor.AQUA + tcmdbconsole.get(p.getUniqueId()));
                         event.setCancelled(true);
                         wcmdbconsole.remove(p.getUniqueId());
                         try {
@@ -310,8 +309,8 @@ public class CmdBinderModule extends TrilliumModule {
                         l.add(yml.getString("walkplayer"));
                         l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + wcmdbplayer.get(p.getUniqueId()));
                         yml.set("walkplayer", l);
-                        Message.m(MType.G, p, "Cmd Binder", "Command successfully bound to air block.");
-                        Message.m(MType.G, p, "Cmd Binder", ChatColor.AQUA + tcmdbconsole.get(p.getUniqueId()));
+                        M.m(T.G, p, "Cmd Binder", true, "Command successfully bound to air block.");
+                        M.m(T.G, p, "Cmd Binder", true, ChatColor.AQUA + tcmdbconsole.get(p.getUniqueId()));
                         event.setCancelled(true);
                         wcmdbplayer.remove(p.getUniqueId());
                         try {

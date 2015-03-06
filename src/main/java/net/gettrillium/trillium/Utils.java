@@ -2,8 +2,8 @@ package net.gettrillium.trillium;
 
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
-import net.gettrillium.trillium.messageutils.MType;
-import net.gettrillium.trillium.messageutils.Message;
+import net.gettrillium.trillium.messageutils.M;
+import net.gettrillium.trillium.messageutils.T;
 import net.gettrillium.trillium.runnables.TpsRunnable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -22,12 +22,12 @@ public class Utils {
         int max = (int) Runtime.getRuntime().maxMemory() / 1000000;
         int used = max - free;
         int i = (int) (100L * used / max);
-        Message.m(MType.R, sender, "Lag", "Max memory: " + max + "MB");
-        Message.m(MType.R, sender, "Lag", "Used memory: " + used + "MB");
-        Message.m(MType.R, sender, "Lag", "Used memory: " + bar(i));
-        Message.m(MType.R, sender, "Lag", "Free memory: " + free + "MB");
-        Message.m(MType.R, sender, "Lag", "TPS: " + TpsRunnable.getTPS());
-        Message.m(MType.R, sender, "Lag", "Lag Rate: " + bar((int) Math.round((1.0D - TpsRunnable.getTPS() / 20.0D) * 100.0D)));
+        M.m(T.R, sender, "Lag", true, "Max memory: " + max + "MB");
+        M.m(T.R, sender, "Lag", true, "Used memory: " + used + "MB");
+        M.m(T.R, sender, "Lag", true, "Used memory: " + bar(i));
+        M.m(T.R, sender, "Lag", true, "Free memory: " + free + "MB");
+        M.m(T.R, sender, "Lag", true, "TPS: " + TpsRunnable.getTPS());
+        M.m(T.R, sender, "Lag", true, "Lag Rate: " + bar((int) Math.round((1.0D - TpsRunnable.getTPS() / 20.0D) * 100.0D)));
     }
 
     public static String bar(int percent) {

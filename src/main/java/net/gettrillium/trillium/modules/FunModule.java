@@ -5,9 +5,8 @@ import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
-import net.gettrillium.trillium.messageutils.Crit;
-import net.gettrillium.trillium.messageutils.MType;
-import net.gettrillium.trillium.messageutils.Message;
+import net.gettrillium.trillium.messageutils.M;
+import net.gettrillium.trillium.messageutils.T;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -46,18 +45,18 @@ public class FunModule extends TrilliumModule {
                     TrilliumPlayer target = player(args[0]);
                     if (target != null) {
                         target.getProxy().getWorld().strikeLightning(target.getProxy().getLocation());
-                        Message.m(MType.R, target.getProxy(), "Smite", p.getProxy().getName() + " stuck lightning upon you!");
-                        Message.m(MType.R, p.getProxy(), "Smite", "You struck lightning upon " + target.getProxy().getName());
+                        M.m(T.R, target.getProxy(), "Smite", true, p.getProxy().getName() + " stuck lightning upon you!");
+                        M.m(T.R, p.getProxy(), "Smite", true, "You struck lightning upon " + target.getProxy().getName());
 
                     } else {
-                        Message.eplayer(p.getProxy(), "Smite", args[0]);
+                        M.e("Smite", cs, args[0]);
                     }
                 }
             } else {
-                Message.e(p.getProxy(), "Smite", Crit.P);
+                M.e("Smite", cs);
             }
         } else {
-            Message.e(cs, "Smite", Crit.C);
+            M.e("Smite", cs);
         }
     }
 
@@ -99,10 +98,10 @@ public class FunModule extends TrilliumModule {
                 }.runTaskTimer(TrilliumAPI.getInstance(), 1, 1);
 
             } else {
-                Message.e(p.getProxy(), "Kitty Bomb", Crit.P);
+                M.e("Kitty Bomb", cs);
             }
         } else {
-            Message.e(cs, "Kitty Bomb", Crit.C);
+            M.e("Kitty Bomb", cs);
         }
     }
 

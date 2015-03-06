@@ -2,8 +2,8 @@ package net.gettrillium.trillium.api.player;
 
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
-import net.gettrillium.trillium.messageutils.MType;
-import net.gettrillium.trillium.messageutils.Message;
+import net.gettrillium.trillium.messageutils.M;
+import net.gettrillium.trillium.messageutils.T;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -55,9 +55,9 @@ public class TrilliumPlayer {
     public void toggleAfk() {
         this.afk = !this.afk;
         if (this.afk) {
-            Message.b(MType.G, "AFK", getProxy().getName() + " is now AFK.");
+            M.b(T.G, "AFK", getProxy().getName() + " is now AFK.");
         } else {
-            Message.b(MType.G, "AFK", getProxy().getName() + " is no longer AFK.");
+            M.b(T.G, "AFK", getProxy().getName() + " is no longer AFK.");
         }
     }
 
@@ -93,14 +93,14 @@ public class TrilliumPlayer {
         this.isGod = enabled;
     }
 
-    public String getNickname() {
+    public String getDisplayName() {
         return this.nickname;
     }
 
-    public void setNickname(String nickname) {
+    public void setDisplayName(String nickname) {
         this.nickname = nickname + "§f";
         this.hasnickname = !nickname.equalsIgnoreCase(proxy.getName());
-        getProxy().setDisplayName(proxy.getName());
+        getProxy().setDisplayName(nickname + "§f");
     }
 
     public boolean hasNickname() {
@@ -169,7 +169,7 @@ public class TrilliumPlayer {
                 config.set(Configuration.Player.GROUP, "default");
             }
         } else {
-            setNickname(config.getString(Configuration.Player.NICKNAME));
+            setDisplayName(config.getString(Configuration.Player.NICKNAME));
             setLastLocation(TrilliumAPI.getSerializer(Location.class).deserialize(config.getString(Configuration.Player.LOCATION)));
             setMuted(config.getBoolean(Configuration.Player.MUTED));
             setGod(config.getBoolean(Configuration.Player.GOD));

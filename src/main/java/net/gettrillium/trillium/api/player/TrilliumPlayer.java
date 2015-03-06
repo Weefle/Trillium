@@ -355,7 +355,7 @@ public class TrilliumPlayer {
 
     private List<String> getheritage(YamlConfiguration yml, String group) {
         List<String> perms = new ArrayList<>();
-        for (String key : yml.getConfigurationSection(group).getKeys(false)) {
+        for (String key : yml.getStringList(group)) {
             if (key != null) {
                 if (key.equals("inherit")) {
                     for (String perm : getheritage(yml, key)) {

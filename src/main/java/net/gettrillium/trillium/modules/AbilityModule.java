@@ -63,7 +63,7 @@ public class AbilityModule extends TrilliumModule {
                         target.setFlying(true);
                     }
                 } else {
-                    M.e(player.getProxy(), "Fly", args[0]);
+                    M.e("Fly", cs, args[0]);
                 }
             } else {
                 M.e(player.getProxy(), "Fly", true, "/fly [player]");
@@ -102,7 +102,7 @@ public class AbilityModule extends TrilliumModule {
                             target.setGod(true);
                         }
                     } else {
-                        M.e(player.getProxy(), "God", args[0]);
+                        M.e("God", cs, args[0]);
                     }
                 } else {
                     M.e(player.getProxy(), "God", true, "/god [player]");
@@ -155,7 +155,7 @@ public class AbilityModule extends TrilliumModule {
                             }
                         }
                     } else {
-                        M.e(player.getProxy(), "Vanish", args[0]);
+                        M.e("Vanish", cs, args[0]);
                     }
                 } else {
                     M.e(player.getProxy(), "Vanish", true, "/vanish [player]");
@@ -286,7 +286,7 @@ public class AbilityModule extends TrilliumModule {
                         }
 
                     } else {
-                        M.e(p.getProxy(), "Gamemode", args[1]);
+                        M.e("Gamemode", cs, args[1]);
                     }
                 } else {
                     M.e(p.getProxy(), "Gamemode", true, "/gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp] [player]");

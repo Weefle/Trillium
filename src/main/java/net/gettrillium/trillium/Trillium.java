@@ -46,9 +46,9 @@ public class Trillium extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoBroadcastRunnable(), Utils.timeToTickConverter(getConfig().getString(Configuration.Broadcast.FREQUENCY)), 1);
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AFKRunnable(), 1, 20);
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new GroupManagerRunnable(), 1, Utils.timeToTickConverter(getConfig().getString(Configuration.GM.RELOAD)));
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoBroadcastRunnable(), Utils.timeToTickConverter(getConfig().getString(Configuration.Broadcast.FREQUENCY)), Utils.timeToTickConverter(getConfig().getString(Configuration.Broadcast.FREQUENCY)));
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AFKRunnable(), 20, 20);
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, new GroupManagerRunnable(), Utils.timeToTickConverter(getConfig().getString(Configuration.GM.RELOAD)), Utils.timeToTickConverter(getConfig().getString(Configuration.GM.RELOAD)));
 
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         getLogger().info("        Plugin made with love by:");

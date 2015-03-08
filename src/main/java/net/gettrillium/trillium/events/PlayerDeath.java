@@ -33,6 +33,7 @@ public class PlayerDeath implements Listener {
             }
         }
 
+
         if (!TrilliumAPI.getModule(ChatModule.class).getConfig().getBoolean(Configuration.Chat.ENABLE_DEATH_MESSAGES)) {
             event.setDeathMessage("");
         }

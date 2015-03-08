@@ -1,6 +1,7 @@
 package net.gettrillium.trillium.api.player;
 
 import net.gettrillium.trillium.api.Configuration;
+import net.gettrillium.trillium.api.GroupManager;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.messageutils.M;
 import net.gettrillium.trillium.messageutils.T;
@@ -8,18 +9,11 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachment;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 
 public class TrilliumPlayer {
-
-    private HashMap<UUID, PermissionAttachment> attachmentlist = new HashMap<>();
 
     private Player proxy;
     private Location previousLocation;
@@ -31,7 +25,6 @@ public class TrilliumPlayer {
     private boolean isGod = false;
     private boolean isVanished = false;
     private boolean hasnickname = false;
-    private String group = "default";
     private boolean pvp;
 
     public TrilliumPlayer(Player proxy) {
@@ -107,6 +100,10 @@ public class TrilliumPlayer {
         return this.hasnickname;
     }
 
+    public boolean hasPermission(String permission) {
+        return this.getProxy().hasPermission(permission);
+    }
+
     public boolean isVanished() {
         return this.isVanished;
     }
@@ -123,10 +120,6 @@ public class TrilliumPlayer {
                 p.getProxy().showPlayer(getProxy());
             }
         }
-    }
-
-    public boolean hasPermission(String permission) {
-        return getProxy().hasPermission(permission);
     }
 
     public void dispose() {
@@ -176,7 +169,7 @@ public class TrilliumPlayer {
             setPvp(config.getBoolean(Configuration.Player.PVP));
             setVanished(config.getBoolean(Configuration.Player.VANISH));
             if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
-                setGroup(config.getString(Configuration.Player.GROUP));
+                new GroupManager(getProxy()).setGroup(config.getString(Configuration.Player.GROUP));
             }
         }
         try {
@@ -192,210 +185,6 @@ public class TrilliumPlayer {
 
     public void setLastLocation(Location loc) {
         this.previousLocation = loc;
-    }
-
-    public void addAttachment() {
-        if (!hasAttachment()) {
-            PermissionAttachment attachment = proxy.addAttachment(TrilliumAPI.getInstance());
-            this.attachmentlist.put(this.proxy.getUniqueId(), attachment);
-        }
-    }
-
-    public void removeAttachment() {
-        if (hasAttachment()) {
-            this.attachmentlist.remove(this.proxy.getUniqueId());
-        }
-    }
-
-    public boolean hasAttachment() {
-        return this.attachmentlist.containsKey(this.proxy.getUniqueId());
-    }
-
-    public void addPermission(String perm) {
-        if (hasAttachment()) {
-            PermissionAttachment attachment = this.attachmentlist.get(this.proxy.getUniqueId());
-            attachment.setPermission(perm, true);
-        }
-    }
-
-    public void addPermissionPlayer(String perm) {
-        if (hasAttachment()) {
-            File player = new File(TrilliumAPI.getInstance().getDataFolder() + "/Trillium Group Manager/players/" + getProxy().getName() + ".yml");
-            if (!player.exists()) {
-                try {
-                    player.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            YamlConfiguration yml = YamlConfiguration.loadConfiguration(player);
-            List<String> perms = yml.getStringList("permissions");
-            perms.add(perm);
-            yml.set("permissions", perms);
-
-        }
-    }
-
-    public void addPermissionGroup(String perm) {
-        if (hasAttachment()) {
-
-            File group = new File(TrilliumAPI.getInstance().getDataFolder(), "/Trillium Group Manager/worlds/" + getProxy().getWorld().getName() + ".yml");
-            if (!group.exists()) {
-                try {
-                    group.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            YamlConfiguration yml = YamlConfiguration.loadConfiguration(group);
-            List<String> perms = yml.getStringList(getGroup() + "permissions");
-            perms.add(perm);
-            yml.set("permissions", perms);
-        }
-    }
-
-    public void removePermission(String perm) {
-        if (hasAttachment()) {
-            PermissionAttachment attachment = this.attachmentlist.get(this.proxy.getUniqueId());
-            attachment.unsetPermission(perm);
-        }
-    }
-
-    public void removePermissionPlayer(String perm) {
-        if (hasAttachment()) {
-            File player = new File(TrilliumAPI.getInstance().getDataFolder() + "/Trillium Group Manager/players/" + getProxy().getName() + ".yml");
-            if (!player.exists()) {
-                try {
-                    player.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            YamlConfiguration yml = YamlConfiguration.loadConfiguration(player);
-            List<String> perms = yml.getStringList("permissions");
-            if (perms.contains(perm)) {
-                perms.remove(perm);
-                yml.set("permissions", perms);
-            } else {
-                perms.add("-" + perm);
-                yml.set("permissions", perms);
-            }
-        }
-    }
-
-    public void removePermissionGroup(String perm) {
-        if (hasAttachment()) {
-
-            File group = new File(TrilliumAPI.getInstance().getDataFolder(), "/Trillium Group Manager/worlds/" + getProxy().getWorld().getName() + ".yml");
-            if (!group.exists()) {
-                try {
-                    group.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            YamlConfiguration yml = YamlConfiguration.loadConfiguration(group);
-            List<String> perms = yml.getStringList("permissions");
-            if (perms.contains(perm)) {
-                perms.remove(perm);
-                yml.set("permissions", perms);
-            } else {
-                perms.add("-" + perm);
-                yml.set("permissions", perms);
-            }
-        }
-    }
-
-    public String getGroup() {
-        return this.group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
-    public void refreshPermissions() {
-        if (hasAttachment()) {
-
-            removeAttachment();
-
-            addAttachment();
-
-            File players = new File(TrilliumAPI.getInstance().getDataFolder() + "/Trillium Group Manager/players");
-            File worlds = new File(TrilliumAPI.getInstance().getDataFolder() + "/Trillium Group Manager/worlds");
-
-            for (File f : players.listFiles()) {
-                if (f != null && f.isFile()) {
-                    if (f.getName().equalsIgnoreCase(getProxy().getName())) {
-                        YamlConfiguration yml = YamlConfiguration.loadConfiguration(f);
-                        for (String perms : yml.getStringList("permissions")) {
-                            if (!perms.contains("-")) {
-                                addPermission(perms);
-                            }
-                        }
-                    }
-                }
-            }
-
-            for (File f : worlds.listFiles()) {
-                if (f != null && f.isFile()) {
-                    if (f.getName().equals(this.proxy.getWorld().getName())) {
-                        for (String perms : getPermissions(f)) {
-                            if (!perms.contains("-")) {
-                                addPermission(perms);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private List<String> getheritage(YamlConfiguration yml, String group) {
-        List<String> perms = new ArrayList<>();
-        for (String key : yml.getStringList(group)) {
-            if (key != null) {
-                if (key.equals("inherit")) {
-                    for (String perm : getheritage(yml, key)) {
-                        if (!perms.contains("-")) {
-                            perms.add(perm);
-                        }
-                    }
-                } else if (key.equals("permissions")) {
-                    for (String perm : yml.getStringList(group + ".permissions")) {
-                        if (!perms.contains("-")) {
-                            perms.add(perm);
-                        }
-                    }
-                }
-            }
-        }
-        return perms;
-    }
-
-    public List<String> getPermissions(File f) {
-        List<String> perms = new ArrayList<>();
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(f);
-        for (String key : yml.getConfigurationSection(getGroup()).getKeys(false)) {
-            if (key != null) {
-                if (key.equals("inherit")) {
-                    for (String perm : getheritage(yml, key)) {
-                        if (!perms.contains("-")) {
-                            perms.add(perm);
-                        }
-                    }
-                } else if (key.equals("permissions")) {
-                    for (String perm : yml.getStringList(group + ".permissions")) {
-                        if (!perms.contains("-")) {
-                            perms.add(perm);
-                        }
-                    }
-                }
-            }
-        }
-        return perms;
     }
 
     public void setPvp(boolean b) {

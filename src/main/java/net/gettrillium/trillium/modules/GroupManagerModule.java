@@ -1,6 +1,7 @@
 package net.gettrillium.trillium.modules;
 
 import net.gettrillium.trillium.api.Configuration;
+import net.gettrillium.trillium.api.GroupManager;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
@@ -29,8 +30,9 @@ public class GroupManagerModule extends TrilliumModule {
                         if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
                             TrilliumPlayer p = player(args[2]);
                             if (p != null) {
-                                p.addPermission(args[3]);
-                                p.addPermissionPlayer(args[3]);
+                                GroupManager manager = new GroupManager(p.getProxy());
+                                manager.addPermission(args[3]);
+                                manager.addPermissionPlayer(args[3]);
                                 M.m(T.G, cs, "TGM", true, "Added permission: " + ChatColor.AQUA + args[3]);
                                 M.m(T.G, cs, "TGM", true, "to player: " + ChatColor.AQUA + p.getProxy().getName());
                             } else {
@@ -39,10 +41,11 @@ public class GroupManagerModule extends TrilliumModule {
                         } else if (args[1].equalsIgnoreCase("group") || args[1].equalsIgnoreCase("g")) {
                             TrilliumPlayer p = player(args[2]);
                             if (p != null) {
-                                p.addPermission(args[3]);
-                                p.addPermissionGroup(args[3]);
+                                GroupManager manager = new GroupManager(p.getProxy());
+                                manager.addPermission(args[3]);
+                                manager.addPermissionGroup(args[3]);
                                 M.m(T.G, cs, "TGM", true, "Added permission: " + ChatColor.AQUA + args[3]);
-                                M.m(T.G, cs, "TGM", true, "to group: " + ChatColor.AQUA + p.getGroup());
+                                M.m(T.G, cs, "TGM", true, "to group: " + ChatColor.AQUA + manager.getGroup());
                             } else {
                                 M.e("TGM", cs, args[2]);
                             }
@@ -53,8 +56,9 @@ public class GroupManagerModule extends TrilliumModule {
                         if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
                             TrilliumPlayer p = player(args[2]);
                             if (p != null) {
-                                p.removePermission(args[3]);
-                                p.removePermissionPlayer(args[3]);
+                                GroupManager manager = new GroupManager(p.getProxy());
+                                manager.removePermission(args[3]);
+                                manager.removePermissionPlayer(args[3]);
                                 M.m(T.G, cs, "TGM", true, "Removed permission: " + ChatColor.AQUA + args[3]);
                                 M.m(T.G, cs, "TGM", true, "from player: " + ChatColor.AQUA + p.getProxy().getName());
                             } else {
@@ -63,10 +67,11 @@ public class GroupManagerModule extends TrilliumModule {
                         } else if (args[1].equalsIgnoreCase("group") || args[1].equalsIgnoreCase("g")) {
                             TrilliumPlayer p = player(args[2]);
                             if (p != null) {
-                                p.removePermission(args[3]);
-                                p.removePermissionGroup(args[3]);
+                                GroupManager manager = new GroupManager(p.getProxy());
+                                manager.removePermission(args[3]);
+                                manager.removePermissionGroup(args[3]);
                                 M.m(T.G, cs, "TGM", true, "Removed permission: " + ChatColor.AQUA + args[3]);
-                                M.m(T.G, cs, "TGM", true, "from group: " + ChatColor.AQUA + p.getGroup());
+                                M.m(T.G, cs, "TGM", true, "from group: " + ChatColor.AQUA + manager.getGroup());
                             } else {
                                 M.e("TGM", cs, args[2]);
                             }
@@ -91,8 +96,9 @@ public class GroupManagerModule extends TrilliumModule {
     public void onJoin(PlayerJoinEvent event) {
         if (getConfig().getBoolean(Configuration.GM.ENABLED)) {
             TrilliumPlayer p = player(event.getPlayer());
-            if (!p.hasAttachment()) {
-                p.addAttachment();
+            GroupManager manager = new GroupManager(p.getProxy());
+            if (!manager.hasAttachment()) {
+                manager.addAttachment();
             }
         }
     }
@@ -101,8 +107,9 @@ public class GroupManagerModule extends TrilliumModule {
     public void onLeave(PlayerQuitEvent event) {
         if (getConfig().getBoolean(Configuration.GM.ENABLED)) {
             TrilliumPlayer p = player(event.getPlayer());
-            if (p.hasAttachment()) {
-                p.removeAttachment();
+            GroupManager manager = new GroupManager(p.getProxy());
+            if (manager.hasAttachment()) {
+                manager.removeAttachment();
             }
         }
     }
@@ -111,8 +118,9 @@ public class GroupManagerModule extends TrilliumModule {
     public void onKick(PlayerKickEvent event) {
         if (getConfig().getBoolean(Configuration.GM.ENABLED)) {
             TrilliumPlayer p = player(event.getPlayer());
-            if (p.hasAttachment()) {
-                p.removeAttachment();
+            GroupManager manager = new GroupManager(p.getProxy());
+            if (manager.hasAttachment()) {
+                manager.removeAttachment();
             }
         }
     }

@@ -20,6 +20,7 @@ public class AFKRunnable implements Runnable {
                 if (player.isAfk()) {
                     continue;
                 }
+
                 if (player.isVanished()) {
                     continue;
                 }
@@ -29,7 +30,6 @@ public class AFKRunnable implements Runnable {
                         toKick.add(player);
                     } else {
                         player.toggleAfk();
-                        player.active();
                     }
                 }
             }

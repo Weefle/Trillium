@@ -26,7 +26,6 @@ public class AFKModule extends TrilliumModule {
             TrilliumPlayer player = player((Player) cs);
             if (player.hasPermission(Permission.Afk.USE)) {
                 player.toggleAfk();
-                player.active();
             } else {
                 M.e("AFK", cs);
             }

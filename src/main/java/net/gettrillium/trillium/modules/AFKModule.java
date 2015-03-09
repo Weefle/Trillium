@@ -41,7 +41,6 @@ public class AFKModule extends TrilliumModule {
         if (player.isAfk()) {
             if (!player.isVanished()) {
                 player.toggleAfk();
-                player.active();
             }
         }
         player.active();
@@ -53,7 +52,6 @@ public class AFKModule extends TrilliumModule {
         if (player.isAfk()) {
             if (!player.isVanished()) {
                 player.toggleAfk();
-                player.active();
             }
         }
         player.active();
@@ -66,7 +64,6 @@ public class AFKModule extends TrilliumModule {
             if (player.isAfk()) {
                 if (!player.isVanished()) {
                     player.toggleAfk();
-                    player.active();
                 }
             }
             player.active();
@@ -79,7 +76,6 @@ public class AFKModule extends TrilliumModule {
         if (player.isAfk()) {
             if (!player.isVanished()) {
                 player.toggleAfk();
-                player.active();
             }
         }
         player.active();

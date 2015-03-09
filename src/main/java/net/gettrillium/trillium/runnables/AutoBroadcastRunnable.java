@@ -9,7 +9,7 @@ import java.util.List;
 
 public class AutoBroadcastRunnable implements Runnable {
 
-    private int queue = 0;
+    private int queue = 1;
 
     public void run() {
         if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {

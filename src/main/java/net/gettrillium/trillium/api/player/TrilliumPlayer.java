@@ -59,6 +59,10 @@ public class TrilliumPlayer {
     }
 
     public void active() {
+        if (isAfk() && !isVanished()) {
+            toggleAfk();
+        }
+
         lastActive = System.currentTimeMillis();
     }
 

@@ -38,22 +38,12 @@ public class AFKModule extends TrilliumModule {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         TrilliumPlayer player = player(event.getPlayer());
-        if (player.isAfk()) {
-            if (!player.isVanished()) {
-                player.toggleAfk();
-            }
-        }
         player.active();
     }
 
     @EventHandler
     public void onChat(PlayerCommandPreprocessEvent event) {
         TrilliumPlayer player = player(event.getPlayer());
-        if (player.isAfk()) {
-            if (!player.isVanished()) {
-                player.toggleAfk();
-            }
-        }
         player.active();
     }
 
@@ -61,11 +51,6 @@ public class AFKModule extends TrilliumModule {
     public void onDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             TrilliumPlayer player = player((Player) event.getEntity());
-            if (player.isAfk()) {
-                if (!player.isVanished()) {
-                    player.toggleAfk();
-                }
-            }
             player.active();
         }
     }
@@ -73,22 +58,12 @@ public class AFKModule extends TrilliumModule {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         TrilliumPlayer player = player(event.getPlayer());
-        if (player.isAfk()) {
-            if (!player.isVanished()) {
-                player.toggleAfk();
-            }
-        }
         player.active();
     }
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         TrilliumPlayer player = player(event.getPlayer());
-        if (player.isAfk()) {
-            if (!player.isVanished()) {
-                player.toggleAfk();
-            }
-        }
         player.active();
     }
 }

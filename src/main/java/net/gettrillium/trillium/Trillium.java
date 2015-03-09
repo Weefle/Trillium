@@ -1,16 +1,11 @@
 package net.gettrillium.trillium;
 
-import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.serializer.LocationSerializer;
 import net.gettrillium.trillium.databases.CmdBinderDatabase;
 import net.gettrillium.trillium.events.PlayerDeath;
 import net.gettrillium.trillium.events.ServerListPing;
 import net.gettrillium.trillium.modules.*;
-import net.gettrillium.trillium.runnables.AFKRunnable;
-import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
-import net.gettrillium.trillium.runnables.GroupManagerRunnable;
-import net.gettrillium.trillium.runnables.TpsRunnable;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -45,10 +40,7 @@ public class Trillium extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new TpsRunnable(), 100, 1);
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoBroadcastRunnable(), 1, Utils.timeToTickConverter(getConfig().getString(Configuration.Broadcast.FREQUENCY)));
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new AFKRunnable(), 1, 20);
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new GroupManagerRunnable(), 1, Utils.timeToTickConverter(getConfig().getString(Configuration.GM.RELOAD)));
+        Utils.reload();
 
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         getLogger().info("        Plugin made with love by:");

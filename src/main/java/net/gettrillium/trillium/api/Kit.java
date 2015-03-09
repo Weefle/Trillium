@@ -20,7 +20,7 @@ public class Kit {
     private String name;
 
     public Kit(String kitname) {
-        this.name = TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + kitname);
+        this.name = kitname;
         this.cooldown = Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + kitname + ".cool-down"));
     }
 

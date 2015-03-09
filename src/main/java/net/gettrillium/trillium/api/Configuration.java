@@ -36,14 +36,18 @@ public class Configuration {
         public static final String INGAME_MOTD = PREFIX + "motd";
         public static final String SERVER_LIST_MOTD = PREFIX + "server-list-motd";
         public static final String ENABLE_DEATH_MESSAGES = PREFIX + "enable-death-messages";
+        private static String CHATCHANNEL = PREFIX + "chat-channels.";
+        public static final String CCENABLED = CHATCHANNEL + "enabled";
+        public static final String CCFORMAT = CHATCHANNEL + "format";
+        public static final String CCCOLOR = CHATCHANNEL + "allow-color-codes";
     }
 
     public static class Broadcast {
-        private static String PREFIX = "broadcast.";
-        public static String PRE_NORMAL = PREFIX + "regular-broadcasts.";
         public static String FORMAT = PRE_NORMAL + "broadcast-format";
         public static String CENTRALIZE = PRE_NORMAL + "centralize-broadcasts";
         public static String COLOR_TO_USE = PRE_NORMAL + "color-to-use";
+        private static String PREFIX = "broadcast.";
+        public static String PRE_NORMAL = PREFIX + "regular-broadcasts.";
         private static String AUTO_BROADCAST = PREFIX + "auto-broadcast.";
         public static String AUTO_ENABLED = AUTO_BROADCAST + "enabled";
         public static String FREQUENCY = AUTO_BROADCAST + "frequency";
@@ -59,10 +63,6 @@ public class Configuration {
         private static final String PVP = PREFIX + "pvp.";
         public static final String PVPENABLE = PVP + "enabled";
         public static final String TOGGLEPVP = PVP + "enable-toggle-pvp";
-        private static String CHATCHANNEL = PREFIX + "chat-channels.";
-        public static final String CCENABLED = CHATCHANNEL + "enabled";
-        public static final String CCFORMAT = CHATCHANNEL + "format";
-        public static final String CCCOLOR = CHATCHANNEL + "allow-color-codes";
 
     }
 

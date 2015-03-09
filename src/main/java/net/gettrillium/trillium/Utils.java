@@ -4,6 +4,9 @@ import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.messageutils.M;
 import net.gettrillium.trillium.messageutils.T;
+import net.gettrillium.trillium.runnables.AFKRunnable;
+import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
+import net.gettrillium.trillium.runnables.GroupManagerRunnable;
 import net.gettrillium.trillium.runnables.TpsRunnable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -11,6 +14,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +28,13 @@ public class Utils {
         int i = (int) (100L * used / max);
         M.m(T.R, sender, "Lag", true, "Max memory: " + max + "MB");
         M.m(T.R, sender, "Lag", true, "Used memory: " + used + "MB");
-        M.m(T.R, sender, "Lag", true, "Used memory: " + bar(i));
+        M.m(T.R, sender, "Lag", true, "Used memory: " + asciibar(i));
         M.m(T.R, sender, "Lag", true, "Free memory: " + free + "MB");
         M.m(T.R, sender, "Lag", true, "TPS: " + TpsRunnable.getTPS());
-        M.m(T.R, sender, "Lag", true, "Lag Rate: " + bar((int) Math.round((1.0D - TpsRunnable.getTPS() / 20.0D) * 100.0D)));
+        M.m(T.R, sender, "Lag", true, "Lag Rate: " + asciibar((int) Math.round((1.0D - TpsRunnable.getTPS() / 20.0D) * 100.0D)));
     }
 
-    public static String bar(int percent) {
+    public static String asciibar(int percent) {
         StringBuilder bar = new StringBuilder(ChatColor.GRAY + "[");
 
         for (int i = 0; i < 25; i++) {
@@ -50,27 +54,27 @@ public class Utils {
 
     public static String getPingBar(Player p) {
         if (getPing(p) <= 100 && getPing(p) >= 0) {
-            return bar(0);
+            return asciibar(0);
         } else if (getPing(p) <= 200 && getPing(p) > 100) {
-            return bar(10);
+            return asciibar(10);
         } else if (getPing(p) <= 300 && getPing(p) > 200) {
-            return bar(20);
+            return asciibar(20);
         } else if (getPing(p) <= 400 && getPing(p) > 300) {
-            return bar(30);
+            return asciibar(30);
         } else if (getPing(p) <= 500 && getPing(p) > 400) {
-            return bar(40);
+            return asciibar(40);
         } else if (getPing(p) <= 600 && getPing(p) > 500) {
-            return bar(50);
+            return asciibar(50);
         } else if (getPing(p) <= 700 && getPing(p) > 600) {
-            return bar(60);
+            return asciibar(60);
         } else if (getPing(p) <= 800 && getPing(p) > 700) {
-            return bar(70);
+            return asciibar(70);
         } else if (getPing(p) <= 900 && getPing(p) > 800) {
-            return bar(80);
+            return asciibar(80);
         } else if (getPing(p) <= 1000 && getPing(p) > 900) {
-            return bar(90);
+            return asciibar(90);
         } else {
-            return bar(100);
+            return asciibar(100);
         }
     }
 
@@ -139,5 +143,17 @@ public class Utils {
         }
     }
 
-
+    public static void reload() {
+        Bukkit.getScheduler().cancelAllTasks();
+        TrilliumAPI.getInstance().reloadConfig();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
+                Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AutoBroadcastRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Broadcast.FREQUENCY)));
+                Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AFKRunnable(), 1, 20);
+                Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new GroupManagerRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.GM.RELOAD)));
+            }
+        }.runTaskLater(TrilliumAPI.getInstance(), 5);
+    }
 }

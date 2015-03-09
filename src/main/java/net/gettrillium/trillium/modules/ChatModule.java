@@ -123,22 +123,22 @@ public class ChatModule extends TrilliumModule {
         if (cs.hasPermission(Permission.Admin.TRILLIUM)) {
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
             cs.sendMessage(ChatColor.GRAY + "            Plugin made with love by:");
-            cs.sendMessage(ChatColor.GRAY + "         LordSaad, VortexSeven, Turbotailz,");
-            cs.sendMessage(ChatColor.GRAY + "                 samczsun, and hintss");
-            cs.sendMessage(ChatColor.DARK_RED + "                       ❤");
+            cs.sendMessage(ChatColor.GRAY + "       LordSaad, VortexSeven, Turbotailz,");
+            cs.sendMessage(ChatColor.GRAY + "                samczsun, and hintss");
+            cs.sendMessage(ChatColor.DARK_RED + "                          ❤");
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
             cs.sendMessage(ChatColor.GRAY + "Vesion: " + TrilliumAPI.getInstance().getDescription().getVersion());
             cs.sendMessage(ChatColor.GRAY + "Configuration Reloaded");
             cs.sendMessage(ChatColor.GRAY + "Support email: support@gettrillium.net");
             cs.sendMessage(ChatColor.GRAY + "Website: http://www.gettrillium.net/");
             cs.sendMessage(ChatColor.GRAY + "Resource page: http://www.spigotmc.org/resources/trillium.3882/");
-            TrilliumAPI.getInstance().reloadConfig();
+            Utils.reload();
         } else {
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
             cs.sendMessage(ChatColor.GRAY + "            Plugin made with love by:");
-            cs.sendMessage(ChatColor.GRAY + "         LordSaad, VortexSeven, Turbotailz,");
-            cs.sendMessage(ChatColor.GRAY + "                 samczsun, and hintss");
-            cs.sendMessage(ChatColor.DARK_RED + "                       ❤");
+            cs.sendMessage(ChatColor.GRAY + "       LordSaad, VortexSeven, Turbotailz,");
+            cs.sendMessage(ChatColor.GRAY + "                samczsun, and hintss");
+            cs.sendMessage(ChatColor.DARK_RED + "                          ❤");
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
             cs.sendMessage(ChatColor.GRAY + "Vesion: " + TrilliumAPI.getInstance().getDescription().getVersion());
             cs.sendMessage(ChatColor.GRAY + "Support email: support@gettrillium.net");
@@ -342,7 +342,7 @@ public class ChatModule extends TrilliumModule {
 
     @Command(command = "chatchannel", description = "Talk to a group of people in private.", usage = "/cc <channel> <msg>", aliases = "cc")
     public void chatchannel(CommandSender cs, String[] args) {
-        if (getConfig().getBoolean(Configuration.Server.CCENABLED)) {
+        if (getConfig().getBoolean(Configuration.Chat.CCENABLED)) {
             if (cs instanceof Player) {
                 TrilliumPlayer p = player((Player) cs);
                 if (args.length >= 2) {
@@ -352,18 +352,19 @@ public class ChatModule extends TrilliumModule {
                             if (pl.hasPermission(Permission.Chat.CHATCHANNEL + args[0])) {
 
                                 StringBuilder sb = new StringBuilder();
-                                for (int i = 1; i <= args.length; i++) {
-                                    sb.append(i).append(" ");
+                                for (int i = 1; i < args.length; i++) {
+                                    sb.append(args[i]).append(" ");
                                 }
 
                                 String msg = sb.toString().trim();
-                                String f = getConfig().getString(Configuration.Server.CCFORMAT);
+
+                                String f = getConfig().getString(Configuration.Chat.CCFORMAT);
 
                                 f = f.replace("[CHANNELNAME]", args[0]);
                                 f = f.replace("[USERNAME]", p.getProxy().getName());
                                 f = f.replace("[MESSAGE]", msg);
-                                if (getConfig().getBoolean(Configuration.Server.CCCOLOR)) {
-                                    f = ChatColor.translateAlternateColorCodes('&', msg);
+                                if (getConfig().getBoolean(Configuration.Chat.CCCOLOR)) {
+                                    f = ChatColor.translateAlternateColorCodes('&', f);
                                 }
 
                                 pl.getProxy().sendMessage(f);

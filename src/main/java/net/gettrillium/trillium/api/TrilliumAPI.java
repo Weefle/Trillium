@@ -36,7 +36,7 @@ public class TrilliumAPI {
             TrilliumAPI.modules = new HashMap<>();
 
             TrilliumAPI.instance.saveDefaultConfig();
-            TrilliumAPI.playerFolder = new File(getInstance().getDataFolder(), "players");
+            TrilliumAPI.playerFolder = new File(getInstance().getDataFolder(), "Player Database");
             playerFolder.mkdirs();
         } else {
             throw new IllegalStateException("Cannot set instance of TrilliumAPI");

@@ -149,9 +149,7 @@ public class TeleportModule extends TrilliumModule {
                     return;
                 }
 
-                int x;
-                int y;
-                int z;
+                int x, y, z;
 
                 if (xArg.substring(1).equals("") || xArg.substring(1).equals(" ")) {
                     x = 0;
@@ -162,13 +160,13 @@ public class TeleportModule extends TrilliumModule {
                 if (yArg.substring(1).equals("") || yArg.substring(1).equals(" ")) {
                     y = 0;
                 } else {
-                    y = Integer.parseInt(xArg.substring(1));
+                    y = Integer.parseInt(yArg.substring(1));
                 }
 
                 if (zArg.substring(1).equals("") || zArg.substring(1).equals(" ")) {
                     z = 0;
                 } else {
-                    z = Integer.parseInt(xArg.substring(1));
+                    z = Integer.parseInt(zArg.substring(1));
                 }
 
                 Location loc = p.getProxy().getLocation();

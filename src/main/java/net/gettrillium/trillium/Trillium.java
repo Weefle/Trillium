@@ -43,6 +43,13 @@ public class Trillium extends JavaPlugin {
 
         Utils.reload();
 
+        try {
+            Metrics metrics = new Metrics(this);
+            metrics.start();
+        } catch (IOException e) {
+            TrilliumAPI.getInstance().getLogger().warning("Failed to send plugin metrics... :(");
+        }
+
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         getLogger().info("        Plugin made with love by:");
         getLogger().info("    LordSaad, VortexSeven, Turbotailz,");

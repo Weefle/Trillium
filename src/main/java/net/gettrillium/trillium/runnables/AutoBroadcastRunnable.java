@@ -12,17 +12,16 @@ public class AutoBroadcastRunnable implements Runnable {
     private int queue = 1;
 
     public void run() {
-        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {
-            for (int i : TrilliumAPI.getInstance().getConfig().getIntegerList(Configuration.Broadcast.AUTO_BROADCASTS)) {
-                if (i == this.queue) {
-                    this.queue = i + 1;
-                    List<String> list = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Broadcast.AUTO_BROADCASTS + "." + i);
-                    for (String s : list) {
-                        s = ChatColor.translateAlternateColorCodes('&', s);
-                        Bukkit.broadcastMessage(s);
-                    }
+        for (int i : TrilliumAPI.getInstance().getConfig().getIntegerList(Configuration.Broadcast.AUTO_BROADCASTS)) {
+            if (i == this.queue) {
+                this.queue = i + 1;
+                List<String> list = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Broadcast.AUTO_BROADCASTS + "." + i);
+                for (String s : list) {
+                    s = ChatColor.translateAlternateColorCodes('&', s);
+                    Bukkit.broadcastMessage(s);
                 }
             }
+
         }
     }
 }

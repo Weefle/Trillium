@@ -24,9 +24,10 @@ public class CoreModule extends TrilliumModule {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
-        TrilliumAPI.createNewPlayer(e.getPlayer());
-
         Player p = e.getPlayer();
+
+        TrilliumAPI.loadPlayer(e.getPlayer());
+        
         String joinMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.JOINMESSAGE));
         joinMessage = joinMessage.replace("[USERNAME]", p.getName());
         e.setJoinMessage(joinMessage);
@@ -63,7 +64,8 @@ public class CoreModule extends TrilliumModule {
         String quitMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.LEAVEMESSAGE));
         quitMessage = quitMessage.replace("[USERNAME]", p.getName());
         e.setQuitMessage(quitMessage);
-        
-        TrilliumAPI.getPlayer(e.getPlayer().getName()).dispose();
+
+        TrilliumAPI.disposePlayer(p);
     }
+
 }

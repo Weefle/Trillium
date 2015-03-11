@@ -30,11 +30,7 @@ public class TrilliumPlayer {
     public TrilliumPlayer(Player proxy) {
         this.proxy = proxy;
         this.nickname = proxy.getName();
-        try {
-            load();
-        } catch (IOException e) {
-            TrilliumAPI.getInstance().getLogger().warning("Failed to generate player: " + proxy.getName() + "'s files! Something went wrong.");
-        }
+        load();
     }
 
     public Player getProxy() {
@@ -54,16 +50,16 @@ public class TrilliumPlayer {
         }
     }
 
-    public long getInactiveTime() {
-        return System.currentTimeMillis() - lastActive;
-    }
-
     public void active() {
         if (isAfk() && !isVanished()) {
             toggleAfk();
         }
 
         lastActive = System.currentTimeMillis();
+    }
+
+    public long getLastActive() {
+        return this.lastActive;
     }
 
     public boolean isMuted() {
@@ -144,11 +140,15 @@ public class TrilliumPlayer {
         proxy = null;
     }
 
-    private void load() throws IOException {
+    public void load() {
         boolean newUser = false;
         File dataStore = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
         if (!dataStore.exists()) {
-            dataStore.createNewFile();
+            try {
+                dataStore.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             newUser = true;
         }
 

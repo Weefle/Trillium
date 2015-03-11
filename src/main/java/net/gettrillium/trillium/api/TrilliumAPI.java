@@ -19,7 +19,7 @@ import java.util.Map;
 public class TrilliumAPI {
     private static Trillium instance;
     private static File playerFolder;
-    private static Map<String, TrilliumPlayer> players;
+    private static Map<String, TrilliumPlayer> players; // TODO: convert to UUID...
     private static Map<Class<?>, Serializer<?>> serializers;
     private static Map<Class<? extends TrilliumModule>, TrilliumModule> modules;
 
@@ -47,13 +47,15 @@ public class TrilliumAPI {
         return players.get(name);
     }
 
-    public static TrilliumPlayer createNewPlayer(Player proxy) {
+    public static TrilliumPlayer getPlayer(Player player) {
+        return players.get(player.getName());
+    }
+
+    public static void loadPlayer(Player proxy) {
         if (!players.containsKey(proxy.getName())) {
             TrilliumPlayer p = new TrilliumPlayer(proxy);
+            p.load();
             players.put(proxy.getName(), p);
-            return p;
-        } else {
-            throw new IllegalStateException(String.format("TrilliumPlayer %s already exists", proxy.getName()));
         }
     }
 
@@ -61,13 +63,15 @@ public class TrilliumAPI {
         if (players.containsKey(proxy.getName())) {
             TrilliumPlayer player = players.remove(proxy.getName());
             player.dispose();
-        } else {
-            throw new IllegalStateException(String.format("TrilliumPlayer %s does not exist", proxy.getName()));
-        }
+        } // else { means that they are already unloaded... right?
     }
 
     public static File getPlayerFolder() {
         return playerFolder;
+    }
+
+    public static boolean isLoaded(Player p) {
+        return players.containsKey(p.getName());
     }
 
     @SuppressWarnings("unchecked")

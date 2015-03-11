@@ -110,6 +110,8 @@ public class Utils {
         int hours = 0;
         int minutes = 0;
         int days = 0;
+        int week = 0;
+        int year = 0;
 
         if (time.contains("s")) {
             if (StringUtils.isNumeric(time.split("s")[0])) {
@@ -132,7 +134,20 @@ public class Utils {
             }
         }
 
-        return (seconds * 20) + (hours * 3600 * 20) + (minutes * 60 * 20) + (days * 86400 * 20);
+        if (time.contains("w")) {
+            if (StringUtils.isNumeric(time.split("w")[0])) {
+                week = Integer.parseInt(time.split("w")[0]);
+            }
+        }
+
+        if (time.contains("y")) {
+            if (StringUtils.isNumeric(time.split("y")[0])) {
+                year = Integer.parseInt(time.split("y")[0]);
+            }
+        }
+
+        // dem numbers
+        return (seconds * 20) + (hours * 3600 * 20) + (minutes * 60 * 20) + (days * 86400 * 20) + (week * 604800 * 20) + (year * 31536000 * 20);
     }
 
     public static void broadcastImportantMessage() {

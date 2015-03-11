@@ -33,10 +33,10 @@ public class Kit {
     public List<ItemStack> getItems() {
         ArrayList<ItemStack> stacks = new ArrayList<>();
 
-        for (String items : TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Kit.KIT_MAKER + this.name + ".items")) {
+        for (String items : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER + this.name + ".items").getKeys(false)) {
             Material mat = Material.getMaterial(items);
             if (mat != null) {
-                for (String data : TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Kit.KIT_MAKER + this.name + ".items." + items)) {
+                for (String data : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER + this.name + ".items." + items).getKeys(false)) {
 
                     String name;
                     int durability;

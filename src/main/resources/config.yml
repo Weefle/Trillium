@@ -186,27 +186,27 @@ player-settings:
 kits:
   enabled: false
   kit-maker:
-    "test-kit-1":
+    test-kit-1:
       cool-down: 10d
       items:
-        - stone_sword:
-          - name: "&aThe mighty half broken stone sword"
-          - durability: 50
-        - stone_pickaxe:
-          - name: "&aA cool pick"
-        - stone_axe:
-          - name: "&aWood Chopa"
-        - stone_shovel:
-          - name: "&aDiggy diggy hole"
-        - apple:
-          - name: "&4Yummy fresh apples"
-          - lore: "&aSome say that these apples;&awhere indorced from the;&aheavens!"
-          - amount: 20
-        - written_book:
-          - book: "example-book.txt"
-          - title: "&b&lWELCOME GUIDE"
-          - author: "Santa"
-          - lore: "&eThe awesome example guide!;&eSome say that Santa himself wrote this book!"
+        stone_sword:
+          name: "&aThe mighty half broken stone sword"
+          durability: 50
+        stone_pickaxe:
+          name: "&aA cool pick"
+        stone_axe:
+          name: "&aWood Chopa"
+        stone_shovel:
+          name: "&aDiggy diggy hole"
+        apple:
+          name: "&4Yummy fresh apples"
+          lore: "&aSome say that these apples;&awhere indorced from the;&aheavens!"
+          amount: 20
+        written_book:
+          book: "example-book.txt"
+          title: "&b&lWELCOME GUIDE"
+          author: "Santa"
+          lore: "&eThe awesome example guide!;&eSome say that Santa himself wrote this book!"
           
 #---------------[ Ability ]---------------#
 ability:

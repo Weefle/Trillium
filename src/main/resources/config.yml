@@ -104,10 +104,10 @@ broadcast:
     # You can add more by adding to the below pattern.
     # To add more broacasts, you HAVE to add to the incrementing numbers. They represent the queue
       1:
-        - "&8[&a*&8]&b&m---------------&8[ &a&lAuto Broadcast1 &8]&b&m---------------&8[&a*&8]"
+        - "&8[&a*&8]&b&m--------------&8[ &a&lAuto Broadcast1 &8]&b&m--------------&8[&a*&8]"
         - "&9 Lorem ipsum dolor sit amet."
       2:
-        - "&8[&a*&8]&b&m---------------&8[ &a&lAuto Broadcast2 &8]&b&m---------------&8[&a*&8]"
+        - "&8[&a*&8]&b&m--------------&8[ &a&lAuto Broadcast2 &8]&b&m--------------&8[&a*&8]"
         - "&9 Trillium is awesome."
   important-broadcast:
     enabled: false

@@ -13,9 +13,10 @@ import java.util.TreeSet;
 public class AutoBroadcastRunnable implements Runnable {
 
     private int queue = 1;
-    private SortedSet<Integer> set = new TreeSet<>();
 
     public void run() {
+        SortedSet<Integer> set = new TreeSet<>();
+
         for (String i : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Configuration.Broadcast.AUTO_BROADCASTS).getKeys(false)) {
             if (StringUtils.isNumeric(i)) {
 
@@ -23,17 +24,22 @@ public class AutoBroadcastRunnable implements Runnable {
 
                 if (Integer.parseInt(i) == this.queue) {
                     if (set.last() == this.queue) {
-                        this.queue = 1;
+                        if (this.queue != 1) {
+                            this.queue = 1;
+                        } else {
+                            this.queue = Integer.parseInt(i) + 1;
+                        }
                     } else {
                         this.queue = Integer.parseInt(i) + 1;
                     }
-                    List<String> list = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Broadcast.AUTO_BROADCASTS + "." + i);
-                    for (String s : list) {
-                        s = ChatColor.translateAlternateColorCodes('&', s);
-                        Bukkit.broadcastMessage(s);
-                    }
                 }
             }
+        }
+
+        List<String> list = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Broadcast.AUTO_BROADCASTS + "." + this.queue);
+        for (String s : list) {
+            s = ChatColor.translateAlternateColorCodes('&', s);
+            Bukkit.broadcastMessage(s);
         }
     }
 }

@@ -10,12 +10,9 @@
 # http://www.gettrillium.net/
 # It's a GUI with buttons to configure everything.
 
-# If you have any questions or refuse to download the software and have a problem,
+# If you have any questions or refuse to download the software or experiencing problems with it,
 # then please consider contacting us on our support email
 # support@gettrillium.net
-
-# Color code guide:
-# http://gettrillium.net/colors
 
 # If you are looking for a specific option here, do CTRL + F and search for it's keyword.
 
@@ -25,7 +22,7 @@
 # There are 2 spaces between every sub-option
 # ex:  |a:
 # ex:  |  |a.b:
-# ex:  |  |  |a.b.c: (...)
+# ex:  |  |  |a.b.c:
 # ex:  |  |  |  |a.b.c.d: (...)
 
 #---------------[ Server ]---------------#
@@ -105,11 +102,11 @@ broadcast:
     # You can use s for seconds, m for minutes, and h for hours.
     broadcasts:
     # You can add more by adding to the below pattern.
-    # To add more broacasts, you HAVE to add to the incrememnting numbers. They represent the queue
-      - 1:
+    # To add more broacasts, you HAVE to add to the incrementing numbers. They represent the queue
+      1:
         - "&8[&a*&8]&b&m---------------&8[ &a&lAuto Broadcast1 &8]&b&m---------------&8[&a*&8]"
         - "&9 Lorem ipsum dolor sit amet."
-      - 2:
+      2:
         - "&8[&a*&8]&b&m---------------&8[ &a&lAuto Broadcast2 &8]&b&m---------------&8[&a*&8]"
         - "&9 Trillium is awesome."
   important-broadcast:

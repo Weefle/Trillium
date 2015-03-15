@@ -47,8 +47,8 @@ public class CoreModule extends TrilliumModule {
         //Send report warning
         if (p.hasPermission(Permission.Admin.REPORT_RECEIVER)) {
             if (AdminModule.reportlist.size() > 0) {
-                Message.m(Type.W, p, "Reports", true, "There are " + AdminModule.reportlist.size() + " reports available for revision.");
-                Message.m(Type.W, p, "Reports", true, "/reports to view them.");
+                Message.message(Type.WARNING, p, "Reports", true, "There are " + AdminModule.reportlist.size() + " reports available for revision.");
+                Message.message(Type.WARNING, p, "Reports", true, "/reports to view them.");
             }
         }
 

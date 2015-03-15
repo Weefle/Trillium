@@ -41,7 +41,7 @@ public class AdminModule extends TrilliumModule {
                     if (StringUtils.isNumeric(args[0])) {
                         radius = Integer.parseInt(args[0]);
                     } else {
-                        Message.m(Type.W, cs, "Chest Finder", true, args[0] + " is not a number. Setting radius to 50");
+                        Message.message(Type.WARNING, cs, "Chest Finder", true, args[0] + " is not a number. Setting radius to 50");
                         radius = 50;
                     }
                 } else {
@@ -63,7 +63,7 @@ public class AdminModule extends TrilliumModule {
 
                 if (!chests.isEmpty()) {
                     for (Location b : chests) {
-                        Message.m(Type.G, p.getProxy(), "Chest Finder", true, b.getX() + ", " + b.getY() + ", " + b.getZ());
+                        Message.message(Type.GOOD, p.getProxy(), "Chest Finder", true, b.getX() + ", " + b.getY() + ", " + b.getZ());
                     }
 
                     new BukkitRunnable() {
@@ -98,13 +98,13 @@ public class AdminModule extends TrilliumModule {
                     }.runTaskTimer(TrilliumAPI.getInstance(), 5, 5);
 
                 } else {
-                    Message.m(Type.W, p.getProxy(), "Chest Finder", true, "No chests found.");
+                    Message.message(Type.WARNING, p.getProxy(), "Chest Finder", true, "No chests found.");
                 }
             } else {
-                Message.e("Chest Finder", cs);
+                Message.error("Chest Finder", cs);
             }
         } else {
-            Message.e("Chest Finder", cs);
+            Message.error("Chest Finder", cs);
         }
     }
 
@@ -115,13 +115,13 @@ public class AdminModule extends TrilliumModule {
             if (p.hasPermission(Permission.Admin.SETSPAWN)) {
 
                 p.getProxy().getWorld().setSpawnLocation(p.getProxy().getLocation().getBlockX(), p.getProxy().getLocation().getBlockY(), p.getProxy().getLocation().getBlockZ());
-                Message.m(Type.G, p.getProxy(), "Set Spawn", true, "Spawn location set. " + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ());
+                Message.message(Type.GOOD, p.getProxy(), "Set Spawn", true, "Spawn location set. " + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ());
 
             } else {
-                Message.e("Set Spawn", cs);
+                Message.error("Set Spawn", cs);
             }
         } else {
-            Message.e("Set Spawn", cs);
+            Message.error("Set Spawn", cs);
         }
     }
 
@@ -133,33 +133,33 @@ public class AdminModule extends TrilliumModule {
 
                     final long time = System.currentTimeMillis();
 
-                    Message.m(Type.R, cs, "Lag", true, "Before GC:");
+                    Message.message(Type.GENERIC, cs, "Lag", true, "Before GC:");
                     Utils.printCurrentMemory(cs);
                     cs.sendMessage(" ");
 
                     System.gc();
-                    Message.m(Type.G, cs, "Lag", true, "GC complete.");
+                    Message.message(Type.GOOD, cs, "Lag", true, "GC complete.");
 
                     new BukkitRunnable() {
                         @Override
                         public void run() {
                             cs.sendMessage(" ");
-                            Message.m(Type.R, cs, "Lag", true, "After GC:");
+                            Message.message(Type.GENERIC, cs, "Lag", true, "After GC:");
                             Utils.printCurrentMemory(cs);
 
                             long need = System.currentTimeMillis() - time;
-                            Message.m(Type.R, cs, "Lag", true, "GC took " + need / 1000L + " seconds.");
+                            Message.message(Type.GENERIC, cs, "Lag", true, "GC took " + need / 1000L + " seconds.");
 
                         }
                     }.runTaskLater(TrilliumAPI.getInstance(), 5);
                 }
             } else {
 
-                Message.m(Type.R, cs, "Lag", true, "Server Statistics:");
+                Message.message(Type.GENERIC, cs, "Lag", true, "Server Statistics:");
                 Utils.printCurrentMemory(cs);
             }
         } else {
-            Message.e("Lag", cs);
+            Message.error("Lag", cs);
         }
     }
 
@@ -169,7 +169,7 @@ public class AdminModule extends TrilliumModule {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Admin.KILLALL)) {
                 if (args.length <= 1) {
-                    Message.e(p.getProxy(), "Killall", true, "/killall <radius> <mobs/players/animals/monsters/items/everything>");
+                    Message.error(p.getProxy(), "Killall", true, "/killall <radius> <mobs/players/animals/monsters/items/everything>");
                 } else {
                     if (StringUtils.isNumeric(args[0])) {
                         List<Entity> entities = p.getProxy().getNearbyEntities(Double.parseDouble(args[0]), Double.parseDouble(args[0]), Double.parseDouble(args[0]));
@@ -177,11 +177,11 @@ public class AdminModule extends TrilliumModule {
                                 || args[1].equalsIgnoreCase("animals")
                                 || args[1].equalsIgnoreCase("players")
                                 || args[1].equalsIgnoreCase("monsters")) {
-                            Message.m(Type.G, p.getProxy(), "Killall", true, "Successfully murdered all " + args[1] + " in a radius of " + args[0]);
+                            Message.message(Type.GOOD, p.getProxy(), "Killall", true, "Successfully murdered all " + args[1] + " in a radius of " + args[0]);
                         } else if (args[1].equalsIgnoreCase("items")) {
-                            Message.m(Type.G, p.getProxy(), "Killall", true, "Successfully destroyed all items in a radius of " + args[0]);
+                            Message.message(Type.GOOD, p.getProxy(), "Killall", true, "Successfully destroyed all items in a radius of " + args[0]);
                         } else if (args[1].equalsIgnoreCase("everything")) {
-                            Message.m(Type.G, p.getProxy(), "Killall", true, "Successfully destroyed and murdered everything... you monster...");
+                            Message.message(Type.GOOD, p.getProxy(), "Killall", true, "Successfully destroyed and murdered everything... you monster...");
                         } else {
                             p.getProxy().sendMessage("");
                         }
@@ -213,18 +213,18 @@ public class AdminModule extends TrilliumModule {
                                     e.remove();
                                 }
                             } else {
-                                Message.m(Type.W, p.getProxy(), "Killall", true, "Unknown argument: " + args[1]);
+                                Message.message(Type.WARNING, p.getProxy(), "Killall", true, "Unknown argument: " + args[1]);
                             }
                         }
                     } else {
-                        Message.m(Type.W, p.getProxy(), "Killall", true, args[0] + " is not a number.");
+                        Message.message(Type.WARNING, p.getProxy(), "Killall", true, args[0] + " is not a number.");
                     }
                 }
             } else {
-                Message.e("Killall", cs);
+                Message.error("Killall", cs);
             }
         } else {
-            Message.e("Killall", cs);
+            Message.error("Killall", cs);
         }
     }
 
@@ -236,9 +236,9 @@ public class AdminModule extends TrilliumModule {
                 if (args[0].equalsIgnoreCase("crafting") || args[0].equalsIgnoreCase("cv")) {
                     if (p.hasPermission(Permission.Admin.INV_CRAFTING)) {
                         p.getProxy().openWorkbench(p.getProxy().getLocation(), true);
-                        Message.m(Type.G, p.getProxy(), "Inventory", true, "Now viewing a crafting table.");
+                        Message.message(Type.GOOD, p.getProxy(), "Inventory", true, "Now viewing a crafting table.");
                     } else {
-                        Message.e("Inventory", cs);
+                        Message.error("Inventory", cs);
                     }
                 } else {
                     if (p.hasPermission(Permission.Admin.INV_PLAYER)) {
@@ -246,12 +246,12 @@ public class AdminModule extends TrilliumModule {
 
                         if (target != null) {
                             p.getProxy().openInventory(target.getProxy().getInventory());
-                            Message.m(Type.G, p.getProxy(), "Inventory", true, "You are now viewing " + target.getProxy().getName() + "'s inventory");
+                            Message.message(Type.GOOD, p.getProxy(), "Inventory", true, "You are now viewing " + target.getProxy().getName() + "'s inventory");
                         } else {
-                            Message.e("Inventory", cs, args[0]);
+                            Message.error("Inventory", cs, args[0]);
                         }
                     } else {
-                        Message.e("Inventory", cs);
+                        Message.error("Inventory", cs);
                     }
                 }
 
@@ -262,22 +262,22 @@ public class AdminModule extends TrilliumModule {
 
                         if (target != null) {
                             p.getProxy().openInventory(target.getProxy().getEnderChest());
-                            Message.m(Type.G, p.getProxy(), "Inventory", true, "Now viewing " + args[0] + "'s ender chest.");
+                            Message.message(Type.GOOD, p.getProxy(), "Inventory", true, "Now viewing " + args[0] + "'s ender chest.");
 
                         } else {
-                            Message.e("Inventory", cs, args[0]);
+                            Message.error("Inventory", cs, args[0]);
                         }
                     } else {
-                        Message.e("Inventory", cs);
+                        Message.error("Inventory", cs);
                     }
                 } else {
-                    Message.e(cs, "Inventory", false, "/inventory <player [enderchest]/crafting>");
+                    Message.error(cs, "Inventory", false, "/inventory <player [enderchest]/crafting>");
                 }
             } else {
-                Message.e(cs, "Inventory", true, "/inventory <player [enderchest]/crafting>");
+                Message.error(cs, "Inventory", true, "/inventory <player [enderchest]/crafting>");
             }
         } else {
-            Message.e("Inventory", cs);
+            Message.error("Inventory", cs);
         }
     }
 
@@ -304,25 +304,25 @@ public class AdminModule extends TrilliumModule {
                             + ChatColor.GRAY + msg;
 
                     reportlist.add(big);
-                    Message.m(Type.G, p.getProxy(), "Report", true, "Your report was submitted successfully.");
+                    Message.message(Type.GOOD, p.getProxy(), "Report", true, "Your report was submitted successfully.");
                     p.getProxy().sendMessage(ChatColor.YELLOW + "'" + ChatColor.GRAY + msg + ChatColor.YELLOW + "'");
 
                     for (TrilliumPlayer pl : TrilliumAPI.getOnlinePlayers()) {
                         if (pl.hasPermission(Permission.Admin.REPORT_RECEIVER) && !pl.getProxy().getName().equals(p.getProxy().getName())) {
 
-                            Message.m(Type.W, pl.getProxy(), "Report", true, "A new report was submitted by: " + p.getProxy().getName());
+                            Message.message(Type.WARNING, pl.getProxy(), "Report", true, "A new report was submitted by: " + p.getProxy().getName());
                             pl.getProxy().sendMessage(big);
-                            Message.m(Type.R, pl.getProxy(), "Report", true, "/reports for a list of all reports.");
+                            Message.message(Type.GENERIC, pl.getProxy(), "Report", true, "/reports for a list of all reports.");
                         }
                     }
                 } else {
-                    Message.m(Type.W, p.getProxy(), "Report", true, "What's your report? /report <msg>");
+                    Message.message(Type.WARNING, p.getProxy(), "Report", true, "What's your report? /report <msg>");
                 }
             } else {
-                Message.e("Report", cs);
+                Message.error("Report", cs);
             }
         } else {
-            Message.e("Report", cs);
+            Message.error("Report", cs);
         }
     }
 
@@ -334,28 +334,28 @@ public class AdminModule extends TrilliumModule {
                 if (args.length != 0) {
                     if (args[0].equalsIgnoreCase("clear")) {
                         reportlist.clear();
-                        Message.m(Type.G, p.getProxy(), "Reports", true, "Cleared Report List.");
+                        Message.message(Type.GOOD, p.getProxy(), "Reports", true, "Cleared Report List.");
 
                     } else if (args[0].equalsIgnoreCase("remove")) {
                         if (args.length < 2) {
-                            Message.e(p.getProxy(), "Reports", true, "/reports remove <index number>");
+                            Message.error(p.getProxy(), "Reports", true, "/reports remove <index number>");
                         } else {
                             if (StringUtils.isNumeric(args[1])) {
                                 int nb = Integer.parseInt(args[1]);
                                 if (nb > 0 && nb <= reportlist.size() + 1) {
-                                    Message.m(Type.G, p.getProxy(), "Reports", true, "Removed: " + nb);
+                                    Message.message(Type.GOOD, p.getProxy(), "Reports", true, "Removed: " + nb);
                                     p.getProxy().sendMessage(reportlist.get(nb - 1));
                                     reportlist.remove(nb - 1);
 
                                 } else {
-                                    Message.m(Type.W, p.getProxy(), "Reports", true, args[1] + " is either larger than the list index or smaller than 0");
+                                    Message.message(Type.WARNING, p.getProxy(), "Reports", true, args[1] + " is either larger than the list index or smaller than 0");
                                 }
                             } else {
-                                Message.m(Type.W, p.getProxy(), "Reports", true, args[1] + " is not a number.");
+                                Message.message(Type.WARNING, p.getProxy(), "Reports", true, args[1] + " is not a number.");
                             }
                         }
                     } else {
-                        Message.e(p.getProxy(), "Reports", true, "/reports [remove <index>/clear]");
+                        Message.error(p.getProxy(), "Reports", true, "/reports [remove <index>/clear]");
                     }
 
                 } else {
@@ -367,10 +367,10 @@ public class AdminModule extends TrilliumModule {
                     }
                 }
             } else {
-                Message.e("Report", cs);
+                Message.error("Report", cs);
             }
         } else {
-            Message.e("Report", cs);
+            Message.error("Report", cs);
         }
     }
 }

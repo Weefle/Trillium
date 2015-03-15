@@ -23,9 +23,9 @@ public class KitModule extends TrilliumModule {
             if (cs instanceof Player) {
                 TrilliumPlayer p = player((Player) cs);
                 if (args.length == 0) {
-                    Message.m(Type.R, p.getProxy(), "Kit", true, "Available kits:");
+                    Message.message(Type.GENERIC, p.getProxy(), "Kit", true, "Available kits:");
                     for (String s : getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER).getKeys(false)) {
-                        Message.m(Type.R, p.getProxy(), "Kit", true, s);
+                        Message.message(Type.GENERIC, p.getProxy(), "Kit", true, s);
                     }
                 } else {
                     if (getConfig().getStringList(Configuration.Kit.KIT_MAKER).contains(args[0])) {
@@ -34,20 +34,20 @@ public class KitModule extends TrilliumModule {
                             Kit kit = new Kit(args[0]);
                             kit.giveTo(p.getProxy());
 
-                            Message.m(Type.G, p.getProxy(), "Kit", true, "You successfully received kit: " + args[0]);
+                            Message.message(Type.GOOD, p.getProxy(), "Kit", true, "You successfully received kit: " + args[0]);
 
                         } else {
-                            Message.m(Type.W, p.getProxy(), "KIT", true, "You don't have permission to use that kit.");
+                            Message.message(Type.WARNING, p.getProxy(), "KIT", true, "You don't have permission to use that kit.");
                         }
                     } else {
-                        Message.m(Type.W, p.getProxy(), "KIT", true, args[0] + " is not a valid kit.");
+                        Message.message(Type.WARNING, p.getProxy(), "KIT", true, args[0] + " is not a valid kit.");
                     }
                 }
             } else {
-                Message.e("Kit", cs);
+                Message.error("Kit", cs);
             }
         } else {
-            Message.m(Type.W, cs, "Kit", true, "This feature is disabled.");
+            Message.message(Type.WARNING, cs, "Kit", true, "This feature is disabled.");
         }
     }
 }

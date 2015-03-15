@@ -33,10 +33,10 @@ public class GroupManagerModule extends TrilliumModule {
                                 GroupManager manager = new GroupManager(p.getProxy());
                                 manager.addPermission(args[3]);
                                 manager.addPermissionPlayer(args[3]);
-                                Message.m(Type.G, cs, "TGM", true, "Added permission: " + ChatColor.AQUA + args[3]);
-                                Message.m(Type.G, cs, "TGM", true, "to player: " + ChatColor.AQUA + p.getProxy().getName());
+                                Message.message(Type.GOOD, cs, "TGM", true, "Added permission: " + ChatColor.AQUA + args[3]);
+                                Message.message(Type.GOOD, cs, "TGM", true, "to player: " + ChatColor.AQUA + p.getProxy().getName());
                             } else {
-                                Message.e("TGM", cs, args[2]);
+                                Message.error("TGM", cs, args[2]);
                             }
                         } else if (args[1].equalsIgnoreCase("group") || args[1].equalsIgnoreCase("g")) {
                             TrilliumPlayer p = player(args[2]);
@@ -44,13 +44,13 @@ public class GroupManagerModule extends TrilliumModule {
                                 GroupManager manager = new GroupManager(p.getProxy());
                                 manager.addPermission(args[3]);
                                 manager.addPermissionGroup(args[3]);
-                                Message.m(Type.G, cs, "TGM", true, "Added permission: " + ChatColor.AQUA + args[3]);
-                                Message.m(Type.G, cs, "TGM", true, "to group: " + ChatColor.AQUA + manager.getGroup());
+                                Message.message(Type.GOOD, cs, "TGM", true, "Added permission: " + ChatColor.AQUA + args[3]);
+                                Message.message(Type.GOOD, cs, "TGM", true, "to group: " + ChatColor.AQUA + manager.getGroup());
                             } else {
-                                Message.e("TGM", cs, args[2]);
+                                Message.error("TGM", cs, args[2]);
                             }
                         } else {
-                            Message.e(cs, "TGM", false, "/tgm <add/remove> <player/group> <permission>");
+                            Message.error(cs, "TGM", false, "/tgm <add/remove> <player/group> <permission>");
                         }
                     } else if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("r")) {
                         if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
@@ -59,10 +59,10 @@ public class GroupManagerModule extends TrilliumModule {
                                 GroupManager manager = new GroupManager(p.getProxy());
                                 manager.removePermission(args[3]);
                                 manager.removePermissionPlayer(args[3]);
-                                Message.m(Type.G, cs, "TGM", true, "Removed permission: " + ChatColor.AQUA + args[3]);
-                                Message.m(Type.G, cs, "TGM", true, "from player: " + ChatColor.AQUA + p.getProxy().getName());
+                                Message.message(Type.GOOD, cs, "TGM", true, "Removed permission: " + ChatColor.AQUA + args[3]);
+                                Message.message(Type.GOOD, cs, "TGM", true, "from player: " + ChatColor.AQUA + p.getProxy().getName());
                             } else {
-                                Message.e("TGM", cs, args[2]);
+                                Message.error("TGM", cs, args[2]);
                             }
                         } else if (args[1].equalsIgnoreCase("group") || args[1].equalsIgnoreCase("g")) {
                             TrilliumPlayer p = player(args[2]);
@@ -70,25 +70,25 @@ public class GroupManagerModule extends TrilliumModule {
                                 GroupManager manager = new GroupManager(p.getProxy());
                                 manager.removePermission(args[3]);
                                 manager.removePermissionGroup(args[3]);
-                                Message.m(Type.G, cs, "TGM", true, "Removed permission: " + ChatColor.AQUA + args[3]);
-                                Message.m(Type.G, cs, "TGM", true, "from group: " + ChatColor.AQUA + manager.getGroup());
+                                Message.message(Type.GOOD, cs, "TGM", true, "Removed permission: " + ChatColor.AQUA + args[3]);
+                                Message.message(Type.GOOD, cs, "TGM", true, "from group: " + ChatColor.AQUA + manager.getGroup());
                             } else {
-                                Message.e("TGM", cs, args[2]);
+                                Message.error("TGM", cs, args[2]);
                             }
                         } else {
-                            Message.e(cs, "TGM", false, "/tgm <add/remove> <player/group> <permission>");
+                            Message.error(cs, "TGM", false, "/tgm <add/remove> <player/group> <permission>");
                         }
                     } else {
-                        Message.e(cs, "TGM", false, "/tgm <add/remove> <player/group> <permission>");
+                        Message.error(cs, "TGM", false, "/tgm <add/remove> <player/group> <permission>");
                     }
                 } else {
-                    Message.e(cs, "TGM", true, "/tgm <add/remove> <player/group> <permission>");
+                    Message.error(cs, "TGM", true, "/tgm <add/remove> <player/group> <permission>");
                 }
             } else {
-                Message.e("TGM", cs);
+                Message.error("TGM", cs);
             }
         } else {
-            Message.m(Type.W, cs, "TGM", true, "This feature is disabled.");
+            Message.message(Type.WARNING, cs, "TGM", true, "This feature is disabled.");
         }
     }
 

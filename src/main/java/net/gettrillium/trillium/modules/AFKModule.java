@@ -27,10 +27,10 @@ public class AFKModule extends TrilliumModule {
             if (player.hasPermission(Permission.Afk.USE)) {
                 player.toggleAfk();
             } else {
-                Message.e("AFK", cs);
+                Message.error("AFK", cs);
             }
         } else {
-            Message.e("AFK", cs);
+            Message.error("AFK", cs);
         }
     }
 

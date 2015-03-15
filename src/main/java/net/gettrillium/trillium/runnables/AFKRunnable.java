@@ -34,7 +34,7 @@ public class AFKRunnable implements Runnable {
 
         for (TrilliumPlayer player : toKick) {
             player.getProxy().kickPlayer("You idled for too long.");
-            Message.b(Type.W, "AFK", player.getProxy().getName() + " got kicked for idling for too long.");
+            Message.broadcast(Type.WARNING, "AFK", player.getProxy().getName() + " got kicked for idling for too long.");
 
         }
     }

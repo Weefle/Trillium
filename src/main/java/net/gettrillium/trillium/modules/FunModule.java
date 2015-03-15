@@ -36,18 +36,18 @@ public class FunModule extends TrilliumModule {
                     TrilliumPlayer target = player(args[0]);
                     if (target != null) {
                         target.getProxy().getWorld().strikeLightning(target.getProxy().getLocation());
-                        Message.m(Type.R, target.getProxy(), "Smite", true, p.getProxy().getName() + " stuck lightning upon you!");
-                        Message.m(Type.R, p.getProxy(), "Smite", true, "You struck lightning upon " + target.getProxy().getName());
+                        Message.message(Type.GENERIC, target.getProxy(), "Smite", true, p.getProxy().getName() + " stuck lightning upon you!");
+                        Message.message(Type.GENERIC, p.getProxy(), "Smite", true, "You struck lightning upon " + target.getProxy().getName());
 
                     } else {
-                        Message.e("Smite", cs, args[0]);
+                        Message.error("Smite", cs, args[0]);
                     }
                 }
             } else {
-                Message.e("Smite", cs);
+                Message.error("Smite", cs);
             }
         } else {
-            Message.e("Smite", cs);
+            Message.error("Smite", cs);
         }
     }
 
@@ -89,10 +89,10 @@ public class FunModule extends TrilliumModule {
                 }.runTaskTimer(TrilliumAPI.getInstance(), 1, 1);
 
             } else {
-                Message.e("Kitty Bomb", cs);
+                Message.error("Kitty Bomb", cs);
             }
         } else {
-            Message.e("Kitty Bomb", cs);
+            Message.error("Kitty Bomb", cs);
         }
     }
 

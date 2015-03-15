@@ -26,12 +26,12 @@ public class Utils {
         int max = (int) Runtime.getRuntime().maxMemory() / 1000000;
         int used = max - free;
         int i = (int) (100L * used / max);
-        Message.m(Type.R, sender, "Lag", true, "Max memory: " + max + "MB");
-        Message.m(Type.R, sender, "Lag", true, "Used memory: " + used + "MB");
-        Message.m(Type.R, sender, "Lag", true, "Used memory: " + asciibar(i));
-        Message.m(Type.R, sender, "Lag", true, "Free memory: " + free + "MB");
-        Message.m(Type.R, sender, "Lag", true, "TPS: " + TpsRunnable.getTPS());
-        Message.m(Type.R, sender, "Lag", true, "Lag Rate: " + asciibar((int) Math.round((1.0D - TpsRunnable.getTPS() / 20.0D) * 100.0D)));
+        Message.message(Type.GENERIC, sender, "Lag", true, "Max memory: " + max + "MB");
+        Message.message(Type.GENERIC, sender, "Lag", true, "Used memory: " + used + "MB");
+        Message.message(Type.GENERIC, sender, "Lag", true, "Used memory: " + asciibar(i));
+        Message.message(Type.GENERIC, sender, "Lag", true, "Free memory: " + free + "MB");
+        Message.message(Type.GENERIC, sender, "Lag", true, "TPS: " + TpsRunnable.getTPS());
+        Message.message(Type.GENERIC, sender, "Lag", true, "Lag Rate: " + asciibar((int) Math.round((1.0D - TpsRunnable.getTPS() / 20.0D) * 100.0D)));
     }
 
     public static String asciibar(int percent) {

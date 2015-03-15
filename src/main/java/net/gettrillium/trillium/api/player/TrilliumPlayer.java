@@ -44,9 +44,9 @@ public class TrilliumPlayer {
     public void toggleAfk() {
         this.afk = !this.afk;
         if (this.afk) {
-            Message.b(Type.G, "AFK", getProxy().getName() + " is now AFK.");
+            Message.broadcast(Type.GOOD, "AFK", getProxy().getName() + " is now AFK.");
         } else {
-            Message.b(Type.G, "AFK", getProxy().getName() + " is no longer AFK.");
+            Message.broadcast(Type.GOOD, "AFK", getProxy().getName() + " is no longer AFK.");
         }
     }
 

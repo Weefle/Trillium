@@ -3,8 +3,8 @@ package net.gettrillium.trillium.runnables;
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
-import net.gettrillium.trillium.messageutils.M;
-import net.gettrillium.trillium.messageutils.T;
+import net.gettrillium.trillium.messageutils.Message;
+import net.gettrillium.trillium.messageutils.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class AFKRunnable implements Runnable {
 
         for (TrilliumPlayer player : toKick) {
             player.getProxy().kickPlayer("You idled for too long.");
-            M.b(T.W, "AFK", player.getProxy().getName() + " got kicked for idling for too long.");
+            Message.b(Type.W, "AFK", player.getProxy().getName() + " got kicked for idling for too long.");
 
         }
     }

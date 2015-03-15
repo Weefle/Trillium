@@ -5,8 +5,8 @@ import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
-import net.gettrillium.trillium.messageutils.M;
-import net.gettrillium.trillium.messageutils.T;
+import net.gettrillium.trillium.messageutils.Message;
+import net.gettrillium.trillium.messageutils.Type;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -47,8 +47,8 @@ public class CoreModule extends TrilliumModule {
         //Send report warning
         if (p.hasPermission(Permission.Admin.REPORT_RECEIVER)) {
             if (AdminModule.reportlist.size() > 0) {
-                M.m(T.W, p, "Reports", true, "There are " + AdminModule.reportlist.size() + " reports available for revision.");
-                M.m(T.W, p, "Reports", true, "/reports to view them.");
+                Message.m(Type.W, p, "Reports", true, "There are " + AdminModule.reportlist.size() + " reports available for revision.");
+                Message.m(Type.W, p, "Reports", true, "/reports to view them.");
             }
         }
 

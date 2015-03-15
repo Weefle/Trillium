@@ -4,7 +4,7 @@ import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
-import net.gettrillium.trillium.messageutils.M;
+import net.gettrillium.trillium.messageutils.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,10 +27,10 @@ public class AFKModule extends TrilliumModule {
             if (player.hasPermission(Permission.Afk.USE)) {
                 player.toggleAfk();
             } else {
-                M.e("AFK", cs);
+                Message.e("AFK", cs);
             }
         } else {
-            M.e("AFK", cs);
+            Message.e("AFK", cs);
         }
     }
 

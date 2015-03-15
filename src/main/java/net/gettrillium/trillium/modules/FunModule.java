@@ -5,8 +5,8 @@ import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
-import net.gettrillium.trillium.messageutils.M;
-import net.gettrillium.trillium.messageutils.T;
+import net.gettrillium.trillium.messageutils.Message;
+import net.gettrillium.trillium.messageutils.Type;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -36,18 +36,18 @@ public class FunModule extends TrilliumModule {
                     TrilliumPlayer target = player(args[0]);
                     if (target != null) {
                         target.getProxy().getWorld().strikeLightning(target.getProxy().getLocation());
-                        M.m(T.R, target.getProxy(), "Smite", true, p.getProxy().getName() + " stuck lightning upon you!");
-                        M.m(T.R, p.getProxy(), "Smite", true, "You struck lightning upon " + target.getProxy().getName());
+                        Message.m(Type.R, target.getProxy(), "Smite", true, p.getProxy().getName() + " stuck lightning upon you!");
+                        Message.m(Type.R, p.getProxy(), "Smite", true, "You struck lightning upon " + target.getProxy().getName());
 
                     } else {
-                        M.e("Smite", cs, args[0]);
+                        Message.e("Smite", cs, args[0]);
                     }
                 }
             } else {
-                M.e("Smite", cs);
+                Message.e("Smite", cs);
             }
         } else {
-            M.e("Smite", cs);
+            Message.e("Smite", cs);
         }
     }
 
@@ -89,10 +89,10 @@ public class FunModule extends TrilliumModule {
                 }.runTaskTimer(TrilliumAPI.getInstance(), 1, 1);
 
             } else {
-                M.e("Kitty Bomb", cs);
+                Message.e("Kitty Bomb", cs);
             }
         } else {
-            M.e("Kitty Bomb", cs);
+            Message.e("Kitty Bomb", cs);
         }
     }
 

@@ -4,8 +4,8 @@ import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
-import net.gettrillium.trillium.messageutils.M;
-import net.gettrillium.trillium.messageutils.T;
+import net.gettrillium.trillium.messageutils.Message;
+import net.gettrillium.trillium.messageutils.Type;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,26 +24,26 @@ public class PunishModule extends TrilliumModule {
     public void mute(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.MUTE)) {
             if (args.length == 0) {
-                M.e(cs, "Mute", true, "/mute <player>");
+                Message.e(cs, "Mute", true, "/mute <player>");
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null) {
                     TrilliumPlayer player = player(target);
                     if (!player.isMuted()) {
                         player.setMuted(true);
-                        M.m(T.G, cs, "Mute", true, "You muted " + target.getName());
-                        M.m(T.W, cs, "Mute", true, cs.getName() + " muted you.");
+                        Message.m(Type.G, cs, "Mute", true, "You muted " + target.getName());
+                        Message.m(Type.W, cs, "Mute", true, cs.getName() + " muted you.");
                     } else {
                         player.setMuted(false);
-                        M.m(T.G, cs, "Mute", true, "You unmuted " + target.getName());
-                        M.m(T.G, cs, "Mute", true, cs.getName() + " unmuted you.");
+                        Message.m(Type.G, cs, "Mute", true, "You unmuted " + target.getName());
+                        Message.m(Type.G, cs, "Mute", true, cs.getName() + " unmuted you.");
                     }
                 } else {
-                    M.e("Mute", cs, args[0]);
+                    Message.e("Mute", cs, args[0]);
                 }
             }
         } else {
-            M.e("Mute", cs);
+            Message.e("Mute", cs);
         }
     }
 
@@ -51,7 +51,7 @@ public class PunishModule extends TrilliumModule {
     public void kick(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.KICK)) {
             if (args.length < 2) {
-                M.e(cs, "Kick", true, "/kick <player> [reason]");
+                Message.e(cs, "Kick", true, "/kick <player> [reason]");
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null) {
@@ -60,15 +60,15 @@ public class PunishModule extends TrilliumModule {
                         sb.append(args[i]).append(" ");
                     }
                     String reason = sb.toString().trim();
-                    M.b(T.W, "Kick", target.getName() + " got kicked for:");
-                    M.b(T.W, "Kick", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
+                    Message.b(Type.W, "Kick", target.getName() + " got kicked for:");
+                    Message.b(Type.W, "Kick", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
                     target.kickPlayer(reason);
                 } else {
-                    M.e("Kick", cs, args[0]);
+                    Message.e("Kick", cs, args[0]);
                 }
             }
         } else {
-            M.e("Kick", cs);
+            Message.e("Kick", cs);
         }
     }
 
@@ -76,7 +76,7 @@ public class PunishModule extends TrilliumModule {
     public void ban(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.BAN)) {
             if (args.length == 0) {
-                M.e(cs, "Ban", true, "/ban <player> [reason]");
+                Message.e(cs, "Ban", true, "/ban <player> [reason]");
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
                 String reason;
@@ -93,16 +93,16 @@ public class PunishModule extends TrilliumModule {
                 if (target != null) {
                     Bukkit.getBanList(BanList.Type.NAME).addBan(target.getName(), reason, null, cs.getName());
                     target.kickPlayer(ChatColor.DARK_RED + "You got banned with reason: \n" + reason);
-                    M.b(T.W, "Ban", target.getName() + " got banned with reason:");
-                    M.b(T.W, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
+                    Message.b(Type.W, "Ban", target.getName() + " got banned with reason:");
+                    Message.b(Type.W, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
                 } else {
                     Bukkit.getBanList(BanList.Type.NAME).addBan(args[0], reason, null, cs.getName());
-                    M.b(T.W, "Ban", args[0] + " got banned with reason:");
-                    M.b(T.W, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
+                    Message.b(Type.W, "Ban", args[0] + " got banned with reason:");
+                    Message.b(Type.W, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
                 }
             }
         } else {
-            M.e("Ban", cs);
+            Message.e("Ban", cs);
         }
     }
 
@@ -110,13 +110,13 @@ public class PunishModule extends TrilliumModule {
     public void unban(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.UNBAN)) {
             if (args.length == 0) {
-                M.e(cs, "Unban", true, "/unban <player>");
+                Message.e(cs, "Unban", true, "/unban <player>");
             } else {
                 Bukkit.getBanList(BanList.Type.NAME).pardon(args[0]);
-                M.b(T.G, "Unban", args[0] + " got unbanned.");
+                Message.b(Type.G, "Unban", args[0] + " got unbanned.");
             }
         } else {
-            M.e("Unban", cs);
+            Message.e("Unban", cs);
         }
     }
 
@@ -124,7 +124,7 @@ public class PunishModule extends TrilliumModule {
     public void banip(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.BANIP)) {
             if (args.length == 0) {
-                M.e(cs, "BanIP", true, "/banip <player> [reason]");
+                Message.e(cs, "BanIP", true, "/banip <player> [reason]");
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
                 String reason;
@@ -141,16 +141,16 @@ public class PunishModule extends TrilliumModule {
                 if (target != null) {
                     Bukkit.getBanList(BanList.Type.IP).addBan(String.valueOf(target.getAddress()), reason, null, cs.getName());
                     target.kickPlayer(ChatColor.DARK_RED + "You got banned with reason: \n" + reason);
-                    M.b(T.W, "BanIP", target.getName() + " got banned with reason:");
-                    M.b(T.W, "BanIP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
+                    Message.b(Type.W, "BanIP", target.getName() + " got banned with reason:");
+                    Message.b(Type.W, "BanIP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
                 } else {
                     Bukkit.getBanList(BanList.Type.NAME).addBan(args[0], reason, null, cs.getName());
-                    M.b(T.W, "BanIP", args[0] + " got banned with reason:");
-                    M.b(T.W, "BanIP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
+                    Message.b(Type.W, "BanIP", args[0] + " got banned with reason:");
+                    Message.b(Type.W, "BanIP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
                 }
             }
         } else {
-            M.e("BanIP", cs);
+            Message.e("BanIP", cs);
         }
     }
 
@@ -158,13 +158,13 @@ public class PunishModule extends TrilliumModule {
     public void unbanip(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.UNBANIP)) {
             if (args.length == 0) {
-                M.e(cs, "Unban", true, "/unbanip <IP>");
+                Message.e(cs, "Unban", true, "/unbanip <IP>");
             } else {
                 Bukkit.getBanList(BanList.Type.IP).pardon(args[0]);
-                M.b(T.G, "Unban", args[0] + " got unbanned.");
+                Message.b(Type.G, "Unban", args[0] + " got unbanned.");
             }
         } else {
-            M.e("Unban", cs);
+            Message.e("Unban", cs);
         }
     }
 
@@ -173,7 +173,7 @@ public class PunishModule extends TrilliumModule {
         TrilliumPlayer player = player(e.getPlayer());
         if (player.isMuted()) {
             e.setCancelled(true);
-            M.m(T.W, player.getProxy(), "Mute", true, "Your voice has been silenced.");
+            Message.m(Type.W, player.getProxy(), "Mute", true, "Your voice has been silenced.");
         }
     }
 }

@@ -47,7 +47,7 @@ public class Trillium extends JavaPlugin {
             Metrics metrics = new Metrics(this);
             metrics.start();
         } catch (IOException e) {
-            TrilliumAPI.getInstance().getLogger().warning("Failed to send plugin metrics... :(");
+            getLogger().warning("Failed to send plugin metrics... :(");
         }
 
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");

@@ -6,8 +6,8 @@ import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
-import net.gettrillium.trillium.messageutils.M;
-import net.gettrillium.trillium.messageutils.T;
+import net.gettrillium.trillium.messageutils.Message;
+import net.gettrillium.trillium.messageutils.Type;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -23,9 +23,9 @@ public class KitModule extends TrilliumModule {
             if (cs instanceof Player) {
                 TrilliumPlayer p = player((Player) cs);
                 if (args.length == 0) {
-                    M.m(T.R, p.getProxy(), "Kit", true, "Available kits:");
+                    Message.m(Type.R, p.getProxy(), "Kit", true, "Available kits:");
                     for (String s : getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER).getKeys(false)) {
-                        M.m(T.R, p.getProxy(), "Kit", true, s);
+                        Message.m(Type.R, p.getProxy(), "Kit", true, s);
                     }
                 } else {
                     if (getConfig().getStringList(Configuration.Kit.KIT_MAKER).contains(args[0])) {
@@ -34,20 +34,20 @@ public class KitModule extends TrilliumModule {
                             Kit kit = new Kit(args[0]);
                             kit.giveTo(p.getProxy());
 
-                            M.m(T.G, p.getProxy(), "Kit", true, "You successfully received kit: " + args[0]);
+                            Message.m(Type.G, p.getProxy(), "Kit", true, "You successfully received kit: " + args[0]);
 
                         } else {
-                            M.m(T.W, p.getProxy(), "KIT", true, "You don't have permission to use that kit.");
+                            Message.m(Type.W, p.getProxy(), "KIT", true, "You don't have permission to use that kit.");
                         }
                     } else {
-                        M.m(T.W, p.getProxy(), "KIT", true, args[0] + " is not a valid kit.");
+                        Message.m(Type.W, p.getProxy(), "KIT", true, args[0] + " is not a valid kit.");
                     }
                 }
             } else {
-                M.e("Kit", cs);
+                Message.e("Kit", cs);
             }
         } else {
-            M.m(T.W, cs, "Kit", true, "This feature is disabled.");
+            Message.m(Type.W, cs, "Kit", true, "This feature is disabled.");
         }
     }
 }

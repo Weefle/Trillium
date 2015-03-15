@@ -46,7 +46,7 @@ public class Configuration {
         public static String IMP_BROADCAST2 = IMP_BROADCAST + "broadcast";
 
     }
-    
+
     public static class Chat {
         private static String PREFIX = "chat.";
         public static final String INGAME_MOTD = PREFIX + "motd";

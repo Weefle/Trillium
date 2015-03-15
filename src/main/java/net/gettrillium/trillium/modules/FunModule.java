@@ -174,7 +174,7 @@ public class FunModule extends TrilliumModule {
         cat6.setSitting(true);
         cat7.setSitting(true);
         cat8.setSitting(true);
-        
+
         cat1.setAgeLock(true);
         cat2.setAgeLock(true);
         cat3.setAgeLock(true);

@@ -27,7 +27,7 @@ public class CoreModule extends TrilliumModule {
         Player p = e.getPlayer();
 
         TrilliumAPI.loadPlayer(e.getPlayer());
-        
+
         String joinMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.JOINMESSAGE));
         joinMessage = joinMessage.replace("[USERNAME]", p.getName());
         e.setJoinMessage(joinMessage);

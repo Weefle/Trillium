@@ -1,14 +1,14 @@
 package net.gettrillium.trillium.runnables;
 
 import net.gettrillium.trillium.api.GroupManager;
-import net.gettrillium.trillium.api.TrilliumAPI;
-import net.gettrillium.trillium.api.player.TrilliumPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class GroupManagerRunnable implements Runnable {
 
     public void run() {
-        for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
-            GroupManager manager = new GroupManager(p.getProxy());
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            GroupManager manager = new GroupManager(p);
             manager.refreshPermissions();
         }
     }

@@ -24,7 +24,7 @@ public class TrilliumPlayer {
     private boolean isMuted = false;
     private boolean isGod = false;
     private boolean isVanished = false;
-    private boolean hasnickname = false;
+    private boolean hasNickname = false;
     private boolean pvp;
 
     public TrilliumPlayer(Player proxy) {
@@ -92,12 +92,12 @@ public class TrilliumPlayer {
 
     public void setDisplayName(String nickname) {
         this.nickname = nickname + "§f";
-        this.hasnickname = !nickname.equalsIgnoreCase(proxy.getName());
+        this.hasNickname = !nickname.equalsIgnoreCase(proxy.getName());
         getProxy().setDisplayName(nickname + "§f");
     }
 
     public boolean hasNickname() {
-        return this.hasnickname;
+        return this.hasNickname;
     }
 
     public boolean hasPermission(String permission) {

@@ -35,7 +35,7 @@ public class Trillium extends JavaPlugin {
         TrilliumAPI.registerModule(new GroupManagerModule());
         TrilliumAPI.registerModule(new KitModule());
 
-        setupcmdbinder();
+        setupCmdBinder();
         generateFiles();
 
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
@@ -77,7 +77,7 @@ public class Trillium extends JavaPlugin {
         yml.set("Reports", AdminModule.reportlist);
     }
 
-    private void setupcmdbinder() {
+    private void setupCmdBinder() {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(CmdBinderDatabase.cbd());
 
         for (String s : yml.getStringList("touchconsole")) {
@@ -147,18 +147,18 @@ public class Trillium extends JavaPlugin {
             AdminModule.reportlist.add(s);
         }
 
-        URL Url = getClass().getResource("/world.yml");
+        URL url = getClass().getResource("/world.yml");
         File dest = new File(getDataFolder() + "/Trillium Group Manager/worlds/world.yml");
         try {
-            FileUtils.copyURLToFile(Url, dest);
+            FileUtils.copyURLToFile(url, dest);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        URL Url2 = getClass().getResource("/LordSaad.yml");
+        URL url2 = getClass().getResource("/LordSaad.yml");
         File dest2 = new File(getDataFolder() + "/Trillium Group Manager/players/LordSaad.yml");
         try {
-            FileUtils.copyURLToFile(Url2, dest2);
+            FileUtils.copyURLToFile(url2, dest2);
         } catch (IOException e) {
             e.printStackTrace();
         }

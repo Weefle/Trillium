@@ -140,7 +140,7 @@ public class CmdBinderModule extends TrilliumModule {
                                 }
                                 String msg = sb.toString().trim();
 
-                                Map<ItemStack, String> iands = new HashMap<ItemStack, String>();
+                                Map<ItemStack, String> iands = new HashMap<>();
                                 iands.put(p.getProxy().getItemInHand(), msg);
                                 itemconsole.put(p.getProxy().getUniqueId(), iands);
                                 antilagcheckitem.add(p.getProxy().getUniqueId());
@@ -159,7 +159,7 @@ public class CmdBinderModule extends TrilliumModule {
                                 }
                                 String msg = sb.toString().trim();
 
-                                Map<ItemStack, String> iands = new HashMap<ItemStack, String>();
+                                Map<ItemStack, String> iands = new HashMap<>();
                                 iands.put(p.getProxy().getItemInHand(), msg);
                                 itemplayer.put(p.getProxy().getUniqueId(), iands);
                                 antilagcheckitem.add(p.getProxy().getUniqueId());
@@ -282,7 +282,7 @@ public class CmdBinderModule extends TrilliumModule {
                         int y = event.getClickedBlock().getRelative(event.getBlockFace()).getLocation().getBlockY();
                         int z = event.getClickedBlock().getRelative(event.getBlockFace()).getLocation().getBlockZ();
 
-                        List<String> l = new ArrayList<String>();
+                        List<String> l = new ArrayList<>();
                         l.add(yml.getString("walkconsole"));
                         l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + wcmdbconsole.get(p.getUniqueId()));
                         yml.set("walkconsole", l);
@@ -305,7 +305,7 @@ public class CmdBinderModule extends TrilliumModule {
                         int y = event.getClickedBlock().getRelative(event.getBlockFace()).getLocation().getBlockY();
                         int z = event.getClickedBlock().getRelative(event.getBlockFace()).getLocation().getBlockZ();
 
-                        List<String> l = new ArrayList<String>();
+                        List<String> l = new ArrayList<>();
                         l.add(yml.getString("walkplayer"));
                         l.add(p.getWorld().getName() + "'" + x + ";" + y + "," + z + "/" + wcmdbplayer.get(p.getUniqueId()));
                         yml.set("walkplayer", l);

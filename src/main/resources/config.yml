@@ -69,7 +69,19 @@ chat:
       allow-color-codes: true
   enable-death-messages: true
   # If set to true, death messages in minecraft will not appear.
-    
+
+#---------------[ Plugin Messages ]---------------#
+plugin-messages:
+  # Format plugin messages
+  format: "&8[%MOOD%&8] &9>> &7%MSG%"
+  errors:
+    invalid-player: "&b%PLAYER% &7is either offline or does not exist."
+    no-permission: "&7You don't have permission to do that."
+    console-not-allowed: "&7You can't do that you silly console."
+    too-few-arguments: "&7Too few aguments. %USAGE%"
+    wrong-arguments: "&7Wrong arguments. %USAGE%"
+
+
 #---------------[ Broadcast ]---------------#
 broadcast:
   regular-broadcasts:

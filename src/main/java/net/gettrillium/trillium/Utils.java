@@ -2,8 +2,8 @@ package net.gettrillium.trillium;
 
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
-import net.gettrillium.trillium.messageutils.Message;
-import net.gettrillium.trillium.messageutils.Type;
+import net.gettrillium.trillium.api.messageutils.Message;
+import net.gettrillium.trillium.api.messageutils.Type;
 import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
 import net.gettrillium.trillium.runnables.GroupManagerRunnable;

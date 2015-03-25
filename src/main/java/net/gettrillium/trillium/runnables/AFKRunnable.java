@@ -2,9 +2,9 @@ package net.gettrillium.trillium.runnables;
 
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
+import net.gettrillium.trillium.api.messageutils.Message;
+import net.gettrillium.trillium.api.messageutils.Type;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
-import net.gettrillium.trillium.messageutils.Message;
-import net.gettrillium.trillium.messageutils.Type;
 
 import java.util.ArrayList;
 import java.util.List;

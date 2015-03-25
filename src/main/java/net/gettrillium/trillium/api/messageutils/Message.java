@@ -1,4 +1,4 @@
-package net.gettrillium.trillium.messageutils;
+package net.gettrillium.trillium.api.messageutils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

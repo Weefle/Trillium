@@ -1,6 +1,7 @@
 package net.gettrillium.trillium;
 
 import net.gettrillium.trillium.api.TrilliumAPI;
+import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.serializer.LocationSerializer;
 import net.gettrillium.trillium.databases.CmdBinderDatabase;
 import net.gettrillium.trillium.events.PlayerDeath;
@@ -60,6 +61,8 @@ public class Trillium extends JavaPlugin {
         getLogger().warning("WE HIGHLY RECOMMEND YOU DON'T USE IT FOR NOW");
         getLogger().warning("UNTIL AN OFFICIAL RELEASE IS OUT.");
         getLogger().warning("WE ARE FULLY AWARE OF ALL THE BUGS YOU MIGHT FIND.");
+
+        Message()
 
         if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
             getLogger().info("<<<-------------------------------------->>>");

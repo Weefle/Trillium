@@ -38,39 +38,7 @@ public class Message {
         Bukkit.broadcastMessage(format);
     }
 
-    public void message(CommandSender to) {
+    public void to(CommandSender to) {
         to.sendMessage(format);
-    }
-
-    public enum Mood {
-        ERROR(ChatColor.RED + ""), GOOD(ChatColor.GREEN + ""), GENERIC(ChatColor.BLUE + "");
-
-        private String color;
-
-        Mood(String color) {
-            this.color = color;
-        }
-
-        public String getColor() {
-            return color;
-        }
-    }
-
-    public enum Error {
-        INVALID_PLAYER(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.INVALID_PLAYER))),
-        NO_PERMISSION(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.NO_PERMISSION))),
-        CONSOLE_NOT_ALLOWED(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.CONSOLE_NOT_ALLOWED))),
-        TOO_FEW_ARGUMENTS(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.TOO_FEW_ARGUMENTS))),
-        WRONG_ARGUMENTS(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.WRONG_ARGUMENTS)));
-
-        private String error;
-
-        Error(String error) {
-            this.error = error;
-        }
-
-        public String getError() {
-            return error;
-        }
     }
 }

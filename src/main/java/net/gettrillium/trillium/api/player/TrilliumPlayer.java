@@ -4,7 +4,7 @@ import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.GroupManager;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.messageutils.Message;
-import net.gettrillium.trillium.api.messageutils.Type;
+import net.gettrillium.trillium.api.messageutils.Mood;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -44,9 +44,9 @@ public class TrilliumPlayer {
     public void toggleAfk() {
         this.afk = !this.afk;
         if (this.afk) {
-            Message.broadcast(Type.GOOD, "AFK", getProxy().getName() + " is now AFK.");
+            new Message(Mood.GENERIC, "AFK", getProxy() + " is now AFK.").broadcast();
         } else {
-            Message.broadcast(Type.GOOD, "AFK", getProxy().getName() + " is no longer AFK.");
+            new Message(Mood.GENERIC, "AFK", getProxy() + " is no longer AFK.").broadcast();
         }
     }
 

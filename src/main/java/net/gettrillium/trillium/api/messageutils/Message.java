@@ -2,6 +2,7 @@ package net.gettrillium.trillium.api.messageutils;
 
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
+import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -40,5 +41,9 @@ public class Message {
 
     public void to(CommandSender to) {
         to.sendMessage(format);
+    }
+
+    public void to(TrilliumPlayer to) {
+        to.getProxy().sendMessage(format);
     }
 }

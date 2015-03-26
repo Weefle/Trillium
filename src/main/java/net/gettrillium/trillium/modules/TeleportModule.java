@@ -5,7 +5,9 @@ import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
+import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
+import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.messageutils.Type;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.apache.commons.lang.StringUtils;
@@ -34,13 +36,13 @@ public class TeleportModule extends TrilliumModule {
         if (cs instanceof Player) {
             TrilliumPlayer player = player(cs.getName());
             if (player.getProxy().hasPermission(Permission.Ability.BACK)) {
-                Message.message(Type.GOOD, player.getProxy(), "Back", true, "You have been sent back to your last location.");
+                new Message(Mood.GOOD, "Back", "You have been sent back to your last location.").to(player);
                 player.getProxy().teleport(player.getLastLocation());
             } else {
-                Message.error("Back", cs);
+                new Message("Back", Error.NO_PERMISSION).to(cs);
             }
         } else {
-            Message.error("Back", cs);
+            new Message("Back", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 

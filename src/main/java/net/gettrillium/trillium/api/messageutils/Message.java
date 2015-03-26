@@ -5,7 +5,6 @@ import net.gettrillium.trillium.api.TrilliumAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class Message {
 
@@ -20,16 +19,18 @@ public class Message {
     }
 
     Message(String command, Error error) {
-        format = TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.FORMAT);
+        format = error.getError();
         format = ChatColor.translateAlternateColorCodes('&', format);
-        format = format.replace("%COMMAND", command);
+        format = format.replace("%COMMAND%", command);
 
     }
 
-    Message(String command, Error error, String player) {
-        format = TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.FORMAT);
+    Message(String command, Error error, String extra) {
+        format = error.getError();
         format = ChatColor.translateAlternateColorCodes('&', format);
         format = format.replace("%COMMAND", command);
+        format = format.replace("%USAGE%", extra);
+        format = format.replace("%PLAYER%", extra);
 
     }
 
@@ -37,33 +38,8 @@ public class Message {
         Bukkit.broadcastMessage(format);
     }
 
-    public void messageSender(CommandSender cs, String prefix, boolean dontFlip, String msg) {
-        if (dontFlip) {
-            cs.sendMessage(ChatColor.DARK_GRAY + "[" + type.getPrefix() + prefix + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + msg);
-        } else {
-            cs.sendMessage(ChatColor.DARK_GRAY + "[" + type.getPrefix() + prefix + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " << " + ChatColor.GRAY + msg);
-        }
-    }
-
-    public void error(String prefix, CommandSender cs, String player) {
-        cs.sendMessage(ChatColor.DARK_GRAY + "[" + Type.WARNING.getPrefix() + prefix + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + player + " is either offline or does not exist.");
-    }
-
-    public void error(String Stringprefix, CommandSender cs) {
-        if (!(cs instanceof Player)) {
-            cs.sendMessage(ChatColor.DARK_GRAY + "[" + Message.WARNING.getPrefix() + prefix + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + "You can't do that you silly console.");
-        } else {
-            cs.sendMessage(ChatColor.DARK_GRAY + "[" + Type.WARNING.getPrefix() + prefix + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + "You don't have permission to do that.");
-        }
-    }
-
-    public void error(CommandSender cs, String prefix, boolean fewArgs, String usage) {
-        if (fewArgs) {
-            cs.sendMessage(ChatColor.DARK_GRAY + "[" + Message.WARNING.getPrefix() + prefix + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + "Too few arguments. " + usage);
-        } else {
-            cs.sendMessage(ChatColor.DARK_GRAY + "[" + Message.WARNING.getPrefix() + prefix + ChatColor.DARK_GRAY + "]" + ChatColor.BLUE + " >> " + ChatColor.GRAY + "Wrong arguments. " + usage);
-
-        }
+    public void message(CommandSender to) {
+        to.sendMessage(format);
     }
 
     public enum Mood {
@@ -85,7 +61,7 @@ public class Message {
         NO_PERMISSION(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.NO_PERMISSION))),
         CONSOLE_NOT_ALLOWED(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.CONSOLE_NOT_ALLOWED))),
         TOO_FEW_ARGUMENTS(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.TOO_FEW_ARGUMENTS))),
-        WRONG_ARGUMENTS(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.WRONG_ARGUMENTS))),
+        WRONG_ARGUMENTS(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.WRONG_ARGUMENTS)));
 
         private String error;
 

@@ -9,7 +9,7 @@ public enum Type {
 
     private String prefix;
 
-    private Type(String prefix) {
+    Type(String prefix) {
         this.prefix = prefix;
     }
 

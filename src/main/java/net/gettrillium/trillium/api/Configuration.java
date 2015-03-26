@@ -32,11 +32,11 @@ public class Configuration {
     }
 
     public static class Broadcast {
-        private static String PREFIX = "broadcast.";
-        public static String PRE_NORMAL = PREFIX + "regular-broadcasts.";
         public static String FORMAT = PRE_NORMAL + "broadcast-format";
         public static String CENTRALIZE = PRE_NORMAL + "centralize-broadcasts";
         public static String COLOR_TO_USE = PRE_NORMAL + "color-to-use";
+        private static String PREFIX = "broadcast.";
+        public static String PRE_NORMAL = PREFIX + "regular-broadcasts.";
         private static String AUTO_BROADCAST = PREFIX + "auto-broadcast.";
         public static String AUTO_ENABLED = AUTO_BROADCAST + "enabled";
         public static String FREQUENCY = AUTO_BROADCAST + "frequency";
@@ -85,7 +85,18 @@ public class Configuration {
     public static class Kit {
         private static final String PREFIX = "kits.";
         public static String ENABLED = PREFIX + "enabled";
-        public static String KIT_MAKER = PREFIX + "kit-maker.";
+        public static String KIT_MAKER = PREFIX + "kit-maker";
+    }
+
+    public static class PluginMessages {
+        private static final String PREFIX = "plugin-messages.";
+        private static final String ERRORS = PREFIX + "errors.";
+        public static String FORMAT = PREFIX + "format";
+        public static String INVALID_PLAYER = ERRORS + "invalid-player";
+        public static String NO_PERMISSION = ERRORS + "no-permission";
+        public static String CONSOLE_NOT_ALLOWED = ERRORS + "console-not-allowed";
+        public static String TOO_FEW_ARGUMENTS = ERRORS + "too-few-arguments";
+        public static String WRONG_ARGUMENTS = ERRORS + "wrong-arguments";
 
     }
 }

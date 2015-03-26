@@ -86,11 +86,6 @@ public enum ParticleEffect {
     private static final Map<String, ParticleEffect> NAME_MAP = new HashMap<String, ParticleEffect>();
     private static final Map<Integer, ParticleEffect> ID_MAP = new HashMap<Integer, ParticleEffect>();
 
-    private final String name;
-    private final int id;
-    private final int requiredVersion;
-    private final List<ParticleProperty> properties;
-
     // Initialize map for quick name and id lookup
     static {
         for (ParticleEffect effect : values()) {
@@ -99,7 +94,12 @@ public enum ParticleEffect {
         }
     }
 
-    private ParticleEffect(String name, int id, int requiredVersion, ParticleProperty... properties) {
+    private final String name;
+    private final int id;
+    private final int requiredVersion;
+    private final List<ParticleProperty> properties;
+
+    ParticleEffect(String name, int id, int requiredVersion, ParticleProperty... properties) {
         this.name = name;
         this.id = id;
         this.requiredVersion = requiredVersion;

@@ -3,7 +3,7 @@ package net.gettrillium.trillium;
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.messageutils.Message;
-import net.gettrillium.trillium.api.messageutils.Type;
+import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
 import net.gettrillium.trillium.runnables.GroupManagerRunnable;
@@ -26,12 +26,13 @@ public class Utils {
         int max = (int) Runtime.getRuntime().maxMemory() / 1000000;
         int used = max - free;
         int i = (int) (100L * used / max);
-        Message.message(Type.GENERIC, sender, "Lag", true, "Max memory: " + max + "MB");
-        Message.message(Type.GENERIC, sender, "Lag", true, "Used memory: " + used + "MB");
-        Message.message(Type.GENERIC, sender, "Lag", true, "Used memory: " + asciibar(i));
-        Message.message(Type.GENERIC, sender, "Lag", true, "Free memory: " + free + "MB");
-        Message.message(Type.GENERIC, sender, "Lag", true, "TPS: " + TpsRunnable.getTPS());
-        Message.message(Type.GENERIC, sender, "Lag", true, "Lag Rate: " + asciibar((int) Math.round((1.0D - TpsRunnable.getTPS() / 20.0D) * 100.0D)));
+
+        new Message(Mood.GENERIC, "Max Memory", max + "MB");
+        new Message(Mood.GENERIC, "Used Memory", used + "MB");
+        new Message(Mood.GENERIC, "Free Memory", free + "MB");
+        new Message(Mood.GENERIC, "Used Memory", asciibar(i));
+        new Message(Mood.GENERIC, "TPS", "" + TpsRunnable.getTPS());
+        new Message(Mood.GENERIC, "Lag Rate", asciibar((int) Math.round((1.0D - TpsRunnable.getTPS() / 20.0D))));
     }
 
     public static String asciibar(int percent) {

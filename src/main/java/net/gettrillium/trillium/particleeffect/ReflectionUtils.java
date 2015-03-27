@@ -183,8 +183,6 @@ public final class ReflectionUtils {
         BOOLEAN(boolean.class, Boolean.class);
 
         private static final Map<Class<?>, DataType> CLASS_MAP = new HashMap<Class<?>, DataType>();
-        private final Class<?> primitive;
-        private final Class<?> reference;
 
         // Initialize map for quick class lookup
         static {
@@ -193,6 +191,9 @@ public final class ReflectionUtils {
                 CLASS_MAP.put(type.reference, type);
             }
         }
+
+        private final Class<?> primitive;
+        private final Class<?> reference;
 
         private DataType(Class<?> primitive, Class<?> reference) {
             this.primitive = primitive;

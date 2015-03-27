@@ -60,6 +60,22 @@ public class Configuration {
         public static final String OPCOLOR = NICKNAME + "ops-color-code";
     }
 
+    public static class Broadcast {
+        public static String FORMAT = PRE_NORMAL + "broadcast-format";
+        public static String CENTRALIZE = PRE_NORMAL + "centralize-broadcasts";
+        public static String COLOR_TO_USE = PRE_NORMAL + "color-to-use";
+        private static String PREFIX = "broadcast.";
+        public static String PRE_NORMAL = PREFIX + "regular-broadcasts.";
+        private static String AUTO_BROADCAST = PREFIX + "auto-broadcast.";
+        public static String AUTO_ENABLED = AUTO_BROADCAST + "enabled";
+        public static String FREQUENCY = AUTO_BROADCAST + "frequency";
+        public static String AUTO_BROADCASTS = AUTO_BROADCAST + "broadcasts";
+        private static String IMP_BROADCAST = PREFIX + "important-broadcast.";
+        public static String IMP_ENABLED = IMP_BROADCAST + "enabled";
+        public static String IMP_BROADCAST2 = IMP_BROADCAST + "broadcast";
+
+    }
+
     public static class GM {
         private static String PREFIX = "group-manager.";
         public static final String ENABLED = PREFIX + "enabled";

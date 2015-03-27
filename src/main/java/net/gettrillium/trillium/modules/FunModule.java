@@ -4,8 +4,9 @@ import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
+import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
-import net.gettrillium.trillium.api.messageutils.Type;
+import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
 import org.bukkit.Location;
@@ -36,18 +37,18 @@ public class FunModule extends TrilliumModule {
                     TrilliumPlayer target = player(args[0]);
                     if (target != null) {
                         target.getProxy().getWorld().strikeLightning(target.getProxy().getLocation());
-                        Message.message(Type.GENERIC, target.getProxy(), "Smite", true, p.getProxy().getName() + " stuck lightning upon you!");
-                        Message.message(Type.GENERIC, p.getProxy(), "Smite", true, "You struck lightning upon " + target.getProxy().getName());
+                        new Message(Mood.GENERIC, "Smite", p.getName() + " struck lightning upon you!").to(target);
+                        new Message(Mood.GENERIC, "Smite", "You struck lightning upon " + target.getName()).to(p);
 
                     } else {
-                        Message.error("Smite", cs, args[0]);
+                        new Message("Smite", Error.INVALID_PLAYER, args[0]);
                     }
                 }
             } else {
-                Message.error("Smite", cs);
+                new Message("Smite", Error.NO_PERMISSION).to(p);
             }
         } else {
-            Message.error("Smite", cs);
+            new Message("Smite", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -89,10 +90,10 @@ public class FunModule extends TrilliumModule {
                 }.runTaskTimer(TrilliumAPI.getInstance(), 1, 1);
 
             } else {
-                Message.error("Kitty Bomb", cs);
+                new Message("Kitty Bomb", Error.NO_PERMISSION).to(p);
             }
         } else {
-            Message.error("Kitty Bomb", cs);
+            new Message("Kitty Bomb", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 

@@ -31,6 +31,17 @@ public class Configuration {
         public static final String AUTO_AFK_KICK = AUTO_AFK + "kick-on-afk";
     }
 
+    public static class Chat {
+        private static String PREFIX = "chat.";
+        public static final String INGAME_MOTD = PREFIX + "motd";
+        public static final String SERVER_LIST_MOTD = PREFIX + "server-list-motd";
+        public static final String ENABLE_DEATH_MESSAGES = PREFIX + "enable-death-messages";
+        private static String CHATCHANNEL = PREFIX + "chat-channels.";
+        public static final String CCENABLED = CHATCHANNEL + "enabled";
+        public static final String CCFORMAT = CHATCHANNEL + "format";
+        public static final String CCCOLOR = CHATCHANNEL + "allow-color-codes";
+    }
+
     public static class Broadcast {
         public static String FORMAT = PRE_NORMAL + "broadcast-format";
         public static String CENTRALIZE = PRE_NORMAL + "centralize-broadcasts";
@@ -45,17 +56,6 @@ public class Configuration {
         public static String IMP_ENABLED = IMP_BROADCAST + "enabled";
         public static String IMP_BROADCAST2 = IMP_BROADCAST + "broadcast";
 
-    }
-
-    public static class Chat {
-        private static String PREFIX = "chat.";
-        public static final String INGAME_MOTD = PREFIX + "motd";
-        public static final String SERVER_LIST_MOTD = PREFIX + "server-list-motd";
-        public static final String ENABLE_DEATH_MESSAGES = PREFIX + "enable-death-messages";
-        private static String CHATCHANNEL = PREFIX + "chat-channels.";
-        public static final String CCENABLED = CHATCHANNEL + "enabled";
-        public static final String CCFORMAT = CHATCHANNEL + "format";
-        public static final String CCCOLOR = CHATCHANNEL + "allow-color-codes";
     }
 
     public static class Server {

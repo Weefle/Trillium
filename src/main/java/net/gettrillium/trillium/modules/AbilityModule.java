@@ -183,15 +183,15 @@ public class AbilityModule extends TrilliumModule {
                                 if (i <= 10 && i >= -10) {
                                     i = i * 0.1;
                                     p.getProxy().setFlySpeed((float) i);
-                                    Message.message(Type.GOOD, p.getProxy(), "Speed", true, "Fly speed set to " + ChatColor.AQUA + args[1]);
+                                    new Message(Mood.GOOD, "Speed", "Fly speed set to " + ChatColor.AQUA + args[1]).to(p);
                                 } else {
-                                    Message.message(Type.WARNING, p.getProxy(), "Speed", true, args[1] + " is out of bounds. -10 -> 10 only");
+                                    new Message(Mood.BAD, "Speed", args[1] + " is out of bounds. -10 -> 10 only.").to(p);
                                 }
                             } else {
-                                Message.message(Type.WARNING, p.getProxy(), "Speed", true, args[1] + " is not a number.");
+                                new Message(Mood.BAD, "Speed", args[1] + " is not a number.").to(p);
                             }
                         } else {
-                            Message.message(Type.GOOD, p.getProxy(), "Speed", true, "Fly speed set to default: " + ChatColor.AQUA + "1");
+                            new Message(Mood.GOOD, "Speed", "Fly speed set to default: " + ChatColor.AQUA + "1").to(p);
                             p.getProxy().setFlySpeed((float) 0.1);
                         }
                     } else if (args[0].equalsIgnoreCase("walk")) {
@@ -202,28 +202,28 @@ public class AbilityModule extends TrilliumModule {
                                 if (i <= 10 && i >= -10) {
                                     i = i * 0.1;
                                     p.getProxy().setWalkSpeed((float) i);
-                                    Message.message(Type.GOOD, p.getProxy(), "Speed", true, "Walk speed set to " + ChatColor.AQUA + args[1]);
+                                    new Message(Mood.GOOD, "Speed", "Walk speed set to " + ChatColor.AQUA + args[1]).to(p);
                                 } else {
-                                    Message.message(Type.WARNING, p.getProxy(), "Speed", true, args[1] + " is out of bounds. -10 -> 10 only");
+                                    new Message(Mood.BAD, "Speed", args[1] + " is out of bounds. -10 -> 10 only.").to(p);
                                 }
                             } else {
-                                Message.message(Type.WARNING, p.getProxy(), "Speed", true, args[1] + " is not a number.");
+                                new Message(Mood.BAD, "Speed", args[1] + " is not a number.").to(p);
                             }
                         } else {
-                            Message.message(Type.GOOD, p.getProxy(), "Speed", true, "Walk speed set to default: " + ChatColor.AQUA + "2");
+                            new Message(Mood.GOOD, "Speed", "Walk speed set to default: " + ChatColor.AQUA + "2").to(p);
                             p.getProxy().setFlySpeed((float) 0.2);
                         }
                     } else {
-                        Message.error(p.getProxy(), "Speed", false, "/speed <fly/walk> <speed>");
+                        new Message("Speed", Error.TOO_FEW_ARGUMENTS, "/speed <fly/walk> <speed>").to(p);
                     }
                 } else {
-                    Message.error(p.getProxy(), "Speed", false, "/speed <fly/walk> <speed>");
+                    new Message("Speed", Error.WRONG_ARGUMENTS, "/speed <fly/walk> <speed>").to(p);
                 }
             } else {
-                Message.error("Speed", cs);
+                new Message("Speed", Error.NO_PERMISSION).to(p);
             }
         } else {
-            Message.error("Speed", cs);
+            new Message("Speed", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -235,27 +235,27 @@ public class AbilityModule extends TrilliumModule {
                 if (p.hasPermission(Permission.Ability.GAMEMODE)) {
 
                     if (args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c")) {
-                        Message.message(Type.GOOD, p.getProxy(), "Gamemode", true, "Gamemode set to " + ChatColor.AQUA + "creative");
+                        new Message(Mood.GOOD, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "creative").to(p);
                         p.getProxy().setGameMode(GameMode.CREATIVE);
 
                     } else if (args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0") || args[0].equalsIgnoreCase("s")) {
-                        Message.message(Type.GOOD, p.getProxy(), "Gamemode", true, "Gamemode set to " + ChatColor.AQUA + "survival");
+                        new Message(Mood.GOOD, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "survival").to(p);
                         p.getProxy().setGameMode(GameMode.SURVIVAL);
 
                     } else if (args[0].equalsIgnoreCase("adventure") || args[0].equalsIgnoreCase("2") || args[0].equalsIgnoreCase("a")) {
-                        Message.message(Type.GOOD, p.getProxy(), "Gamemode", true, "Gamemode set to " + ChatColor.AQUA + "adventure");
+                        new Message(Mood.GOOD, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "adventure").to(p);
                         p.getProxy().setGameMode(GameMode.ADVENTURE);
 
                     } else if (args[0].equalsIgnoreCase("spectator") || args[0].equalsIgnoreCase("3") || args[0].equalsIgnoreCase("sp")) {
-                        Message.message(Type.GOOD, p.getProxy(), "Gamemode", true, "Gamemode set to " + ChatColor.AQUA + "spectator");
+                        new Message(Mood.GOOD, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "spectator").to(p);
                         p.getProxy().setGameMode(GameMode.SPECTATOR);
 
                     } else {
-                        Message.message(Type.WARNING, p.getProxy(), "Gamemode", true, "Mojang didn't add that gamemode yet...");
+                        new Message(Mood.BAD, "Gamemode", "Mojang didn't add that gamemode yet...").to(p);
                     }
 
                 } else {
-                    Message.error("Gamemode", cs);
+                    new Message("Gamemode", Error.NO_PERMISSION).to(p);
                 }
 
             } else if (args.length > 1) {
@@ -265,52 +265,51 @@ public class AbilityModule extends TrilliumModule {
                     if (pl != null) {
 
                         if (args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c")) {
-                            Message.message(Type.GOOD, p.getProxy(), "Gamemode", true, pl.getProxy().getName() + "'s gamemode set to " + ChatColor.AQUA + "creative");
-                            Message.message(Type.GOOD, pl.getProxy(), "Gamemode", true, p.getProxy().getName() + "set your gamemode to " + ChatColor.AQUA + "creative");
+                            new Message(Mood.GOOD, "Gamemode", pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "creative").to(p);
+                            new Message(Mood.GOOD, "Gamemode", p.getName() + " set your gamemode to " + ChatColor.AQUA + "creative").to(pl);
                             pl.getProxy().setGameMode(GameMode.CREATIVE);
 
                         } else if (args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0") || args[0].equalsIgnoreCase("s")) {
-                            Message.message(Type.GOOD, p.getProxy(), "Gamemode", true, pl.getProxy().getName() + "'s gamemode set to " + ChatColor.AQUA + "survival");
-                            Message.message(Type.GOOD, pl.getProxy(), "Gamemode", true, p.getProxy().getName() + "set your gamemode to " + ChatColor.AQUA + "survival");
+                            new Message(Mood.GOOD, "Gamemode", pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "survival").to(p);
+                            new Message(Mood.GOOD, "Gamemode", p.getName() + " set your gamemode to " + ChatColor.AQUA + "survival").to(pl);
                             pl.getProxy().setGameMode(GameMode.SURVIVAL);
 
                         } else if (args[0].equalsIgnoreCase("adventure") || args[0].equalsIgnoreCase("2") || args[0].equalsIgnoreCase("a")) {
-                            Message.message(Type.GOOD, p.getProxy(), "Gamemode", true, pl.getProxy().getName() + "'s gamemode set to " + ChatColor.AQUA + "adventure");
-                            Message.message(Type.GOOD, pl.getProxy(), "Gamemode", true, p.getProxy().getName() + "set your gamemode to " + ChatColor.AQUA + "adventure");
+                            new Message(Mood.GOOD, "Gamemode", pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "adventure").to(p);
+                            new Message(Mood.GOOD, "Gamemode", p.getName() + " set your gamemode to " + ChatColor.AQUA + "adventure").to(pl);
                             pl.getProxy().setGameMode(GameMode.ADVENTURE);
 
                         } else if (args[0].equalsIgnoreCase("spectator") || args[0].equalsIgnoreCase("3") || args[0].equalsIgnoreCase("sp")) {
-                            Message.message(Type.GOOD, p.getProxy(), "Gamemode", true, pl.getProxy().getName() + "'s gamemode set to " + ChatColor.AQUA + "spectator");
-                            Message.message(Type.GOOD, pl.getProxy(), "Gamemode", true, p.getProxy().getName() + "set your gamemode to " + ChatColor.AQUA + "spectator");
+                            new Message(Mood.GOOD, "Gamemode", pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "spectator").to(p);
+                            new Message(Mood.GOOD, "Gamemode", p.getName() + " set your gamemode to " + ChatColor.AQUA + "spectator").to(pl);
                             pl.getProxy().setGameMode(GameMode.SPECTATOR);
 
                         } else {
-                            Message.message(Type.WARNING, p.getProxy(), "Gamemode", true, "Mojang didn't add that gamemode yet...");
+                            new Message(Mood.BAD, "Gamemode", "Mojang didn't add that gamemode yet...").to(p);
                         }
 
                     } else {
-                        Message.error("Gamemode", cs, args[1]);
+                        new Message("Gamemode", Error.INVALID_PLAYER, args[1]).to(p);
                     }
                 } else {
-                    Message.error(p.getProxy(), "Gamemode", true, "/gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp] [player]");
-
+                    new Message("Gamemode", Error.TOO_FEW_ARGUMENTS, "/gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp] [player]").to(p);
                 }
 
             } else {
                 if (p.hasPermission(Permission.Ability.GAMEMODE)) {
                     if (p.getProxy().getGameMode() == GameMode.CREATIVE) {
                         p.getProxy().setGameMode(GameMode.SURVIVAL);
-                        Message.message(Type.GOOD, p.getProxy(), "Gamemode", true, "Gamemode set to " + ChatColor.AQUA + "survival.");
+                        new Message(Mood.GOOD, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "survival").to(p);
                     } else {
                         p.getProxy().setGameMode(GameMode.CREATIVE);
-                        Message.message(Type.GOOD, p.getProxy(), "Gamemode", true, "Gamemode set to " + ChatColor.AQUA + "creative.");
+                        new Message(Mood.GOOD, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "creative").to(p);
                     }
                 } else {
-                    Message.error("Gamemode", cs);
+                    new Message("Gamemode", Error.NO_PERMISSION).to(p);
                 }
             }
         } else {
-            Message.error("Gamemode", cs);
+            new Message("Gamemode", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -322,20 +321,22 @@ public class AbilityModule extends TrilliumModule {
                     TrilliumPlayer p = player((Player) cs);
                     if (p.hasPermission(Permission.Ability.PVP)) {
                         if (!p.canPvp()) {
-                            Message.message(Type.GENERIC, p.getProxy(), "PVP", true, "Pvp has been enabled for you.");
+                            new Message(Mood.GOOD, "PVP", "Pvp has been enabled for you.").to(p);
                         } else {
-                            Message.message(Type.GENERIC, p.getProxy(), "PVP", true, "Pvp has been disabled for you.");
+                            new Message(Mood.BAD, "PVP", "Pvp has been disabled for you.").to(p);
                         }
                         p.setPvp(!p.canPvp());
+                    } else {
+                        new Message("PVP", Error.NO_PERMISSION).to(p);
                     }
                 } else {
-                    Message.error("PVP", cs);
+                    new Message("PVP", Error.CONSOLE_NOT_ALLOWED).to(cs);
                 }
             } else {
-                Message.message(Type.WARNING, cs, "PVP", true, "This feature is disabled.");
+                new Message(Mood.BAD, "PVP", "This feature is disabled.").to(cs);
             }
         } else {
-            Message.message(Type.WARNING, cs, "PVP", true, "PVP is completely disabled.");
+            new Message(Mood.BAD, "PVP", "Pvp is completely disabled.").to(cs);
         }
     }
 
@@ -447,14 +448,14 @@ public class AbilityModule extends TrilliumModule {
         if (player.isVanished()) {
             e.setJoinMessage(null);
 
-            Message.message(Type.WARNING, player.getProxy(), "Vanish", true, "Remember! You are still in vanish mode!");
+            new Message(Mood.BAD, "Vanish", "Remember! You are still in vanish mode!").to(player);
             for (TrilliumPlayer online : TrilliumAPI.getOnlinePlayers()) {
                 online.getProxy().hidePlayer(player.getProxy());
             }
         }
 
         if (player.isGod()) {
-            Message.message(Type.WARNING, player.getProxy(), "God", true, "Remember! You are still in god mode!");
+            new Message(Mood.BAD, "God", "Remember! You are still in god mode!").to(player);
         }
     }
 }

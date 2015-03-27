@@ -9,7 +9,6 @@ import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
-import net.gettrillium.trillium.api.messageutils.Type;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -168,19 +167,29 @@ public class ChatModule extends TrilliumModule {
                         }
                         String msg = sb.toString().trim();
 
-                        Message.message(Type.GENERIC, p.getProxy(), target.getProxy().getName(), false, msg);
-                        target.getProxy().sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PluginMessages.)));
-                        Message.message(Type.GENERIC, target.getProxy(), p.getProxy().getName(), true, msg);
+                        String format1 = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PluginMessages.TO_FROM_FROM_MESSAGE));
+                        String format2 = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PluginMessages.FROM_TO_TO_MESSAGE));
+
+                        format1 = format1.replace("%FROM%", p.getName());
+                        format1 = format1.replace("%TO%", target.getName());
+                        format1 = format1.replace("%MESSAGE%", msg);
+
+                        format2 = format2.replace("%FROM%", p.getName());
+                        format2 = format2.replace("%TO%", target.getName());
+                        format2 = format2.replace("%MESSAGE%", msg);
+
+                        p.getProxy().sendMessage(format1);
+                        target.getProxy().sendMessage(format2);
 
                     } else {
-                        Message.error("MSG", cs, args[0]);
+                        new Message("Message", Error.INVALID_PLAYER, args[0]);
                     }
                 }
             } else {
-                Message.error("MSG", cs);
+                new Message("Message", Error.NO_PERMISSION).to(p);
             }
         } else {
-            Message.error("MSG", cs);
+            new Message("Message", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -206,19 +215,19 @@ public class ChatModule extends TrilliumModule {
                                 p.setDisplayName(p.getProxy().getName());
                             }
                         } else {
-                            Message.message(Type.WARNING, p.getProxy(), "Nickname", true, "You don't have a nickname to remove.");
+                            new Message(Mood.BAD, "Nickname", "You don't have a nickname set.").to(p);
                         }
                     } else {
 
                         if (ChatColor.stripColor(args[0]).length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
 
-                            Message.message(Type.GOOD, p.getProxy(), "Nickname", true, "New nickname set: " + args[0]);
+                            new Message(Mood.GOOD, "Nickname", "New nickname set: " + args[0]).to(p);
                             p.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + args[0]);
 
                         } else {
-                            Message.message(Type.WARNING, p.getProxy(), "Nickname", true, "Too many characters. "
+                            new Message(Mood.BAD, "Nickname", "Too many characters. "
                                     + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
-                                    + " is the limit.");
+                                    + " is the limit.").to(p);
                         }
                     }
 
@@ -237,25 +246,25 @@ public class ChatModule extends TrilliumModule {
                                 p.setDisplayName(p.getProxy().getName());
                             }
                         } else {
-                            Message.message(Type.WARNING, p.getProxy(), "Nickname", true, "You don't have a nickname set.");
+                            new Message(Mood.BAD, "Nickname", "You don't have a nickname set.").to(p);
                         }
                     } else {
 
                         if (ChatColor.stripColor(args[0]).length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
 
                             String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
-                            Message.message(Type.GOOD, p.getProxy(), "Nickname", true, "New nickname set: " + nick);
+                            new Message(Mood.GOOD, "Nickname", "New nickname set: " + nick).to(p);
                             p.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + nick);
 
                         } else {
-                            Message.message(Type.WARNING, p.getProxy(), "Nickname", true, "Too many characters. "
+                            new Message(Mood.GOOD, "Nickname", "Too many characters. "
                                     + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
-                                    + " is the limit.");
+                                    + " is the limit.").to(p);
                         }
                     }
 
                 } else {
-                    Message.error("Nickname", cs);
+                    new Message("Nickname", Error.NO_PERMISSION).to(p);
                 }
 
             } else if (args.length > 1) {
@@ -274,7 +283,7 @@ public class ChatModule extends TrilliumModule {
                                 p.setDisplayName(p.getProxy().getName());
                             }
                         } else {
-                            Message.message(Type.WARNING, p.getProxy(), "Nickname", true, "You don't have a nickname set.");
+                            new Message(Mood.BAD, "Nickname", "You don't have a nickname set.").to(p);
                         }
                     } else {
 
@@ -283,16 +292,16 @@ public class ChatModule extends TrilliumModule {
                             TrilliumPlayer target = player(args[1]);
                             if (target != null) {
                                 target.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + args[0]);
-                                Message.message(Type.GOOD, target.getProxy(), "Nickname", true, ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " set your nickname to: " + args[0]);
-                                Message.message(Type.GOOD, p.getProxy(), "Nickname", true, "You set " + ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " to: " + args[0]);
+                                new Message(Mood.GOOD, "Nickname", ChatColor.AQUA + p.getName() + ChatColor.BLUE + " set your nickname to: " + args[0]).to(target);
+                                new Message(Mood.GOOD, "Nickname", "You set " + ChatColor.AQUA + target.getName() + ChatColor.BLUE + " to: " + args[0]).to(p);
 
                             } else {
-                                Message.error("Nickname", cs, args[0]);
+                                new Message("Nickname", Error.INVALID_PLAYER, args[0]);
                             }
                         } else {
-                            Message.message(Type.WARNING, p.getProxy(), "Nickname", true, "Too many characters. "
+                            new Message(Mood.GOOD, "Nickname", "Too many characters. "
                                     + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
-                                    + " is the limit.");
+                                    + " is the limit.").to(p);
                         }
                     }
 
@@ -311,7 +320,7 @@ public class ChatModule extends TrilliumModule {
                                 p.setDisplayName(p.getProxy().getName());
                             }
                         } else {
-                            Message.message(Type.WARNING, p.getProxy(), "Nickname", true, "You don't have a nickname set.");
+                            new Message(Mood.BAD, "Nickname", "You don't have a nickname set.").to(p);
                         }
                     } else {
 
@@ -321,26 +330,26 @@ public class ChatModule extends TrilliumModule {
                             if (target != null) {
                                 String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
                                 target.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + nick);
-                                Message.message(Type.GOOD, target.getProxy(), "Nickname", true, ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " set your nickname to: " + nick);
-                                Message.message(Type.GOOD, p.getProxy(), "Nickname", true, "You set " + ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + " to: " + nick);
+                                new Message(Mood.GOOD, "Nickname", ChatColor.AQUA + p.getName() + ChatColor.BLUE + " set your nickname to: " + nick).to(target);
+                                new Message(Mood.GOOD, "Nickname", "You set " + ChatColor.AQUA + target.getName() + ChatColor.BLUE + " to: " + nick).to(p);
 
                             } else {
-                                Message.error("Nickname", cs, args[0]);
+                                new Message("Nickname", Error.INVALID_PLAYER, args[0]).to(p);
                             }
                         } else {
-                            Message.message(Type.WARNING, p.getProxy(), "Nickname", true, "Too many characters. "
+                            new Message(Mood.GOOD, "Nickname", "Too many characters. "
                                     + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
-                                    + " is the limit.");
+                                    + " is the limit.").to(p);
                         }
                     }
                 } else {
-                    Message.error("Nickname", cs);
+                    new Message("Nickname", Error.NO_PERMISSION).to(p);
                 }
             } else {
-                Message.error(p.getProxy(), "Nickname", true, "/nick <nickname> [player]");
+                new Message("Nickname", Error.TOO_FEW_ARGUMENTS, "/nick <nickname> [player]");
             }
         } else {
-            Message.error("Nickname", cs);
+            new Message("Nickname", Error.CONSOLE_NOT_ALLOWED);
         }
     }
 
@@ -375,16 +384,16 @@ public class ChatModule extends TrilliumModule {
                             }
                         }
                     } else {
-                        Message.error("Chat Channel", cs);
+                        new Message("Chat Channel", Error.NO_PERMISSION).to(p);
                     }
                 } else {
-                    Message.error(p.getProxy(), "Chat Channel", true, "/cc <channel> <msg>");
+                    new Message("Chat Channel", Error.TOO_FEW_ARGUMENTS, "/cc <channel> <msg>");
                 }
             } else {
-                Message.error("Chat Channel", cs);
+                new Message("Chat Channel", Error.CONSOLE_NOT_ALLOWED).to(cs);
             }
         } else {
-            Message.message(Type.WARNING, cs, "Chat Channel", true, "This feature has been disabled.");
+            new Message(Mood.BAD, "Chat Channel", "This feature has been disabled.");
         }
     }
 
@@ -392,13 +401,13 @@ public class ChatModule extends TrilliumModule {
     public void broadcast(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Chat.BROADCAST)) {
             if (args.length == 0) {
-                Message.error(cs, "Broadcast", true, "Too few arguments. /broadcast <message>");
+                new Message("Broadcast", Error.TOO_FEW_ARGUMENTS, "/broadcast <message>").to(cs);
             } else {
                 String perm = null;
                 int argsToStartWith = 0;
                 if (args[0].startsWith("-p")) {
                     if (args.length <= 2) {
-                        Message.error(cs, "Broadcast", true, "Too few arguments. /broadcast <message>");
+                        new Message("Broadcast", Error.TOO_FEW_ARGUMENTS, "/broadcast <message>").to(cs);
                     } else {
                         perm = args[1];
                         argsToStartWith = 2;
@@ -466,7 +475,7 @@ public class ChatModule extends TrilliumModule {
                 }
             }
         } else {
-            Message.error("Broadcast", cs);
+            new Message("Broadcast", Error.NO_PERMISSION).to(cs);
         }
     }
 

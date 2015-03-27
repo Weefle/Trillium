@@ -6,7 +6,9 @@ import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
+import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
+import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.messageutils.Type;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.bukkit.Bukkit;
@@ -35,10 +37,10 @@ public class ChatModule extends TrilliumModule {
             }
             String message = sb.toString().trim();
 
-            Message.broadcast(Type.GENERIC, ChatColor.LIGHT_PURPLE + "Console", message);
+            new Message(Mood.GENERIC, ChatColor.LIGHT_PURPLE + "Console", message).broadcast();
 
         } else {
-            Message.message(Type.WARNING, cs, "Say", true, "Say is for the console. Not you.");
+            new Message(Mood.BAD, "Say", "Say is for the console only. Not you.").to(cs);
         }
     }
 
@@ -54,7 +56,7 @@ public class ChatModule extends TrilliumModule {
                 cs.sendMessage(s);
             }
         } else {
-            Message.error("Motd", cs);
+            new Message("Motd", Error.NO_PERMISSION).to(cs);
         }
     }
 
@@ -62,37 +64,38 @@ public class ChatModule extends TrilliumModule {
     public void information(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Chat.INFO)) {
             if (args.length == 0) {
-                Message.error(cs, "Info", true, "/info <player>");
+                new Message("Info", Error.TOO_FEW_ARGUMENTS, "/info <player>").to(cs);
             } else {
                 TrilliumPlayer p = player(args[0]);
                 if (p != null) {
                     p.getProxy().sendMessage(" ");
-                    Message.message(Type.GENERIC, cs, "Info", true, "Displaying Information On: " + ChatColor.AQUA + p.getProxy().getName());
-                    Message.message(Type.GENERIC, cs, "Info", true, "Nickname: " + ChatColor.AQUA + p.getDisplayName());
-                    Message.message(Type.GENERIC, cs, "Info", true, "Online: " + ChatColor.AQUA + p.isVanished());
-                    Message.message(Type.GENERIC, cs, "Info", true, "Gamemode: " + ChatColor.AQUA + p.getProxy().getGameMode());
-                    Message.message(Type.GENERIC, cs, "Info", true, "Banned: " + ChatColor.AQUA + p.getProxy().isBanned());
+                    new Message(Mood.GENERIC, "Info", "Displaying Information On: " + ChatColor.AQUA + p.getName()).to(cs);
+                    new Message(Mood.GENERIC, "Nickname", "" + ChatColor.AQUA + p.getDisplayName()).to(cs);
+                    new Message(Mood.GENERIC, "Online", "" + ChatColor.AQUA + p.isVanished()).to(cs);
+                    new Message(Mood.GENERIC, "Gamemode", "" + ChatColor.AQUA + p.getProxy().getGameMode()).to(cs);
+                    new Message(Mood.GENERIC, "Banned", "" + ChatColor.AQUA + p.getProxy().isBanned()).to(cs);
                     if (p.getProxy().isBanned()) {
-                        Message.message(Type.GENERIC, cs, "Info", true, "Ban Reason: 'You are the weakest link. Goodbye.'");
+                        new Message(Mood.GENERIC, "Ban Reason", ChatColor.RED + "You are the weakest link. Goodbye.").to(cs);
                     }
-                    Message.message(Type.GENERIC, cs, "Info", true, "Muted: " + ChatColor.AQUA + p.isMuted());
-                    Message.message(Type.GENERIC, cs, "Info", true, "Flying: " + ChatColor.AQUA + p.isFlying());
-                    Message.message(Type.GENERIC, cs, "Info", true, "Ping: " + ChatColor.AQUA + Utils.getPing(p.getProxy()));
-                    Message.message(Type.GENERIC, cs, "Info", true, "Lag Rate: " + ChatColor.AQUA + Utils.getPingBar(p.getProxy()));
-                    Message.message(Type.GENERIC, cs, "Info", true, "Location: " + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ());
+                    new Message(Mood.GENERIC, "Muted", "" + ChatColor.AQUA + p.isMuted()).to(cs);
+                    new Message(Mood.GENERIC, "Flying", "" + ChatColor.AQUA + p.isFlying()).to(cs);
+                    new Message(Mood.GENERIC, "Ping", "" + ChatColor.AQUA + Utils.getPing(p.getProxy())).to(cs);
+                    new Message(Mood.GENERIC, "Lag Rate", "" + ChatColor.AQUA + Utils.getPingBar(p.getProxy())).to(cs);
+                    new Message(Mood.GENERIC, "Location", "" + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ()).to(cs);
+
                     if (p.isVanished()) {
-                        Message.message(Type.GENERIC, cs, "Info", true, "Last found at: " + ChatColor.AQUA + p.getLastLocation().getBlockX() + "," + p.getLastLocation().getBlockY() + ", " + p.getLastLocation().getBlockZ());
+                        new Message(Mood.GENERIC, "Last Found At", "" + ChatColor.AQUA + p.getLastLocation().getBlockX() + "," + p.getLastLocation().getBlockY() + ", " + p.getLastLocation().getBlockZ()).to(cs);
                     }
-                    Message.message(Type.GENERIC, cs, "Info", true, "Food level: " + ChatColor.AQUA + p.getProxy().getFoodLevel());
-                    Message.message(Type.GENERIC, cs, "Info", true, "Health level: " + ChatColor.AQUA + p.getProxy().getHealthScale());
-                    Message.message(Type.GENERIC, cs, "Info", true, "Time Played: hours: " + ChatColor.AQUA + (p.getProxy().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60);
-                    Message.message(Type.GENERIC, cs, "Info", true, "Time Played: days: " + ChatColor.AQUA + ((p.getProxy().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60) / 24);
+                    new Message(Mood.GENERIC, "Food Level", "" + ChatColor.AQUA + p.getProxy().getFoodLevel()).to(cs);
+                    new Message(Mood.GENERIC, "Health Level", "" + ChatColor.AQUA + p.getProxy().getHealthScale()).to(cs);
+                    new Message(Mood.GENERIC, "Time Played in Hours", "" + ChatColor.AQUA + (p.getProxy().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60).to(cs);
+                    new Message(Mood.GENERIC, "Time Played in Days", "" + ChatColor.AQUA + ((p.getProxy().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60) / 24).to(cs);
                 } else {
-                    Message.error("Info", cs, args[0]);
+                    new Message("Info", Error.INVALID_PLAYER, args[0]);
                 }
             }
         } else {
-            Message.error("Info", cs);
+            new Message("Info", Error.NO_PERMISSION).to(cs);
         }
     }
 
@@ -111,10 +114,10 @@ public class ChatModule extends TrilliumModule {
                 Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "** " + ChatColor.GRAY + p.getProxy().getName() + " " + message + ChatColor.DARK_GRAY + " **");
 
             } else {
-                Message.error("Me", cs);
+                new Message("Me", Error.NO_PERMISSION).to(p);
             }
         } else {
-            Message.error("Me", cs);
+            new Message("Me", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -127,7 +130,7 @@ public class ChatModule extends TrilliumModule {
             cs.sendMessage(ChatColor.GRAY + "                samczsun, and hintss");
             cs.sendMessage(ChatColor.DARK_RED + "                          ❤");
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
-            cs.sendMessage(ChatColor.GRAY + "Vesion: " + TrilliumAPI.getInstance().getDescription().getVersion());
+            cs.sendMessage(ChatColor.GRAY + "Version: " + TrilliumAPI.getInstance().getDescription().getVersion());
             cs.sendMessage(ChatColor.GRAY + "Configuration Reloaded");
             cs.sendMessage(ChatColor.GRAY + "Support email: support@gettrillium.net");
             cs.sendMessage(ChatColor.GRAY + "Website: http://www.gettrillium.net/");
@@ -140,7 +143,7 @@ public class ChatModule extends TrilliumModule {
             cs.sendMessage(ChatColor.GRAY + "                samczsun, and hintss");
             cs.sendMessage(ChatColor.DARK_RED + "                          ❤");
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
-            cs.sendMessage(ChatColor.GRAY + "Vesion: " + TrilliumAPI.getInstance().getDescription().getVersion());
+            cs.sendMessage(ChatColor.GRAY + "Version: " + TrilliumAPI.getInstance().getDescription().getVersion());
             cs.sendMessage(ChatColor.GRAY + "Support email: support@gettrillium.net");
             cs.sendMessage(ChatColor.GRAY + "Website: http://www.gettrillium.net/");
             cs.sendMessage(ChatColor.GRAY + "Resource page: http://www.spigotmc.org/resources/trillium.3882/");
@@ -153,7 +156,7 @@ public class ChatModule extends TrilliumModule {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Chat.MESSAGE)) {
                 if (args.length < 2) {
-                    Message.error(p.getProxy(), "MSG", true, "/msg <sender> <message>");
+                    new Message("Message", Error.TOO_FEW_ARGUMENTS, "/msg <sender> <message>").to(p);
 
                 } else {
                     TrilliumPlayer target = player(args[0]);
@@ -166,6 +169,7 @@ public class ChatModule extends TrilliumModule {
                         String msg = sb.toString().trim();
 
                         Message.message(Type.GENERIC, p.getProxy(), target.getProxy().getName(), false, msg);
+                        target.getProxy().sendMessage(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PluginMessages.)));
                         Message.message(Type.GENERIC, target.getProxy(), p.getProxy().getName(), true, msg);
 
                     } else {

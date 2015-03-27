@@ -13,6 +13,7 @@ public class AFKRunnable implements Runnable {
 
     public void run() {
         List<TrilliumPlayer> toKick = new ArrayList<>();
+        List<TrilliumPlayer> toAfk = new ArrayList<>();
 
         for (TrilliumPlayer player : TrilliumAPI.getOnlinePlayers()) {
             if (player.isAfk()) {
@@ -27,15 +28,18 @@ public class AFKRunnable implements Runnable {
                 if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Afk.AUTO_AFK_KICK)) {
                     toKick.add(player);
                 } else {
-                    player.toggleAfk();
+                    toAfk.add(player);
                 }
             }
         }
 
         for (TrilliumPlayer player : toKick) {
             player.getProxy().kickPlayer("You idled for too long.");
-            new Message(Mood.ERROR, "AFK", player.getProxy().getName() + " got kicked for idling for too long.").broadcast();
+            new Message(Mood.BAD, "AFK", player.getName() + " got kicked for idling for too long.").broadcast();
+        }
 
+        for (TrilliumPlayer player : toAfk) {
+            player.toggleAfk();
         }
     }
 }

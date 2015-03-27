@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/TeamTrillium/Trillium.svg)](https://travis-ci.org/TeamTrillium/Trillium)
 
-![logo](http://www.spigotmc.org/attachments/xh5u1rl-png.20491/ =50x)
+![logo](http://i.imgur.com/4UePdLH.png)
 
 Trillium is a new kind of "essentials". It is the premium essentials.
 

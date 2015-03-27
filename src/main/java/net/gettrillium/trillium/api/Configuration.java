@@ -42,8 +42,6 @@ public class Configuration {
         public static final String CCCOLOR = CHATCHANNEL + "allow-color-codes";
     }
 
-
-
     public static class Server {
         private static String PREFIX = "server.";
         private static final String PVP = PREFIX + "pvp.";

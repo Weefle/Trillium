@@ -10,7 +10,6 @@ public class MessageTest {
 
     @Test
     public void MessageUtilTest() {
-        Message msg = new Message("TestCommand", Error.NO_PERMISSION);
-        assertEquals("§8[§4TestCommand§8] §9>> §7You don't have permission to do that.", msg.toString());
+        assertEquals("§8[§4TestCommand§8] §9>> §7You don't have permission to do that.", new Message("TestCommand", Error.NO_PERMISSION).toString());
     }
 }

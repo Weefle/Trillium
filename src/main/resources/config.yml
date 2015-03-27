@@ -74,9 +74,13 @@ chat:
 plugin-messages:
   # Format plugin messages
   format: "&8[%COLOR%%COMMAND%&8] &9>> &7%MESSAGE%"
-  from-to-to-message: "&b%FROM% &9-> &b%TO% &9>> &7%MESSAGE%"
-  to-from-from-message: "&b%TO% &9<- &b%FROM% &9>> &7%MESSAGE%"
+  # The general format of messages the plugin sends to the player/server
+  from-to-to-message: "&b%FROM% &9> &b%TO% &9>> &7%MESSAGE%"
+  # The format of the person sending a private message to someone.
+  to-from-from-message: "&b%TO% &9< &b%FROM% &9>> &7%MESSAGE%"
+  # The format of the person receiving a private message from someone.
   errors:
+  # The format of the common error messages. (other error messages use the format above"
     invalid-player: "&8[&4%COMMAND%&8] &9>> &b%PLAYER% &7is either offline or does not exist."
     no-permission: "&8[&4%COMMAND%&8] &9>> &7You don't have permission to do that."
     console-not-allowed: "&8[&4%COMMAND%&8] &9>> &7You can't do that you silly console."
@@ -242,3 +246,5 @@ afk:
     # You can use s for seconds, m for minutes, and h for hours.
     kick-on-afk: false
     # If a player is AFK (auto AFK-ed). they will be kicked from the server.
+
+# <3

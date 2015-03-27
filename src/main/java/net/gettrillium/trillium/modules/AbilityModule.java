@@ -5,8 +5,9 @@ import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
+import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
-import net.gettrillium.trillium.api.messageutils.Type;
+import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -33,7 +34,7 @@ public class AbilityModule extends TrilliumModule {
     @Command(command = "fly", description = "SOAR THROUGH THE AIR LIKE A MAJESTIC BUTTERFLY!", usage = "/fly")
     public void fly(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
-            Message.error("Fly", cs);
+            new Message("Fly", Error.CONSOLE_NOT_ALLOWED).to(cs);
             return;
         }
 
@@ -41,32 +42,34 @@ public class AbilityModule extends TrilliumModule {
         if (args.length == 0) {
             if (player.hasPermission(Permission.Ability.FLY) || player.hasPermission(Permission.Ability.FLY_OTHER)) {
                 if (!player.isFlying()) {
-                    Message.message(Type.GOOD, player.getProxy(), "Fly", true, "You are now in fly mode.");
+                    new Message(Mood.GOOD, "Fly", "You are now in fly mode.").to(player);
                 } else {
-                    Message.message(Type.GOOD, player.getProxy(), "Fly", true, "You are no longer in fly mode.");
+                    new Message(Mood.GOOD, "Fly", "You are no longer in fly mode.").to(player);
                 }
                 player.setFlying(!player.isFlying());
             } else {
-                Message.error("Fly", player.getProxy());
+                new Message("Fly", Error.NO_PERMISSION).to(player);
             }
         } else {
             if (player.hasPermission(Permission.Ability.FLY_OTHER)) {
                 TrilliumPlayer target = player(args[0]);
                 if (target != null) {
                     if (target.isFlying()) {
-                        Message.message(Type.GOOD, target.getProxy(), "Fly", true, player.getProxy().getName() + " removed you from fly mode.");
-                        Message.message(Type.GOOD, player.getProxy(), "Fly", true, target.getProxy().getName() + " is no longer in fly mode.");
+                        new Message(Mood.BAD, "Fly", target.getName() + " is no longer in fly mode.").to(player);
+                        new Message(Mood.BAD, "Fly", player.getName() + " removed you from fly mode.").to(target);
+
                         target.setFlying(false);
                     } else {
-                        Message.message(Type.GOOD, target.getProxy(), "Fly", true, player.getProxy().getName() + " put you in fly mode.");
-                        Message.message(Type.GOOD, player.getProxy(), "Fly", true, target.getProxy().getName() + " is now in fly mode.");
+                        new Message(Mood.GOOD, "Fly", target.getName() + " is now in fly mode.").to(player);
+                        new Message(Mood.GOOD, "Fly", player.getName() + " put you in fly mode.").to(target);
+
                         target.setFlying(true);
                     }
                 } else {
-                    Message.error("Fly", cs, args[0]);
+                    new Message("Fly", Error.INVALID_PLAYER, args[0]).to(cs);
                 }
             } else {
-                Message.error(player.getProxy(), "Fly", true, "/fly [player]");
+                new Message("Fly", Error.TOO_FEW_ARGUMENTS, "/fly [player]");
             }
         }
     }
@@ -79,13 +82,13 @@ public class AbilityModule extends TrilliumModule {
                 if (player.hasPermission(Permission.Ability.GOD)) {
                     if (!player.isGod()) {
                         player.setGod(true);
-                        Message.message(Type.GOOD, player.getProxy(), "God", true, "You are now in god mode.");
+                        new Message(Mood.GOOD, "God", "You are now in god mode.").to(player);
                     } else {
                         player.setGod(false);
-                        Message.message(Type.GOOD, player.getProxy(), "God", true, "You are no longer in god mode.");
+                        new Message(Mood.GOOD, "God", "You are no longer in god mode.").to(player);
                     }
                 } else {
-                    Message.error("God", player.getProxy());
+                    new Message("God", Error.NO_PERMISSION);
                 }
 
             } else {
@@ -93,23 +96,23 @@ public class AbilityModule extends TrilliumModule {
                     TrilliumPlayer target = player(args[0]);
                     if (target != null) {
                         if (target.isGod()) {
-                            Message.message(Type.GOOD, target.getProxy(), "God", true, player.getProxy().getName() + " removed you from god mode.");
-                            Message.message(Type.GOOD, player.getProxy(), "God", true, target.getProxy().getName() + " is no longer in god mode.");
+                            new Message(Mood.BAD, "God", player.getName() + " removed you from god mode.").to(target);
+                            new Message(Mood.BAD, "God", target.getName() + " is no longer in god mode.").to(player);
                             target.setGod(false);
                         } else {
-                            Message.message(Type.GOOD, target.getProxy(), "God", true, player.getProxy().getName() + " put you in god mode.");
-                            Message.message(Type.GOOD, player.getProxy(), "God", true, target.getProxy().getName() + " is now in god mode.");
+                            new Message(Mood.GOOD, "God", player.getName() + " put you in god mode.").to(target);
+                            new Message(Mood.GOOD, "God", target.getName() + " is now in god mode.").to(player);
                             target.setGod(true);
                         }
                     } else {
-                        Message.error("God", cs, args[0]);
+                        new Message("God", Error.INVALID_PLAYER, args[0]).to(player);
                     }
                 } else {
-                    Message.error(player.getProxy(), "God", true, "/god [player]");
+                    new Message("God", Error.TOO_FEW_ARGUMENTS, "/god [player]").to(player);
                 }
             }
         } else {
-            Message.error("God", cs);
+            new Message("God", Error.CONSOLE_NOT_ALLOWED);
         }
     }
 
@@ -121,48 +124,48 @@ public class AbilityModule extends TrilliumModule {
                 if (player.hasPermission(Permission.Ability.VANISH)) {
                     if (!player.isVanished()) {
                         player.setVanished(true);
-                        Message.message(Type.GOOD, player.getProxy(), "Vanish", true, "You are now in vanish mode.");
+                        new Message(Mood.GOOD, "Vanish", "You are now in vanish mode.").to(player);
                         if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
                             player.getProxy().setGameMode(GameMode.SPECTATOR);
                         }
                     } else {
                         player.setVanished(false);
-                        Message.message(Type.GOOD, player.getProxy(), "Vanish", true, "You are no longer in vanish mode.");
+                        new Message(Mood.BAD, "Vanish", "You are no longer in vanish mode.").to(player);
                         if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
                             player.getProxy().setGameMode(GameMode.SURVIVAL);
                         }
                     }
                 } else {
-                    Message.error("Vanish", player.getProxy());
+                    new Message("Vanish", Error.NO_PERMISSION).to(player);
                 }
             } else {
                 if (player.hasPermission(Permission.Ability.VANISH_OTHER)) {
                     TrilliumPlayer target = player(args[0]);
                     if (target != null) {
                         if (target.isVanished()) {
-                            Message.message(Type.GOOD, target.getProxy(), "Vanish", true, player.getProxy().getName() + " removed you from vanish mode.");
-                            Message.message(Type.GOOD, player.getProxy(), "Vanish", true, target.getProxy().getName() + " is no longer in vanish mode.");
+                            new Message(Mood.BAD, "Vanish", player.getName() + " removed you from vanish mode.").to(target);
+                            new Message(Mood.BAD, "Vanish", target.getName() + " is no longer in vanish mode.").to(player);
                             target.setVanished(false);
                             if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
                                 target.getProxy().setGameMode(GameMode.SURVIVAL);
                             }
                         } else {
-                            Message.message(Type.GOOD, target.getProxy(), "Vanish", true, player.getProxy().getName() + " put you in vanish mode.");
-                            Message.message(Type.GOOD, player.getProxy(), "Vanish", true, target.getProxy().getName() + " is now in vanish mode.");
+                            new Message(Mood.GOOD, "Vanish", player.getName() + " put you in vanish mode.").to(target);
+                            new Message(Mood.GOOD, "Vanish", target.getName() + " is now in vanish mode.").to(player);
                             target.setVanished(true);
                             if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
                                 target.getProxy().setGameMode(GameMode.SPECTATOR);
                             }
                         }
                     } else {
-                        Message.error("Vanish", cs, args[0]);
+                        new Message("Vanish", Error.INVALID_PLAYER, args[0]).to(player);
                     }
                 } else {
-                    Message.error(player.getProxy(), "Vanish", true, "/vanish [player]");
+                    new Message("Vanish", Error.TOO_FEW_ARGUMENTS, "/vanish [player]").to(player);
                 }
             }
         } else {
-            Message.error("Vanish", cs);
+            new Message("Vanish", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 

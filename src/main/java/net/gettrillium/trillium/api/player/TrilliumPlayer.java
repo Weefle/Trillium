@@ -198,5 +198,9 @@ public class TrilliumPlayer {
     public boolean canPvp() {
         return this.pvp;
     }
+
+    public String getName() {
+        return getProxy().getName();
+    }
 }
 

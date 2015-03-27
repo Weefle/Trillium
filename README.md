@@ -4,6 +4,9 @@
 
 ![logo](http://i.imgur.com/4UePdLH.png)
 
+http://gettrillium.net/
+http://www.spigotmc.org/resources/trillium.3882/
+
 Trillium is a new kind of "essentials". It is the premium essentials.
 
 This Minecraft plugin is a massive collection of commands, options, and handlers that can turn any vanilla server into a fully equipped server with all the tools necessary to break the barriers of your normal Minecraft server.

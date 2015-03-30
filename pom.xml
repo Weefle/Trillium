@@ -6,6 +6,7 @@
 
     <groupId>net.gettrillium</groupId>
     <artifactId>Trillium</artifactId>
+    <name>Trillium</name>
     <version>0.3.0</version>
 
     <repositories>
@@ -54,6 +55,14 @@
     </dependencies>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ftp</artifactId>
+                <version>1.0-alpha-6</version>
+            </extension>
+        </extensions>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -85,4 +94,11 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>Trillium</id>
+            <url>http://gettrillium.net/maven2</url>
+        </repository>
+    </distributionManagement>
 </project>

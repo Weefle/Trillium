@@ -5,8 +5,9 @@ import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
+import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
-import net.gettrillium.trillium.api.messageutils.Type;
+import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
@@ -41,7 +42,7 @@ public class AdminModule extends TrilliumModule {
                     if (StringUtils.isNumeric(args[0])) {
                         radius = Integer.parseInt(args[0]);
                     } else {
-                        Message.message(Type.WARNING, cs, "Chest Finder", true, args[0] + " is not a number. Setting radius to 50");
+                        new Message(Mood.BAD, "Chest Finder", args[0] + " is not a number. Setting radius to 50.").to(p);
                         radius = 50;
                     }
                 } else {
@@ -63,7 +64,7 @@ public class AdminModule extends TrilliumModule {
 
                 if (!chests.isEmpty()) {
                     for (Location b : chests) {
-                        Message.message(Type.GOOD, p.getProxy(), "Chest Finder", true, b.getX() + ", " + b.getY() + ", " + b.getZ());
+                        new Message(Mood.GOOD, "Chest Finder", b.getX() + ", " + b.getY() + ", " + b.getZ()).to(p);
                     }
 
                     new BukkitRunnable() {
@@ -98,13 +99,13 @@ public class AdminModule extends TrilliumModule {
                     }.runTaskTimer(TrilliumAPI.getInstance(), 5, 5);
 
                 } else {
-                    Message.message(Type.WARNING, p.getProxy(), "Chest Finder", true, "No chests found.");
+                    new Message(Mood.BAD, "Chest Finder", "No chests found.").to(p);
                 }
             } else {
-                Message.error("Chest Finder", cs);
+                new Message("Chest Finder", Error.NO_PERMISSION).to(p);
             }
         } else {
-            Message.error("Chest Finder", cs);
+            new Message("Chest Finder", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -115,13 +116,13 @@ public class AdminModule extends TrilliumModule {
             if (p.hasPermission(Permission.Admin.SETSPAWN)) {
 
                 p.getProxy().getWorld().setSpawnLocation(p.getProxy().getLocation().getBlockX(), p.getProxy().getLocation().getBlockY(), p.getProxy().getLocation().getBlockZ());
-                Message.message(Type.GOOD, p.getProxy(), "Set Spawn", true, "Spawn location set. " + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ());
+                new Message(Mood.GOOD, "Set Spawn", "Spawn location set. " + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ()).to(p);
 
             } else {
-                Message.error("Set Spawn", cs);
+                new Message("Set Spawn", Error.NO_PERMISSION).to(p);
             }
         } else {
-            Message.error("Set Spawn", cs);
+            new Message("Set Spawn", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -133,33 +134,33 @@ public class AdminModule extends TrilliumModule {
 
                     final long time = System.currentTimeMillis();
 
-                    Message.message(Type.GENERIC, cs, "Lag", true, "Before GC:");
+                    new Message(Mood.GENERIC, "Lag", "Before GC:").to(cs);
                     Utils.printCurrentMemory(cs);
                     cs.sendMessage(" ");
 
                     System.gc();
-                    Message.message(Type.GOOD, cs, "Lag", true, "GC complete.");
+                    new Message(Mood.GOOD, "Lag", "GC complete.").to(cs);
 
                     new BukkitRunnable() {
                         @Override
                         public void run() {
                             cs.sendMessage(" ");
-                            Message.message(Type.GENERIC, cs, "Lag", true, "After GC:");
+                            new Message(Mood.GENERIC, "Lag", "After GC:").to(cs);
                             Utils.printCurrentMemory(cs);
 
                             long need = System.currentTimeMillis() - time;
-                            Message.message(Type.GENERIC, cs, "Lag", true, "GC took " + need / 1000L + " seconds.");
+                            new Message(Mood.GENERIC, "Lag", "GC took " + need / 1000L + " seconds.").to(cs);
 
                         }
                     }.runTaskLater(TrilliumAPI.getInstance(), 5);
                 }
             } else {
 
-                Message.message(Type.GENERIC, cs, "Lag", true, "Server Statistics:");
+                new Message(Mood.GENERIC, "Lag", "Server Statistics:").to(cs);
                 Utils.printCurrentMemory(cs);
             }
         } else {
-            Message.error("Lag", cs);
+             new Message("Lag", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -169,19 +170,20 @@ public class AdminModule extends TrilliumModule {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Admin.KILLALL)) {
                 if (args.length <= 1) {
-                    Message.error(p.getProxy(), "Killall", true, "/killall <radius> <mobs/players/animals/monsters/items/everything>");
+                    new Message("Killall", Error.TOO_FEW_ARGUMENTS, "/killall <radius> <mobs/players/animals/monsters/items/everything>").to(p);
                 } else {
                     if (StringUtils.isNumeric(args[0])) {
                         List<Entity> entities = p.getProxy().getNearbyEntities(Double.parseDouble(args[0]), Double.parseDouble(args[0]), Double.parseDouble(args[0]));
+
                         if (args[1].equalsIgnoreCase("mobs")
                                 || args[1].equalsIgnoreCase("animals")
                                 || args[1].equalsIgnoreCase("players")
                                 || args[1].equalsIgnoreCase("monsters")) {
-                            Message.message(Type.GOOD, p.getProxy(), "Killall", true, "Successfully murdered all " + args[1] + " in a radius of " + args[0]);
+                            new Message(Mood.GOOD, "Killall", "Successfully murdered all " + args[1] + " in a radius of " + args[0]).to(p);
                         } else if (args[1].equalsIgnoreCase("items")) {
-                            Message.message(Type.GOOD, p.getProxy(), "Killall", true, "Successfully destroyed all items in a radius of " + args[0]);
+                            new Message(Mood.GOOD, "Killall", "Successfully destroyed all items in a radius of " + args[0]).to(p);
                         } else if (args[1].equalsIgnoreCase("everything")) {
-                            Message.message(Type.GOOD, p.getProxy(), "Killall", true, "Successfully destroyed and murdered everything... you monster...");
+                            new Message(Mood.GOOD, "Killall", "Successfully destroyed and murdered everything... you monster...").to(p);
                         } else {
                             p.getProxy().sendMessage("");
                         }
@@ -213,18 +215,18 @@ public class AdminModule extends TrilliumModule {
                                     e.remove();
                                 }
                             } else {
-                                Message.message(Type.WARNING, p.getProxy(), "Killall", true, "Unknown argument: " + args[1]);
+                                new Message("Killall", Error.WRONG_ARGUMENTS, "/killall <radius> <mobs/players/animals/monsters/items/everything>").to(p);
                             }
                         }
                     } else {
-                        Message.message(Type.WARNING, p.getProxy(), "Killall", true, args[0] + " is not a number.");
+                        new Message(Mood.BAD, "Killall", args[0] + " is not a number.").to(p);
                     }
                 }
             } else {
-                Message.error("Killall", cs);
+                new Message("Killall", Error.NO_PERMISSION);
             }
         } else {
-            Message.error("Killall", cs);
+            new Message("Killall", Error.CONSOLE_NOT_ALLOWED);
         }
     }
 
@@ -236,9 +238,9 @@ public class AdminModule extends TrilliumModule {
                 if (args[0].equalsIgnoreCase("crafting") || args[0].equalsIgnoreCase("cv")) {
                     if (p.hasPermission(Permission.Admin.INV_CRAFTING)) {
                         p.getProxy().openWorkbench(p.getProxy().getLocation(), true);
-                        Message.message(Type.GOOD, p.getProxy(), "Inventory", true, "Now viewing a crafting table.");
+                        new Message(Mood.GOOD, "Inventory", "Now viewing a crafting table.").to(p);
                     } else {
-                        Message.error("Inventory", cs);
+                        new Message("Inventory", Error.NO_PERMISSION).to(p);
                     }
                 } else {
                     if (p.hasPermission(Permission.Admin.INV_PLAYER)) {
@@ -246,12 +248,12 @@ public class AdminModule extends TrilliumModule {
 
                         if (target != null) {
                             p.getProxy().openInventory(target.getProxy().getInventory());
-                            Message.message(Type.GOOD, p.getProxy(), "Inventory", true, "You are now viewing " + target.getProxy().getName() + "'s inventory");
+                            new Message(Mood.GOOD, "Inventory", "You are now viewing " + target.getName() + "'s inventory.").to(p);
                         } else {
-                            Message.error("Inventory", cs, args[0]);
+                            new Message("Inventory", Error.INVALID_PLAYER, args[0]).to(p);
                         }
                     } else {
-                        Message.error("Inventory", cs);
+                        new Message("Inventory", Error.NO_PERMISSION).to(p);
                     }
                 }
 
@@ -262,22 +264,22 @@ public class AdminModule extends TrilliumModule {
 
                         if (target != null) {
                             p.getProxy().openInventory(target.getProxy().getEnderChest());
-                            Message.message(Type.GOOD, p.getProxy(), "Inventory", true, "Now viewing " + args[0] + "'s ender chest.");
+                            new Message(Mood.GOOD, "Inventory", "Now viewing " + args[0] + "'s ender chest.").to(p);
 
                         } else {
-                            Message.error("Inventory", cs, args[0]);
+                            new Message("Inventory", Error.INVALID_PLAYER, args[0]).to(p);
                         }
                     } else {
-                        Message.error("Inventory", cs);
+                        new Message("Inventory", Error.NO_PERMISSION).to(p);
                     }
                 } else {
-                    Message.error(cs, "Inventory", false, "/inventory <player [enderchest]/crafting>");
+                    new Message("Inventory", Error.WRONG_ARGUMENTS, "/inventory <player [enderchest]/crafting>").to(p);
                 }
             } else {
-                Message.error(cs, "Inventory", true, "/inventory <player [enderchest]/crafting>");
+                new Message("Inventory", Error.TOO_FEW_ARGUMENTS, "/inventory <player [enderchest]/crafting>").to(p);
             }
         } else {
-            Message.error("Inventory", cs);
+            new Message("Inventory", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -304,25 +306,25 @@ public class AdminModule extends TrilliumModule {
                             + ChatColor.GRAY + msg;
 
                     reportlist.add(big);
-                    Message.message(Type.GOOD, p.getProxy(), "Report", true, "Your report was submitted successfully.");
+                    new Message(Mood.GOOD, "Report", "Your report was submitted successfully.").to(p);
                     p.getProxy().sendMessage(ChatColor.YELLOW + "'" + ChatColor.GRAY + msg + ChatColor.YELLOW + "'");
 
                     for (TrilliumPlayer pl : TrilliumAPI.getOnlinePlayers()) {
                         if (pl.hasPermission(Permission.Admin.REPORT_RECEIVER) && !pl.getProxy().getName().equals(p.getProxy().getName())) {
 
-                            Message.message(Type.WARNING, pl.getProxy(), "Report", true, "A new report was submitted by: " + p.getProxy().getName());
+                            new Message(Mood.GOOD, "Report", "A new report was submitted by: " + p.getName()).to(pl);
                             pl.getProxy().sendMessage(big);
-                            Message.message(Type.GENERIC, pl.getProxy(), "Report", true, "/reports for a list of all reports.");
+                            new Message(Mood.GENERIC, "Report", "/reports for a list of all reports.").to(pl);
                         }
                     }
                 } else {
-                    Message.message(Type.WARNING, p.getProxy(), "Report", true, "What's your report? /report <msg>");
+                    new Message("Report", Error.TOO_FEW_ARGUMENTS, "/report <msg>").to(p);
                 }
             } else {
-                Message.error("Report", cs);
+                new Message("Report", Error.NO_PERMISSION).to(p);
             }
         } else {
-            Message.error("Report", cs);
+            new Message("Report", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -334,28 +336,28 @@ public class AdminModule extends TrilliumModule {
                 if (args.length != 0) {
                     if (args[0].equalsIgnoreCase("clear")) {
                         reportlist.clear();
-                        Message.message(Type.GOOD, p.getProxy(), "Reports", true, "Cleared Report List.");
+                        new Message(Mood.GOOD, "Reports", "Cleared report list.").to(p);
 
                     } else if (args[0].equalsIgnoreCase("remove")) {
                         if (args.length < 2) {
-                            Message.error(p.getProxy(), "Reports", true, "/reports remove <index number>");
+                            new Message("Reports", Error.TOO_FEW_ARGUMENTS, "/reports remove <index number>").to(p);
                         } else {
                             if (StringUtils.isNumeric(args[1])) {
                                 int nb = Integer.parseInt(args[1]);
                                 if (nb > 0 && nb <= reportlist.size() + 1) {
-                                    Message.message(Type.GOOD, p.getProxy(), "Reports", true, "Removed: " + nb);
+                                    new Message(Mood.GOOD, "Reports", "Removed: " + nb).to(p);
                                     p.getProxy().sendMessage(reportlist.get(nb - 1));
                                     reportlist.remove(nb - 1);
 
                                 } else {
-                                    Message.message(Type.WARNING, p.getProxy(), "Reports", true, args[1] + " is either larger than the list index or smaller than 0");
+                                    new Message(Mood.BAD, "Reports", args[1] + " is either larger than the list index or smaller than 0.").to(p);
                                 }
                             } else {
-                                Message.message(Type.WARNING, p.getProxy(), "Reports", true, args[1] + " is not a number.");
+                                new Message(Mood.BAD, "Reports", args[1] + " is not a number.").to(p);
                             }
                         }
                     } else {
-                        Message.error(p.getProxy(), "Reports", true, "/reports [remove <index>/clear]");
+                        new Message("Reports", Error.TOO_FEW_ARGUMENTS, "/reports [remove <index>/clear]").to(p);
                     }
 
                 } else {
@@ -367,10 +369,10 @@ public class AdminModule extends TrilliumModule {
                     }
                 }
             } else {
-                Message.error("Report", cs);
+                new Message("Report", Error.NO_PERMISSION).to(p);
             }
         } else {
-            Message.error("Report", cs);
+            new Message("Report", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 }

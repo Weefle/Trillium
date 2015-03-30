@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -50,7 +49,9 @@ public class Utils {
     }
 
     public static int getPing(Player p) {
-        return ((CraftPlayer) p).getHandle().ping;
+        return 0;
+        //((CraftPlayer) p).getHandle().ping;
+        // TODO: get craftbukkit.
     }
 
     public static String getPingBar(Player p) {

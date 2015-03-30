@@ -160,7 +160,7 @@ public class AdminModule extends TrilliumModule {
                 Utils.printCurrentMemory(cs);
             }
         } else {
-             new Message("Lag", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            new Message("Lag", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 

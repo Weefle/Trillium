@@ -5,8 +5,9 @@ import net.gettrillium.trillium.api.GroupManager;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
+import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
-import net.gettrillium.trillium.api.messageutils.Type;
+import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -33,10 +34,10 @@ public class GroupManagerModule extends TrilliumModule {
                                 GroupManager manager = new GroupManager(p.getProxy());
                                 manager.addPermission(args[3]);
                                 manager.addPermissionPlayer(args[3]);
-                                Message.message(Type.GOOD, cs, "TGM", true, "Added permission: " + ChatColor.AQUA + args[3]);
-                                Message.message(Type.GOOD, cs, "TGM", true, "to player: " + ChatColor.AQUA + p.getProxy().getName());
+                                new Message(Mood.GOOD, "TGM", "Added permission: " + ChatColor.AQUA + args[3]).to(cs);
+                                new Message(Mood.GOOD, "TGM", "to player: " + ChatColor.AQUA + p.getProxy().getName()).to(cs);
                             } else {
-                                Message.error("TGM", cs, args[2]);
+                                new Message("TGM", Error.INVALID_PLAYER, args[2]).to(cs);
                             }
                         } else if (args[1].equalsIgnoreCase("group") || args[1].equalsIgnoreCase("g")) {
                             TrilliumPlayer p = player(args[2]);
@@ -44,13 +45,14 @@ public class GroupManagerModule extends TrilliumModule {
                                 GroupManager manager = new GroupManager(p.getProxy());
                                 manager.addPermission(args[3]);
                                 manager.addPermissionGroup(args[3]);
-                                Message.message(Type.GOOD, cs, "TGM", true, "Added permission: " + ChatColor.AQUA + args[3]);
-                                Message.message(Type.GOOD, cs, "TGM", true, "to group: " + ChatColor.AQUA + manager.getGroup());
+                                new Message(Mood.GOOD, "TGM", "Added permission: " + ChatColor.AQUA + args[3]).to(cs);
+                                new Message(Mood.GOOD, "TGM", "to group: " + ChatColor.AQUA + manager.getGroup()).to(cs);
+
                             } else {
-                                Message.error("TGM", cs, args[2]);
+                                new Message("TGM", Error.INVALID_PLAYER, args[2]).to(cs);
                             }
                         } else {
-                            Message.error(cs, "TGM", false, "/tgm <add/remove> <player/group> <permission>");
+                            new Message("TGM", Error.WRONG_ARGUMENTS, "/tgm <add/remove> <player/group> <permission>").to(cs);
                         }
                     } else if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("r")) {
                         if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
@@ -59,10 +61,11 @@ public class GroupManagerModule extends TrilliumModule {
                                 GroupManager manager = new GroupManager(p.getProxy());
                                 manager.removePermission(args[3]);
                                 manager.removePermissionPlayer(args[3]);
-                                Message.message(Type.GOOD, cs, "TGM", true, "Removed permission: " + ChatColor.AQUA + args[3]);
-                                Message.message(Type.GOOD, cs, "TGM", true, "from player: " + ChatColor.AQUA + p.getProxy().getName());
+                                new Message(Mood.GOOD, "TGM", "Removed permission: " + ChatColor.AQUA + args[3]).to(cs);
+                                new Message(Mood.GOOD, "TGM", "from player: " + ChatColor.AQUA + p.getProxy().getName()).to(cs);
+
                             } else {
-                                Message.error("TGM", cs, args[2]);
+                                new Message("TGM", Error.INVALID_PLAYER, args[2]).to(cs);
                             }
                         } else if (args[1].equalsIgnoreCase("group") || args[1].equalsIgnoreCase("g")) {
                             TrilliumPlayer p = player(args[2]);
@@ -70,25 +73,26 @@ public class GroupManagerModule extends TrilliumModule {
                                 GroupManager manager = new GroupManager(p.getProxy());
                                 manager.removePermission(args[3]);
                                 manager.removePermissionGroup(args[3]);
-                                Message.message(Type.GOOD, cs, "TGM", true, "Removed permission: " + ChatColor.AQUA + args[3]);
-                                Message.message(Type.GOOD, cs, "TGM", true, "from group: " + ChatColor.AQUA + manager.getGroup());
+                                new Message(Mood.GOOD, "TGM", "Removed permission: " + ChatColor.AQUA + args[3]).to(cs);
+                                new Message(Mood.GOOD, "TGM", "from group: " + ChatColor.AQUA + manager.getGroup()).to(cs);
+
                             } else {
-                                Message.error("TGM", cs, args[2]);
+                                new Message("TGM", Error.INVALID_PLAYER, args[2]).to(cs);
                             }
                         } else {
-                            Message.error(cs, "TGM", false, "/tgm <add/remove> <player/group> <permission>");
+                            new Message("TGM", Error.WRONG_ARGUMENTS, "/tgm <add/remove> <player/group> <permission>").to(cs);
                         }
                     } else {
-                        Message.error(cs, "TGM", false, "/tgm <add/remove> <player/group> <permission>");
+                        new Message("TGM", Error.WRONG_ARGUMENTS, "/tgm <add/remove> <player/group> <permission>").to(cs);
                     }
                 } else {
-                    Message.error(cs, "TGM", true, "/tgm <add/remove> <player/group> <permission>");
+                    new Message("TGM", Error.TOO_FEW_ARGUMENTS, "/tgm <add/remove> <player/group> <permission>").to(cs);
                 }
             } else {
-                Message.error("TGM", cs);
+                new Message("TGM", Error.NO_PERMISSION).to(cs);
             }
         } else {
-            Message.message(Type.WARNING, cs, "TGM", true, "This feature is disabled.");
+            new Message(Mood.BAD, "TGM", "This feature is disabled.").to(cs);
         }
     }
 

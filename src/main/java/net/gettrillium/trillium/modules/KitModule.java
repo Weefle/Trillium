@@ -5,8 +5,9 @@ import net.gettrillium.trillium.api.Kit;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
+import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
-import net.gettrillium.trillium.api.messageutils.Type;
+import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,9 +24,9 @@ public class KitModule extends TrilliumModule {
             if (cs instanceof Player) {
                 TrilliumPlayer p = player((Player) cs);
                 if (args.length == 0) {
-                    Message.message(Type.GENERIC, p.getProxy(), "Kit", true, "Available kits:");
+                    new Message(Mood.GENERIC, "Kit", "Available kits:").to(p);
                     for (String s : getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER).getKeys(false)) {
-                        Message.message(Type.GENERIC, p.getProxy(), "Kit", true, s);
+                        new Message(Mood.GENERIC, "Kit", s).to(p);
                     }
                 } else {
                     if (getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER).contains(args[0])) {
@@ -34,20 +35,20 @@ public class KitModule extends TrilliumModule {
                             Kit kit = new Kit(args[0]);
                             kit.giveTo(p.getProxy());
 
-                            Message.message(Type.GOOD, p.getProxy(), "Kit", true, "You successfully received kit: " + args[0]);
+                            new Message(Mood.GOOD, "Kit", "You successfullly received kit " + args[0]).to(p);
 
                         } else {
-                            Message.message(Type.WARNING, p.getProxy(), "KIT", true, "You don't have permission to use that kit.");
+                            new Message(Mood.BAD, "Kit", "You don't have permission to use that kit.").to(p);
                         }
                     } else {
-                        Message.message(Type.WARNING, p.getProxy(), "KIT", true, args[0] + " is not a valid kit.");
+                        new Message(Mood.BAD, "Kit", args[0] + " is not a valid kit.").to(p);
                     }
                 }
             } else {
-                Message.error("Kit", cs);
+                new Message("Kit", Error.CONSOLE_NOT_ALLOWED).to(cs);
             }
         } else {
-            Message.message(Type.WARNING, cs, "Kit", true, "This feature is disabled.");
+            new Message(Mood.BAD, "Kit", "This feature is disabled.").to(cs);
         }
     }
 }

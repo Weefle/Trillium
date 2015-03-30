@@ -8,7 +8,6 @@ import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
-import net.gettrillium.trillium.api.messageutils.Type;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -52,19 +51,19 @@ public class TeleportModule extends TrilliumModule {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Teleport.SPAWN)) {
                 p.getProxy().teleport(p.getProxy().getWorld().getSpawnLocation());
-                Message.message(Type.GOOD, p.getProxy(), "Spawn", true, "You were successfully teleported to the spawn point.");
+                new Message(Mood.GOOD, "Spawn", "You were successfully teleported to the spawn point.").to(p);
             } else {
-                Message.error("Spawn", cs);
+                new Message("Spawn", Error.NO_PERMISSION).to(cs);
             }
         } else {
-            Message.error("Spawn", cs);
+            new Message("Spawn", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
     @Command(command = "teleport", description = "Teleport to a person or a set of coordinates.", usage = "/tp <player> [player / <x>, <y>, <z>]", aliases = "tp")
     public void tp(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
-            Message.error("TP", cs);
+            new Message("TP", Error.CONSOLE_NOT_ALLOWED).to(cs);
             return;
         }
 
@@ -72,29 +71,29 @@ public class TeleportModule extends TrilliumModule {
 
         if (args.length == 0) {
             if (!p.hasPermission(Permission.Teleport.TP)) {
-                Message.error("TP", cs);
+                new Message("TP", Error.NO_PERMISSION).to(cs);
                 return;
             }
 
-            Message.error(p.getProxy(), "TP", true, "/tp <player> [player]");
+            new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [player]").to(p);
         } else if (args.length == 1) {
             if (!p.hasPermission(Permission.Teleport.TP)) {
-                Message.error("TP", cs);
+                new Message("TP", Error.NO_PERMISSION).to(p);
                 return;
             }
 
             Player target = Bukkit.getPlayer(args[0]);
 
             if (target == null) {
-                Message.error("TP", cs, args[0]);
+                new Message("TP", Error.INVALID_PLAYER, args[0]).to(p);
                 return;
             }
 
             p.getProxy().teleport(target);
-            Message.message(Type.GOOD, p.getProxy(), "TP", true, "You teleported to " + target.getName());
+            new Message(Mood.GOOD, "TP", "You teleported to " + target.getName()).to(p);
         } else if (args.length == 2) {
             if (!p.hasPermission(Permission.Teleport.TP_OTHER)) {
-                Message.error("TP", cs);
+                new Message("TP", Error.NO_PERMISSION).to(p);
                 return;
             }
 
@@ -102,28 +101,28 @@ public class TeleportModule extends TrilliumModule {
             TrilliumPlayer target2 = player(args[1]);
 
             if (target1 == null) {
-                Message.error("TP", cs, args[1]);
+                new Message("TP", Error.INVALID_PLAYER, args[1]).to(p);
                 return;
             }
 
             if (target2 == null) {
-                Message.error("TP", cs, args[2]);
+                new Message("TP", Error.INVALID_PLAYER, args[2]).to(p);
                 return;
             }
 
             target1.getProxy().teleport(target2.getProxy());
-            Message.message(Type.GOOD, p.getProxy(), "TP", true, "You teleported " + target1.getProxy().getName() + " to " + target2.getProxy().getName());
-            Message.message(Type.GOOD, target1.getProxy(), "TP", true, p.getProxy().getName() + " teleported you to " + target2.getProxy().getName());
+            new Message(Mood.GOOD, "TP", "You teleported " + target1.getName() + " to " + target2.getName()).to(p);
+            new Message(Mood.GOOD, "TP", p.getName() + " teleported you to " + target2.getName()).to(target1);
         } else {
             if (!p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
-                Message.error("TP", cs);
+                new Message("TP", Error.NO_PERMISSION).to(cs);
                 return;
             }
 
             Player pl = Bukkit.getPlayer(args[0]);
 
             if (pl == null) {
-                Message.error("TP", cs, args[0]);
+                new Message("TP", Error.INVALID_PLAYER, args[0]).to(p);
                 return;
             }
 
@@ -139,15 +138,15 @@ public class TeleportModule extends TrilliumModule {
                 Location loc = new Location(p.getProxy().getWorld(), x, y, z);
 
                 pl.teleport(loc);
-                Message.message(Type.GOOD, p.getProxy(), "TP", true, "You teleported to " + ChatColor.AQUA + x + ", " + y + ", " + z);
+                new Message(Mood.GOOD, "TP", "You teleported to " + ChatColor.AQUA + x + ", " + y + ", " + z).to(p);
             } else {
                 if (!xArg.startsWith("~") || !yArg.startsWith("~") || !zArg.startsWith("~")) {
-                    Message.error(p.getProxy(), "TP", false, "/tp <player> [x] [y] [z]");
+                    new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [x] [y] [z]").to(p);
                     return;
                 }
 
                 if (!StringUtils.isNumeric(xArg.substring(1)) || !StringUtils.isNumeric(yArg.substring(1)) || !StringUtils.isNumeric(zArg.substring(1))) {
-                    Message.message(Type.WARNING, p.getProxy(), "TP", true, "Something isn't a number...");
+                    new Message(Mood.BAD, "TP", "Something isn't a number...").to(p);
                     return;
                 }
 
@@ -173,7 +172,7 @@ public class TeleportModule extends TrilliumModule {
 
                 Location loc = p.getProxy().getLocation();
                 pl.teleport(new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z));
-                Message.message(Type.GOOD, p.getProxy(), "TP", true, "You teleported to " + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ());
+                new Message(Mood.GOOD, "TP", "You teleported to " + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ()).to(p);
             }
         }
     }
@@ -181,32 +180,32 @@ public class TeleportModule extends TrilliumModule {
     @Command(command = "teleporthere", description = "Teleport a player to you.", usage = "/tph <player>", aliases = "tph")
     public void teleporthere(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
-            Message.error("TPH", cs);
+            new Message("TPH", Error.CONSOLE_NOT_ALLOWED).to(cs);
             return;
         }
 
         TrilliumPlayer p = player((Player) cs);
 
         if (!p.hasPermission(Permission.Teleport.TPHERE)) {
-            Message.error("TPH", cs);
+            new Message("TPH", Error.NO_PERMISSION).to(cs);
             return;
         }
 
         if (args.length == 0) {
-            Message.error(p.getProxy(), "TPH", true, "/tphere <player>");
+            new Message("TPH", Error.TOO_FEW_ARGUMENTS, "/tphere <player>").to(p);
             return;
         }
 
         TrilliumPlayer target = player(args[0]);
 
         if (target == null) {
-            Message.error("TPH", cs, args[0]);
+            new Message("TPH", Error.INVALID_PLAYER, args[0]).to(p);
             return;
         }
 
         target.getProxy().teleport(p.getProxy());
-        Message.message(Type.GOOD, p.getProxy(), "TPH", true, "You teleported " + target.getProxy().getName() + " to you.");
-        Message.message(Type.GOOD, target.getProxy(), "TPH", true, p.getProxy().getName() + " teleported you to them.");
+        new Message(Mood.GOOD, "TPH", "You teleported " + target.getProxy().getName() + " to you.").to(p);
+        new Message(Mood.GOOD, "TPH", p.getProxy().getName() + " teleported you to them.").to(target);
     }
 
     @Command(command = "teleportrequest", description = "Request permission to teleport to a player.", usage = "/tpr <player>", aliases = "tpr")
@@ -218,25 +217,25 @@ public class TeleportModule extends TrilliumModule {
                     TrilliumPlayer target = player(args[0]);
                     if (target != null) {
 
-                        Message.message(Type.GENERIC, p.getProxy(), "TPR", true, target.getProxy().getName() + " is now pending. Please stand by.");
+                        new Message(Mood.GENERIC, "TPR", target.getName() + " is now pending. Please stand by.").to(p);
 
-                        Message.message(Type.GENERIC, target.getProxy(), "TPR", true, p.getProxy().getName() + " would like to teleport to you.");
-                        Message.message(Type.GENERIC, target.getProxy(), "TPR", true, ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.");
-                        Message.message(Type.GENERIC, target.getProxy(), "TPR", true, ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.");
+                        new Message(Mood.GENERIC, "TPR", p.getName() + " would like to teleport to you.").to(target);
+                        new Message(Mood.GENERIC, "TPR", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.").to(target);
+                        new Message(Mood.GENERIC, "TPR", ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.").to(target);
 
                         tpr.put(p.getProxy().getUniqueId(), target.getProxy().getUniqueId());
 
                     } else {
-                        Message.error("TPR", cs, args[0]);
+                        new Message("TPR", Error.INVALID_PLAYER, args[0]).to(p);
                     }
                 } else {
-                    Message.error(p.getProxy(), "TPR", true, "/tpr <player>");
+                    new Message("TPR", Error.TOO_FEW_ARGUMENTS, "/tpr <player>").to(p);
                 }
             } else {
-                Message.error("TPR", cs);
+                new Message("TPR", Error.NO_PERMISSION).to(p);
             }
         } else {
-            Message.error("TPR", cs);
+            new Message("TPR", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -249,21 +248,24 @@ public class TeleportModule extends TrilliumModule {
                     TrilliumPlayer target = player(args[0]);
                     if (target != null) {
 
-                        Message.message(Type.GENERIC, p.getProxy(), "TPRH", true, "Teleport request for " + target.getProxy().getName() + " to here is now pending. Please stand by.");
-                        Message.message(Type.GENERIC, target.getProxy(), "TPRH", true, p.getProxy().getName() + ChatColor.BLUE + " would like you to teleport to him");
-                        Message.message(Type.GENERIC, target.getProxy(), "TPRH", true, ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.");
-                        Message.message(Type.GENERIC, target.getProxy(), "TPRH", true, ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.");
+                        new Message(Mood.GENERIC, "TPRH", "Teleport request for " + target.getName() + " to here is now pending. Please stand by.").to(p);
+
+                        new Message(Mood.GENERIC, "TPRH", p.getName() + ChatColor.BLUE + " would like you to teleport to him").to(target);
+                        new Message(Mood.GENERIC, "TPRH", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.").to(target);
+                        new Message(Mood.GENERIC, "TPRH", ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.").to(target);
                         tprh.put(p.getProxy().getUniqueId(), target.getProxy().getUniqueId());
 
                     } else {
-                        Message.error("TPRH", cs, args[0]);
+                        new Message("TPRH", Error.INVALID_PLAYER, args[0]).to(p);
                     }
                 } else {
-                    Message.error(p.getProxy(), "TPRH", true, "/tprh <player>");
+                    new Message("TPRH", Error.TOO_FEW_ARGUMENTS, "/tprh <player>").to(p);
                 }
             } else {
-                Message.error("TPRH", cs);
+                new Message("TPRH", Error.NO_PERMISSION).to(p);
             }
+        } else {
+            new Message("TPRH", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -277,73 +279,74 @@ public class TeleportModule extends TrilliumModule {
                     TrilliumPlayer requester = player(Bukkit.getPlayer(tpr.get(p.getProxy().getUniqueId())));
 
                     requester.getProxy().teleport(p.getProxy());
-                    Message.message(Type.GOOD, p.getProxy(), "TPRA", true, "You teleported " + requester.getProxy().getName() + " to you.");
-                    Message.message(Type.GOOD, requester.getProxy(), "TPRA", true, p.getProxy().getName() + " accepted your teleport request.");
+                    new Message(Mood.GOOD, "TPRA", "You teleported " + requester.getName() + " to you.").to(p);
+                    new Message(Mood.GOOD, "TPRA", p.getName() + " accepted your teleport request.").to(requester);
 
                 } else if (tprh.containsValue(p.getProxy().getUniqueId())) {
 
                     TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getProxy().getUniqueId())));
 
                     p.getProxy().teleport(requester.getProxy());
-                    Message.message(Type.GOOD, p.getProxy(), "TPRA", true, "You teleported to " + requester.getProxy().getName());
-                    Message.message(Type.GOOD, requester.getProxy(), "TPRA", true, p.getProxy().getName() + " accepted to teleport to you.");
+                    new Message(Mood.GOOD, "TPRA", "You teleported to " + requester.getName()).to(p);
+                    new Message(Mood.GOOD, "TPRA", p.getName() + " accepted to teleport to you.").to(requester);
 
                 } else {
-                    Message.message(Type.WARNING, p.getProxy(), "TPRA", true, "No pending teleport requests to accept.");
+                    new Message(Mood.BAD, "TPRA", "No pending teleport requests to accept.").to(p);
                 }
             } else {
-                Message.error("TPRA", cs);
+                new Message("TPRA", Error.NO_PERMISSION).to(p);
             }
         } else {
-            Message.error("TPRA", cs);
+            new Message("TPRA", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
     @Command(command = "teleportrequestdeny", description = "Deny a teleport request.", usage = "/tprd", aliases = "tprd")
     public void teleportrequestdeny(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
-            Message.error("TPRD", cs);
+            new Message("TPRD", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
 
         TrilliumPlayer p = player((Player) cs);
 
         if (!p.hasPermission(Permission.Teleport.TPRRESPOND)) {
-            Message.error("TPRD", cs);
+            new Message("TPRD", Error.NO_PERMISSION).to(p);
             return;
         }
 
         if (tpr.containsValue(p.getProxy().getUniqueId())) {
             TrilliumPlayer requester = player(Bukkit.getPlayer(tpr.get(p.getProxy().getUniqueId())));
 
-            Message.message(Type.GOOD, p.getProxy(), "TPRD", true, "You denied " + ChatColor.AQUA + requester.getProxy().getName() + "'s teleport request.");
-            Message.message(Type.GOOD, requester.getProxy(), "TPRD", true, p.getProxy().getName() + " denied your teleport request.");
+            new Message(Mood.GOOD, "TPRD", "You denied " + ChatColor.AQUA + requester.getName() + "'s teleport request.").to(p);
+            new Message(Mood.GOOD, "TPRD", p.getName() + " denied your teleport request.").to(requester);
             tpr.remove(p.getProxy().getUniqueId());
         } else if (tprh.containsValue(p.getProxy().getUniqueId())) {
             TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getProxy().getUniqueId())));
 
-            Message.message(Type.GOOD, p.getProxy(), "TPRD", true, "You denied " + ChatColor.AQUA + requester.getProxy().getName() + "'s teleport request.");
-            Message.message(Type.GOOD, requester.getProxy(), "TPRD", true, p.getProxy().getName() + " denied your teleport request.");
+            new Message(Mood.GOOD, "TPRD", "You denied " + ChatColor.AQUA + requester.getName() + "'s teleport request.").to(p);
+            new Message(Mood.GOOD, "TPRD", p.getName() + " denied your teleport request.").to(requester);
             tprh.remove(p.getProxy().getUniqueId());
         } else {
-            Message.message(Type.WARNING, p.getProxy(), "TPRD", true, "No pending teleport requests to deny.");
+            new Message(Mood.BAD, "TPRD", "No pending teleport requests to deny.").to(p);
         }
     }
 
     @Command(command = "teleportcoordinates", description = "Teleport to a set of coordinates.", usage = "/tpc <x> <y> <z>", aliases = "tpc")
     public void teleportcoordinates(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
+            new Message("TP", Error.CONSOLE_NOT_ALLOWED).to(cs);
             return;
         }
 
         TrilliumPlayer p = player((Player) cs);
 
         if (!p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
-            Message.error("TP", cs);
+            new Message("TP", Error.NO_PERMISSION).to(p);
             return;
         }
 
         if (args.length < 3) {
-            Message.error(p.getProxy(), "TP", true, "/tp <x> <y> <z>");
+            new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <x> <y> <z>").to(p);
             return;
         }
 
@@ -358,15 +361,15 @@ public class TeleportModule extends TrilliumModule {
 
             Location loc = new Location(p.getProxy().getWorld(), x, y, z);
             p.getProxy().teleport(loc);
-            Message.message(Type.GOOD, p.getProxy(), "TP", true, "You teleported to " + ChatColor.AQUA + x + ", " + y + ", " + z);
+            new Message(Mood.GOOD, "TP", "You teleported to" + ChatColor.AQUA + x + ", " + y + ", " + z).to(p);
         } else {
             if (!xArg.startsWith("~") || !yArg.startsWith("~") || !zArg.startsWith("~")) {
-                Message.error(p.getProxy(), "TP", false, "/tp <player> [x] [y] [z]");
+                new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [x] [y] [z]").to(p);
                 return;
             }
 
             if (!StringUtils.isNumeric(xArg.substring(1)) || !StringUtils.isNumeric(yArg.substring(1)) || !StringUtils.isNumeric(zArg.substring(1))) {
-                Message.message(Type.WARNING, p.getProxy(), "TP", true, "Something isn't a number...");
+                new Message(Mood.BAD, "TP", "Something isn't a number...").to(p);
                 return;
             }
 
@@ -394,7 +397,7 @@ public class TeleportModule extends TrilliumModule {
 
             Location loc = p.getProxy().getLocation();
             p.getProxy().teleport(new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z));
-            Message.message(Type.GOOD, p.getProxy(), "TPC", true, "You teleported to " + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ());
+            new Message(Mood.GOOD, "TPC", "You teleported to" + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ()).to(p);
         }
     }
 

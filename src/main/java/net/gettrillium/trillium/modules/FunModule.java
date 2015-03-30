@@ -31,8 +31,8 @@ public class FunModule extends TrilliumModule {
             TrilliumPlayer p = player((Player) cs);
             if (cs.hasPermission(Permission.Fun.SMITE)) {
                 if (args.length == 0) {
-                    Location loc = p.getProxy().getTargetBlock(null, 100).getLocation();
-                    p.getProxy().getWorld().strikeLightning(loc);
+                    //Location loc = p.getProxy().getTargetBlock(null, 100).getLocation(); // TODO: Fix craftbukkit a proper method for this
+                    //p.getProxy().getWorld().strikeLightning(loc);
                 } else {
                     TrilliumPlayer target = player(args[0]);
                     if (target != null) {

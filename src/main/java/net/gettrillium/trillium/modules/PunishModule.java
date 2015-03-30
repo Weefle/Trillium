@@ -3,8 +3,9 @@ package net.gettrillium.trillium.modules;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
+import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
-import net.gettrillium.trillium.api.messageutils.Type;
+import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
@@ -24,26 +25,26 @@ public class PunishModule extends TrilliumModule {
     public void mute(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.MUTE)) {
             if (args.length == 0) {
-                Message.error(cs, "Mute", true, "/mute <player>");
+                new Message("Mute", Error.TOO_FEW_ARGUMENTS, "/mute <player>").to(cs);
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null) {
                     TrilliumPlayer player = player(target);
                     if (!player.isMuted()) {
                         player.setMuted(true);
-                        Message.message(Type.GOOD, cs, "Mute", true, "You muted " + target.getName());
-                        Message.message(Type.WARNING, cs, "Mute", true, cs.getName() + " muted you.");
+                        new Message(Mood.GOOD, "Mute", "You muted " + target.getName()).to(cs);
+                        new Message(Mood.BAD, "Mute", cs.getName() + " muted you.").to(cs);
                     } else {
                         player.setMuted(false);
-                        Message.message(Type.GOOD, cs, "Mute", true, "You unmuted " + target.getName());
-                        Message.message(Type.GOOD, cs, "Mute", true, cs.getName() + " unmuted you.");
+                        new Message(Mood.GOOD, "Mute", "You unmuted " + target.getName()).to(cs);
+                        new Message(Mood.GOOD, "Mute", cs.getName() + " unmuted you.").to(cs);
                     }
                 } else {
-                    Message.error("Mute", cs, args[0]);
+                    new Message("Mute", Error.INVALID_PLAYER, args[0]).to(cs);
                 }
             }
         } else {
-            Message.error("Mute", cs);
+            new Message("Mute", Error.NO_PERMISSION).to(cs);
         }
     }
 
@@ -51,7 +52,7 @@ public class PunishModule extends TrilliumModule {
     public void kick(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.KICK)) {
             if (args.length < 2) {
-                Message.error(cs, "Kick", true, "/kick <player> [reason]");
+                new Message("Kick", Error.TOO_FEW_ARGUMENTS, "/kick <player> [reason]").to(cs);
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null) {
@@ -60,15 +61,15 @@ public class PunishModule extends TrilliumModule {
                         sb.append(args[i]).append(" ");
                     }
                     String reason = sb.toString().trim();
-                    Message.broadcast(Type.WARNING, "Kick", target.getName() + " got kicked for:");
-                    Message.broadcast(Type.WARNING, "Kick", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
+                    new Message(Mood.BAD, "Kick", target.getName() + " got kicked for: ").broadcast();
+                    new Message(Mood.BAD, "Kick", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
                     target.kickPlayer(reason);
                 } else {
-                    Message.error("Kick", cs, args[0]);
+                    new Message("Kick", Error.INVALID_PLAYER, args[0]).to(cs);
                 }
             }
         } else {
-            Message.error("Kick", cs);
+            new Message("Kick", Error.NO_PERMISSION).to(cs);
         }
     }
 
@@ -76,7 +77,7 @@ public class PunishModule extends TrilliumModule {
     public void ban(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.BAN)) {
             if (args.length == 0) {
-                Message.error(cs, "Ban", true, "/ban <player> [reason]");
+                new Message("Ban", Error.TOO_FEW_ARGUMENTS, "/ban <player> [reason]").to(cs);
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
                 String reason;
@@ -93,16 +94,16 @@ public class PunishModule extends TrilliumModule {
                 if (target != null) {
                     Bukkit.getBanList(BanList.Type.NAME).addBan(target.getName(), reason, null, cs.getName());
                     target.kickPlayer(ChatColor.DARK_RED + "You got banned with reason: \n" + reason);
-                    Message.broadcast(Type.WARNING, "Ban", target.getName() + " got banned with reason:");
-                    Message.broadcast(Type.WARNING, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
+                    new Message(Mood.BAD, "Ban", target.getName() + " got banned with reason:").broadcast();
+                    new Message(Mood.BAD, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
                 } else {
                     Bukkit.getBanList(BanList.Type.NAME).addBan(args[0], reason, null, cs.getName());
-                    Message.broadcast(Type.WARNING, "Ban", args[0] + " got banned with reason:");
-                    Message.broadcast(Type.WARNING, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
+                    new Message(Mood.BAD, "Ban", args[0] + " got banned with reason:").broadcast();
+                    new Message(Mood.BAD, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
                 }
             }
         } else {
-            Message.error("Ban", cs);
+            new Message("Ban", Error.NO_PERMISSION).to(cs);
         }
     }
 
@@ -110,13 +111,13 @@ public class PunishModule extends TrilliumModule {
     public void unban(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.UNBAN)) {
             if (args.length == 0) {
-                Message.error(cs, "Unban", true, "/unban <player>");
+                new Message("Unban", Error.TOO_FEW_ARGUMENTS, "/unban <player>").to(cs);
             } else {
                 Bukkit.getBanList(BanList.Type.NAME).pardon(args[0]);
-                Message.broadcast(Type.GOOD, "Unban", args[0] + " got unbanned.");
+                new Message(Mood.GOOD, "Unban", args[0] + " got unbanned.").broadcast();
             }
         } else {
-            Message.error("Unban", cs);
+            new Message("Unban", Error.NO_PERMISSION).to(cs);
         }
     }
 
@@ -124,7 +125,7 @@ public class PunishModule extends TrilliumModule {
     public void banip(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.BANIP)) {
             if (args.length == 0) {
-                Message.error(cs, "BanIP", true, "/banip <player> [reason]");
+                new Message("BanIP", Error.TOO_FEW_ARGUMENTS, "/banip <player> [reason]").to(cs);
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
                 String reason;
@@ -141,16 +142,16 @@ public class PunishModule extends TrilliumModule {
                 if (target != null) {
                     Bukkit.getBanList(BanList.Type.IP).addBan(String.valueOf(target.getAddress()), reason, null, cs.getName());
                     target.kickPlayer(ChatColor.DARK_RED + "You got banned with reason: \n" + reason);
-                    Message.broadcast(Type.WARNING, "BanIP", target.getName() + " got banned with reason:");
-                    Message.broadcast(Type.WARNING, "BanIP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
+                    new Message(Mood.BAD, "BanIP", target.getName() + " got banned with reason:").broadcast();
+                    new Message(Mood.BAD, "BanIP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
                 } else {
                     Bukkit.getBanList(BanList.Type.NAME).addBan(args[0], reason, null, cs.getName());
-                    Message.broadcast(Type.WARNING, "BanIP", args[0] + " got banned with reason:");
-                    Message.broadcast(Type.WARNING, "BanIP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'");
+                    new Message(Mood.BAD, "BanIP", args[0] + " got banned with reason:").broadcast();
+                    new Message(Mood.BAD, "BanIP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
                 }
             }
         } else {
-            Message.error("BanIP", cs);
+            new Message("BanIP", Error.NO_PERMISSION).to(cs);
         }
     }
 
@@ -158,13 +159,13 @@ public class PunishModule extends TrilliumModule {
     public void unbanip(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.UNBANIP)) {
             if (args.length == 0) {
-                Message.error(cs, "Unban", true, "/unbanip <IP>");
+                new Message("Unban", Error.TOO_FEW_ARGUMENTS, "/unbanip <IP>").to(cs);
             } else {
                 Bukkit.getBanList(BanList.Type.IP).pardon(args[0]);
-                Message.broadcast(Type.GOOD, "Unban", args[0] + " got unbanned.");
+                new Message(Mood.GOOD, "Unban", args[0] + " got unbanned.").to(cs);
             }
         } else {
-            Message.error("Unban", cs);
+            new Message("Unban", Error.NO_PERMISSION).to(cs);
         }
     }
 
@@ -173,7 +174,7 @@ public class PunishModule extends TrilliumModule {
         TrilliumPlayer player = player(e.getPlayer());
         if (player.isMuted()) {
             e.setCancelled(true);
-            Message.message(Type.WARNING, player.getProxy(), "Mute", true, "Your voice has been silenced.");
+            new Message(Mood.BAD, "Mute", "Your voice has been silenced.").to(player);
         }
     }
 }

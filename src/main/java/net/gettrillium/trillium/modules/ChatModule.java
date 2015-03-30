@@ -78,8 +78,6 @@ public class ChatModule extends TrilliumModule {
                     }
                     new Message(Mood.GENERIC, "Muted", "" + ChatColor.AQUA + p.isMuted()).to(cs);
                     new Message(Mood.GENERIC, "Flying", "" + ChatColor.AQUA + p.isFlying()).to(cs);
-                    new Message(Mood.GENERIC, "Ping", "" + ChatColor.AQUA + Utils.getPing(p.getProxy())).to(cs);
-                    new Message(Mood.GENERIC, "Lag Rate", "" + ChatColor.AQUA + Utils.getPingBar(p.getProxy())).to(cs);
                     new Message(Mood.GENERIC, "Location", "" + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ()).to(cs);
 
                     if (p.isVanished()) {
@@ -127,7 +125,7 @@ public class ChatModule extends TrilliumModule {
             cs.sendMessage(ChatColor.GRAY + "            Plugin made with love by:");
             cs.sendMessage(ChatColor.GRAY + "       LordSaad, VortexSeven, Turbotailz,");
             cs.sendMessage(ChatColor.GRAY + "                samczsun, and hintss");
-            cs.sendMessage(ChatColor.DARK_RED + "                          ❤");
+            cs.sendMessage(ChatColor.DARK_RED + "                          <3");
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
             cs.sendMessage(ChatColor.GRAY + "Version: " + TrilliumAPI.getInstance().getDescription().getVersion());
             cs.sendMessage(ChatColor.GRAY + "Configuration Reloaded");
@@ -140,7 +138,7 @@ public class ChatModule extends TrilliumModule {
             cs.sendMessage(ChatColor.GRAY + "            Plugin made with love by:");
             cs.sendMessage(ChatColor.GRAY + "       LordSaad, VortexSeven, Turbotailz,");
             cs.sendMessage(ChatColor.GRAY + "                samczsun, and hintss");
-            cs.sendMessage(ChatColor.DARK_RED + "                          ❤");
+            cs.sendMessage(ChatColor.DARK_RED + "                          <3");
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
             cs.sendMessage(ChatColor.GRAY + "Version: " + TrilliumAPI.getInstance().getDescription().getVersion());
             cs.sendMessage(ChatColor.GRAY + "Support email: support@gettrillium.net");

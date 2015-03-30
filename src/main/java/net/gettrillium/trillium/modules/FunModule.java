@@ -6,7 +6,6 @@ import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
-import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
 import org.bukkit.Location;
@@ -23,33 +22,6 @@ public class FunModule extends TrilliumModule {
 
     public FunModule() {
         super("fun");
-    }
-
-    @Command(command = "smite", description = "Strike lightning somewhere or upon someone.", usage = "/smite [player]", aliases = "thor")
-    public void smite(CommandSender cs, String[] args) {
-        if (cs instanceof Player) {
-            TrilliumPlayer p = player((Player) cs);
-            if (cs.hasPermission(Permission.Fun.SMITE)) {
-                if (args.length == 0) {
-                    //Location loc = p.getProxy().getTargetBlock(null, 100).getLocation(); // TODO: Fix craftbukkit a proper method for this
-                    //p.getProxy().getWorld().strikeLightning(loc);
-                } else {
-                    TrilliumPlayer target = player(args[0]);
-                    if (target != null) {
-                        target.getProxy().getWorld().strikeLightning(target.getProxy().getLocation());
-                        new Message(Mood.GENERIC, "Smite", p.getName() + " struck lightning upon you!").to(target);
-                        new Message(Mood.GENERIC, "Smite", "You struck lightning upon " + target.getName()).to(p);
-
-                    } else {
-                        new Message("Smite", Error.INVALID_PLAYER, args[0]);
-                    }
-                }
-            } else {
-                new Message("Smite", Error.NO_PERMISSION).to(p);
-            }
-        } else {
-            new Message("Smite", Error.CONSOLE_NOT_ALLOWED).to(cs);
-        }
     }
 
     //TODO: MASS compress kittybomb.

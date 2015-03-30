@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -46,38 +45,6 @@ public class Utils {
         }
         bar.append(ChatColor.GRAY + "]  " + ChatColor.AQUA + percent + "%");
         return bar.toString();
-    }
-
-    public static int getPing(Player p) {
-        return 0;
-        //((CraftPlayer) p).getHandle().ping;
-        // TODO: get craftbukkit.
-    }
-
-    public static String getPingBar(Player p) {
-        if (getPing(p) <= 100 && getPing(p) >= 0) {
-            return asciibar(0);
-        } else if (getPing(p) <= 200 && getPing(p) > 100) {
-            return asciibar(10);
-        } else if (getPing(p) <= 300 && getPing(p) > 200) {
-            return asciibar(20);
-        } else if (getPing(p) <= 400 && getPing(p) > 300) {
-            return asciibar(30);
-        } else if (getPing(p) <= 500 && getPing(p) > 400) {
-            return asciibar(40);
-        } else if (getPing(p) <= 600 && getPing(p) > 500) {
-            return asciibar(50);
-        } else if (getPing(p) <= 700 && getPing(p) > 600) {
-            return asciibar(60);
-        } else if (getPing(p) <= 800 && getPing(p) > 700) {
-            return asciibar(70);
-        } else if (getPing(p) <= 900 && getPing(p) > 800) {
-            return asciibar(80);
-        } else if (getPing(p) <= 1000 && getPing(p) > 900) {
-            return asciibar(90);
-        } else {
-            return asciibar(100);
-        }
     }
 
     public static List<String> centerText(String input) {

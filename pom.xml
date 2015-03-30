@@ -11,15 +11,15 @@
 
     <repositories>
         <repository>
-            <id>bukkit-repo</id>
-            <url>http://r.zk.ms/content/repositories/bukkit/</url>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
             <version>1.8.3-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -98,7 +98,7 @@
     <distributionManagement>
         <repository>
             <id>Trillium</id>
-            <url>http://gettrillium.net/maven2</url>
+            <url>ftp://trillium02@ftp.gettrillium.net/gettrillium.net/maven2</url>
         </repository>
     </distributionManagement>
 </project>

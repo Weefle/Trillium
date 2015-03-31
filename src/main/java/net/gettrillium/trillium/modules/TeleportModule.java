@@ -282,6 +282,8 @@ public class TeleportModule extends TrilliumModule {
                     new Message(Mood.GOOD, "TPRA", "You teleported " + requester.getName() + " to you.").to(p);
                     new Message(Mood.GOOD, "TPRA", p.getName() + " accepted your teleport request.").to(requester);
 
+                    tpr.remove(p.getProxy().getUniqueId());
+
                 } else if (tprh.containsValue(p.getProxy().getUniqueId())) {
 
                     TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getProxy().getUniqueId())));
@@ -289,6 +291,8 @@ public class TeleportModule extends TrilliumModule {
                     p.getProxy().teleport(requester.getProxy());
                     new Message(Mood.GOOD, "TPRA", "You teleported to " + requester.getName()).to(p);
                     new Message(Mood.GOOD, "TPRA", p.getName() + " accepted to teleport to you.").to(requester);
+
+                    tprh.remove(p.getProxy().getUniqueId());
 
                 } else {
                     new Message(Mood.BAD, "TPRA", "No pending teleport requests to accept.").to(p);
@@ -320,12 +324,14 @@ public class TeleportModule extends TrilliumModule {
             new Message(Mood.GOOD, "TPRD", "You denied " + ChatColor.AQUA + requester.getName() + "'s teleport request.").to(p);
             new Message(Mood.GOOD, "TPRD", p.getName() + " denied your teleport request.").to(requester);
             tpr.remove(p.getProxy().getUniqueId());
+
         } else if (tprh.containsValue(p.getProxy().getUniqueId())) {
             TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getProxy().getUniqueId())));
 
             new Message(Mood.GOOD, "TPRD", "You denied " + ChatColor.AQUA + requester.getName() + "'s teleport request.").to(p);
             new Message(Mood.GOOD, "TPRD", p.getName() + " denied your teleport request.").to(requester);
             tprh.remove(p.getProxy().getUniqueId());
+
         } else {
             new Message(Mood.BAD, "TPRD", "No pending teleport requests to deny.").to(p);
         }

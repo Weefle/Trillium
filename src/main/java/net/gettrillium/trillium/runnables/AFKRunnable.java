@@ -16,11 +16,11 @@ public class AFKRunnable implements Runnable {
         List<TrilliumPlayer> toAfk = new ArrayList<>();
 
         for (TrilliumPlayer player : TrilliumAPI.getOnlinePlayers()) {
-            if (player.isAfk()) {
+            if (!player.isAfk()) {
                 continue;
             }
 
-            if (player.isVanished()) {
+            if (!player.isVanished()) {
                 continue;
             }
 

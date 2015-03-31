@@ -15,8 +15,8 @@ public class Message {
         format = TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.FORMAT);
         format = ChatColor.translateAlternateColorCodes('&', format);
         format = format.replace("%COLOR%", mood.getColor());
-        format = format.replace("%COMMAND", command);
-        format = format.replace("%MESSAGE", ChatColor.translateAlternateColorCodes('&', message));
+        format = format.replace("%COMMAND%", command);
+        format = format.replace("%MESSAGE%", ChatColor.translateAlternateColorCodes('&', message));
     }
 
     public Message(String command, Error error) {
@@ -29,7 +29,7 @@ public class Message {
     public Message(String command, Error error, String extra) {
         format = error.getError();
         format = ChatColor.translateAlternateColorCodes('&', format);
-        format = format.replace("%COMMAND", command);
+        format = format.replace("%COMMAND%", command);
         format = format.replace("%USAGE%", extra);
         format = format.replace("%PLAYER%", extra);
 

@@ -44,7 +44,7 @@ public class AbilityModule extends TrilliumModule {
                 if (!player.isFlying()) {
                     new Message(Mood.GOOD, "Fly", "You are now in fly mode.").to(player);
                 } else {
-                    new Message(Mood.GOOD, "Fly", "You are no longer in fly mode.").to(player);
+                    new Message(Mood.BAD, "Fly", "You are no longer in fly mode.").to(player);
                 }
                 player.setFlying(!player.isFlying());
             } else {
@@ -85,7 +85,7 @@ public class AbilityModule extends TrilliumModule {
                         new Message(Mood.GOOD, "God", "You are now in god mode.").to(player);
                     } else {
                         player.setGod(false);
-                        new Message(Mood.GOOD, "God", "You are no longer in god mode.").to(player);
+                        new Message(Mood.BAD, "God", "You are no longer in god mode.").to(player);
                     }
                 } else {
                     new Message("God", Error.NO_PERMISSION);

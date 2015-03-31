@@ -85,7 +85,7 @@ plugin-messages:
     no-permission: "&8[&4%COMMAND%&8] &9>> &7You don't have permission to do that."
     console-not-allowed: "&8[&4%COMMAND%&8] &9>> &7You can't do that you silly console."
     too-few-arguments: "&8[&4%COMMAND%&8] &9>> &7Too few aguments. %USAGE%"
-    wrong-arguments: &8[&4%COMMAND%&8] &9>> "&7Wrong arguments. %USAGE%"
+    wrong-arguments: "&8[&4%COMMAND%&8] &9>> &7Wrong arguments. %USAGE%"
 
 #---------------[ Broadcast ]---------------#
 broadcast:

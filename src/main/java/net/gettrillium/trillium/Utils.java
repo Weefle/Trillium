@@ -25,12 +25,12 @@ public class Utils {
         int used = max - free;
         int i = (int) (100L * used / max);
 
-        new Message(Mood.GENERIC, "Max Memory", max + "MB");
-        new Message(Mood.GENERIC, "Used Memory", used + "MB");
-        new Message(Mood.GENERIC, "Free Memory", free + "MB");
-        new Message(Mood.GENERIC, "Used Memory", asciibar(i));
-        new Message(Mood.GENERIC, "TPS", "" + TpsRunnable.getTPS());
-        new Message(Mood.GENERIC, "Lag Rate", asciibar((int) Math.round((1.0D - TpsRunnable.getTPS() / 20.0D))));
+        new Message(Mood.GENERIC, "Max Memory", max + "MB").to(sender);
+        new Message(Mood.GENERIC, "Used Memory", used + "MB").to(sender);
+        new Message(Mood.GENERIC, "Free Memory", free + "MB").to(sender);
+        new Message(Mood.GENERIC, "Used Memory", asciibar(i)).to(sender);
+        new Message(Mood.GENERIC, "TPS", "" + TpsRunnable.getTPS()).to(sender);
+        new Message(Mood.GENERIC, "Lag Rate", asciibar((int) Math.round((1.0D - TpsRunnable.getTPS() / 20.0D)))).to(sender);
     }
 
     public static String asciibar(int percent) {

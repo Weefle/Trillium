@@ -1,6 +1,5 @@
 package net.gettrillium.trillium.api;
 
-import net.gettrillium.trillium.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -21,7 +20,7 @@ public class Kit {
 
     public Kit(String kitname) {
         this.name = kitname;
-        this.cooldown = Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + kitname + ".cool-down"));
+        //this.cooldown = Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + kitname + ".cool-down"));
     }
 
     public void giveTo(Player p) {

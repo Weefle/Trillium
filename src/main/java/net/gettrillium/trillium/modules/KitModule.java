@@ -14,10 +14,6 @@ import org.bukkit.entity.Player;
 
 public class KitModule extends TrilliumModule {
 
-    public KitModule() {
-        super("kits");
-    }
-
     @Command(command = "kit", description = "Get a certain kit.", usage = "/kit [kit name]")
     public void kit(CommandSender cs, String[] args) {
         if (getConfig().getBoolean(Configuration.Kit.ENABLED)) {

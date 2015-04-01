@@ -17,10 +17,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class PunishModule extends TrilliumModule {
 
-    public PunishModule() {
-        super("punish");
-    }
-
     @Command(command = "mute", description = "Silence/unsilence someone's voice.", usage = "/mute <player>")
     public void mute(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.MUTE)) {

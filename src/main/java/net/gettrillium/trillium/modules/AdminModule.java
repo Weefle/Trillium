@@ -26,10 +26,6 @@ public class AdminModule extends TrilliumModule {
 
     public static ArrayList<String> reportlist = new ArrayList<>();
 
-    public AdminModule() {
-        super("ability");
-    }
-
     @Command(command = "chestfinder", description = "Track down any hidden chests.", usage = "/chestfinder [radius]", aliases = "cf")
     public void chestfinder(CommandSender cs, String[] args) {
         if (cs instanceof Player) {

@@ -18,10 +18,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class GroupManagerModule extends TrilliumModule {
 
-    public GroupManagerModule() {
-        super("group-manager");
-    }
-
     @Command(command = "trilliumgroupmanager", description = "Add/remove/demote/promote/give perms/remove perms...", usage = "/tgm <add/remove> <player/group> <permission>")
     public void trilliumgroupmanager(CommandSender cs, String[] args) {
         if (getConfig().getBoolean(Configuration.GM.ENABLED)) {

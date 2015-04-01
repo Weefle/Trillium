@@ -19,10 +19,6 @@ import java.util.List;
 
 public class CoreModule extends TrilliumModule {
 
-    public CoreModule() {
-        super("core");
-    }
-
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();

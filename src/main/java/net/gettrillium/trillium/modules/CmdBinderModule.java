@@ -41,10 +41,6 @@ public class CmdBinderModule extends TrilliumModule {
     public static ArrayList<UUID> antilagcheckcmd = new ArrayList<>();
     public static ArrayList<UUID> antilagcheckitem = new ArrayList<>();
 
-    public CmdBinderModule() {
-        super("cmdbinder");
-    }
-
     @Command(command = "commandbinder", description = "Bind a command to a block, an air block, or an item.", usage = "/cb <touch/walk/item> <console/player> <command>", aliases = "cmdbinder, cmdb, cb, cbinder, cbind")
     public void commandbinder(CommandSender cs, String[] args) {
         if (cs instanceof Player) {

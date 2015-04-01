@@ -26,10 +26,6 @@ public class TeleportModule extends TrilliumModule {
     HashMap<UUID, UUID> tpr = new HashMap<>();
     HashMap<UUID, UUID> tprh = new HashMap<>();
 
-    public TeleportModule() {
-        super("teleport");
-    }
-
     @Command(command = "back", description = "Teleport to your last active position", usage = "/back")
     public void back(CommandSender cs, String[] args) {
         if (cs instanceof Player) {

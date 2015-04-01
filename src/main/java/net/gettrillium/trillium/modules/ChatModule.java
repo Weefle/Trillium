@@ -22,10 +22,6 @@ import java.util.List;
 
 public class ChatModule extends TrilliumModule {
 
-    public ChatModule() {
-        super("chat");
-    }
-
     @Command(command = "say", description = "Talk from the console", usage = "/say")
     public void say(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {

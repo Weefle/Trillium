@@ -20,10 +20,6 @@ import java.util.Random;
 
 public class FunModule extends TrilliumModule {
 
-    public FunModule() {
-        super("fun");
-    }
-
     //TODO: MASS compress kittybomb.
 
     @Command(command = "kittybomb", description = "KITTEHBAMB!!", usage = "/kb", aliases = "kittehbamb, kittehbomb, kittybamb, kittyb, kbomb, kb")

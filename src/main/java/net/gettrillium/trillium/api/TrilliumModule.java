@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 public abstract class TrilliumModule implements Listener {
     private ConfigurationSection config;
 
-    public TrilliumModule(String name) {
+    public TrilliumModule() {
         this.config = TrilliumAPI.getInstance().getConfig();
     }
 

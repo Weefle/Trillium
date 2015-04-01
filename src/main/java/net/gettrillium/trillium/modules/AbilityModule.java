@@ -27,10 +27,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class AbilityModule extends TrilliumModule {
 
-    public AbilityModule() {
-        super("ability");
-    }
-
     @Command(command = "fly", description = "SOAR THROUGH THE AIR LIKE A MAJESTIC BUTTERFLY!", usage = "/fly")
     public void fly(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {

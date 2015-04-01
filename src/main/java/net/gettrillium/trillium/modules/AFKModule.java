@@ -17,10 +17,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class AFKModule extends TrilliumModule {
 
-    public AFKModule() {
-        super("afk");
-    }
-
     @Command(command = "afk", description = "Indicate that you are away from your keyboard.", usage = "/afk")
     public void afk(CommandSender cs, String[] args) {
         if (cs instanceof Player) {

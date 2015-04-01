@@ -8,8 +8,7 @@ public class GroupManagerRunnable implements Runnable {
 
     public void run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
-            GroupManager manager = new GroupManager(p);
-            manager.refreshPermissions();
+            new GroupManager(p).refreshPermissions();
         }
     }
 }

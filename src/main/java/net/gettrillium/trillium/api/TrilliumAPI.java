@@ -5,6 +5,7 @@ import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.command.TrilliumCommand;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.api.serializer.Serializer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.SimplePluginManager;
@@ -15,11 +16,12 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class TrilliumAPI {
     private static Trillium instance;
     private static File playerFolder;
-    private static Map<String, TrilliumPlayer> players; // TODO: convert to UUID...
+    private static Map<UUID, TrilliumPlayer> players;
     private static Map<Class<?>, Serializer<?>> serializers;
     private static Map<Class<? extends TrilliumModule>, TrilliumModule> modules;
 
@@ -44,24 +46,33 @@ public class TrilliumAPI {
     }
 
     public static TrilliumPlayer getPlayer(String name) {
-        return players.get(name);
+        Player p = Bukkit.getPlayer(name);
+        if (p != null) {
+            return players.get(p.getUniqueId());
+        } else {
+            return null;
+        }
     }
 
     public static TrilliumPlayer getPlayer(Player player) {
-        return players.get(player.getName());
+        return players.get(player.getUniqueId());
+    }
+
+    public static TrilliumPlayer getPlayer(UUID uuid) {
+        return players.get(uuid);
     }
 
     public static void loadPlayer(Player proxy) {
-        if (!players.containsKey(proxy.getName())) {
+        if (!players.containsKey(proxy.getUniqueId())) {
             TrilliumPlayer p = new TrilliumPlayer(proxy);
             p.load();
-            players.put(proxy.getName(), p);
+            players.put(proxy.getUniqueId(), p);
         }
     }
 
     public static void disposePlayer(Player proxy) {
-        if (players.containsKey(proxy.getName())) {
-            TrilliumPlayer player = players.remove(proxy.getName());
+        if (players.containsKey(proxy.getUniqueId())) {
+            TrilliumPlayer player = players.remove(proxy.getUniqueId());
             player.dispose();
         } // else { means that they are already unloaded... right?
     }
@@ -71,7 +82,7 @@ public class TrilliumAPI {
     }
 
     public static boolean isLoaded(Player p) {
-        return players.containsKey(p.getName());
+        return players.containsKey(p.getUniqueId());
     }
 
     @SuppressWarnings("unchecked")

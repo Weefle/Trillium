@@ -1,4 +1,4 @@
-package net.gettrillium.trillium.databases;
+package net.gettrillium.trillium.api.commandbinder;
 
 import net.gettrillium.trillium.api.TrilliumAPI;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,10 +12,10 @@ public class CmdBinderDatabase {
         File file = new File(TrilliumAPI.getInstance().getDataFolder(), "CommandBinderDatabase.yml");
         if (!file.exists()) {
             YamlConfiguration db = YamlConfiguration.loadConfiguration(file);
-            db.set("walkconsole", "");
-            db.set("walkplayer", "");
-            db.set("touchconsole", "");
-            db.set("touchplayer", "");
+            db.set("walk-console", null);
+            db.set("walk-player", null);
+            db.set("touch-console", null);
+            db.set("touch-player", null);
             try {
                 db.save(file);
             } catch (IOException e) {

@@ -1,8 +1,8 @@
 package net.gettrillium.trillium;
 
 import net.gettrillium.trillium.api.TrilliumAPI;
+import net.gettrillium.trillium.api.commandbinder.CmdBinderDatabase;
 import net.gettrillium.trillium.api.serializer.LocationSerializer;
-import net.gettrillium.trillium.databases.CmdBinderDatabase;
 import net.gettrillium.trillium.events.PlayerDeath;
 import net.gettrillium.trillium.events.ServerListPing;
 import net.gettrillium.trillium.modules.*;
@@ -65,7 +65,7 @@ public class Trillium extends JavaPlugin {
             getLogger().info("<<<-------------------------------------->>>");
             getLogger().warning("Essentials plugin detected!");
             getLogger().warning("Essentials might heavily interfere with Trillium!");
-            getLogger().warning("Please consider removing Essentials.");
+            getLogger().warning("Please consider removing it!");
             getLogger().info("<<<-------------------------------------->>>");
         }
     }

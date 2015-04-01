@@ -241,7 +241,7 @@ afk:
   auto-afk:
     enabled: true
     # If a player stands perfectly still for x seconds, they will be marked has AFK automatically.
-    time-until-idle: 1m
+    time-until-idle: 3m
     # If auto AFK is true, this will be the time needed to indicate the player is AFK automatically.
     # You can use s for seconds, m for minutes, and h for hours.
     kick-on-afk: false

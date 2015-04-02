@@ -27,19 +27,6 @@ import java.util.UUID;
 
 public class CommandBinderModule extends TrilliumModule {
 
-    public static HashMap<UUID, String> tcmdbconsole = new HashMap<>();
-    public static HashMap<UUID, String> tcmdbplayer = new HashMap<>();
-    public static HashMap<UUID, String> wcmdbplayer = new HashMap<>();
-    public static HashMap<UUID, String> wcmdbconsole = new HashMap<>();
-    public static HashMap<Location, String> touchconsole = new HashMap<>();
-    public static HashMap<Location, String> touchplayer = new HashMap<>();
-    public static HashMap<Location, String> walkconsole = new HashMap<>();
-    public static HashMap<Location, String> walkplayer = new HashMap<>();
-    public static Map<UUID, Map<ItemStack, String>> itemconsole = new HashMap<>();
-    public static Map<UUID, Map<ItemStack, String>> itemplayer = new HashMap<>();
-    public static ArrayList<Location> antilagcheckloc = new ArrayList<>();
-    public static ArrayList<UUID> antilagcheckcmd = new ArrayList<>();
-    public static ArrayList<UUID> antilagcheckitem = new ArrayList<>();
     private HashMap<UUID, String> command = new HashMap<>();
     private ArrayList<UUID> set = new ArrayList<>();
     private ArrayList<UUID> walkset = new ArrayList<>();
@@ -144,12 +131,10 @@ public class CommandBinderModule extends TrilliumModule {
 
                                 Map<ItemStack, String> iands = new HashMap<>();
                                 iands.put(p.getProxy().getItemInHand(), msg);
-                                itemconsole.put(p.getProxy().getUniqueId(), iands);
                                 command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#;#false");
                                 set.add(p.getProxy().getUniqueId());
 
                                 new Message(Mood.GOOD, "CMD Binder", "Command successfully bound to item.").to(p);
-                                new Message(Mood.GOOD, "CMD Binder", ChatColor.AQUA + tcmdbconsole.get(p.getProxy().getUniqueId())).to(p);
                             }
 
                         } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
@@ -165,12 +150,10 @@ public class CommandBinderModule extends TrilliumModule {
 
                                 Map<ItemStack, String> iands = new HashMap<>();
                                 iands.put(p.getProxy().getItemInHand(), msg);
-                                itemplayer.put(p.getProxy().getUniqueId(), iands);
                                 command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#;#true");
                                 set.add(p.getProxy().getUniqueId());
 
                                 new Message(Mood.GOOD, "CMD Binder", "Command successfully bound to item.").to(p);
-                                new Message(Mood.GOOD, "CMD Binder", ChatColor.AQUA + tcmdbconsole.get(p.getProxy().getUniqueId())).to(p);
 
                             }
                         }

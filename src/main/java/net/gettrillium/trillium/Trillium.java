@@ -1,7 +1,7 @@
 package net.gettrillium.trillium;
 
 import net.gettrillium.trillium.api.TrilliumAPI;
-import net.gettrillium.trillium.api.commandbinder.CmdBinderDatabase;
+import net.gettrillium.trillium.api.commandbinder.CommandBinderDatabase;
 import net.gettrillium.trillium.api.serializer.LocationSerializer;
 import net.gettrillium.trillium.events.PlayerDeath;
 import net.gettrillium.trillium.events.ServerListPing;
@@ -77,7 +77,7 @@ public class Trillium extends JavaPlugin {
     }
 
     private void setupCmdBinder() {
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(CmdBinderDatabase.cbd());
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
 
         for (String s : yml.getStringList("touchconsole")) {
             String w = s.split("'")[0];
@@ -87,8 +87,8 @@ public class Trillium extends JavaPlugin {
             Location loc = new Location(Bukkit.getWorld(w), x, y, z);
             String cmd = s.split("/")[1];
 
-            CmdBinderModule.touchconsole.put(loc, cmd);
-            CmdBinderModule.antilagcheckloc.add(loc);
+            CommandBinderModule.touchconsole.put(loc, cmd);
+            CommandBinderModule.antilagcheckloc.add(loc);
         }
 
         for (String s : yml.getStringList("touchplayer")) {
@@ -99,8 +99,8 @@ public class Trillium extends JavaPlugin {
             Location loc = new Location(Bukkit.getWorld(w), x, y, z);
             String cmd = s.split("/")[1];
 
-            CmdBinderModule.touchplayer.put(loc, cmd);
-            CmdBinderModule.antilagcheckloc.add(loc);
+            CommandBinderModule.touchplayer.put(loc, cmd);
+            CommandBinderModule.antilagcheckloc.add(loc);
         }
 
         for (String s : yml.getStringList("walkconsole")) {
@@ -111,8 +111,8 @@ public class Trillium extends JavaPlugin {
             Location loc = new Location(Bukkit.getWorld(w), x, y, z);
             String cmd = s.split("/")[1];
 
-            CmdBinderModule.walkconsole.put(loc, cmd);
-            CmdBinderModule.antilagcheckloc.add(loc);
+            CommandBinderModule.walkconsole.put(loc, cmd);
+            CommandBinderModule.antilagcheckloc.add(loc);
         }
 
         for (String s : yml.getStringList("walkplayer")) {
@@ -123,8 +123,8 @@ public class Trillium extends JavaPlugin {
             Location loc = new Location(Bukkit.getWorld(w), x, y, z);
             String cmd = s.split("/")[1];
 
-            CmdBinderModule.walkplayer.put(loc, cmd);
-            CmdBinderModule.antilagcheckloc.add(loc);
+            CommandBinderModule.walkplayer.put(loc, cmd);
+            CommandBinderModule.antilagcheckloc.add(loc);
         }
     }
 

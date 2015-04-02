@@ -6,7 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public class CmdBinderDatabase {
+public class CommandBinderDatabase {
 
     public static File cbd() {
         File file = new File(TrilliumAPI.getInstance().getDataFolder(), "CommandBinderDatabase.yml");

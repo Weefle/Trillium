@@ -120,7 +120,7 @@ public class CommandBinderModule extends TrilliumModule {
 
                         if (args[1].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c")) {
 
-                            if (p.getProxy().getItemInHand().getType() != null || p.getProxy().getItemInHand().getType() != Material.AIR) {
+                            if (p.getProxy().getItemInHand().getType() != null) {
 
                                 StringBuilder sb = new StringBuilder();
                                 for (int i = 2; i < args.length; i++) {
@@ -140,7 +140,7 @@ public class CommandBinderModule extends TrilliumModule {
 
                         } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
 
-                            if (p.getProxy().getItemInHand().getType() != null || p.getProxy().getItemInHand().getType() != Material.AIR) {
+                            if (p.getProxy().getItemInHand().getType() != null) {
 
                                 StringBuilder sb = new StringBuilder();
                                 for (int i = 2; i < args.length; i++) {
@@ -173,40 +173,42 @@ public class CommandBinderModule extends TrilliumModule {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player p = event.getPlayer();
-        Location loc = event.getClickedBlock().getLocation();
+        if (event.getClickedBlock() != null) {
+            Location loc = event.getClickedBlock().getLocation();
 
-        if (set.contains(p.getUniqueId())) {
+            if (set.contains(p.getUniqueId())) {
 
-            String command = this.command.get(p.getUniqueId()).replace("[p]", p.getName().split("#;#")[0]);
-            Boolean player = Boolean.parseBoolean(this.command.get(p.getUniqueId()).replace("[p]", p.getName().split("#;#")[1]));
+                String command = this.command.get(p.getUniqueId()).replace("[p]", p.getName().split("#;#")[0]);
+                Boolean player = Boolean.parseBoolean(this.command.get(p.getUniqueId()).replace("[p]", p.getName().split("#;#")[1]));
 
-            if (touchset.contains(p.getUniqueId())) {
-                set.remove(p.getUniqueId());
-                touchset.remove(p.getUniqueId());
-                this.command.remove(p.getUniqueId());
-                event.setCancelled(true);
-                new CommandBinder(command, player, loc).setToBlock();
-                new Message(Mood.GOOD, "CMD Binder", "Command: " + ChatColor.YELLOW + "'" + ChatColor.AQUA + command + ChatColor.YELLOW + "'").to(p);
-                new Message(Mood.GOOD, "CMD Binder", "was set to block: " + ChatColor.AQUA + event.getClickedBlock().getType().getData().getName()).to(p);
+                if (touchset.contains(p.getUniqueId())) {
+                    set.remove(p.getUniqueId());
+                    touchset.remove(p.getUniqueId());
+                    this.command.remove(p.getUniqueId());
+                    event.setCancelled(true);
+                    new CommandBinder(command, player, loc).setToBlock();
+                    new Message(Mood.GOOD, "CMD Binder", "Command: " + ChatColor.YELLOW + "'" + ChatColor.AQUA + command + ChatColor.YELLOW + "'").to(p);
+                    new Message(Mood.GOOD, "CMD Binder", "was set to block: " + ChatColor.AQUA + event.getClickedBlock().getType().getData().getName()).to(p);
 
+                }
+
+                if (walkset.contains(p.getUniqueId())) {
+                    Location relative = event.getClickedBlock().getRelative(event.getBlockFace()).getLocation();
+                    set.remove(p.getUniqueId());
+                    walkset.remove(p.getUniqueId());
+                    this.command.remove(p.getUniqueId());
+                    event.setCancelled(true);
+                    new CommandBinder(command, player, relative).setToWalkableBlock();
+                    new Message(Mood.GOOD, "CMD Binder", "Command: " + ChatColor.YELLOW + "'" + ChatColor.AQUA + this.command + ChatColor.YELLOW + "'").to(p);
+                    new Message(Mood.GOOD, "CMD Binder", "was set to air block at: "
+                            + ChatColor.AQUA + relative.getBlockX()
+                            + ChatColor.GRAY + ","
+                            + ChatColor.AQUA + relative.getBlockY()
+                            + ChatColor.GRAY + ","
+                            + ChatColor.AQUA + relative.getBlockZ()).to(p);
+                }
             }
 
-            if (walkset.contains(p.getUniqueId())) {
-                Location relative = event.getClickedBlock().getRelative(event.getBlockFace()).getLocation();
-                set.remove(p.getUniqueId());
-                walkset.remove(p.getUniqueId());
-                this.command.remove(p.getUniqueId());
-                event.setCancelled(true);
-                new CommandBinder(command, player, relative).setToWalkableBlock();
-                new Message(Mood.GOOD, "CMD Binder", "Command: " + ChatColor.YELLOW + "'" + ChatColor.AQUA + this.command + ChatColor.YELLOW + "'").to(p);
-                new Message(Mood.GOOD, "CMD Binder", "was set to air block at: "
-                        + ChatColor.AQUA + relative.getBlockX()
-                        + ChatColor.GRAY + ","
-                        + ChatColor.AQUA + relative.getBlockY()
-                        + ChatColor.GRAY + ","
-                        + ChatColor.AQUA + relative.getBlockZ()).to(p);
-            }
-        } else {
             if (new CommandBinder(loc).hasCommand()) {
                 if (new CommandBinder(loc).isPlayer()) {
                     Bukkit.dispatchCommand(p, new CommandBinder(loc).getCommand().replace("[p]", p.getName()));
@@ -214,19 +216,20 @@ public class CommandBinderModule extends TrilliumModule {
                     Bukkit.dispatchCommand(TrilliumAPI.getInstance().getServer().getConsoleSender(), new CommandBinder(loc).getCommand().replace("[p]", p.getName()));
                 }
                 event.setCancelled(true);
-            }
 
-            if (p.getItemInHand().getType() != null || p.getItemInHand().getType() != Material.AIR) {
-                if (item.containsKey(p.getUniqueId()) && itemCommand.containsKey(p.getUniqueId())) {
-                    Material mat = item.get(p.getUniqueId());
-                    String command = itemCommand.get(p.getUniqueId()).split("#;#")[0];
-                    Boolean player = Boolean.parseBoolean(itemCommand.get(p.getUniqueId()).split("#;#")[1]);
-                    if (mat == p.getItemInHand().getType()) {
-                        if (player) {
-                            Bukkit.dispatchCommand(p, command);
-                        } else {
-                            Bukkit.dispatchCommand(TrilliumAPI.getInstance().getServer().getConsoleSender(), command);
-                        }
+            }
+        }
+
+        if (p.getItemInHand().getType() != null || p.getItemInHand().getType() != Material.AIR) {
+            if (item.containsKey(p.getUniqueId()) && itemCommand.containsKey(p.getUniqueId())) {
+                Material mat = item.get(p.getUniqueId());
+                String command = itemCommand.get(p.getUniqueId()).split("#;#")[0];
+                Boolean player = Boolean.parseBoolean(itemCommand.get(p.getUniqueId()).split("#;#")[1]);
+                if (mat == p.getItemInHand().getType()) {
+                    if (player) {
+                        Bukkit.dispatchCommand(p, command);
+                    } else {
+                        Bukkit.dispatchCommand(TrilliumAPI.getInstance().getServer().getConsoleSender(), command);
                     }
                 }
             }

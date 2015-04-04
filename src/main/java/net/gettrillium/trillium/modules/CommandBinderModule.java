@@ -178,8 +178,8 @@ public class CommandBinderModule extends TrilliumModule {
 
             if (set.contains(p.getUniqueId())) {
 
-                String command = this.command.get(p.getUniqueId()).replace("[p]", p.getName().split("#;#")[0]);
-                Boolean player = Boolean.parseBoolean(this.command.get(p.getUniqueId()).replace("[p]", p.getName().split("#;#")[1]));
+                String command = this.command.get(p.getUniqueId()).replace("[p]", p.getName()).split("#;#")[0];
+                Boolean player = Boolean.parseBoolean(this.command.get(p.getUniqueId()).replace("[p]", p.getName()).split("#;#")[1]);
 
                 if (touchset.contains(p.getUniqueId())) {
                     set.remove(p.getUniqueId());
@@ -207,19 +207,19 @@ public class CommandBinderModule extends TrilliumModule {
                             + ChatColor.GRAY + ","
                             + ChatColor.AQUA + relative.getBlockZ()).to(p);
                 }
-            }
+            } else {
 
-            if (new CommandBinder(loc).hasCommand()) {
-                if (new CommandBinder(loc).isPlayer()) {
-                    Bukkit.dispatchCommand(p, new CommandBinder(loc).getCommand().replace("[p]", p.getName()));
-                } else {
-                    Bukkit.dispatchCommand(TrilliumAPI.getInstance().getServer().getConsoleSender(), new CommandBinder(loc).getCommand().replace("[p]", p.getName()));
+                if (new CommandBinder(loc).hasCommand()) {
+                    if (new CommandBinder(loc).isPlayer()) {
+                        Bukkit.dispatchCommand(p, new CommandBinder(loc).getCommand().replace("[p]", p.getName()));
+                    } else {
+                        Bukkit.dispatchCommand(TrilliumAPI.getInstance().getServer().getConsoleSender(), new CommandBinder(loc).getCommand().replace("[p]", p.getName()));
+                    }
+                    event.setCancelled(true);
+
                 }
-                event.setCancelled(true);
-
             }
         }
-
         if (p.getItemInHand().getType() != null || p.getItemInHand().getType() != Material.AIR) {
             if (item.containsKey(p.getUniqueId()) && itemCommand.containsKey(p.getUniqueId())) {
                 Material mat = item.get(p.getUniqueId());

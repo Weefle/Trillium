@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommandBinderDatabase {
 
@@ -13,7 +14,7 @@ public class CommandBinderDatabase {
         File file = new File(TrilliumAPI.getInstance().getDataFolder(), "CommandBinderDatabase.yml");
         if (!file.exists()) {
             YamlConfiguration db = YamlConfiguration.loadConfiguration(file);
-            ArrayList<String> filler = new ArrayList<>();
+            List<String> filler = new ArrayList<>();
             db.set("walk-console", filler);
             db.set("walk-player", filler);
             db.set("touch-console", filler);

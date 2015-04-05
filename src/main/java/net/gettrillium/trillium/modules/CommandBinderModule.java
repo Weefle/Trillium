@@ -53,7 +53,7 @@ public class CommandBinderModule extends TrilliumModule {
                                 sb.append(args[i]).append(" ");
                             }
 
-                            command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#;#false");
+                            command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#false");
                             set.add(p.getProxy().getUniqueId());
                             touchset.add(p.getProxy().getUniqueId());
 
@@ -69,7 +69,7 @@ public class CommandBinderModule extends TrilliumModule {
                                 sb.append(args[i]).append(" ");
                             }
 
-                            command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#;#true");
+                            command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#true");
                             set.add(p.getProxy().getUniqueId());
                             touchset.add(p.getProxy().getUniqueId());
 
@@ -88,7 +88,7 @@ public class CommandBinderModule extends TrilliumModule {
                                 sb.append(args[i]).append(" ");
                             }
 
-                            command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#;#false");
+                            command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#false");
                             set.add(p.getProxy().getUniqueId());
                             walkset.add(p.getProxy().getUniqueId());
 
@@ -105,7 +105,7 @@ public class CommandBinderModule extends TrilliumModule {
                                 sb.append(args[i]).append(" ");
                             }
 
-                            command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#;#true");
+                            command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#true");
                             set.add(p.getProxy().getUniqueId());
                             walkset.add(p.getProxy().getUniqueId());
 
@@ -127,7 +127,7 @@ public class CommandBinderModule extends TrilliumModule {
                                     sb.append(args[i]).append(" ");
                                 }
 
-                                itemCommand.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#;#false");
+                                itemCommand.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#false");
                                 item.put(p.getProxy().getUniqueId(), p.getProxy().getItemInHand().getType());
 
                                 new Message(Mood.GOOD, "CMD Binder", "Command: "
@@ -147,7 +147,7 @@ public class CommandBinderModule extends TrilliumModule {
                                     sb.append(args[i]).append(" ");
                                 }
 
-                                itemCommand.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#;#true");
+                                itemCommand.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#true");
                                 item.put(p.getProxy().getUniqueId(), p.getProxy().getItemInHand().getType());
 
                                 new Message(Mood.GOOD, "CMD Binder", "Command: "
@@ -178,8 +178,8 @@ public class CommandBinderModule extends TrilliumModule {
 
             if (set.contains(p.getUniqueId())) {
 
-                String command = this.command.get(p.getUniqueId()).replace("[p]", p.getName()).split("#;#")[0];
-                Boolean player = Boolean.parseBoolean(this.command.get(p.getUniqueId()).replace("[p]", p.getName()).split("#;#")[1]);
+                String command = this.command.get(p.getUniqueId()).split("#~#")[0];
+                Boolean player = Boolean.parseBoolean(this.command.get(p.getUniqueId()).split("#~#")[1]);
 
                 if (touchset.contains(p.getUniqueId())) {
                     set.remove(p.getUniqueId());
@@ -188,7 +188,7 @@ public class CommandBinderModule extends TrilliumModule {
                     event.setCancelled(true);
                     new CommandBinder(command, player, loc).setToBlock();
                     new Message(Mood.GOOD, "CMD Binder", "Command: " + ChatColor.YELLOW + "'" + ChatColor.AQUA + command + ChatColor.YELLOW + "'").to(p);
-                    new Message(Mood.GOOD, "CMD Binder", "was set to block: " + ChatColor.AQUA + event.getClickedBlock().getType().getData().getName()).to(p);
+                    new Message(Mood.GOOD, "CMD Binder", "was set to block: " + ChatColor.AQUA + event.getClickedBlock().getType().toString()).to(p);
 
                 }
 
@@ -223,8 +223,8 @@ public class CommandBinderModule extends TrilliumModule {
         if (p.getItemInHand().getType() != null || p.getItemInHand().getType() != Material.AIR) {
             if (item.containsKey(p.getUniqueId()) && itemCommand.containsKey(p.getUniqueId())) {
                 Material mat = item.get(p.getUniqueId());
-                String command = itemCommand.get(p.getUniqueId()).split("#;#")[0];
-                Boolean player = Boolean.parseBoolean(itemCommand.get(p.getUniqueId()).split("#;#")[1]);
+                String command = itemCommand.get(p.getUniqueId()).split("#~#")[0];
+                Boolean player = Boolean.parseBoolean(itemCommand.get(p.getUniqueId()).split("#~#")[1]);
                 if (mat == p.getItemInHand().getType()) {
                     if (player) {
                         Bukkit.dispatchCommand(p, command);

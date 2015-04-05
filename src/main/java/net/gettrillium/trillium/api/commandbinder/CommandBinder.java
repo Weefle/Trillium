@@ -101,7 +101,7 @@ public class CommandBinder {
 
         for (String cmd : commands.keySet()) {
             if (commands.get(cmd) == this.loc) {
-                player = Boolean.parseBoolean(cmd.split("#;#")[0]);
+                player = Boolean.parseBoolean(cmd.split("#~#")[1]);
                 this.player = player;
             }
         }
@@ -124,7 +124,7 @@ public class CommandBinder {
                 this.command = command;
             }
         }
-        return command.split("#;#")[0];
+        return command.split("#~#")[0];
     }
 
     public Boolean hasCommand() {
@@ -143,13 +143,13 @@ public class CommandBinder {
         for (String deserialize : serialized) {
             String[] split = deserialize.split(";");
 
-            String command = split[0] + "#;#" + player;
+            String command = split[0] + "#~#" + player;
 
             String x = split[1];
             String y = split[2];
             String z = split[3];
             String world = split[4];
-            Location loc = new Location(Bukkit.getWorld(world), Double.parseDouble(x), Double.parseDouble(y), Double.parseDouble(z));
+            Location loc = new Location(Bukkit.getWorld(world), Double.valueOf(x), Double.valueOf(y), Double.valueOf(z));
 
             deserialized.put(command, loc);
         }
@@ -179,10 +179,9 @@ public class CommandBinder {
                 String z = "" + location.getZ();
                 String world = location.getWorld().getName();
 
-                serialized.add(cmd + ";" + x + ";" + y + ";" + z + ";" + world + ";" + player);
+                serialized.add(cmd + "#~#" + player + ";" + x + ";" + y + ";" + z + ";" + world);
             }
         }
-
         return serialized;
     }
 }

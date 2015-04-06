@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommandBinder {
 
@@ -104,17 +105,17 @@ public class CommandBinder {
     }
 
     private String getCommandUnsplit() {
-        HashMap<String, Location> commands = getAllCommands();
 
-        String command = "/help";
+        if (hasCommand()) {
+            HashMap<String, Location> commands = getAllCommands();
 
-        for (String cmd : commands.keySet()) {
-            if (commands.get(cmd) == this.loc) {
-                command = cmd;
-                this.command = command;
+            for (Map.Entry<String, Location> entry : commands.entrySet()) {
+                if (this.loc.equals(entry.getValue())) {
+                    return entry.getKey();
+                }
             }
         }
-        return command;
+        return "help#~#true";
     }
 
     public String getCommand() {
@@ -145,6 +146,7 @@ public class CommandBinder {
         }
 
     }
+
     public HashMap<String, Location> CommandBinderDeserializer(List<String> serialized) {
         HashMap<String, Location> deserialized = new HashMap<>();
         for (String deserialize : serialized) {

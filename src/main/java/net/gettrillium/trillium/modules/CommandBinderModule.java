@@ -304,9 +304,9 @@ public class CommandBinderModule extends TrilliumModule {
                 Boolean player = Boolean.parseBoolean(itemCommand.get(p.getUniqueId()).split("#~#")[1]);
                 if (mat == p.getItemInHand().getType()) {
                     if (player) {
-                        Bukkit.dispatchCommand(p, command);
+                        Bukkit.dispatchCommand(p, command.replace("[p]", p.getName()));
                     } else {
-                        Bukkit.dispatchCommand(TrilliumAPI.getInstance().getServer().getConsoleSender(), command);
+                        Bukkit.dispatchCommand(TrilliumAPI.getInstance().getServer().getConsoleSender(), command.replace("[p]", p.getName()));
                     }
                 }
             }

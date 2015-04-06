@@ -90,31 +90,21 @@ public class CommandBinder {
     }
 
     public Boolean isPlayer() {
-        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
-        HashMap<String, Location> commands = new HashMap<>();
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-player")));
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-console")));
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-player")));
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-console")));
-
-        Boolean player = false;
-
-        for (String cmd : commands.keySet()) {
-            if (commands.get(cmd) == this.loc) {
-                player = Boolean.parseBoolean(cmd.split("#~#")[1]);
-                this.player = player;
-            }
-        }
-        return player;
+        return Boolean.valueOf(getCommandUnsplit().split("#~#")[1]);
     }
 
-    public String getCommand() {
+    public HashMap<String, Location> getAllCommands() {
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
         HashMap<String, Location> commands = new HashMap<>();
         commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-player")));
         commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-console")));
         commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-player")));
         commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-console")));
+        return commands;
+    }
+
+    private String getCommandUnsplit() {
+        HashMap<String, Location> commands = getAllCommands();
 
         String command = "/help";
 
@@ -124,7 +114,11 @@ public class CommandBinder {
                 this.command = command;
             }
         }
-        return command.split("#~#")[0];
+        return command;
+    }
+
+    public String getCommand() {
+        return getCommandUnsplit().split("#~#")[0];
     }
 
     public Boolean hasCommand() {
@@ -138,6 +132,19 @@ public class CommandBinder {
         return commands.containsValue(loc);
     }
 
+    public void removeCommand() {
+        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
+        HashMap<String, Location> commands = new HashMap<>();
+        commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-player")));
+        commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-console")));
+        commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-player")));
+        commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-console")));
+
+        if (commands.containsValue(loc) || commands.containsKey(command)) {
+            commands.remove(command);
+        }
+
+    }
     public HashMap<String, Location> CommandBinderDeserializer(List<String> serialized) {
         HashMap<String, Location> deserialized = new HashMap<>();
         for (String deserialize : serialized) {

@@ -99,6 +99,7 @@ public class GroupManagerModule extends TrilliumModule {
             GroupManager manager = new GroupManager(p.getProxy());
             if (!manager.hasAttachment()) {
                 manager.addAttachment();
+                manager.refreshPermissions();
             }
         }
     }

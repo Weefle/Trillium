@@ -45,7 +45,7 @@ public class Kit {
                     if (data.equalsIgnoreCase("name")) {
                         name = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".name"));
                     } else {
-                        name = items;
+                        name = null;
                     }
 
                     if (data.equalsIgnoreCase("durability")) {

@@ -31,7 +31,9 @@ public class CommandBinderModule extends TrilliumModule {
     private ArrayList<UUID> set = new ArrayList<>();
     private ArrayList<UUID> walkset = new ArrayList<>();
     private ArrayList<UUID> touchset = new ArrayList<>();
-
+    private ArrayList<UUID> remove = new ArrayList<>();
+    private ArrayList<UUID> walkremove = new ArrayList<>();
+    private ArrayList<UUID> touchremove = new ArrayList<>();
 
     @Command(command = "commandbinder", description = "Bind a command to a block, an air block, or an item.", usage = "/cb <touch/walk/item> <console/player> <command>", aliases = {"cmdbinder", "cmdb", "cb", "cbinder", "cbind"})
     public void commandbinder(CommandSender cs, String[] args) {
@@ -40,9 +42,11 @@ public class CommandBinderModule extends TrilliumModule {
             if (p.hasPermission(Permission.Admin.CMDBINDER)) {
 
                 if (args.length < 3) {
-                    new Message("CMD Binder", Error.TOO_FEW_ARGUMENTS, "/cb <touch/walk/item> <console/player> <command>").to(p);
+                    new Message(Mood.BAD, "CMD Binder", "/cb <touch/walk/item> <console/player> <command>").to(p);
                     new Message(Mood.BAD, "CMD Binder", "or /cb <t/w/i> <c/p> <command>").to(p);
                     new Message(Mood.BAD, "CMD Binder", "Example: /cb t c tp [p] 110 45 247").to(p);
+                    new Message(Mood.BAD, "CMD Binder", "To remove a bound command: /cb remove <touch/walk/item>").to(p);
+                    new Message(Mood.BAD, "CMD Binder", "or: /cb remove <t/w/i>").to(p);
                 } else {
 
                     if (args[0].equalsIgnoreCase("touch") || args[0].equalsIgnoreCase("t")) {
@@ -135,7 +139,7 @@ public class CommandBinderModule extends TrilliumModule {
                                         + ChatColor.AQUA
                                         + sb.toString().trim()
                                         + ChatColor.YELLOW + "'").to(p);
-                                new Message(Mood.GOOD, "CMD Binder", "was successfully bound to item: " + ChatColor.YELLOW + p.getProxy().getItemInHand().getItemMeta().getDisplayName()).to(p);
+                                new Message(Mood.GOOD, "CMD Binder", "was successfully bound to item: " + ChatColor.YELLOW + p.getProxy().getItemInHand().getType().toString()).to(p);
                             }
 
                         } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
@@ -155,11 +159,46 @@ public class CommandBinderModule extends TrilliumModule {
                                         + ChatColor.AQUA
                                         + sb.toString().trim()
                                         + ChatColor.YELLOW + "'").to(p);
-                                new Message(Mood.GOOD, "CMD Binder", "was successfully bound to item: " + ChatColor.YELLOW + p.getProxy().getItemInHand().getItemMeta().getDisplayName()).to(p);
+                                new Message(Mood.GOOD, "CMD Binder", "was successfully bound to item: " + ChatColor.YELLOW + p.getProxy().getItemInHand().getType().toString()).to(p);
                             }
                         }
+                    } else if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("r")) {
+
+                        if (args[1].equalsIgnoreCase("touch") || args[1].equalsIgnoreCase("t")) {
+                            remove.add(p.getProxy().getUniqueId());
+                            touchremove.add(p.getProxy().getUniqueId());
+
+                            new Message(Mood.GENERIC, "CMD Binder", "Punch a block to remove all commands bound to it.").to(p);
+
+                        } else if (args[1].equalsIgnoreCase("walk") || args[1].equalsIgnoreCase("w")) {
+                            remove.add(p.getProxy().getUniqueId());
+                            touchremove.add(p.getProxy().getUniqueId());
+
+                            new Message(Mood.GENERIC, "CMD Binder", "Punch a block to remove all commands bound to the block adjacent to it.").to(p);
+
+                        } else if (args[1].equalsIgnoreCase("item") || args[1].equalsIgnoreCase("i")) {
+
+                            if (itemCommand.containsKey(p.getProxy().getUniqueId()) || item.containsKey(p.getProxy().getUniqueId())) {
+
+                                itemCommand.remove(p.getProxy().getUniqueId());
+                                item.remove(p.getProxy().getUniqueId());
+
+                                new Message(Mood.GOOD, "CMD Binder", "Successfully unbound command from item.").to(p);
+                            } else {
+                                new Message(Mood.BAD, "CMD Binder", "That item is not bound to any command.").to(p);
+                            }
+
+                        } else {
+                            new Message(Mood.BAD, "CMD Binder", "To remove a bound command: /cb remove <touch/walk/item>").to(p);
+                            new Message(Mood.BAD, "CMD Binder", "or: /cb remove <t/w/i>").to(p);
+                        }
+
                     } else {
-                        new Message("Cmd Binder", Error.TOO_FEW_ARGUMENTS, "/cb <touch/walk/item> <console/player> <command>").to(p);
+                        new Message(Mood.BAD, "CMD Binder", "/cb <touch/walk/item> <console/player> <command>").to(p);
+                        new Message(Mood.BAD, "CMD Binder", "or /cb <t/w/i> <c/p> <command>").to(p);
+                        new Message(Mood.BAD, "CMD Binder", "Example: /cb t c tp [p] 110 45 247").to(p);
+                        new Message(Mood.BAD, "CMD Binder", "To remove a bound command: /cb remove <touch/walk/item>").to(p);
+                        new Message(Mood.BAD, "CMD Binder", "or: /cb remove <t/w/i>").to(p);
                     }
                 }
             } else {
@@ -173,6 +212,7 @@ public class CommandBinderModule extends TrilliumModule {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player p = event.getPlayer();
+
         if (event.getClickedBlock() != null) {
             Location loc = event.getClickedBlock().getLocation();
 
@@ -182,31 +222,68 @@ public class CommandBinderModule extends TrilliumModule {
                 Boolean player = Boolean.parseBoolean(this.command.get(p.getUniqueId()).split("#~#")[1]);
 
                 if (touchset.contains(p.getUniqueId())) {
+
+                    new Message(Mood.GOOD, "CMD Binder", "Command: " + ChatColor.YELLOW + "'" + ChatColor.AQUA + command + ChatColor.YELLOW + "'").to(p);
+                    new Message(Mood.GOOD, "CMD Binder", "was set to block: " + ChatColor.AQUA + event.getClickedBlock().getType().toString()).to(p);
+
+                    new CommandBinder(command, player, loc).setToBlock();
+
                     set.remove(p.getUniqueId());
                     touchset.remove(p.getUniqueId());
                     this.command.remove(p.getUniqueId());
                     event.setCancelled(true);
-                    new CommandBinder(command, player, loc).setToBlock();
-                    new Message(Mood.GOOD, "CMD Binder", "Command: " + ChatColor.YELLOW + "'" + ChatColor.AQUA + command + ChatColor.YELLOW + "'").to(p);
-                    new Message(Mood.GOOD, "CMD Binder", "was set to block: " + ChatColor.AQUA + event.getClickedBlock().getType().toString()).to(p);
-
                 }
 
                 if (walkset.contains(p.getUniqueId())) {
                     Location relative = event.getClickedBlock().getRelative(event.getBlockFace()).getLocation();
-                    set.remove(p.getUniqueId());
-                    walkset.remove(p.getUniqueId());
-                    this.command.remove(p.getUniqueId());
-                    event.setCancelled(true);
-                    new CommandBinder(command, player, relative).setToWalkableBlock();
-                    new Message(Mood.GOOD, "CMD Binder", "Command: " + ChatColor.YELLOW + "'" + ChatColor.AQUA + this.command + ChatColor.YELLOW + "'").to(p);
+
+                    new Message(Mood.GOOD, "CMD Binder", "Command: " + ChatColor.YELLOW + "'" + ChatColor.AQUA + command + ChatColor.YELLOW + "'").to(p);
                     new Message(Mood.GOOD, "CMD Binder", "was set to air block at: "
                             + ChatColor.AQUA + relative.getBlockX()
                             + ChatColor.GRAY + ","
                             + ChatColor.AQUA + relative.getBlockY()
                             + ChatColor.GRAY + ","
                             + ChatColor.AQUA + relative.getBlockZ()).to(p);
+
+                    new CommandBinder(command, player, relative).setToWalkableBlock();
+
+                    set.remove(p.getUniqueId());
+                    walkset.remove(p.getUniqueId());
+                    this.command.remove(p.getUniqueId());
+                    event.setCancelled(true);
                 }
+
+            } else if (remove.contains(p.getUniqueId())) {
+
+                if (touchremove.contains(p.getUniqueId())) {
+
+                    remove.remove(p.getUniqueId());
+                    touchremove.remove(p.getUniqueId());
+
+                    if (new CommandBinder(loc).hasCommand()) {
+                        new CommandBinder(loc).removeCommand();
+
+                        new Message(Mood.GOOD, "CMD Binder", "Commands successfully unbound.").to(p);
+                    } else {
+                        new Message(Mood.BAD, "CMD Binder", "That block is not bound to any command.").to(p);
+                    }
+                }
+
+                if (walkremove.contains(p.getUniqueId())) {
+                    Location relative = event.getClickedBlock().getRelative(event.getBlockFace()).getLocation();
+
+                    remove.remove(p.getUniqueId());
+                    walkremove.remove(p.getUniqueId());
+
+                    if (new CommandBinder(relative).hasCommand()) {
+                        new CommandBinder(relative).removeCommand();
+
+                        new Message(Mood.GOOD, "CMD Binder", "Commands successfully unbound.").to(p);
+                    } else {
+                        new Message(Mood.BAD, "CMD Binder", "That air block is not bound to any command.").to(p);
+                    }
+                }
+
             } else {
 
                 if (new CommandBinder(loc).hasCommand()) {

@@ -116,7 +116,7 @@ public class ChatModule extends TrilliumModule {
 
     @Command(command = "trillium", description = "The main command of the plugin.", usage = "/tr", aliases = "tr")
     public void trillium(CommandSender cs, String[] args) {
-        if (cs.hasPermission(Permission.Admin.TRILLIUM)) {
+        if (args.length == 0) {
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
             cs.sendMessage(ChatColor.GRAY + "            Plugin made with love by:");
             cs.sendMessage(ChatColor.GRAY + "       LordSaad, VortexSeven, Turbotailz,");
@@ -128,18 +128,17 @@ public class ChatModule extends TrilliumModule {
             cs.sendMessage(ChatColor.GRAY + "Support email: " + ChatColor.YELLOW + "support@gettrillium.net");
             cs.sendMessage(ChatColor.GRAY + "Website: " + ChatColor.YELLOW + "http://www.gettrillium.net/");
             cs.sendMessage(ChatColor.GRAY + "Resource page: " + ChatColor.YELLOW + "http://www.spigotmc.org/resources/trillium.3882/");
-            Utils.reload();
         } else {
-            cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
-            cs.sendMessage(ChatColor.GRAY + "            Plugin made with love by:");
-            cs.sendMessage(ChatColor.GRAY + "       LordSaad, VortexSeven, Turbotailz,");
-            cs.sendMessage(ChatColor.GRAY + "               samczsun, and hintss");
-            cs.sendMessage(ChatColor.DARK_RED + "                         <3");
-            cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
-            cs.sendMessage(ChatColor.GRAY + "Version: " + ChatColor.YELLOW + TrilliumAPI.getInstance().getDescription().getVersion());
-            cs.sendMessage(ChatColor.GRAY + "Support email: " + ChatColor.YELLOW + "support@gettrillium.net");
-            cs.sendMessage(ChatColor.GRAY + "Website: " + ChatColor.YELLOW + "http://www.gettrillium.net/");
-            cs.sendMessage(ChatColor.GRAY + "Resource page: " + ChatColor.YELLOW + "http://www.spigotmc.org/resources/trillium.3882/");
+            if (args[0].equalsIgnoreCase("reload")) {
+                if (cs.hasPermission(Permission.Admin.TRILLIUM)) {
+                    cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
+                    cs.sendMessage(ChatColor.GRAY + "         Plugin successfully reloaded");
+                    cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
+                    Utils.reload();
+                } else {
+                    new Message("Trillium", Error.NO_PERMISSION).to(cs);
+                }
+            }
         }
     }
 

@@ -190,8 +190,7 @@ player-settings:
       enabled: true
         # When a player joins, they might need a bit of time until they can load the world.
         # Help them by giving them temporary invincibility. (Nothing can harm them and they can't harm anything)
-      time-until-temp-is-over: 30
-      # Time in seconds
+      time-until-temp-is-over: 30s
   leave:
     message: "&b[USERNAME] &9has left the game!"
     # Change the message that tells everyone x player left the server.

@@ -28,8 +28,7 @@ public class KitModule extends TrilliumModule {
                     if (getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER).contains(args[0])) {
                         if (p.getProxy().hasPermission(Permission.Kit.USE + args[0])) {
 
-                            Kit kit = new Kit(args[0]);
-                            kit.giveTo(p.getProxy());
+                            new Kit(args[0]).giveTo(p.getProxy());
 
                             new Message(Mood.GOOD, "Kit", "You successfully received kit " + args[0]).to(p);
 

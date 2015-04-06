@@ -1,13 +1,9 @@
 package net.gettrillium.trillium;
 
 import net.gettrillium.trillium.api.TrilliumAPI;
-import net.gettrillium.trillium.api.serializer.LocationSerializer;
-import net.gettrillium.trillium.events.PlayerDeath;
-import net.gettrillium.trillium.events.ServerListPing;
-import net.gettrillium.trillium.modules.*;
+import net.gettrillium.trillium.modules.AdminModule;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,23 +16,8 @@ public class Trillium extends JavaPlugin {
     public void onEnable() {
 
         TrilliumAPI.setInstance(this);
-        TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
 
-        TrilliumAPI.registerModule(new AFKModule());
-        TrilliumAPI.registerModule(new PunishModule());
-        TrilliumAPI.registerModule(new AbilityModule());
-        TrilliumAPI.registerModule(new AdminModule());
-        TrilliumAPI.registerModule(new CoreModule());
-        TrilliumAPI.registerModule(new TeleportModule());
-        TrilliumAPI.registerModule(new ChatModule());
-        TrilliumAPI.registerModule(new FunModule());
-        TrilliumAPI.registerModule(new CommandBinderModule());
-        TrilliumAPI.registerModule(new KitModule());
-        //TrilliumAPI.registerModule(new GroupManagerModule());
         generateFiles();
-
-        getServer().getPluginManager().registerEvents(new ServerListPing(), this);
-        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
         Utils.reload();
 
@@ -54,10 +35,10 @@ public class Trillium extends JavaPlugin {
         getLogger().info("                    <3");
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("<<<-------------------------------------->>>");
-        getLogger().warning("THIS PLUGIN IS STILL IN PRE-ALPHA.");
+        getLogger().warning("THIS PLUGIN IS STILL IN THE ALPHA STAGE.");
         getLogger().warning("WE HIGHLY RECOMMEND YOU DON'T USE IT FOR NOW");
         getLogger().warning("UNTIL AN OFFICIAL RELEASE IS OUT.");
-        getLogger().warning("WE ARE FULLY AWARE OF ALL THE BUGS YOU MIGHT FIND.");
+        getLogger().warning("PLEASE REPORT ALL THE BUGS YOU FIND AT OUR RESOURCE PAGE.");
 
         if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
             getLogger().info("<<<-------------------------------------->>>");
@@ -72,6 +53,11 @@ public class Trillium extends JavaPlugin {
         File reports = new File(getDataFolder(), "Reports.yml");
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(reports);
         yml.set("Reports", AdminModule.reportlist);
+        try {
+            yml.save(reports);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void generateFiles() {

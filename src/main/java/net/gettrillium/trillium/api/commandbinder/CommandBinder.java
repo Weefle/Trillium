@@ -1,5 +1,6 @@
 package net.gettrillium.trillium.api.commandbinder;
 
+import net.gettrillium.trillium.api.TrilliumAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -101,6 +102,7 @@ public class CommandBinder {
         commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-console")));
         commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-player")));
         commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-console")));
+        TrilliumAPI.getInstance().getLogger().info("" + commands);
         return commands;
     }
 
@@ -152,7 +154,7 @@ public class CommandBinder {
         for (String deserialize : serialized) {
             String[] split = deserialize.split(";");
 
-            String command = split[0] + "#~#" + player;
+            String command = split[0];
 
             String x = split[1];
             String y = split[2];

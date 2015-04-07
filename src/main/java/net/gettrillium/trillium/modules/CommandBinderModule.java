@@ -49,156 +49,184 @@ public class CommandBinderModule extends TrilliumModule {
                     new Message(Mood.BAD, "CMD Binder", "or: /cb remove <t/w/i>").to(p);
                 } else {
 
-                    if (args[0].equalsIgnoreCase("touch") || args[0].equalsIgnoreCase("t")) {
-                        if (args[1].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c")) {
+                    if (!set.contains(p.getProxy().getUniqueId())) {
+                        if (!remove.contains(p.getProxy().getUniqueId())) {
+                            if (args[0].equalsIgnoreCase("touch") || args[0].equalsIgnoreCase("t")) {
+                                if (args[1].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c")) {
 
-                            StringBuilder sb = new StringBuilder();
-                            for (int i = 2; i < args.length; i++) {
-                                sb.append(args[i]).append(" ");
-                            }
+                                    StringBuilder sb = new StringBuilder();
+                                    for (int i = 2; i < args.length; i++) {
+                                        sb.append(args[i]).append(" ");
+                                    }
 
-                            command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#false");
-                            set.add(p.getProxy().getUniqueId());
-                            touchset.add(p.getProxy().getUniqueId());
+                                    command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#false");
+                                    set.add(p.getProxy().getUniqueId());
+                                    touchset.add(p.getProxy().getUniqueId());
 
-                            new Message(Mood.GENERIC, "CMD Binder", "Punch a block to bind the command to it.").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "WARNING: Do not touch anything aimlessly!").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "The first thing you touch now will bind the command you want").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "to the block you punch next. Be careful where you punch!").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "Punch a block to bind the command to it.").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "WARNING: Do not touch anything aimlessly!").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "The first thing you touch now will bind the command you want").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "to the block you punch next. Be careful where you punch!").to(p);
 
-                        } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
+                                } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
 
-                            StringBuilder sb = new StringBuilder();
-                            for (int i = 2; i < args.length; i++) {
-                                sb.append(args[i]).append(" ");
-                            }
+                                    StringBuilder sb = new StringBuilder();
+                                    for (int i = 2; i < args.length; i++) {
+                                        sb.append(args[i]).append(" ");
+                                    }
 
-                            command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#true");
-                            set.add(p.getProxy().getUniqueId());
-                            touchset.add(p.getProxy().getUniqueId());
+                                    command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#true");
+                                    set.add(p.getProxy().getUniqueId());
+                                    touchset.add(p.getProxy().getUniqueId());
 
-                            new Message(Mood.GENERIC, "CMD Binder", "Punch a block to bind the command to it.").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "WARNING: Do not touch anything aimlessly!").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "The first thing you touch now will bind the command you want").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "to the block you punch next. Be careful where you punch!").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "Punch a block to bind the command to it.").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "WARNING: Do not touch anything aimlessly!").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "The first thing you touch now will bind the command you want").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "to the block you punch next. Be careful where you punch!").to(p);
 
-                        }
-                    } else if (args[0].equalsIgnoreCase("walk") || args[0].equalsIgnoreCase("w")) {
+                                }
+                            } else if (args[0].equalsIgnoreCase("walk") || args[0].equalsIgnoreCase("w")) {
 
-                        if (args[1].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c")) {
+                                if (args[1].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c")) {
 
-                            StringBuilder sb = new StringBuilder();
-                            for (int i = 2; i < args.length; i++) {
-                                sb.append(args[i]).append(" ");
-                            }
+                                    StringBuilder sb = new StringBuilder();
+                                    for (int i = 2; i < args.length; i++) {
+                                        sb.append(args[i]).append(" ");
+                                    }
 
-                            command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#false");
-                            set.add(p.getProxy().getUniqueId());
-                            walkset.add(p.getProxy().getUniqueId());
+                                    command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#false");
+                                    set.add(p.getProxy().getUniqueId());
+                                    walkset.add(p.getProxy().getUniqueId());
 
-                            new Message(Mood.GENERIC, "CMD Binder", "Right click a block to bind the command to it.").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "WARNING: Do not touch anything aimlessly!").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "The first block you right click will bind the command to the adjacent empty side").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "so walking through that empty air block adjacent to the block you right clicked").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "will make the command get run.").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "Right click a block to bind the command to it.").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "WARNING: Do not touch anything aimlessly!").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "The first block you right click will bind the command to the adjacent empty side").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "so walking through that empty air block adjacent to the block you right clicked").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "will make the command get run.").to(p);
 
-                        } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
+                                } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
 
-                            StringBuilder sb = new StringBuilder();
-                            for (int i = 2; i < args.length; i++) {
-                                sb.append(args[i]).append(" ");
-                            }
+                                    StringBuilder sb = new StringBuilder();
+                                    for (int i = 2; i < args.length; i++) {
+                                        sb.append(args[i]).append(" ");
+                                    }
 
-                            command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#true");
-                            set.add(p.getProxy().getUniqueId());
-                            walkset.add(p.getProxy().getUniqueId());
+                                    command.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#true");
+                                    set.add(p.getProxy().getUniqueId());
+                                    walkset.add(p.getProxy().getUniqueId());
 
-                            new Message(Mood.GENERIC, "CMD Binder", "Right click a block to bind the command to it.").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "WARNING: Do not touch anything aimlessly!").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "The first block you right click will bind the command to the adjacent empty side").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "so walking through that empty air block adjacent to the block you right clicked").to(p);
-                            new Message(Mood.GENERIC, "CMD Binder", "will make the command get run.").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "Right click a block to bind the command to it.").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "WARNING: Do not touch anything aimlessly!").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "The first block you right click will bind the command to the adjacent empty side").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "so walking through that empty air block adjacent to the block you right clicked").to(p);
+                                    new Message(Mood.GENERIC, "CMD Binder", "will make the command get run.").to(p);
 
-                        }
-                    } else if (args[0].equalsIgnoreCase("item") || args[0].equalsIgnoreCase("i")) {
+                                }
+                            } else if (args[0].equalsIgnoreCase("item") || args[0].equalsIgnoreCase("i")) {
 
-                        if (args[1].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c")) {
+                                if (args[1].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c")) {
 
-                            if (p.getProxy().getItemInHand().getType() != null) {
+                                    if (p.getProxy().getItemInHand().getType() != null) {
 
-                                StringBuilder sb = new StringBuilder();
-                                for (int i = 2; i < args.length; i++) {
-                                    sb.append(args[i]).append(" ");
+                                        StringBuilder sb = new StringBuilder();
+                                        for (int i = 2; i < args.length; i++) {
+                                            sb.append(args[i]).append(" ");
+                                        }
+
+                                        itemCommand.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#false");
+                                        item.put(p.getProxy().getUniqueId(), p.getProxy().getItemInHand().getType());
+
+                                        new Message(Mood.GOOD, "CMD Binder", "Command: "
+                                                + ChatColor.YELLOW + "'"
+                                                + ChatColor.AQUA
+                                                + sb.toString().trim()
+                                                + ChatColor.YELLOW + "'").to(p);
+                                        new Message(Mood.GOOD, "CMD Binder", "was successfully bound to item: " + ChatColor.YELLOW + p.getProxy().getItemInHand().getType().toString()).to(p);
+                                    }
+
+                                } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
+
+                                    if (p.getProxy().getItemInHand().getType() != null) {
+
+                                        StringBuilder sb = new StringBuilder();
+                                        for (int i = 2; i < args.length; i++) {
+                                            sb.append(args[i]).append(" ");
+                                        }
+
+                                        itemCommand.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#true");
+                                        item.put(p.getProxy().getUniqueId(), p.getProxy().getItemInHand().getType());
+
+                                        new Message(Mood.GOOD, "CMD Binder", "Command: "
+                                                + ChatColor.YELLOW + "'"
+                                                + ChatColor.AQUA
+                                                + sb.toString().trim()
+                                                + ChatColor.YELLOW + "'").to(p);
+                                        new Message(Mood.GOOD, "CMD Binder", "was successfully bound to item: " + ChatColor.YELLOW + p.getProxy().getItemInHand().getType().toString()).to(p);
+                                    }
+                                }
+                            } else if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("r")) {
+
+                                if (args[1].equalsIgnoreCase("touch") || args[1].equalsIgnoreCase("t")) {
+                                    remove.add(p.getProxy().getUniqueId());
+                                    touchremove.add(p.getProxy().getUniqueId());
+
+                                    new Message(Mood.GENERIC, "CMD Binder", "Punch a block to remove all commands bound to it.").to(p);
+
+                                } else if (args[1].equalsIgnoreCase("walk") || args[1].equalsIgnoreCase("w")) {
+                                    remove.add(p.getProxy().getUniqueId());
+                                    touchremove.add(p.getProxy().getUniqueId());
+
+                                    new Message(Mood.GENERIC, "CMD Binder", "Punch a block to remove all commands bound to the block adjacent to it.").to(p);
+
+                                } else if (args[1].equalsIgnoreCase("item") || args[1].equalsIgnoreCase("i")) {
+
+                                    if (itemCommand.containsKey(p.getProxy().getUniqueId()) || item.containsKey(p.getProxy().getUniqueId())) {
+
+                                        itemCommand.remove(p.getProxy().getUniqueId());
+                                        item.remove(p.getProxy().getUniqueId());
+
+                                        new Message(Mood.GOOD, "CMD Binder", "Successfully unbound command from item.").to(p);
+                                    } else {
+                                        new Message(Mood.BAD, "CMD Binder", "That item is not bound to any command.").to(p);
+                                    }
+
+                                } else {
+                                    new Message(Mood.BAD, "CMD Binder", "To remove a bound command: /cb remove <touch/walk/item>").to(p);
+                                    new Message(Mood.BAD, "CMD Binder", "or: /cb remove <t/w/i>").to(p);
                                 }
 
-                                itemCommand.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#false");
-                                item.put(p.getProxy().getUniqueId(), p.getProxy().getItemInHand().getType());
-
-                                new Message(Mood.GOOD, "CMD Binder", "Command: "
-                                        + ChatColor.YELLOW + "'"
-                                        + ChatColor.AQUA
-                                        + sb.toString().trim()
-                                        + ChatColor.YELLOW + "'").to(p);
-                                new Message(Mood.GOOD, "CMD Binder", "was successfully bound to item: " + ChatColor.YELLOW + p.getProxy().getItemInHand().getType().toString()).to(p);
-                            }
-
-                        } else if (args[1].equalsIgnoreCase("player") || args[1].equalsIgnoreCase("p")) {
-
-                            if (p.getProxy().getItemInHand().getType() != null) {
-
-                                StringBuilder sb = new StringBuilder();
-                                for (int i = 2; i < args.length; i++) {
-                                    sb.append(args[i]).append(" ");
-                                }
-
-                                itemCommand.put(p.getProxy().getUniqueId(), sb.toString().trim() + "#~#true");
-                                item.put(p.getProxy().getUniqueId(), p.getProxy().getItemInHand().getType());
-
-                                new Message(Mood.GOOD, "CMD Binder", "Command: "
-                                        + ChatColor.YELLOW + "'"
-                                        + ChatColor.AQUA
-                                        + sb.toString().trim()
-                                        + ChatColor.YELLOW + "'").to(p);
-                                new Message(Mood.GOOD, "CMD Binder", "was successfully bound to item: " + ChatColor.YELLOW + p.getProxy().getItemInHand().getType().toString()).to(p);
-                            }
-                        }
-                    } else if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("r")) {
-
-                        if (args[1].equalsIgnoreCase("touch") || args[1].equalsIgnoreCase("t")) {
-                            remove.add(p.getProxy().getUniqueId());
-                            touchremove.add(p.getProxy().getUniqueId());
-
-                            new Message(Mood.GENERIC, "CMD Binder", "Punch a block to remove all commands bound to it.").to(p);
-
-                        } else if (args[1].equalsIgnoreCase("walk") || args[1].equalsIgnoreCase("w")) {
-                            remove.add(p.getProxy().getUniqueId());
-                            touchremove.add(p.getProxy().getUniqueId());
-
-                            new Message(Mood.GENERIC, "CMD Binder", "Punch a block to remove all commands bound to the block adjacent to it.").to(p);
-
-                        } else if (args[1].equalsIgnoreCase("item") || args[1].equalsIgnoreCase("i")) {
-
-                            if (itemCommand.containsKey(p.getProxy().getUniqueId()) || item.containsKey(p.getProxy().getUniqueId())) {
-
-                                itemCommand.remove(p.getProxy().getUniqueId());
-                                item.remove(p.getProxy().getUniqueId());
-
-                                new Message(Mood.GOOD, "CMD Binder", "Successfully unbound command from item.").to(p);
                             } else {
-                                new Message(Mood.BAD, "CMD Binder", "That item is not bound to any command.").to(p);
+                                new Message(Mood.BAD, "CMD Binder", "/cb <touch/walk/item> <console/player> <command>").to(p);
+                                new Message(Mood.BAD, "CMD Binder", "or /cb <t/w/i> <c/p> <command>").to(p);
+                                new Message(Mood.BAD, "CMD Binder", "Example: /cb t c tp [p] 110 45 247").to(p);
+                                new Message(Mood.BAD, "CMD Binder", "To remove a bound command: /cb remove <touch/walk/item>").to(p);
+                                new Message(Mood.BAD, "CMD Binder", "or: /cb remove <t/w/i>").to(p);
                             }
-
                         } else {
-                            new Message(Mood.BAD, "CMD Binder", "To remove a bound command: /cb remove <touch/walk/item>").to(p);
-                            new Message(Mood.BAD, "CMD Binder", "or: /cb remove <t/w/i>").to(p);
-                        }
+                            new Message(Mood.BAD, "CMD Binder", "You already chose to remove a bound command.").to(p);
+                            new Message(Mood.BAD, "CMD Binder", "Your selection has been removed.").to(p);
+                            new Message(Mood.BAD, "CMD Binder", "You may now use this command again safely.").to(p);
 
+                            remove.remove(p.getProxy().getUniqueId());
+                            if (walkremove.contains(p.getProxy().getUniqueId())) {
+                                walkremove.remove(p.getProxy().getUniqueId());
+                            }
+                            if (touchremove.contains(p.getProxy().getUniqueId())) {
+                                touchremove.remove(p.getProxy().getUniqueId());
+                            }
+                        }
                     } else {
-                        new Message(Mood.BAD, "CMD Binder", "/cb <touch/walk/item> <console/player> <command>").to(p);
-                        new Message(Mood.BAD, "CMD Binder", "or /cb <t/w/i> <c/p> <command>").to(p);
-                        new Message(Mood.BAD, "CMD Binder", "Example: /cb t c tp [p] 110 45 247").to(p);
-                        new Message(Mood.BAD, "CMD Binder", "To remove a bound command: /cb remove <touch/walk/item>").to(p);
-                        new Message(Mood.BAD, "CMD Binder", "or: /cb remove <t/w/i>").to(p);
+                        new Message(Mood.BAD, "CMD Binder", "You already chose to bind command.").to(p);
+                        new Message(Mood.BAD, "CMD Binder", "Your selection has been removed.").to(p);
+                        new Message(Mood.BAD, "CMD Binder", "You may now use this command again safely.").to(p);
+
+                        set.remove(p.getProxy().getUniqueId());
+                        if (walkset.contains(p.getProxy().getUniqueId())) {
+                            walkset.remove(p.getProxy().getUniqueId());
+                        }
+                        if (touchset.contains(p.getProxy().getUniqueId())) {
+                            touchset.remove(p.getProxy().getUniqueId());
+                        }
                     }
                 }
             } else {
@@ -297,6 +325,7 @@ public class CommandBinderModule extends TrilliumModule {
                 }
             }
         }
+
         if (p.getItemInHand().getType() != null || p.getItemInHand().getType() != Material.AIR) {
             if (item.containsKey(p.getUniqueId()) && itemCommand.containsKey(p.getUniqueId())) {
                 Material mat = item.get(p.getUniqueId());
@@ -320,11 +349,10 @@ public class CommandBinderModule extends TrilliumModule {
                 || event.getFrom().getBlockY() != event.getTo().getBlockY()) {
             Player p = event.getPlayer();
             Location loc = p.getLocation();
-            CommandBinder cb = new CommandBinder(loc);
-            String command = cb.getCommand().replace("[p]", p.getName());
+            String command = new CommandBinder(loc).getCommand().replace("[p]", p.getName());
 
-            if (cb.hasCommand()) {
-                if (cb.isPlayer()) {
+            if (new CommandBinder(loc).hasCommand()) {
+                if (new CommandBinder(loc).isPlayer()) {
                     Bukkit.dispatchCommand(p, command);
                 } else {
                     Bukkit.dispatchCommand(TrilliumAPI.getInstance().getServer().getConsoleSender(), command);

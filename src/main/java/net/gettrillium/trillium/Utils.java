@@ -20,7 +20,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Utils {
 
@@ -130,6 +132,19 @@ public class Utils {
             s = ChatColor.translateAlternateColorCodes('&', s);
             Bukkit.broadcastMessage(s);
         }
+    }
+
+    public static HashMap<String, Location> duplicateRemover(HashMap<String, Location> map) {
+        HashMap<Location, String> temp = new HashMap<>();
+        HashMap<String, Location> result = new HashMap<>();
+        for (Map.Entry<String, Location> entry : map.entrySet()) {
+            temp.put(entry.getValue(), entry.getKey());
+        }
+
+        for (Map.Entry<Location, String> entry : temp.entrySet()) {
+            temp.put(entry.getKey(), entry.getValue());
+        }
+        return result;
     }
 
     public static void reload() {

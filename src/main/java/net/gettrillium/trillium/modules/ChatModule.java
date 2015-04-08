@@ -200,7 +200,7 @@ public class ChatModule extends TrilliumModule {
                             if (p.getProxy().isOp()) {
                                 if (!getConfig().getString(Configuration.PlayerSettings.OPCOLOR).equals("") || !getConfig().getString(Configuration.PlayerSettings.OPCOLOR).equals(" ")) {
                                     String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getProxy().getName();
-                                    p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor));
+                                    p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
                                 } else {
                                     p.setDisplayName(p.getProxy().getName());
                                 }
@@ -215,7 +215,7 @@ public class ChatModule extends TrilliumModule {
                         if (ChatColor.stripColor(args[0]).length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
 
                             new Message(Mood.GOOD, "Nickname", "New nickname set: " + args[0]).to(p);
-                            p.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + args[0]);
+                            p.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + args[0] + "&f");
 
                         } else {
                             new Message(Mood.BAD, "Nickname", "Too many characters. "
@@ -231,7 +231,7 @@ public class ChatModule extends TrilliumModule {
                             if (p.getProxy().isOp()) {
                                 if (!getConfig().getString(Configuration.PlayerSettings.OPCOLOR).isEmpty()) {
                                     String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getProxy().getName();
-                                    p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor));
+                                    p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
                                 } else {
                                     p.setDisplayName(p.getProxy().getName());
                                 }
@@ -247,7 +247,7 @@ public class ChatModule extends TrilliumModule {
 
                             String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
                             new Message(Mood.GOOD, "Nickname", "New nickname set: " + nick).to(p);
-                            p.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + nick);
+                            p.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + nick + "&f");
 
                         } else {
                             new Message(Mood.GOOD, "Nickname", "Too many characters. "
@@ -268,7 +268,7 @@ public class ChatModule extends TrilliumModule {
                             if (p.getProxy().isOp()) {
                                 if (!getConfig().getString(Configuration.PlayerSettings.OPCOLOR).isEmpty()) {
                                     String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getProxy().getName();
-                                    p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor));
+                                    p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
                                 } else {
                                     p.setDisplayName(p.getProxy().getName());
                                 }
@@ -284,7 +284,7 @@ public class ChatModule extends TrilliumModule {
 
                             TrilliumPlayer target = player(args[1]);
                             if (target != null) {
-                                target.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + args[0]);
+                                target.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + args[0] + "&f");
                                 new Message(Mood.GOOD, "Nickname", ChatColor.AQUA + p.getName() + ChatColor.BLUE + " set your nickname to: " + args[0]).to(target);
                                 new Message(Mood.GOOD, "Nickname", "You set " + ChatColor.AQUA + target.getName() + ChatColor.BLUE + " to: " + args[0]).to(p);
 
@@ -305,7 +305,7 @@ public class ChatModule extends TrilliumModule {
                             if (p.getProxy().isOp()) {
                                 if (!getConfig().getString(Configuration.PlayerSettings.OPCOLOR).isEmpty()) {
                                     String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getProxy().getName();
-                                    p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor));
+                                    p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
                                 } else {
                                     p.setDisplayName(p.getProxy().getName());
                                 }
@@ -322,7 +322,7 @@ public class ChatModule extends TrilliumModule {
                             TrilliumPlayer target = player(args[1]);
                             if (target != null) {
                                 String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
-                                target.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + nick);
+                                target.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + nick + "&f");
                                 new Message(Mood.GOOD, "Nickname", ChatColor.AQUA + p.getName() + ChatColor.BLUE + " set your nickname to: " + nick).to(target);
                                 new Message(Mood.GOOD, "Nickname", "You set " + ChatColor.AQUA + target.getName() + ChatColor.BLUE + " to: " + nick).to(p);
 

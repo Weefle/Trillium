@@ -1,6 +1,6 @@
 package net.gettrillium.trillium.api.commandbinder;
 
-import net.gettrillium.trillium.api.TrilliumAPI;
+import net.gettrillium.trillium.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -102,7 +102,6 @@ public class CommandBinder {
         commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-console")));
         commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-player")));
         commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-console")));
-        TrilliumAPI.getInstance().getLogger().info("" + commands);
         return commands;
     }
 
@@ -146,7 +145,6 @@ public class CommandBinder {
         if (commands.containsValue(loc) || commands.containsKey(command)) {
             commands.remove(command);
         }
-
     }
 
     public HashMap<String, Location> CommandBinderDeserializer(List<String> serialized) {
@@ -164,7 +162,6 @@ public class CommandBinder {
 
             deserialized.put(command, loc);
         }
-
         return deserialized;
     }
 
@@ -174,12 +171,11 @@ public class CommandBinder {
         ArrayList<Location> locations = new ArrayList<>();
         ArrayList<String> commands = new ArrayList<>();
 
-        for (String command : deserialized.keySet()) {
-            commands.add(command);
-        }
-
-        for (Location loc : deserialized.values()) {
-            locations.add(loc);
+        for (Map.Entry<String, Location> serialize : Utils.duplicateRemover(deserialized).entrySet()) {
+            if (serialize.getKey().split("#~#")[2] == null) {
+                commands.add(serialize.getKey());
+                locations.add(serialize.getValue());
+            }
         }
 
         for (String cmd : commands) {
@@ -190,7 +186,7 @@ public class CommandBinder {
                 String z = "" + location.getZ();
                 String world = location.getWorld().getName();
 
-                serialized.add(cmd + "#~#" + player + ";" + x + ";" + y + ";" + z + ";" + world);
+                serialized.add(cmd + ";" + x + ";" + y + ";" + z + ";" + world);
             }
         }
         return serialized;

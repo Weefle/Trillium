@@ -22,7 +22,7 @@ public class FunModule extends TrilliumModule {
 
     //TODO: MASS compress kittybomb.
 
-    @Command(command = "kittybomb", description = "KITTEHBAMB!!", usage = "/kb", aliases = "kittehbamb, kittehbomb, kittybamb, kittyb, kbomb, kb")
+    @Command(command = "kittybomb", description = "KITTEHBAMB!!", usage = "/kb", aliases = {"kittehbamb", "kittehbomb", "kittybamb", "kittyb", "kbomb", "kb"})
     public void kittybomb(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             final TrilliumPlayer p = player((Player) cs);

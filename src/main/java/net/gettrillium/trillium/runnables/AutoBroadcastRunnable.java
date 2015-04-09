@@ -24,13 +24,11 @@ public class AutoBroadcastRunnable implements Runnable {
 
                 if (Integer.parseInt(i) == this.queue) {
                     if (set.last() == this.queue) {
-                        if (this.queue != 1) {
-                            this.queue = 1;
-                        } else {
-                            this.queue = Integer.parseInt(i) + 1;
+                        if (this.queue != set.first()) {
+                            this.queue = set.first();
                         }
                     } else {
-                        this.queue = Integer.parseInt(i) + 1;
+                        this.queue = this.queue + 1;
                     }
                 }
             }

@@ -4,10 +4,6 @@ import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
-import net.gettrillium.trillium.api.serializer.LocationSerializer;
-import net.gettrillium.trillium.events.PlayerDeath;
-import net.gettrillium.trillium.events.ServerListPing;
-import net.gettrillium.trillium.modules.*;
 import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
 import net.gettrillium.trillium.runnables.GroupManagerRunnable;
@@ -149,7 +145,6 @@ public class Utils {
 
     public static void reload() {
         Bukkit.getScheduler().cancelAllTasks();
-        Bukkit.getServicesManager().unregisterAll(TrilliumAPI.getInstance());
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -165,23 +160,6 @@ public class Utils {
                 if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
                     Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new GroupManagerRunnable(), Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.GM.RELOAD)), Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.GM.RELOAD)));
                 }
-
-                TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
-
-                TrilliumAPI.registerModule(new AFKModule());
-                TrilliumAPI.registerModule(new PunishModule());
-                TrilliumAPI.registerModule(new AbilityModule());
-                TrilliumAPI.registerModule(new AdminModule());
-                TrilliumAPI.registerModule(new CoreModule());
-                TrilliumAPI.registerModule(new TeleportModule());
-                TrilliumAPI.registerModule(new ChatModule());
-                TrilliumAPI.registerModule(new FunModule());
-                TrilliumAPI.registerModule(new CommandBinderModule());
-                TrilliumAPI.registerModule(new KitModule());
-                TrilliumAPI.registerModule(new GroupManagerModule());
-
-                Bukkit.getServer().getPluginManager().registerEvents(new ServerListPing(), TrilliumAPI.getInstance());
-                Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeath(), TrilliumAPI.getInstance());
             }
         }.runTaskLater(TrilliumAPI.getInstance(), 5);
     }

@@ -1,6 +1,5 @@
 package net.gettrillium.trillium.api.commandbinder;
 
-import net.gettrillium.trillium.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -171,7 +170,7 @@ public class CommandBinder {
         ArrayList<Location> locations = new ArrayList<>();
         ArrayList<String> commands = new ArrayList<>();
 
-        for (Map.Entry<String, Location> serialize : Utils.duplicateRemover(deserialized).entrySet()) {
+        for (Map.Entry<String, Location> serialize : deserialized.entrySet()) {
             if (serialize.getKey().split("#~#")[2] == null) {
                 commands.add(serialize.getKey());
                 locations.add(serialize.getValue());

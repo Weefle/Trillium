@@ -53,7 +53,7 @@ chat:
     - "&8<<<---{[0]}--->>> &aServer &8<<<---{[0]}--->>>"
     - "&7Welcome &6[USERNAME]&7!"
     - "&7There are currently &6[ONLINE]&7/&6[SLOTS]&7 players."
-    - "&7Have fun! ^_^/"
+    - "&7Have fun! <3"
     - " "
     #The ingame motd. When a player logs on, they will see this message.
   chat-channels:

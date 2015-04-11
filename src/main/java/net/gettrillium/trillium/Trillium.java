@@ -57,10 +57,6 @@ public class Trillium extends JavaPlugin {
         getLogger().info("                    <3");
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("<<<-------------------------------------->>>");
-        getLogger().warning("THIS PLUGIN IS STILL IN THE ALPHA STAGE.");
-        getLogger().warning("WE HIGHLY RECOMMEND YOU DON'T USE IT FOR NOW");
-        getLogger().warning("UNTIL AN OFFICIAL RELEASE IS OUT.");
-        getLogger().warning("PLEASE REPORT ALL THE BUGS YOU FIND AT OUR RESOURCE PAGE.");
 
         if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
             getLogger().info("<<<-------------------------------------->>>");

@@ -16,6 +16,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
 
 public class Utils {
 
@@ -124,6 +126,20 @@ public class Utils {
         for (String s : list) {
             s = ChatColor.translateAlternateColorCodes('&', s);
             Bukkit.broadcastMessage(s);
+        }
+    }
+
+    // https://bukkit.org/threads/pagination.135184/
+    public static void paginate(CommandSender sender, SortedMap<Integer, String> map, int page, int pageLength) {
+        sender.sendMessage(ChatColor.YELLOW + "List: Page (" + String.valueOf(page) + " of " + (((map.size() % pageLength) == 0) ? map.size() / pageLength : (map.size() / pageLength) + 1));
+        int i = 0, k = 0;
+        page--;
+        for (final Map.Entry<Integer, String> e : map.entrySet()) {
+            k++;
+            if ((((page * pageLength) + i + 1) == k) && (k != ((page * pageLength) + pageLength + 1))) {
+                i++;
+                sender.sendMessage(ChatColor.GRAY + ". " + ChatColor.AQUA + e.getValue());
+            }
         }
     }
 

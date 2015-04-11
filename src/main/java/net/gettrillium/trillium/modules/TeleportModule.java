@@ -9,6 +9,7 @@ import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
+import net.gettrillium.trillium.api.warp.Warp;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,8 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 public class TeleportModule extends TrilliumModule {
 
@@ -413,6 +413,111 @@ public class TeleportModule extends TrilliumModule {
             if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND) {
                 Utils.broadcastImportantMessage();
             }
+        }
+    }
+
+    @Command(command = "warps", description = "View the list of warps available.", usage = "/warps [page index]")
+    public void warps(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            Player p = (Player) cs;
+            if (p.hasPermission(Permission.Teleport.WARP)) {
+                if (args.length == 0) {
+                    SortedMap<Integer, String> map = new TreeMap<>(Collections.reverseOrder());
+                    int i = 1;
+                    for (Map.Entry<String, Location> warps : new Warp("").list().entrySet()) {
+                        map.put(i, warps.getKey());
+                        i++;
+                    }
+                    p.sendMessage(ChatColor.GRAY + "Warps  -  Page: 1");
+                    Utils.paginate(p, map, 1, map.size() / 8);
+                } else {
+                    if (StringUtils.isNumeric(args[0])) {
+                        SortedMap<Integer, String> map = new TreeMap<>(Collections.reverseOrder());
+                        int i = 1;
+                        for (Map.Entry<String, Location> warps : new Warp("").list().entrySet()) {
+                            map.put(i, warps.getKey());
+                            i++;
+                        }
+                        p.sendMessage(ChatColor.GRAY + "Warps  -  Page: " + args[0]);
+                        Utils.paginate(p, map, Integer.parseInt(args[0]), map.size() / 8);
+                    } else {
+                        new Message(Mood.BAD, "Warps", args[0] + " is not a number");
+                    }
+                }
+            } else {
+                new Message("Warps", Error.NO_PERMISSION).to(p);
+            }
+        } else {
+            new Message("Warps", Error.CONSOLE_NOT_ALLOWED).to(cs);
+        }
+    }
+
+    @Command(command = "warp", description = "Teleport to a certain defined point.", usage = "/warp <name>")
+    public void warp(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            Player p = (Player) cs;
+            if (p.hasPermission(Permission.Teleport.WARP)) {
+                if (args.length == 0) {
+                    new Message("Warp", Error.TOO_FEW_ARGUMENTS, "/warps for a list of warps. /warp <name> to tp to a warp.").to(p);
+                } else {
+                    if (new Warp(args[0]).getName() != null) {
+                        new Warp(args[0]).teleport(p);
+                        new Message(Mood.GOOD, "Warp", "You were teleported to: " + new Warp(args[0]).getName()).to(p);
+                    } else {
+                        new Message(Mood.BAD, "Warp", "There are no warps with that name.").to(p);
+                    }
+                }
+            } else {
+                new Message("Warp", Error.NO_PERMISSION).to(p);
+            }
+        } else {
+            new Message("Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
+        }
+    }
+
+    @Command(command = "setwarp", description = "Save a new warp.", usage = "/setwarp <name>")
+    public void setwarp(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            Player p = (Player) cs;
+            if (p.hasPermission(Permission.Teleport.WARP_SET)) {
+                if (args.length == 0) {
+                    new Message("Set Warp", Error.TOO_FEW_ARGUMENTS, "/setwarp <name>").to(p);
+                } else {
+                    if (new Warp(args[0]).getName() == null) {
+                        new Warp(args[0], p.getLocation()).save();
+                        new Message(Mood.GOOD, "Set Warp", "Warp saved as: " + args[0]).to(p);
+                    } else {
+                        new Message(Mood.BAD, "Set Warp", "A warp with that name already exists.").to(p);
+                    }
+                }
+            } else {
+                new Message("Set Warp", Error.NO_PERMISSION).to(p);
+            }
+        } else {
+            new Message("Set Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
+        }
+    }
+
+    @Command(command = "delwarp", description = "Delete a warp.", usage = "/delwarp <name>")
+    public void delwarp(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            Player p = (Player) cs;
+            if (p.hasPermission(Permission.Teleport.WARP_SET)) {
+                if (args.length == 0) {
+                    new Message("Delete Warp", Error.TOO_FEW_ARGUMENTS, "/setwarp <name>").to(p);
+                } else {
+                    if (new Warp(args[0]).getName() != null) {
+                        new Warp(args[0], p.getLocation()).delete();
+                        new Message(Mood.GOOD, "Delete Warp", "Warp deleted was: " + args[0]).to(p);
+                    } else {
+                        new Message(Mood.BAD, "Delete Warp", "There are no warps with that name.").to(p);
+                    }
+                }
+            } else {
+                new Message("Delete Warp", Error.NO_PERMISSION).to(p);
+            }
+        } else {
+            new Message("Delete Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 }

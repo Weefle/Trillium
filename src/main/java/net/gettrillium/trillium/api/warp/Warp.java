@@ -41,6 +41,12 @@ public class Warp {
         p.getProxy().teleport(this.location);
     }
 
+    public HashMap<String, Location> list() {
+        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(WarpDatabase.wd());
+        List<String> warps = yaml.getStringList("warps");
+        return deserializer(warps);
+    }
+
     public void delete() {
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(WarpDatabase.wd());
         List<String> warps = yaml.getStringList("warps");

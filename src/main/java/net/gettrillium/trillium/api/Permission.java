@@ -57,6 +57,8 @@ public class Permission {
         public static final String TPREQEST = PREFIX + "tprequest";
         public static final String TPREQESTHERE = PREFIX + "tprequesthere";
         public static final String TPRRESPOND = PREFIX + "tprequest.respond";
+        public static final String WARP = PREFIX + "warp";
+        public static final String WARP_SET = PREFIX + "warp.set";
     }
 
     public static class Chat {

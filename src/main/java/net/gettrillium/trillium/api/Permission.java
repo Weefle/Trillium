@@ -59,6 +59,7 @@ public class Permission {
         public static final String TPRRESPOND = PREFIX + "tprequest.respond";
         public static final String WARP = PREFIX + "warp";
         public static final String WARP_SET = PREFIX + "warp.set";
+        public static final String HOME = PREFIX + "home";
     }
 
     public static class Chat {
@@ -83,7 +84,6 @@ public class Permission {
     }
 
     public static class Kit {
-        private static final String PREFIX = "tr.kit";
-        public static final String USE = PREFIX + ".";
+        public static final String USE = "tr.kit.";
     }
 }

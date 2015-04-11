@@ -5,6 +5,7 @@ import net.gettrillium.trillium.api.GroupManager;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
+import net.gettrillium.trillium.api.serializer.LocationSerializer;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,6 +13,8 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 public class TrilliumPlayer {
 
@@ -160,11 +163,12 @@ public class TrilliumPlayer {
             config.set(Configuration.Player.MUTED, isMuted());
             config.set(Configuration.Player.GOD, isGod());
             config.set(Configuration.Player.PVP, canPvp());
-            config.set(Configuration.Player.VANISH, isVanished);
+            config.set(Configuration.Player.VANISH, isVanished());
             config.set(Configuration.Player.BAN_REASON, "");
             if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
                 config.set(Configuration.Player.GROUP, "default");
             }
+            config.set(Configuration.Player.HOMES, "");
         } else {
             setDisplayName(config.getString(Configuration.Player.NICKNAME));
             setLastLocation(TrilliumAPI.getSerializer(Location.class).deserialize(config.getString(Configuration.Player.LOCATION)));
@@ -201,6 +205,54 @@ public class TrilliumPlayer {
 
     public String getName() {
         return getProxy().getName();
+    }
+
+    public void setHome(String name, Location loc) {
+        File dataStore = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(dataStore);
+        List<String> homes = config.getStringList(Configuration.Player.HOMES);
+        homes.add(name + "~" + new LocationSerializer().serialize(loc));
+        config.set(Configuration.Player.HOMES, homes);
+        try {
+            config.save(dataStore);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delHome(String name) {
+        File dataStore = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(dataStore);
+        List<String> homes = config.getStringList(Configuration.Player.HOMES);
+
+        for (String home : homes) {
+            if (home.split("~")[0].equalsIgnoreCase(name)) {
+                homes.remove(home);
+            }
+        }
+
+        config.set(Configuration.Player.HOMES, homes);
+        try {
+            config.save(dataStore);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public HashMap<String, Location> getHomes() {
+        File dataStore = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(dataStore);
+        List<String> homes = config.getStringList(Configuration.Player.HOMES);
+        HashMap<String, Location> deserialized = new HashMap<>();
+
+        for (String home : homes) {
+            String[] splits = home.split("~");
+
+            String name = splits[0];
+            Location loc = new LocationSerializer().deserialize(splits[1]);
+            deserialized.put(name, loc);
+        }
+        return deserialized;
     }
 }
 

@@ -11,6 +11,8 @@ public class Configuration {
         public static final String BAN_REASON = prefix + "banreason";
         public static final String GROUP = prefix + "group";
         public static final String PVP = prefix + "pvp";
+        public static final String HOMES = prefix + "homes.";
+
     }
 
     public static class Ability {
@@ -63,6 +65,8 @@ public class Configuration {
         public static final String COMMANDS_TO_RUN = NEW_PLAYER_PREFIX + "commands-to-run";
         public static final String TEMP_GOD_MODE_ENABLED = NEW_PLAYER_PREFIX + "temp-god-mode.enabled";
         public static final String TEMP_GOD_MODE_TIME = NEW_PLAYER_PREFIX + "temp-god-mode.time-until-temp-is-over";
+        public static final String HOMES_ENABLED = PREFIX + "enable-homes";
+        public static final String HOMES_MAX = PREFIX + "max-number-of-homes";
     }
 
     public static class Broadcast {

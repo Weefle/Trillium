@@ -194,6 +194,8 @@ player-settings:
   leave:
     message: "&b[USERNAME] &9has left the game!"
     # Change the message that tells everyone x player left the server.
+  enable-homes: true
+    # enable /home
 
 #---------------[ Kits ]---------------#
 kits:

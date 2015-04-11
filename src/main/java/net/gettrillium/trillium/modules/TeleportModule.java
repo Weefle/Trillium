@@ -512,4 +512,53 @@ public class TeleportModule extends TrilliumModule {
             new Message("Delete Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
+
+    @Command(command = "home", description = "Teleport to your home or view your home.", usage = "/home [home name]")
+    public void home(CommandSender cs, String[] args) {
+        if (getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
+            if (cs instanceof Player) {
+                TrilliumPlayer p = player((Player) cs);
+
+                if (p.hasPermission(Permission.Teleport.HOME)) {
+                    if (args.length == 0) {
+                        if (p.getHomes().size() == 0) {
+                            new Message(Mood.BAD, "Home", "You don't have any homes set.").to(p);
+
+                        } else if (p.getHomes().size() == 1) {
+                            Location loc = null;
+                            for (Map.Entry<String, Location> key : p.getHomes().entrySet()) {
+                                loc = key.getValue();
+                            }
+                            p.getProxy().teleport(loc);
+                            new Message(Mood.GOOD, "Home", "You were teleported home.").to(p);
+                        } else {
+                            p.getProxy().sendMessage(ChatColor.GREEN + "Homes                   Locations");
+                            p.getProxy().sendMessage(ChatColor.GRAY + "--------------------------------------------");
+                            for (Map.Entry<String, Location> homes : p.getHomes().entrySet()) {
+                                String loc = ChatColor.GRAY + "" +
+                                        +homes.getValue().getBlockX()
+                                        + ","
+                                        + homes.getValue().getBlockY()
+                                        + ","
+                                        + homes.getValue().getBlockZ();
+                                p.getProxy().sendMessage(Utils.tablizer(ChatColor.AQUA + homes.getKey(), 24) + Utils.tablizer(loc, 10));
+                            }
+                        }
+                    } else {
+                        if (p.getHomes().containsKey(args[0])) {
+                            p.getProxy().teleport(p.getHomes().get(args[0]));
+                            new Message(Mood.GOOD, "Home", "You teleported to home: " + args[0]);
+
+                        } else {
+                            new Message(Mood.BAD, "Home", "You don't have a home with that name.").to(p);
+                        }
+                    }
+                } else {
+                    new Message("Home", Error.NO_PERMISSION).to(p);
+                }
+            } else {
+                new Message("Home", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            }
+        }
+    }
 }

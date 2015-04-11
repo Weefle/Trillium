@@ -479,7 +479,9 @@ public class TeleportModule extends TrilliumModule {
                         new Warp(args[0], p.getLocation()).save();
                         new Message(Mood.GOOD, "Set Warp", "Warp saved as: " + args[0]).to(p);
                     } else {
-                        new Message(Mood.BAD, "Set Warp", "A warp with that name already exists.").to(p);
+                        new Warp(args[0]).delete();
+                        new Warp(args[0], p.getLocation()).save();
+                        new Message(Mood.GOOD, "Set Warp", "Warp" + args[0] + "'s position has been replaced.").to(p);
                     }
                 }
             } else {
@@ -559,6 +561,54 @@ public class TeleportModule extends TrilliumModule {
             } else {
                 new Message("Home", Error.CONSOLE_NOT_ALLOWED).to(cs);
             }
+        } else {
+            new Message(Mood.BAD, "Home", "This feature is disabled.").to(cs);
+        }
+    }
+
+    @Command(command = "sethome", description = "Set a new home.", usage = "/sethome [home name]")
+    public void sethome(CommandSender cs, String[] args) {
+        if (getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
+            if (cs instanceof Player) {
+                TrilliumPlayer p = player((Player) cs);
+
+                if (p.hasPermission(Permission.Teleport.HOME)) {
+                    if (args.length == 0) {
+                        if (p.getHomes().size() == 1) {
+                            p.setHome("home", p.getProxy().getLocation());
+                            new Message(Mood.GOOD, "Home", "New home position set.").to(p);
+                        } else {
+                            p.getProxy().sendMessage(ChatColor.GREEN + "Homes                   Locations");
+                            p.getProxy().sendMessage(ChatColor.GRAY + "--------------------------------------------");
+                            for (Map.Entry<String, Location> homes : p.getHomes().entrySet()) {
+                                String loc = ChatColor.GRAY + "" +
+                                        +homes.getValue().getBlockX()
+                                        + ","
+                                        + homes.getValue().getBlockY()
+                                        + ","
+                                        + homes.getValue().getBlockZ();
+                                p.getProxy().sendMessage(Utils.tablizer(ChatColor.AQUA + homes.getKey(), 24) + Utils.tablizer(loc, 10));
+                            }
+                        }
+                    } else {
+                        new Message(Mood.BAD, "Home", "You're not allowed to set more than one homes.").to(p);
+                    }
+                } else if (Utils.permissionEndsWithInt(p.getProxy(), Permission.Teleport.HOME)) {
+                    int allowed = Integer.parseInt(Utils.getPermissionEndsWithInt(p.getProxy(), Permission.Teleport.HOME).split(".")[3]);
+                    if (p.getHomes().size() < allowed) {
+                        p.setHome(args[0], p.getProxy().getLocation());
+                        new Message(Mood.GOOD, "Home", "New home set: " + args[0]).to(p);
+                    } else {
+                        new Message(Mood.BAD, "Home", "You reached the maximum amount of homes you're allowed to set.").to(p);
+                    }
+                } else {
+                    new Message("Home", Error.NO_PERMISSION).to(p);
+                }
+            } else {
+                new Message("Home", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            }
+        } else {
+            new Message(Mood.BAD, "Home", "This feature is disabled.").to(cs);
         }
     }
 }

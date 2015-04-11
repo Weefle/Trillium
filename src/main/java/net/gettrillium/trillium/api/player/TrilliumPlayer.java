@@ -165,10 +165,10 @@ public class TrilliumPlayer {
             config.set(Configuration.Player.PVP, canPvp());
             config.set(Configuration.Player.VANISH, isVanished());
             config.set(Configuration.Player.BAN_REASON, "");
+            config.set(Configuration.Player.HOMES, "");
             if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
                 config.set(Configuration.Player.GROUP, "default");
             }
-            config.set(Configuration.Player.HOMES, "");
         } else {
             setDisplayName(config.getString(Configuration.Player.NICKNAME));
             setLastLocation(TrilliumAPI.getSerializer(Location.class).deserialize(config.getString(Configuration.Player.LOCATION)));

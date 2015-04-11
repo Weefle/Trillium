@@ -11,7 +11,7 @@ public class Configuration {
         public static final String BAN_REASON = prefix + "banreason";
         public static final String GROUP = prefix + "group";
         public static final String PVP = prefix + "pvp";
-        public static final String HOMES = prefix + "homes.";
+        public static final String HOMES = prefix + "home";
 
     }
 

@@ -12,6 +12,8 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -148,6 +150,27 @@ public class Utils {
         return (ret);
     }
 
+    public static boolean permissionEndsWithInt(Player p, String match) {
+        for (PermissionAttachmentInfo perm : p.getEffectivePermissions()) {
+            if (perm.getPermission().startsWith(match)) {
+                int i = StringUtils.countMatches(perm.getPermission(), ".");
+                return perm.getPermission().split(".")[i + 1] != null && StringUtils.isNumeric(perm.getPermission().split(".")[i + 1]);
+            }
+        }
+        return false;
+    }
+
+    public static String getPermissionEndsWithInt(Player p, String match) {
+        for (PermissionAttachmentInfo perm : p.getEffectivePermissions()) {
+            if (perm.getPermission().startsWith(match)) {
+                int i = StringUtils.countMatches(perm.getPermission(), ".");
+                if (perm.getPermission().split(".")[i + 1] != null && StringUtils.isNumeric(perm.getPermission().split(".")[i + 1])) {
+                    return perm.getPermission();
+                }
+            }
+        }
+        return "";
+    }
 
     public static void reload() {
         Bukkit.getScheduler().cancelAllTasks();

@@ -34,7 +34,7 @@ public class Trillium extends JavaPlugin {
         TrilliumAPI.registerModule(new FunModule());
         TrilliumAPI.registerModule(new CommandBinderModule());
         TrilliumAPI.registerModule(new KitModule());
-        TrilliumAPI.registerModule(new GroupManagerModule());
+        //TrilliumAPI.registerModule(new GroupManagerModule());
 
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);

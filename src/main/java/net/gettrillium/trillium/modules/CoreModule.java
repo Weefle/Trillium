@@ -7,6 +7,7 @@ import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
+import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
@@ -25,9 +27,32 @@ public class CoreModule extends TrilliumModule {
 
         TrilliumAPI.loadPlayer(e.getPlayer());
 
-        String joinMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.JOINMESSAGE));
-        joinMessage = joinMessage.replace("[USERNAME]", p.getName());
-        e.setJoinMessage(joinMessage);
+        if (p.hasPlayedBefore()) {
+            String joinMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.JOINMESSAGE));
+            joinMessage = joinMessage.replace("[USERNAME]", p.getName());
+            e.setJoinMessage(joinMessage);
+        } else {
+            String joinMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.NEWJOINMESSAGE));
+            joinMessage = joinMessage.replace("[USERNAME]", p.getName());
+            e.setJoinMessage(joinMessage);
+
+            List<String> commands = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.PlayerSettings.COMMANDS_TO_RUN);
+            for (String command : commands) {
+                command = command.replace("[p]", p.getName());
+                command = ChatColor.translateAlternateColorCodes('&', command);
+                Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
+            }
+
+            if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.PlayerSettings.TEMP_GOD_MODE_ENABLED)) {
+                final TrilliumPlayer player = player(p);
+                player.setGod(true);
+                new BukkitRunnable() {
+                    public void run() {
+                        player.setGod(false);
+                    }
+                }.runTaskLater(TrilliumAPI.getInstance(), Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.TEMP_GOD_MODE_TIME)));
+            }
+        }
 
         //motd
         if (p.hasPermission(Permission.Chat.MOTD)) {

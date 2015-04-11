@@ -58,6 +58,11 @@ public class Configuration {
         public static final String CHARLIMIT = NICKNAME + "character-limit";
         public static final String PREF = NICKNAME + "prefix";
         public static final String OPCOLOR = NICKNAME + "ops-color-code";
+        private static String NEW_PLAYER_PREFIX = PREFIX + "join.new-players.";
+        public static final String NEWJOINMESSAGE = NEW_PLAYER_PREFIX + "new-player-message";
+        public static final String COMMANDS_TO_RUN = NEW_PLAYER_PREFIX + "commands-to-run";
+        public static final String TEMP_GOD_MODE_ENABLED = NEW_PLAYER_PREFIX + "temp-god-mode.enabled";
+        public static final String TEMP_GOD_MODE_TIME = NEW_PLAYER_PREFIX + "temp-god-mode.time-until-temp-is-over";
     }
 
     public static class Broadcast {

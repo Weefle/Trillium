@@ -17,6 +17,24 @@ public class Trillium extends JavaPlugin {
 
         TrilliumAPI.setInstance(this);
 
+        TrilliumAPI.setInstance(this);
+        TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
+
+        TrilliumAPI.registerModule(new AFKModule());
+        TrilliumAPI.registerModule(new PunishModule());
+        TrilliumAPI.registerModule(new AbilityModule());
+        TrilliumAPI.registerModule(new AdminModule());
+        TrilliumAPI.registerModule(new CoreModule());
+        TrilliumAPI.registerModule(new TeleportModule());
+        TrilliumAPI.registerModule(new ChatModule());
+        TrilliumAPI.registerModule(new FunModule());
+        TrilliumAPI.registerModule(new CommandBinderModule());
+        TrilliumAPI.registerModule(new KitModule());
+        TrilliumAPI.registerModule(new GroupManagerModule());
+
+        getServer().getPluginManager().registerEvents(new ServerListPing(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
+
         generateFiles();
 
         Utils.reload();

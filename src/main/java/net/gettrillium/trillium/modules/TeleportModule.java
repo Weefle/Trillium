@@ -19,7 +19,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class TeleportModule extends TrilliumModule {
 
@@ -421,29 +423,19 @@ public class TeleportModule extends TrilliumModule {
         if (cs instanceof Player) {
             Player p = (Player) cs;
             if (p.hasPermission(Permission.Teleport.WARP)) {
-                if (args.length == 0) {
-                    SortedMap<Integer, String> map = new TreeMap<>(Collections.reverseOrder());
-                    int i = 1;
-                    for (Map.Entry<String, Location> warps : new Warp("").list().entrySet()) {
-                        map.put(i, warps.getKey());
-                        i++;
-                    }
-                    p.sendMessage(ChatColor.GRAY + "Warps  -  Page: 1");
-                    Utils.paginate(p, map, 1, map.size() / 8);
-                } else {
-                    if (StringUtils.isNumeric(args[0])) {
-                        SortedMap<Integer, String> map = new TreeMap<>(Collections.reverseOrder());
-                        int i = 1;
-                        for (Map.Entry<String, Location> warps : new Warp("").list().entrySet()) {
-                            map.put(i, warps.getKey());
-                            i++;
-                        }
-                        p.sendMessage(ChatColor.GRAY + "Warps  -  Page: " + args[0]);
-                        Utils.paginate(p, map, Integer.parseInt(args[0]), map.size() / 8);
-                    } else {
-                        new Message(Mood.BAD, "Warps", args[0] + " is not a number");
-                    }
+
+                p.sendMessage(ChatColor.GREEN + "Warps                   Locations");
+                p.sendMessage(ChatColor.GRAY + "--------------------------------------------");
+                for (Map.Entry<String, Location> warps : new Warp("").list().entrySet()) {
+                    String loc = ChatColor.GRAY + "" +
+                            +warps.getValue().getBlockX()
+                            + ","
+                            + warps.getValue().getBlockY()
+                            + ","
+                            + warps.getValue().getBlockZ();
+                    p.sendMessage(Utils.tablizer(ChatColor.AQUA + warps.getKey(), 24) + Utils.tablizer(loc, 10));
                 }
+
             } else {
                 new Message("Warps", Error.NO_PERMISSION).to(p);
             }

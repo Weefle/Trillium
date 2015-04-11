@@ -16,8 +16,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
 
 public class Utils {
 
@@ -129,19 +127,27 @@ public class Utils {
         }
     }
 
-    // https://bukkit.org/threads/pagination.135184/
-    public static void paginate(CommandSender sender, SortedMap<Integer, String> map, int page, int pageLength) {
-        sender.sendMessage(ChatColor.YELLOW + "List: Page (" + String.valueOf(page) + " of " + (((map.size() % pageLength) == 0) ? map.size() / pageLength : (map.size() / pageLength) + 1));
-        int i = 0, k = 0;
-        page--;
-        for (final Map.Entry<Integer, String> e : map.entrySet()) {
-            k++;
-            if ((((page * pageLength) + i + 1) == k) && (k != ((page * pageLength) + pageLength + 1))) {
-                i++;
-                sender.sendMessage(ChatColor.GRAY + ". " + ChatColor.AQUA + e.getValue());
+    // http://bukkit.org/threads/text-alignment-in-chat.83895/#post-2291644
+    public static String tablizer(String s, int size) {
+
+        String ret = s.toUpperCase();
+
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == 'I' || s.charAt(i) == ' ') {
+                ret += " ";
             }
         }
+
+        int subtract = size - s.length();
+        subtract = (subtract * 2);
+
+        for (int i = 0; i < subtract; i++) {
+            ret += " ";
+        }
+
+        return (ret);
     }
+
 
     public static void reload() {
         Bukkit.getScheduler().cancelAllTasks();

@@ -4,6 +4,7 @@ import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
+import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
 import net.gettrillium.trillium.runnables.GroupManagerRunnable;
@@ -12,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -146,6 +148,12 @@ public class Utils {
         }
 
         return (ret);
+    }
+
+    public static boolean canCreateMoreHomes(Player p) {
+        TrilliumPlayer player = TrilliumAPI.getPlayer(p);
+        int registeredHomes = player.getHomes().size();
+        return player.hasPermission(String.format(Trillium.PERMISSION_BASE, registeredHomes + 1));
     }
 
     public static void reload() {

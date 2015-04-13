@@ -609,7 +609,7 @@ public class TeleportModule extends TrilliumModule {
                     } else {
                         new Message(Mood.BAD, "Home", "You're not allowed to set more than one home.").to(p);
                     }
-                } else if (p.hasPermission(Permission.Teleport.HOME + "." + (p.getHomes().size() + 1))) {
+                } else if (Utils.canCreateMoreHomes(p.getProxy())) {
                     if (p.getHomes().size() + 1 < getConfig().getInt(Configuration.PlayerSettings.HOMES_MAX)) {
                         p.setHome(args[0], p.getProxy().getLocation());
                         new Message(Mood.GOOD, "Home", "New home set: " + args[0]).to(p);

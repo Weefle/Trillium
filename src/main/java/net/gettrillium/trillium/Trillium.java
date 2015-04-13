@@ -1,5 +1,6 @@
 package net.gettrillium.trillium;
 
+import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.serializer.LocationSerializer;
 import net.gettrillium.trillium.events.PlayerDeath;
@@ -9,13 +10,18 @@ import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Trillium extends JavaPlugin {
+
+    public static final String PERMISSION_BASE = "tr.homes.%d";
 
     public void onEnable() {
 
@@ -42,6 +48,14 @@ public class Trillium extends JavaPlugin {
         generateFiles();
 
         Utils.reload();
+
+        int maxhomes = getConfig().getInt(Configuration.PlayerSettings.HOMES_MAX);
+        Map<String, Boolean> children = new HashMap<>();
+        for (int i = 1; i <= maxhomes; i++) {
+            String node = String.format(PERMISSION_BASE, i);
+            children.put(node, true);
+            new Permission(node, children);
+        }
 
         try {
             Metrics metrics = new Metrics(this);

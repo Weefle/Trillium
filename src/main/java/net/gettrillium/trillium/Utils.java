@@ -12,8 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -148,42 +146,6 @@ public class Utils {
         }
 
         return (ret);
-    }
-
-    public static boolean permissionEndsWithInt(Player p, String match) {
-        for (PermissionAttachmentInfo perm : p.getEffectivePermissions()) {
-            if (perm.getPermission().startsWith(match)) {
-                int i = 0;
-                for (int counter = 0; counter < perm.getPermission().length(); counter++) {
-                    if (perm.getPermission().charAt(i) == '.') {
-                        i++;
-                    }
-                }
-                return i > 0 && perm.getPermission().split(".")[i] != null && StringUtils.isNumeric(perm.getPermission().split(".")[i]);
-            }
-        }
-        return false;
-    }
-
-    public static String getPermissionEndsWithInt(Player p, String match) {
-        for (PermissionAttachmentInfo perm : p.getEffectivePermissions()) {
-            if (perm.getPermission().startsWith(match)) {
-                int i = 0;
-                for (int counter = 0; counter < perm.getPermission().length(); counter++) {
-                    if (perm.getPermission().charAt(i) == '.') {
-                        i++;
-                    }
-                }
-                if (i > 0) {
-                    if (perm.getPermission().split(".")[i] != null && StringUtils.isNumeric(perm.getPermission().split(".")[i])) {
-                        return perm.getPermission();
-                    }
-                } else {
-                    return "";
-                }
-            }
-        }
-        return "";
     }
 
     public static void reload() {

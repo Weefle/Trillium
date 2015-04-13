@@ -184,8 +184,8 @@ player-settings:
        # - "give [p] stone_pickaxe"
        # - "give [p] stone_sword"
        # - "give [p] apple 10"
-      # When a new player joins the server, you can have any command run in the list.
-      # Examples are within the #, [p] is for the player.
+       # When a new player joins the server, you can have any command run in the list.
+       # Examples are within the #, [p] is for the player.
     temp-god-mode:
       enabled: true
         # When a player joins, they might need a bit of time until they can load the world.
@@ -195,7 +195,10 @@ player-settings:
     message: "&b[USERNAME] &9has left the game!"
     # Change the message that tells everyone x player left the server.
   enable-homes: true
-    # enable /home
+  # enable /home
+  max-number-of-homes: 20
+  # This number limits people with permission tr.teleport.home.<number higher than default 20> (or above)
+  # to just 20.
 
 #---------------[ Kits ]---------------#
 kits:

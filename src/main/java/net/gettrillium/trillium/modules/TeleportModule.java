@@ -3,6 +3,7 @@ package net.gettrillium.trillium.modules;
 import net.gettrillium.trillium.Utils;
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.Permission;
+import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.events.PlayerHomeEvent;
@@ -609,16 +610,23 @@ public class TeleportModule extends TrilliumModule {
                     } else {
                         new Message(Mood.BAD, "Home", "You're not allowed to set more than one home.").to(p);
                     }
-                } else if (Utils.permissionEndsWithInt(p.getProxy(), Permission.Teleport.HOME)) {
-                    int allowed = Integer.parseInt(Utils.getPermissionEndsWithInt(p.getProxy(), Permission.Teleport.HOME).split(".")[3]);
-                    if (p.getHomes().size() < allowed) {
-                        p.setHome(args[0], p.getProxy().getLocation());
-                        new Message(Mood.GOOD, "Home", "New home set: " + args[0]).to(p);
-                    } else {
-                        new Message(Mood.BAD, "Home", "You reached the maximum amount of homes you're allowed to set.").to(p);
-                    }
                 } else {
-                    new Message("Home", Error.NO_PERMISSION).to(p);
+                    int max = 0;
+                    for (int i = 0; i < TrilliumAPI.getInstance().getConfig().getInt(Configuration.PlayerSettings.HOMES_MAX); i++) {
+                        if (p.hasPermission(Permission.Teleport.HOME + "." + i)) {
+                            max = i;
+                        }
+                    }
+                    if (p.hasPermission(Permission.Teleport.HOME + "." + max)) { // I'm paranoid ok?!
+                        if (p.getHomes().size() < max) {
+                            p.setHome(args[0], p.getProxy().getLocation());
+                            new Message(Mood.GOOD, "Home", "New home set: " + args[0]).to(p);
+                        } else {
+                            new Message(Mood.BAD, "Home", "You reached the maximum amount of homes you're allowed to set.").to(p);
+                        }
+                    } else {
+                        new Message("Home", Error.NO_PERMISSION).to(p);
+                    }
                 }
             } else {
                 new Message("Home", Error.CONSOLE_NOT_ALLOWED).to(cs);

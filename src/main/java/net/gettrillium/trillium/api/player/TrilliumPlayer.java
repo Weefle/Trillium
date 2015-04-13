@@ -3,9 +3,11 @@ package net.gettrillium.trillium.api.player;
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.GroupManager;
 import net.gettrillium.trillium.api.TrilliumAPI;
+import net.gettrillium.trillium.api.events.PlayerAFKEvent;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.serializer.LocationSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -45,11 +47,15 @@ public class TrilliumPlayer {
     }
 
     public void toggleAfk() {
-        this.afk = !this.afk;
-        if (this.afk) {
-            new Message(Mood.GENERIC, "AFK", getName() + " is now AFK.").broadcast();
-        } else {
-            new Message(Mood.GENERIC, "AFK", getName() + " is no longer AFK.").broadcast();
+        PlayerAFKEvent event = new PlayerAFKEvent(this.proxy, !this.afk);
+        Bukkit.getServer().getPluginManager().callEvent(event);
+        if (!event.isCancelled()) {
+            this.afk = !this.afk;
+            if (this.afk) {
+                new Message(Mood.GENERIC, "AFK", getName() + " is now AFK.").broadcast();
+            } else {
+                new Message(Mood.GENERIC, "AFK", getName() + " is no longer AFK.").broadcast();
+            }
         }
     }
 

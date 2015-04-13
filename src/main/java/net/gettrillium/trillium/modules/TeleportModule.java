@@ -5,6 +5,8 @@ import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
+import net.gettrillium.trillium.api.events.PlayerHomeEvent;
+import net.gettrillium.trillium.api.events.PlayerWarpEvent;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
@@ -453,8 +455,12 @@ public class TeleportModule extends TrilliumModule {
                     new Message("Warp", Error.TOO_FEW_ARGUMENTS, "/warps for a list of warps. /warp <name> to tp to a warp.").to(p);
                 } else {
                     if (new Warp(args[0]).getName() != null) {
-                        new Warp(args[0]).teleport(p);
-                        new Message(Mood.GOOD, "Warp", "You were teleported to: " + new Warp(args[0]).getName()).to(p);
+                        PlayerWarpEvent event = new PlayerWarpEvent(new Warp(args[0]).getName(), p, p.getLocation(), new Warp(args[0]).getLocation());
+                        Bukkit.getPluginManager().callEvent(event);
+                        if (!event.isCancelled()) {
+                            new Warp(args[0]).teleport(p);
+                            new Message(Mood.GOOD, "Warp", "You were teleported to: " + new Warp(args[0]).getName()).to(p);
+                        }
                     } else {
                         new Message(Mood.BAD, "Warp", "There are no warps with that name.").to(p);
                     }
@@ -531,8 +537,14 @@ public class TeleportModule extends TrilliumModule {
                             for (Map.Entry<String, Location> key : p.getHomes().entrySet()) {
                                 loc = key.getValue();
                             }
-                            p.getProxy().teleport(loc);
-                            new Message(Mood.GOOD, "Home", "You were teleported home.").to(p);
+                            if (loc != null) {
+                                PlayerHomeEvent event = new PlayerHomeEvent("home", p.getProxy(), p.getProxy().getLocation(), loc);
+                                Bukkit.getPluginManager().callEvent(event);
+                                if (!event.isCancelled()) {
+                                    p.getProxy().teleport(loc);
+                                    new Message(Mood.GOOD, "Home", "You were teleported home.").to(p);
+                                }
+                            }
                         } else {
                             p.getProxy().sendMessage(ChatColor.GREEN + "Homes                   Locations");
                             p.getProxy().sendMessage(ChatColor.GRAY + "--------------------------------------------");
@@ -577,6 +589,10 @@ public class TeleportModule extends TrilliumModule {
                         if (p.getHomes().size() == 1) {
                             p.setHome("home", p.getProxy().getLocation());
                             new Message(Mood.GOOD, "Home", "New home position set.").to(p);
+                        } else if (p.getHomes().size() == 0) {
+                            p.delHome("home");
+                            p.setHome("home", p.getProxy().getLocation());
+                            new Message(Mood.GOOD, "Home", "New home position set.").to(p);
                         } else {
                             p.getProxy().sendMessage(ChatColor.GREEN + "Homes                   Locations");
                             p.getProxy().sendMessage(ChatColor.GRAY + "--------------------------------------------");
@@ -591,7 +607,7 @@ public class TeleportModule extends TrilliumModule {
                             }
                         }
                     } else {
-                        new Message(Mood.BAD, "Home", "You're not allowed to set more than one homes.").to(p);
+                        new Message(Mood.BAD, "Home", "You're not allowed to set more than one home.").to(p);
                     }
                 } else if (Utils.permissionEndsWithInt(p.getProxy(), Permission.Teleport.HOME)) {
                     int allowed = Integer.parseInt(Utils.getPermissionEndsWithInt(p.getProxy(), Permission.Teleport.HOME).split(".")[3]);

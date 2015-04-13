@@ -153,8 +153,13 @@ public class Utils {
     public static boolean permissionEndsWithInt(Player p, String match) {
         for (PermissionAttachmentInfo perm : p.getEffectivePermissions()) {
             if (perm.getPermission().startsWith(match)) {
-                int i = StringUtils.countMatches(perm.getPermission(), ".");
-                return perm.getPermission().split(".")[i + 1] != null && StringUtils.isNumeric(perm.getPermission().split(".")[i + 1]);
+                int i = 0;
+                for (int counter = 0; counter < perm.getPermission().length(); counter++) {
+                    if (perm.getPermission().charAt(i) == '.') {
+                        i++;
+                    }
+                }
+                return i > 0 && perm.getPermission().split(".")[i] != null && StringUtils.isNumeric(perm.getPermission().split(".")[i]);
             }
         }
         return false;
@@ -163,9 +168,18 @@ public class Utils {
     public static String getPermissionEndsWithInt(Player p, String match) {
         for (PermissionAttachmentInfo perm : p.getEffectivePermissions()) {
             if (perm.getPermission().startsWith(match)) {
-                int i = StringUtils.countMatches(perm.getPermission(), ".");
-                if (perm.getPermission().split(".")[i + 1] != null && StringUtils.isNumeric(perm.getPermission().split(".")[i + 1])) {
-                    return perm.getPermission();
+                int i = 0;
+                for (int counter = 0; counter < perm.getPermission().length(); counter++) {
+                    if (perm.getPermission().charAt(i) == '.') {
+                        i++;
+                    }
+                }
+                if (i > 0) {
+                    if (perm.getPermission().split(".")[i] != null && StringUtils.isNumeric(perm.getPermission().split(".")[i])) {
+                        return perm.getPermission();
+                    }
+                } else {
+                    return "";
                 }
             }
         }

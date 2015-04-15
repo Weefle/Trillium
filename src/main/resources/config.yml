@@ -43,7 +43,12 @@ server:
     enable-toggle-pvp: true
     # Toggle pvp allows players to run the /togglepvp command in which they can choose to disable
     # pvp for themselves only. Other players can't damage them and they can't damage others.
-    
+  teleportation:
+    enabled: true
+    # You can use permission: tr.teleport.cooldown-exempt to remove cooldowns for specific players or groups.
+    cooldown-time: "5s"
+    # You can use s for seconds, m for minutes, and h for hours.
+
 #---------------[ Chat ]---------------#
 chat:
   server-list-motd: "&cPlease define a motd in the config.yml"

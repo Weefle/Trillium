@@ -60,6 +60,7 @@ public class Permission {
         public static final String WARP = PREFIX + "warp";
         public static final String WARP_SET = PREFIX + "warp.set";
         public static final String HOME = PREFIX + "home";
+        public static final String COOLDOWN_EXEMPT = "exempt";
     }
 
     public static class Chat {
@@ -79,7 +80,6 @@ public class Permission {
 
     public static class Fun {
         private static final String PREFIX = "tr.fun.";
-        public static final String SMITE = PREFIX + "smite";
         public static final String KITTYBOMB = PREFIX + "kittybomb";
     }
 
@@ -87,8 +87,4 @@ public class Permission {
         public static final String USE = "tr.kit.";
     }
 
-    public static class Economy {
-        private static final String PREFIX = "tr.economy.";
-        public static final String BALANCE = PREFIX + "balance";
-    }
 }

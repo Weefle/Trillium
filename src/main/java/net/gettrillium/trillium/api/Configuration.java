@@ -12,7 +12,6 @@ public class Configuration {
         public static final String GROUP = prefix + "group";
         public static final String PVP = prefix + "pvp";
         public static final String HOMES = prefix + "home";
-
     }
 
     public static class Ability {
@@ -108,9 +107,9 @@ public class Configuration {
         public static String TO_FROM_FROM_MESSAGE = PREFIX + "to-from-from-message";
     }
 
-    public static class Economy {
-        private static final String PREFIX = "economy.";
-        public static String MONEY_FORMAT = PREFIX + "money-format";
-        public static String MONEY_SYMBOL = PREFIX + "money-symbol";
+    public static class Teleport {
+        private static final String TELEPORTATION = Server.PREFIX + "teleportation.";
+        public static final String TELEPORTATION_ENABLED = TELEPORTATION + "enabled";
+        public static final String TELEPORTATION_COOLDOWN_TIME = TELEPORTATION + "cooldown-time.";
     }
 }

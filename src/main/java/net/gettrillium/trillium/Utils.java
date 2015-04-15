@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Utils {
 
@@ -81,8 +82,6 @@ public class Utils {
         int hours = 0;
         int minutes = 0;
         int days = 0;
-        int week = 0;
-        int year = 0;
 
         if (time.contains("s")) {
             if (StringUtils.isNumeric(time.split("s")[0])) {
@@ -105,20 +104,16 @@ public class Utils {
             }
         }
 
-        if (time.contains("w")) {
-            if (StringUtils.isNumeric(time.split("w")[0])) {
-                week = Integer.parseInt(time.split("w")[0]);
-            }
-        }
+        return (seconds * 20) + (hours * 3600 * 20) + (minutes * 60 * 20) + (days * 86400 * 20);
+    }
 
-        if (time.contains("y")) {
-            if (StringUtils.isNumeric(time.split("y")[0])) {
-                year = Integer.parseInt(time.split("y")[0]);
-            }
-        }
+    public static String TimeToString(int ticks) {
+        int millis = ticks / 20 * 1000;
 
-        // dem numbers
-        return (seconds * 20) + (hours * 3600 * 20) + (minutes * 60 * 20) + (days * 86400 * 20) + (week * 604800 * 20) + (year * 31536000 * 20);
+        return String.format("%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
+                TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
     }
 
     public static void broadcastImportantMessage() {

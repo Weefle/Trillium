@@ -2,6 +2,7 @@ package net.gettrillium.trillium.modules;
 
 import net.gettrillium.trillium.Utils;
 import net.gettrillium.trillium.api.Configuration;
+import net.gettrillium.trillium.api.Cooldown;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
@@ -35,8 +36,20 @@ public class TeleportModule extends TrilliumModule {
         if (cs instanceof Player) {
             TrilliumPlayer player = player(cs.getName());
             if (player.getProxy().hasPermission(Permission.Ability.BACK)) {
-                new Message(Mood.GOOD, "Back", "You have been sent back to your last location.").to(player);
-                player.getProxy().teleport(player.getLastLocation());
+                Cooldown cooldown;
+                if (getConfig().getBoolean(Configuration.Teleport.TELEPORTATION_ENABLED) && !player.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
+                    cooldown = new Cooldown();
+                } else {
+                    cooldown = new Cooldown(0);
+                }
+                boolean b = true;
+                while (b) {
+                    if (cooldown.isDone()) {
+                        new Message(Mood.GOOD, "Back", "You have been sent back to your last location.").to(player);
+                        player.getProxy().teleport(player.getLastLocation());
+                        b = false;
+                    }
+                }
             } else {
                 new Message("Back", Error.NO_PERMISSION).to(cs);
             }

@@ -49,7 +49,6 @@ public class Configuration {
         private static final String PVP = PREFIX + "pvp.";
         public static final String PVPENABLE = PVP + "enabled";
         public static final String TOGGLEPVP = PVP + "enable-toggle-pvp";
-
     }
 
     public static class PlayerSettings {
@@ -107,6 +106,11 @@ public class Configuration {
         public static String WRONG_ARGUMENTS = ERRORS + "wrong-arguments";
         public static String FROM_TO_TO_MESSAGE = PREFIX + "from-to-to-message";
         public static String TO_FROM_FROM_MESSAGE = PREFIX + "to-from-from-message";
+    }
 
+    public static class Economy {
+        private static final String PREFIX = "economy.";
+        public static String MONEY_FORMAT = PREFIX + "money-format";
+        public static String MONEY_SYMBOL = PREFIX + "money-symbol";
     }
 }

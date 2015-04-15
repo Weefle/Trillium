@@ -86,4 +86,9 @@ public class Permission {
     public static class Kit {
         public static final String USE = "tr.kit.";
     }
+
+    public static class Economy {
+        private static final String PREFIX = "tr.economy.";
+        public static final String BALANCE = PREFIX + "balance";
+    }
 }

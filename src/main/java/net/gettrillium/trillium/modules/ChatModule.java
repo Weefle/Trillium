@@ -55,9 +55,9 @@ public class ChatModule extends TrilliumModule {
         }
     }
     
-    @Command(command = "clearchat", description = "View the server's motd", usage = "/clearchat", aliases = {"cc", ""})
+    @Command(command = "clearchat", description = "Clear global chat or a single players chat", usage = "/clearchat", aliases = {"cc", ""})
     public void clearchat(CommandSender cs, String[] args) {
-        if (cs instanceof Player && cs.hasPermission(Permission.Chat.MOTD)) {
+        if (cs instanceof Player && cs.hasPermission(Permission.Chat.CLEARCHAT)) {
         	if(!(args.length >= 0)) {
         		Player p = (Player)cs;
         		

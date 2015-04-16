@@ -151,6 +151,13 @@ public class Utils {
         return player.hasPermission(String.format(Trillium.PERMISSION_BASE, registeredHomes + 1));
     }
 
+    public static void clearInventory(Player p) {
+        for (int i = 0; i < 35; i++) {
+            p.getInventory().setItem(i, null);
+        }
+        p.getInventory().setArmorContents(null);
+    }
+
     public static void reload() {
         Bukkit.getScheduler().cancelAllTasks();
         new BukkitRunnable() {

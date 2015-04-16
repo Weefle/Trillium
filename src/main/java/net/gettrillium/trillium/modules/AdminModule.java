@@ -10,8 +10,8 @@ import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
-
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -123,25 +123,19 @@ public class AdminModule extends TrilliumModule {
         }
     }
     
-    public static void clearInventory(TrilliumPlayer p) {
-		for(int i = 0; i < 35; i++) {
-			p.getProxy().getInventory().setItem(i, null);
-		}
-		p.getProxy().getInventory().setArmorContents(null);
-    }
-    
     @Command(command = "clearinventory", description = "Clear your own or someone else's inventory.", usage = "/clearinventory", aliases = {"clear", "clearinv", "ci"})
     public void clearinv(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
-            TrilliumPlayer p = player((Player) cs);
+            Player p = (Player) cs;
             if (p.hasPermission(Permission.Admin.CLEARINV)) {
-            	if(!(args.length >= 0)) {
-            		clearInventory(p);
-            	} else {
-            		TrilliumPlayer target = player(args[0]);
-            		
+                if (args.length == 0) {
+                    Utils.clearInventory(p);
+                    new Message(Mood.GOOD, "ClearInventory", "Inventory cleared.").to(p);
+                } else {
+                    Player target = Bukkit.getPlayer(args[0]);
+
                     if (target != null) {
-                        clearInventory(target);
+                        Utils.clearInventory(target);
                         new Message(Mood.GOOD, "ClearInventory", "You have cleared " + target.getName() + "'s inventory.").to(p);
                     } else {
                         new Message("ClearInventory", Error.INVALID_PLAYER, args[0]).to(p);

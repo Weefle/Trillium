@@ -10,6 +10,7 @@ import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -110,7 +111,7 @@ public class AdminModule extends TrilliumModule {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Admin.SETSPAWN)) {
-
+            	
                 p.getProxy().getWorld().setSpawnLocation(p.getProxy().getLocation().getBlockX(), p.getProxy().getLocation().getBlockY(), p.getProxy().getLocation().getBlockZ());
                 new Message(Mood.GOOD, "Set Spawn", "Spawn location set. " + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ()).to(p);
 
@@ -119,6 +120,34 @@ public class AdminModule extends TrilliumModule {
             }
         } else {
             new Message("Set Spawn", Error.CONSOLE_NOT_ALLOWED).to(cs);
+        }
+    }
+    
+    public static void clearInventory(TrilliumPlayer p) {
+		for(int i = 0; i < 35; i++) {
+			p.getProxy().getInventory().setItem(i, null);
+		}
+		p.getProxy().getInventory().setArmorContents(null);
+    }
+    
+    @Command(command = "clearinventory", description = "Clear your own or someone else's inventory.", usage = "/clearinventory", aliases = {"clear", "clearinv", "ci"})
+    public void clearinv(CommandSender cs, String[] args) {
+        if (cs instanceof Player) {
+            TrilliumPlayer p = player((Player) cs);
+            if (p.hasPermission(Permission.Admin.CLEARINV)) {
+            	if(!(args.length >= 0)) {
+            		clearInventory(p);
+            	} else {
+            		TrilliumPlayer target = player(args[0]);
+            		
+                    if (target != null) {
+                        clearInventory(target);
+                        new Message(Mood.GOOD, "ClearInventory", "You have cleared " + target.getName() + "'s inventory.").to(p);
+                    } else {
+                        new Message("ClearInventory", Error.INVALID_PLAYER, args[0]).to(p);
+                    }
+            	}
+            }
         }
     }
 

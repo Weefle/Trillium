@@ -54,6 +54,28 @@ public class ChatModule extends TrilliumModule {
             new Message("Motd", Error.NO_PERMISSION).to(cs);
         }
     }
+    
+    @Command(command = "clearchat", description = "View the server's motd", usage = "/clearchat", aliases = {"cc", ""})
+    public void clearchat(CommandSender cs, String[] args) {
+        if (cs instanceof Player && cs.hasPermission(Permission.Chat.MOTD)) {
+        	if(!(args.length >= 0)) {
+        		Player p = (Player)cs;
+        		
+        		for(Player pl : Bukkit.getOnlinePlayers()) {
+        			Utils.clearChat(pl);
+        		}
+        	} else {
+        		Player target = Bukkit.getPlayer(args[0]);
+        		
+        		if(target != null) {
+        			Utils.clearChat(target);
+        			new Message(Mood.GOOD, "ClearChat", ChatColor.AQUA + target.getName() + "'s chat has been cleared!").to(cs);;
+        		} else {
+        			new Message("ClearChat", Error.INVALID_PLAYER, args[0]).to(cs);
+        		}
+        	}
+        }
+    }
 
     @Command(command = "information", description = "View information about a certain player.", usage = "/info", aliases = "info")
     public void information(CommandSender cs, String[] args) {

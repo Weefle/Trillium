@@ -77,6 +77,7 @@ public class Permission {
         public static final String NICK_OTHER_COLOR = PREFIX + "nickname.other.color";
         public static final String CHATCHANNEL = PREFIX + "chatchannel.";
         public static final String COLOR = PREFIX + "color";
+        public static final String CLEARCHAT = PREFIX + "clearchat";
     }
 
     public static class Fun {

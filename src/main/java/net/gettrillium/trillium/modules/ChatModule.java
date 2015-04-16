@@ -120,7 +120,7 @@ public class ChatModule extends TrilliumModule {
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
             cs.sendMessage(ChatColor.GRAY + "            Plugin made with love by:");
             cs.sendMessage(ChatColor.GRAY + "       LordSaad, VortexSeven, Turbotailz,");
-            cs.sendMessage(ChatColor.GRAY + "               samczsun, and hintss");
+            cs.sendMessage(ChatColor.GRAY + "          samczsun, hintss, and colt");
             cs.sendMessage(ChatColor.DARK_RED + "                         <3");
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
             cs.sendMessage(ChatColor.GRAY + "Version: " + ChatColor.YELLOW + TrilliumAPI.getInstance().getDescription().getVersion());

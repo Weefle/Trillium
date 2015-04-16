@@ -55,12 +55,20 @@ public class CoreModule extends TrilliumModule {
         }
 
         //motd
+        // world list?
+        // maybe a "current online staff" list?
+        // could define a trillium permission such as "trillium.staff.stafflist"
+        // loop through all players with that permission and list em.
         if (p.hasPermission(Permission.Chat.MOTD)) {
             List<String> motd = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
             for (String s : motd) {
                 s = s.replace("[USERNAME]", p.getName());
+                s = s.replace("[UUID]", p.getUniqueId().toString());
                 s = s.replace("[SLOTS]", "" + Bukkit.getMaxPlayers());
                 s = s.replace("[ONLINE]", "" + Bukkit.getOnlinePlayers().size());
+                s = s.replace("[UNIQUE]", getUniqueJoins());
+                s = s.replace("[IP-ADDRESS]", p.getAddress().getAddress().getAddress().toString());
+                s = s.replace("[NICKNAME]", TrilliumAPI.getPlayer(p).getDisplayName());
                 s = ChatColor.translateAlternateColorCodes('&', s);
                 p.sendMessage(s);
             }
@@ -79,6 +87,16 @@ public class CoreModule extends TrilliumModule {
             Utils.broadcastImportantMessage();
         }
     }
+    
+    // I wasn't sure where to put this so I just threw it here, you can move it whereever :)
+    public static String getUniqueJoins() {
+    	// getOfflinePlayers returns all players that have joined and are currently offline, that plus onlinePlayers..
+    	// it's pretty self explanatory.
+		int amount = Bukkit.getOfflinePlayers().length + Bukkit.getOnlinePlayers().size();
+		String total = String.valueOf(amount);
+		
+    	return total;
+    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onQuit(PlayerQuitEvent e) {
@@ -89,5 +107,4 @@ public class CoreModule extends TrilliumModule {
 
         TrilliumAPI.disposePlayer(p);
     }
-
 }

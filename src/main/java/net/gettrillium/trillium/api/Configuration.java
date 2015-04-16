@@ -45,6 +45,9 @@ public class Configuration {
 
     public static class Server {
         private static String PREFIX = "server.";
+        private static final String TELEPORTATION = PREFIX + "teleportation.";
+        public static final String TELEPORTATION_COOLDOWN_TIME = TELEPORTATION + "cooldown-time";
+        public static final String TELEPORTATION_COOLDOWN_ENABLED = TELEPORTATION + "cooldown-enabled";
         private static final String PVP = PREFIX + "pvp.";
         public static final String PVPENABLE = PVP + "enabled";
         public static final String TOGGLEPVP = PVP + "enable-toggle-pvp";
@@ -105,11 +108,5 @@ public class Configuration {
         public static String WRONG_ARGUMENTS = ERRORS + "wrong-arguments";
         public static String FROM_TO_TO_MESSAGE = PREFIX + "from-to-to-message";
         public static String TO_FROM_FROM_MESSAGE = PREFIX + "to-from-from-message";
-    }
-
-    public static class Teleport {
-        private static final String TELEPORTATION = Server.PREFIX + "teleportation.";
-        public static final String TELEPORTATION_COOLDOWN_ENABLED = TELEPORTATION + "cooldown-enabled";
-        public static final String TELEPORTATION_COOLDOWN_TIME = TELEPORTATION + "cooldown-time.";
     }
 }

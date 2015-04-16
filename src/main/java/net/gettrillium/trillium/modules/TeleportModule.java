@@ -37,7 +37,7 @@ public class TeleportModule extends TrilliumModule {
             TrilliumPlayer player = player(cs.getName());
             if (player.getProxy().hasPermission(Permission.Teleport.BACK)) {
                 Cooldown cooldown;
-                if (getConfig().getBoolean(Configuration.Teleport.TELEPORTATION_COOLDOWN_ENABLED)) {
+                if (getConfig().getBoolean(Configuration.Server.TELEPORTATION_COOLDOWN_ENABLED)) {
                     if (!player.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
                         cooldown = new Cooldown();
                     } else {

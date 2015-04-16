@@ -14,7 +14,7 @@ public class Cooldown {
 
     public Cooldown() {
         this.time = System.currentTimeMillis();
-        this.length = Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Teleport.TELEPORTATION_COOLDOWN_TIME));
+        this.length = Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.TELEPORTATION_COOLDOWN_TIME));
     }
 
     public int getTimeLeft() {

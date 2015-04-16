@@ -109,7 +109,7 @@ public class Configuration {
 
     public static class Teleport {
         private static final String TELEPORTATION = Server.PREFIX + "teleportation.";
-        public static final String TELEPORTATION_ENABLED = TELEPORTATION + "enabled";
+        public static final String TELEPORTATION_COOLDOWN_ENABLED = TELEPORTATION + "cooldown-enabled";
         public static final String TELEPORTATION_COOLDOWN_TIME = TELEPORTATION + "cooldown-time.";
     }
 }

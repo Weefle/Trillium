@@ -10,7 +10,6 @@ import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -52,7 +51,7 @@ public class Trillium extends JavaPlugin {
         for (int i = 1; i <= maxhomes; i++) {
             String node = String.format(PERMISSION_BASE, i);
             children.put(node, true);
-            getServer().getPluginManager().addPermission(new Permission(node, children));
+            //getServer().getPluginManager().addPermission(new Permission(node, children));
         }
 
         try {

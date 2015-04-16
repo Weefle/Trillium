@@ -13,7 +13,6 @@ public class Permission {
 
     public static class Ability {
         private static final String PREFIX = "tr.ability.";
-        public static final String BACK = PREFIX + "back";
         public static final String FLY = PREFIX + "fly";
         public static final String FLY_OTHER = PREFIX + "fly.other";
         public static final String GOD = PREFIX + "god";
@@ -50,6 +49,7 @@ public class Permission {
 
     public static class Teleport {
         private static final String PREFIX = "tr.teleport.";
+        public static final String BACK = PREFIX + "back";
         public static final String SPAWN = PREFIX + "spawn";
         public static final String TP = PREFIX + "tp";
         public static final String TP_OTHER = PREFIX + "tp.other";

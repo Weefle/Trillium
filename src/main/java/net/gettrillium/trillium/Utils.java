@@ -62,6 +62,12 @@ public class Utils {
         }
         return centered;
     }
+    
+    public static void clearChat(Player p) {
+    	for(int i = 0; i < 200; i++) {
+    		p.sendMessage("");
+    	}
+    }
 
     // http://stackoverflow.com/a/12297231/4327834
     // #efficiency

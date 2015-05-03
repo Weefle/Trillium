@@ -4,7 +4,6 @@ import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
-import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
 import net.gettrillium.trillium.runnables.GroupManagerRunnable;
@@ -16,6 +15,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -145,17 +148,33 @@ public class Utils {
         return (ret);
     }
 
-    public static boolean canCreateMoreHomes(Player p) {
-        TrilliumPlayer player = TrilliumAPI.getPlayer(p);
-        int registeredHomes = player.getHomes().size();
-        return player.hasPermission(String.format(Trillium.PERMISSION_BASE, registeredHomes + 1));
-    }
-
     public static void clearInventory(Player p) {
         for (int i = 0; i < 35; i++) {
             p.getInventory().setItem(i, null);
         }
         p.getInventory().setArmorContents(null);
+    }
+
+    public static String ReadFile(File f) {
+
+        if (!f.exists()) {
+            return "";
+        }
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(f));
+            StringBuilder b = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                b.append(line);
+                b.append(System.getProperty("line.separator"));
+            }
+            return b.toString();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static void reload() {

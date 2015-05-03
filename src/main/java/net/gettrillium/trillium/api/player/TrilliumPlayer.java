@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class TrilliumPlayer {
@@ -232,14 +233,16 @@ public class TrilliumPlayer {
         File dataStore = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(dataStore);
         List<String> homes = config.getStringList(Configuration.Player.HOMES);
+        Iterator<String> iterator = homes.iterator();
 
-        for (String home : homes) {
-            if (home.split("~")[0].equalsIgnoreCase(name)) {
-                homes.remove(home);
+        while (iterator.hasNext()) {
+            String next = iterator.next();
+            if (next.split("~")[0].equalsIgnoreCase(name)) {
+                iterator.remove();
             }
         }
 
-        config.set(Configuration.Player.HOMES, homes);
+        config.set(Configuration.Player.HOMES, iterator);
         try {
             config.save(dataStore);
         } catch (IOException e) {

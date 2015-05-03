@@ -60,7 +60,10 @@ public class Permission {
         public static final String TPRRESPOND = PREFIX + "tprequest.respond";
         public static final String WARP = PREFIX + "warp";
         public static final String WARP_SET = PREFIX + "warp.set";
-        public static final String HOME = PREFIX + "home";
+        public static final String SETHOME = PREFIX + "home.set";
+        public static final String DELHOME = PREFIX + "home.delete";
+        public static final String TPHOME = PREFIX + "home.tp";
+        public static final String VIEWHOME = PREFIX + "home.view";
         public static final String COOLDOWN_EXEMPT = "exempt";
     }
 

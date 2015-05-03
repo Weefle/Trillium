@@ -2,7 +2,6 @@ package net.gettrillium.trillium.modules;
 
 import net.gettrillium.trillium.Utils;
 import net.gettrillium.trillium.api.Configuration;
-import net.gettrillium.trillium.api.Cooldown;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
@@ -36,31 +35,17 @@ public class TeleportModule extends TrilliumModule {
         if (cs instanceof Player) {
             TrilliumPlayer player = player(cs.getName());
             if (player.getProxy().hasPermission(Permission.Teleport.BACK)) {
-                Cooldown cooldown;
-                if (getConfig().getBoolean(Configuration.Server.TELEPORTATION_COOLDOWN_ENABLED)) {
-                    if (!player.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
-                        cooldown = new Cooldown();
-                    } else {
-                        cooldown = new Cooldown(0);
-                    }
-                } else {
-                    cooldown = new Cooldown(0);
-                }
-                boolean b = true;
-                while (b) {
-                    if (cooldown.isDone()) {
-                        new Message(Mood.GOOD, "Back", "You have been sent back to your last location.").to(player);
-                        player.getProxy().teleport(player.getLastLocation());
-                        b = false;
-                    }
-                    }
+
+                new Message(Mood.GOOD, "Back", "You have been sent back to your last location.").to(player);
+                player.getProxy().teleport(player.getLastLocation());
+
             } else {
                 new Message("Back", Error.NO_PERMISSION).to(cs);
-                }
-            } else {
-            new Message("Back", Error.CONSOLE_NOT_ALLOWED).to(cs);
             }
+        } else {
+            new Message("Back", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
+    }
 
     @Command(command = "spawn", description = "Teleport to the server's spawn.", usage = "/spawn")
     public void spawn(CommandSender cs, String[] args) {
@@ -72,17 +57,17 @@ public class TeleportModule extends TrilliumModule {
             } else {
                 new Message("Spawn", Error.NO_PERMISSION).to(cs);
             }
-            } else {
+        } else {
             new Message("Spawn", Error.CONSOLE_NOT_ALLOWED).to(cs);
-            }
         }
+    }
 
     @Command(command = "teleport", description = "Teleport to a person or a set of coordinates.", usage = "/tp <player> [player / <x>, <y>, <z>]", aliases = "tp")
     public void tp(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
             new Message("TP", Error.CONSOLE_NOT_ALLOWED).to(cs);
-                return;
-            }
+            return;
+        }
 
         TrilliumPlayer p = player((Player) cs);
 
@@ -130,18 +115,18 @@ public class TeleportModule extends TrilliumModule {
             target1.getProxy().teleport(target2.getProxy());
             new Message(Mood.GOOD, "TP", "You teleported " + target1.getName() + " to " + target2.getName()).to(p);
             new Message(Mood.GOOD, "TP", p.getName() + " teleported you to " + target2.getName()).to(target1);
-            } else {
+        } else {
             if (!p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
                 new Message("TP", Error.NO_PERMISSION).to(cs);
-                    return;
-                }
+                return;
+            }
 
             Player pl = Bukkit.getPlayer(args[0]);
 
             if (pl == null) {
                 new Message("TP", Error.INVALID_PLAYER, args[0]).to(p);
-                    return;
-                }
+                return;
+            }
 
             String xArg = args[1];
             String yArg = args[2];
@@ -156,7 +141,7 @@ public class TeleportModule extends TrilliumModule {
 
                 pl.teleport(loc);
                 new Message(Mood.GOOD, "TP", "You teleported to " + ChatColor.AQUA + x + ", " + y + ", " + z).to(p);
-                } else {
+            } else {
                 if (!xArg.startsWith("~") || !yArg.startsWith("~") || !zArg.startsWith("~")) {
                     new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [x] [y] [z]").to(p);
                     return;
@@ -191,8 +176,8 @@ public class TeleportModule extends TrilliumModule {
                 pl.teleport(new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z));
                 new Message(Mood.GOOD, "TP", "You teleported to " + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ()).to(p);
             }
-            }
         }
+    }
 
     @Command(command = "teleporthere", description = "Teleport a player to you.", usage = "/tph <player>", aliases = "tph")
     public void teleporthere(CommandSender cs, String[] args) {
@@ -223,7 +208,7 @@ public class TeleportModule extends TrilliumModule {
         target.getProxy().teleport(p.getProxy());
         new Message(Mood.GOOD, "TPH", "You teleported " + target.getProxy().getName() + " to you.").to(p);
         new Message(Mood.GOOD, "TPH", p.getProxy().getName() + " teleported you to them.").to(target);
-        }
+    }
 
     @Command(command = "teleportrequest", description = "Request permission to teleport to a player.", usage = "/tpr <player>", aliases = "tpr")
     public void teleportrequest(CommandSender cs, String[] args) {
@@ -245,16 +230,16 @@ public class TeleportModule extends TrilliumModule {
                     } else {
                         new Message("TPR", Error.INVALID_PLAYER, args[0]).to(p);
                     }
-                    } else {
-                    new Message("TPR", Error.TOO_FEW_ARGUMENTS, "/tpr <player>").to(p);
-                    }
                 } else {
-                new Message("TPR", Error.NO_PERMISSION).to(p);
+                    new Message("TPR", Error.TOO_FEW_ARGUMENTS, "/tpr <player>").to(p);
                 }
             } else {
-            new Message("TPR", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                new Message("TPR", Error.NO_PERMISSION).to(p);
             }
+        } else {
+            new Message("TPR", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
+    }
 
     @Command(command = "teleportrequesthere", description = "Request permission to teleport a player to you.", usage = "/tprh <player>", aliases = "tprh")
     public void teleportrequesthere(CommandSender cs, String[] args) {
@@ -275,16 +260,16 @@ public class TeleportModule extends TrilliumModule {
                     } else {
                         new Message("TPRH", Error.INVALID_PLAYER, args[0]).to(p);
                     }
-                    } else {
-                    new Message("TPRH", Error.TOO_FEW_ARGUMENTS, "/tprh <player>").to(p);
-                    }
                 } else {
-                new Message("TPRH", Error.NO_PERMISSION).to(p);
+                    new Message("TPRH", Error.TOO_FEW_ARGUMENTS, "/tprh <player>").to(p);
                 }
             } else {
-            new Message("TPRH", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                new Message("TPRH", Error.NO_PERMISSION).to(p);
             }
+        } else {
+            new Message("TPRH", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
+    }
 
     @Command(command = "teleportrequestaccept", description = "Accept a teleport request.", usage = "/tpra", aliases = "tpra")
     public void teleportrequestaccept(CommandSender cs, String[] args) {
@@ -314,13 +299,13 @@ public class TeleportModule extends TrilliumModule {
                 } else {
                     new Message(Mood.BAD, "TPRA", "No pending teleport requests to accept.").to(p);
                 }
-                } else {
-                new Message("TPRA", Error.NO_PERMISSION).to(p);
-                }
             } else {
-            new Message("TPRA", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                new Message("TPRA", Error.NO_PERMISSION).to(p);
             }
+        } else {
+            new Message("TPRA", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
+    }
 
     @Command(command = "teleportrequestdeny", description = "Deny a teleport request.", usage = "/tprd", aliases = "tprd")
     public void teleportrequestdeny(CommandSender cs, String[] args) {
@@ -352,7 +337,7 @@ public class TeleportModule extends TrilliumModule {
         } else {
             new Message(Mood.BAD, "TPRD", "No pending teleport requests to deny.").to(p);
         }
-        }
+    }
 
     @Command(command = "teleportcoordinates", description = "Teleport to a set of coordinates.", usage = "/tpc <x> <y> <z>", aliases = "tpc")
     public void teleportcoordinates(CommandSender cs, String[] args) {
@@ -365,13 +350,13 @@ public class TeleportModule extends TrilliumModule {
 
         if (!p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
             new Message("TP", Error.NO_PERMISSION).to(p);
-                return;
-            }
+            return;
+        }
 
         if (args.length < 3) {
             new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <x> <y> <z>").to(p);
-                return;
-            }
+            return;
+        }
 
         String xArg = args[0];
         String yArg = args[1];
@@ -385,7 +370,7 @@ public class TeleportModule extends TrilliumModule {
             Location loc = new Location(p.getProxy().getWorld(), x, y, z);
             p.getProxy().teleport(loc);
             new Message(Mood.GOOD, "TP", "You teleported to" + ChatColor.AQUA + x + ", " + y + ", " + z).to(p);
-            } else {
+        } else {
             if (!xArg.startsWith("~") || !yArg.startsWith("~") || !zArg.startsWith("~")) {
                 new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [x] [y] [z]").to(p);
                 return;
@@ -422,20 +407,20 @@ public class TeleportModule extends TrilliumModule {
             p.getProxy().teleport(new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z));
             new Message(Mood.GOOD, "TPC", "You teleported to" + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ()).to(p);
         }
-        }
+    }
 
     @EventHandler
     public void onTP(PlayerTeleportEvent event) {
         TrilliumPlayer p = player(event.getPlayer());
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND || event.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
             p.setLastLocation(event.getFrom());
-            }
+        }
         if (getConfig().getBoolean(Configuration.Broadcast.IMP_ENABLED)) {
             if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND) {
                 Utils.broadcastImportantMessage();
             }
         }
-        }
+    }
 
     @Command(command = "warps", description = "View the list of warps available.", usage = "/warps [page index]")
     public void warps(CommandSender cs, String[] args) {
@@ -458,10 +443,10 @@ public class TeleportModule extends TrilliumModule {
             } else {
                 new Message("Warps", Error.NO_PERMISSION).to(p);
             }
-            } else {
+        } else {
             new Message("Warps", Error.CONSOLE_NOT_ALLOWED).to(cs);
-            }
         }
+    }
 
     @Command(command = "warp", description = "Teleport to a certain defined point.", usage = "/warp <name>")
     public void warp(CommandSender cs, String[] args) {
@@ -470,7 +455,7 @@ public class TeleportModule extends TrilliumModule {
             if (p.hasPermission(Permission.Teleport.WARP)) {
                 if (args.length == 0) {
                     new Message("Warp", Error.TOO_FEW_ARGUMENTS, "/warps for a list of warps. /warp <name> to tp to a warp.").to(p);
-                    } else {
+                } else {
                     if (new Warp(args[0]).getName() != null) {
                         PlayerWarpEvent event = new PlayerWarpEvent(new Warp(args[0]).getName(), p, p.getLocation(), new Warp(args[0]).getLocation());
                         Bukkit.getPluginManager().callEvent(event);
@@ -481,14 +466,14 @@ public class TeleportModule extends TrilliumModule {
                     } else {
                         new Message(Mood.BAD, "Warp", "There are no warps with that name.").to(p);
                     }
-                    }
-            } else {
-                new Message("Warp", Error.NO_PERMISSION).to(p);
                 }
             } else {
-            new Message("Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                new Message("Warp", Error.NO_PERMISSION).to(p);
             }
+        } else {
+            new Message("Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
+    }
 
     @Command(command = "setwarp", description = "Save a new warp.", usage = "/setwarp <name>")
     public void setwarp(CommandSender cs, String[] args) {
@@ -497,7 +482,7 @@ public class TeleportModule extends TrilliumModule {
             if (p.hasPermission(Permission.Teleport.WARP_SET)) {
                 if (args.length == 0) {
                     new Message("Set Warp", Error.TOO_FEW_ARGUMENTS, "/setwarp <name>").to(p);
-                    } else {
+                } else {
                     if (new Warp(args[0]).getName() == null) {
                         new Warp(args[0], p.getLocation()).save();
                         new Message(Mood.GOOD, "Set Warp", "Warp saved as: " + args[0]).to(p);
@@ -506,14 +491,14 @@ public class TeleportModule extends TrilliumModule {
                         new Warp(args[0], p.getLocation()).save();
                         new Message(Mood.GOOD, "Set Warp", "Warp" + args[0] + "'s position has been replaced.").to(p);
                     }
-                    }
-            } else {
-                new Message("Set Warp", Error.NO_PERMISSION).to(p);
                 }
             } else {
-            new Message("Set Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                new Message("Set Warp", Error.NO_PERMISSION).to(p);
             }
+        } else {
+            new Message("Set Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
+    }
 
     @Command(command = "delwarp", description = "Delete a warp.", usage = "/delwarp <name>")
     public void delwarp(CommandSender cs, String[] args) {
@@ -522,21 +507,21 @@ public class TeleportModule extends TrilliumModule {
             if (p.hasPermission(Permission.Teleport.WARP_SET)) {
                 if (args.length == 0) {
                     new Message("Delete Warp", Error.TOO_FEW_ARGUMENTS, "/setwarp <name>").to(p);
-                    } else {
+                } else {
                     if (new Warp(args[0]).getName() != null) {
                         new Warp(args[0], p.getLocation()).delete();
                         new Message(Mood.GOOD, "Delete Warp", "Warp deleted was: " + args[0]).to(p);
                     } else {
                         new Message(Mood.BAD, "Delete Warp", "There are no warps with that name.").to(p);
                     }
-                    }
-            } else {
-                new Message("Delete Warp", Error.NO_PERMISSION).to(p);
                 }
             } else {
-            new Message("Delete Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                new Message("Delete Warp", Error.NO_PERMISSION).to(p);
             }
+        } else {
+            new Message("Delete Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
+    }
 
     @Command(command = "home", description = "Teleport to your home or view your home.", usage = "/home [home name]")
     public void home(CommandSender cs, String[] args) {
@@ -544,7 +529,7 @@ public class TeleportModule extends TrilliumModule {
             if (cs instanceof Player) {
                 TrilliumPlayer p = player((Player) cs);
 
-                if (p.hasPermission(Permission.Teleport.HOME)) {
+                if (p.hasPermission(Permission.Teleport.TPHOME)) {
                     if (args.length == 0) {
                         if (p.getHomes().size() == 0) {
                             new Message(Mood.BAD, "Home", "You don't have any homes set.").to(p);
@@ -553,7 +538,7 @@ public class TeleportModule extends TrilliumModule {
                             Location loc = null;
                             for (Map.Entry<String, Location> key : p.getHomes().entrySet()) {
                                 loc = key.getValue();
-                                }
+                            }
                             if (loc != null) {
                                 PlayerHomeEvent event = new PlayerHomeEvent("home", p.getProxy(), p.getProxy().getLocation(), loc);
                                 Bukkit.getPluginManager().callEvent(event);
@@ -563,7 +548,7 @@ public class TeleportModule extends TrilliumModule {
                                 }
                             }
                         } else {
-                            p.getProxy().sendMessage(ChatColor.GREEN + "Homes                   Locations");
+                            p.getProxy().sendMessage(ChatColor.GREEN + "Homes                          Locations");
                             p.getProxy().sendMessage(ChatColor.GRAY + "--------------------------------------------");
                             for (Map.Entry<String, Location> homes : p.getHomes().entrySet()) {
                                 String loc = ChatColor.GRAY + "" +
@@ -574,26 +559,26 @@ public class TeleportModule extends TrilliumModule {
                                         + homes.getValue().getBlockZ();
                                 p.getProxy().sendMessage(Utils.tablizer(ChatColor.AQUA + homes.getKey(), 24) + Utils.tablizer(loc, 10));
                             }
-                            }
-                        } else {
+                        }
+                    } else {
                         if (p.getHomes().containsKey(args[0])) {
                             p.getProxy().teleport(p.getHomes().get(args[0]));
-                            new Message(Mood.GOOD, "Home", "You teleported to home: " + args[0]);
+                            new Message(Mood.GOOD, "Home", "You teleported to home: " + args[0]).to(p);
 
                         } else {
                             new Message(Mood.BAD, "Home", "You don't have a home with that name.").to(p);
-                            }
                         }
-                    } else {
-                    new Message("Home", Error.NO_PERMISSION).to(p);
                     }
                 } else {
-                new Message("Home", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                    new Message("Home", Error.NO_PERMISSION).to(p);
                 }
             } else {
-            new Message(Mood.BAD, "Home", "This feature is disabled.").to(cs);
+                new Message("Home", Error.CONSOLE_NOT_ALLOWED).to(cs);
             }
+        } else {
+            new Message(Mood.BAD, "Home", "This feature is disabled.").to(cs);
         }
+    }
 
     @Command(command = "sethome", description = "Set a new home.", usage = "/sethome [home name]")
     public void sethome(CommandSender cs, String[] args) {
@@ -601,17 +586,17 @@ public class TeleportModule extends TrilliumModule {
             if (cs instanceof Player) {
                 TrilliumPlayer p = player((Player) cs);
 
-                if (p.hasPermission(Permission.Teleport.HOME)) {
+                if (p.hasPermission(Permission.Teleport.SETHOME)) {
                     if (args.length == 0) {
                         if (p.getHomes().size() == 1) {
-                            p.setHome("home", p.getProxy().getLocation());
-                            new Message(Mood.GOOD, "Home", "New home position set.").to(p);
-                        } else if (p.getHomes().size() == 0) {
                             p.delHome("home");
                             p.setHome("home", p.getProxy().getLocation());
-                            new Message(Mood.GOOD, "Home", "New home position set.").to(p);
+                            new Message(Mood.GOOD, "SetHome", "New home position set.").to(p);
+                        } else if (p.getHomes().size() == 0) {
+                            p.setHome("home", p.getProxy().getLocation());
+                            new Message(Mood.GOOD, "SetHome", "New home position set.").to(p);
                         } else {
-                            p.getProxy().sendMessage(ChatColor.GREEN + "Homes                   Locations");
+                            p.getProxy().sendMessage(ChatColor.GREEN + "Homes                          Locations");
                             p.getProxy().sendMessage(ChatColor.GRAY + "--------------------------------------------");
                             for (Map.Entry<String, Location> homes : p.getHomes().entrySet()) {
                                 String loc = ChatColor.GRAY + "" +
@@ -622,25 +607,95 @@ public class TeleportModule extends TrilliumModule {
                                         + homes.getValue().getBlockZ();
                                 p.getProxy().sendMessage(Utils.tablizer(ChatColor.AQUA + homes.getKey(), 24) + Utils.tablizer(loc, 10));
                             }
-                            }
-                    } else {
-                        new Message(Mood.BAD, "Home", "You're not allowed to set more than one home.").to(p);
                         }
-                } else if (Utils.canCreateMoreHomes(p.getProxy())) {
-                    if (p.getHomes().size() + 1 < getConfig().getInt(Configuration.PlayerSettings.HOMES_MAX)) {
-                        p.setHome(args[0], p.getProxy().getLocation());
-                        new Message(Mood.GOOD, "Home", "New home set: " + args[0]).to(p);
                     } else {
-                        new Message(Mood.BAD, "Home", "You reached the maximum amount of homes you're allowed to set.").to(p);
-                    }
-                    } else {
-                    new Message("Home", Error.NO_PERMISSION).to(p);
+                        new Message(Mood.BAD, "SetHome", "You're not allowed to set more than one home.").to(p);
                     }
                 } else {
-                new Message("Home", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                    for (int i = 0; i < getConfig().getInt(Configuration.PlayerSettings.HOMES_MAX); i++) {
+                        if (p.hasPermission(Permission.Teleport.SETHOME + "." + i)) {
+                            if (args.length != 0) {
+                                if (p.getHomes().size() < i) {
+                                    p.setHome(args[0], p.getProxy().getLocation());
+                                    new Message(Mood.GOOD, "SetHome", "New home set: " + args[0]).to(p);
+                                } else {
+                                    if (p.getHomes().containsKey(args[0])) {
+                                        p.delHome(args[0]);
+                                        p.setHome(args[0], p.getProxy().getLocation());
+                                        new Message(Mood.GOOD, "SetHome", "Home " + args[0] + "'s position overridden and set here.").to(p);
+                                    } else {
+                                        new Message(Mood.BAD, "SetHome", "You reached the maximum amount of homes you're allowed to set: " + i).to(p);
+                                    }
+                                }
+                            } else {
+                                new Message("SetHome", Error.TOO_FEW_ARGUMENTS, "/sethome <home name>").to(p);
+                            }
+                        }
+                    }
                 }
             } else {
-            new Message(Mood.BAD, "Home", "This feature is disabled.").to(cs);
+                new Message("SetHome", Error.CONSOLE_NOT_ALLOWED).to(cs);
             }
+        } else {
+            new Message(Mood.BAD, "SetHome", "This feature is disabled.").to(cs);
         }
     }
+
+    @Command(command = "delhome", description = "Delete a home.", usage = "/delhome [home name]", aliases = "deletehome")
+    public void delhome(CommandSender cs, String[] args) {
+        if (getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
+            if (cs instanceof Player) {
+                TrilliumPlayer p = player((Player) cs);
+
+                if (p.hasPermission(Permission.Teleport.DELHOME)) {
+                    if (args.length != 0) {
+                        if (p.getHomes().containsKey(args[0])) {
+                            p.delHome(args[0]);
+                            new Message(Mood.GOOD, "DeleteHome", "Home '" + args[0] + "' successfully deleted.").to(p);
+                        } else {
+                            new Message(Mood.BAD, "DeleteHome", "You don't have a home with that name.").to(p);
+                        }
+                    } else {
+                        new Message("DeleteHome", Error.TOO_FEW_ARGUMENTS).to(p);
+                    }
+                } else {
+                    new Message("DeleteHome", Error.NO_PERMISSION).to(p);
+                }
+            } else {
+                new Message("DeleteHome", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            }
+        } else {
+            new Message(Mood.BAD, "DeleteHome", "This feature is disabled.").to(cs);
+        }
+    }
+
+    @Command(command = "homes", description = "View a list of all your homes.", usage = "/homes")
+    public void homes(CommandSender cs, String[] args) {
+        if (getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
+            if (cs instanceof Player) {
+                TrilliumPlayer p = player((Player) cs);
+
+                if (p.hasPermission(Permission.Teleport.VIEWHOME)) {
+
+                    p.getProxy().sendMessage(ChatColor.GREEN + "Homes                          Locations");
+                    p.getProxy().sendMessage(ChatColor.GRAY + "--------------------------------------------");
+                    for (Map.Entry<String, Location> homes : p.getHomes().entrySet()) {
+                        String loc = ChatColor.GRAY + "" +
+                                +homes.getValue().getBlockX()
+                                + ","
+                                + homes.getValue().getBlockY()
+                                + ","
+                                + homes.getValue().getBlockZ();
+                        p.getProxy().sendMessage(Utils.tablizer(ChatColor.AQUA + homes.getKey(), 24) + Utils.tablizer(loc, 10));
+                    }
+                } else {
+                    new Message("Homes", Error.NO_PERMISSION).to(p);
+                }
+            } else {
+                new Message("Homes", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            }
+        } else {
+            new Message(Mood.BAD, "Homes", "This feature is disabled.").to(cs);
+        }
+    }
+}

@@ -209,7 +209,7 @@ player-settings:
 kits:
   enabled: false
   kit-maker:
-    test-kit-1:
+    example-kit:
       cool-down: 10d
       items:
         stone_sword:
@@ -217,19 +217,33 @@ kits:
           durability: 50
         stone_pickaxe:
           name: "&aA cool pick"
+          enchantments:
+            - "DURABILITY:5"
+            - "DIG_SPEED:4"
         stone_axe:
           name: "&aWood Chopa"
+          enchantments:
+            - "DURABILITY:5"
+            - "DIG_SPEED:4"
         stone_shovel:
           name: "&aDiggy diggy hole"
+          enchantments:
+            - "DURABILITY:5"
+            - "DIG_SPEED:4"
         apple:
           name: "&4Yummy fresh apples"
-          lore: "&aSome say that these apples;&awhere indorced from the;&aheavens!"
+          lore:
+            - "&aSome say that these apples"
+            - "&awhere indorced from the"
+            - "&aheavens!"
           amount: 20
         written_book:
-          book: "example-book.txt"
+          book: "example-book"
           title: "&b&lWELCOME GUIDE"
           author: "Santa"
-          lore: "&eThe awesome example guide!;&eSome say that Santa himself wrote this book!"
+          lore:
+            - "&eThe awesome example guide!"
+            - "&eSome say that Santa himself wrote this book!"
           
 #---------------[ Ability ]---------------#
 ability:

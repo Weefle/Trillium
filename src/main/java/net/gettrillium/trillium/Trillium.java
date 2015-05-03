@@ -1,6 +1,5 @@
 package net.gettrillium.trillium;
 
-import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.serializer.LocationSerializer;
 import net.gettrillium.trillium.events.PlayerDeath;
@@ -15,8 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Trillium extends JavaPlugin {
 
@@ -45,14 +42,6 @@ public class Trillium extends JavaPlugin {
 
         generateFiles();
         Utils.reload();
-
-        int maxhomes = getConfig().getInt(Configuration.PlayerSettings.HOMES_MAX);
-        Map<String, Boolean> children = new HashMap<>();
-        for (int i = 1; i <= maxhomes; i++) {
-            String node = String.format(PERMISSION_BASE, i);
-            children.put(node, true);
-            //getServer().getPluginManager().addPermission(new Permission(node, children));
-        }
 
         try {
             Metrics metrics = new Metrics(this);

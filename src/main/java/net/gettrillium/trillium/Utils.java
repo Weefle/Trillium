@@ -11,9 +11,12 @@ import net.gettrillium.trillium.runnables.TpsRunnable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,6 +24,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Utils {
@@ -183,6 +187,42 @@ public class Utils {
         return "";
     }
 
+    private static double randomV() {
+        return Math.random() * 4 - 1;
+    }
+
+    public static void throwcats(Location original, Player p) {
+
+        final ArrayList<Ocelot> catList = new ArrayList<>();
+
+        for (int cats = 1; cats < 8; cats++) {
+
+            final Ocelot cat = original.getWorld().spawn(original, Ocelot.class);
+            cat.setVelocity(new Vector(randomV(), randomV() + 1, randomV()));
+            Random random = new Random();
+            int i = random.nextInt(Ocelot.Type.values().length);
+            cat.setCatType(Ocelot.Type.values()[i]);
+            cat.setTamed(true);
+            cat.setBaby();
+            cat.setOwner(p);
+            cat.setBreed(false);
+            cat.setSitting(true);
+            cat.setAgeLock(true);
+            cat.setAge(6000);
+
+            catList.add(cat);
+        }
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Ocelot cat : catList) {
+                    cat.setHealth(0);
+                }
+            }
+        }.runTaskLater(TrilliumAPI.getInstance(), 30);
+    }
+
     public static void reload() {
         Bukkit.getScheduler().cancelAllTasks();
         new BukkitRunnable() {
@@ -192,13 +232,13 @@ public class Utils {
 
                 Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
                 if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {
-                    Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AutoBroadcastRunnable(), Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Broadcast.FREQUENCY)), Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Broadcast.FREQUENCY)));
+                    Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AutoBroadcastRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Broadcast.FREQUENCY)));
                 }
                 if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Afk.AUTO_AFK_ENABLED)) {
-                    Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AFKRunnable(), Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Afk.AUTO_AFK_TIME)), Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Afk.AUTO_AFK_TIME)));
+                    Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AFKRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Afk.AUTO_AFK_TIME)));
                 }
                 if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
-                    Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new GroupManagerRunnable(), Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.GM.RELOAD)), Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.GM.RELOAD)));
+                    Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new GroupManagerRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.GM.RELOAD)));
                 }
             }
         }.runTaskLater(TrilliumAPI.getInstance(), 5);

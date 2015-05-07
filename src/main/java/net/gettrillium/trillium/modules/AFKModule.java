@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -33,12 +32,6 @@ public class AFKModule extends TrilliumModule {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-        TrilliumPlayer player = player(event.getPlayer());
-        player.active();
-    }
-
-    @EventHandler
-    public void onChat(PlayerCommandPreprocessEvent event) {
         TrilliumPlayer player = player(event.getPlayer());
         player.active();
     }

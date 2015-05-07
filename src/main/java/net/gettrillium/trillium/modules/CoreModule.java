@@ -28,56 +28,57 @@ public class CoreModule extends TrilliumModule {
         TrilliumAPI.loadPlayer(e.getPlayer());
 
         if (p.hasPlayedBefore()) {
-            String joinMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.JOINMESSAGE));
+            String joinMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.JOINMESSAGE));
             joinMessage = joinMessage.replace("[USERNAME]", p.getName());
             e.setJoinMessage(joinMessage);
         } else {
-            String joinMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.NEWJOINMESSAGE));
+            String joinMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.NEWJOINMESSAGE));
             joinMessage = joinMessage.replace("[USERNAME]", p.getName());
             e.setJoinMessage(joinMessage);
 
-            List<String> commands = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.PlayerSettings.COMMANDS_TO_RUN);
+            List<String> commands = getConfig().getStringList(Configuration.PlayerSettings.COMMANDS_TO_RUN);
             for (String command : commands) {
                 command = command.replace("[p]", p.getName());
                 command = ChatColor.translateAlternateColorCodes('&', command);
                 Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
             }
 
-            if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.PlayerSettings.TEMP_GOD_MODE_ENABLED)) {
+            if (getConfig().getBoolean(Configuration.PlayerSettings.TEMP_GOD_MODE_ENABLED)) {
                 final TrilliumPlayer player = player(p);
+
                 player.setGod(true);
                 new BukkitRunnable() {
                     public void run() {
                         player.setGod(false);
                     }
-                }.runTaskLater(TrilliumAPI.getInstance(), Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.TEMP_GOD_MODE_TIME)));
+                }.runTaskLater(TrilliumAPI.getInstance(), Utils.timeToTickConverter(getConfig().getString(Configuration.PlayerSettings.TEMP_GOD_MODE_TIME)));
             }
         }
 
-        //motd
+        // motd
         // world list?
         // maybe a "current online staff" list?
         // could define a trillium permission such as "trillium.staff.stafflist"
         // loop through all players with that permission and list em.
         if (p.hasPermission(Permission.Chat.MOTD)) {
-            List<String> motd = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
+            List<String> motd = getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
             for (String s : motd) {
                 s = s.replace("[USERNAME]", p.getName());
                 s = s.replace("[UUID]", p.getUniqueId().toString());
                 s = s.replace("[SLOTS]", "" + Bukkit.getMaxPlayers());
                 s = s.replace("[ONLINE]", "" + Bukkit.getOnlinePlayers().size());
-                s = s.replace("[UNIQUE]", getUniqueJoins());
-                s = s.replace("[IP-ADDRESS]", p.getAddress().getAddress().getAddress().toString());
+                s = s.replace("[UNIQUE]", "" + (Bukkit.getOfflinePlayers().length + Bukkit.getOnlinePlayers().size()));
+                s = s.replace("[IP-ADDRESS]", p.getAddress() + "");
                 s = s.replace("[NICKNAME]", TrilliumAPI.getPlayer(p).getDisplayName());
                 s = ChatColor.translateAlternateColorCodes('&', s);
                 p.sendMessage(s);
             }
         }
 
-        //Send report warning
+        // Send report warning
         if (p.hasPermission(Permission.Admin.REPORT_RECEIVER)) {
-            if (AdminModule.reportlist.size() > 0) {
-                new Message(Mood.BAD, "Reports", "There are " + AdminModule.reportlist.size() + " reports available for revision.").to(p);
+            if (AdminModule.reportList.size() > 0) {
+                new Message(Mood.BAD, "Reports", "There are " + AdminModule.reportList.size() + " reports available for revision.").to(p);
                 new Message(Mood.BAD, "Reports", "Do '/reports' to view them.").to(p);
             }
         }
@@ -87,21 +88,11 @@ public class CoreModule extends TrilliumModule {
             Utils.broadcastImportantMessage();
         }
     }
-    
-    // I wasn't sure where to put this so I just threw it here, you can move it whereever :)
-    public static String getUniqueJoins() {
-    	// getOfflinePlayers returns all players that have joined and are currently offline, that plus onlinePlayers..
-    	// it's pretty self explanatory.
-		int amount = Bukkit.getOfflinePlayers().length + Bukkit.getOnlinePlayers().size();
-		String total = String.valueOf(amount);
-		
-    	return total;
-    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        String quitMessage = ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.LEAVEMESSAGE));
+        String quitMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.LEAVEMESSAGE));
         quitMessage = quitMessage.replace("[USERNAME]", p.getName());
         e.setQuitMessage(quitMessage);
 

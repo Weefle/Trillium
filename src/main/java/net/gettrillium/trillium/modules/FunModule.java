@@ -1,5 +1,6 @@
 package net.gettrillium.trillium.modules;
 
+import net.gettrillium.trillium.Utils;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
@@ -8,15 +9,11 @@ import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
-import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
-
-import java.util.Random;
 
 public class FunModule extends TrilliumModule {
 
@@ -50,7 +47,7 @@ public class FunModule extends TrilliumModule {
                             ParticleEffect.EXPLOSION_LARGE.display((float) 1.5, (float) 1.5, (float) 1.5, (float) 0, 3, cat.getLocation(), 30);
                             ParticleEffect.SMOKE_LARGE.display((float) 1.5, (float) 1.5, (float) 1.5, (float) 0, 3, cat.getLocation(), 30);
                             p.getProxy().playSound(p.getProxy().getLocation(), Sound.EXPLODE, 10, 1);
-                            throwcats(cat.getLocation(), p.getProxy());
+                            Utils.throwcats(cat.getLocation(), p.getProxy());
                         }
                     }
                 }.runTaskTimer(TrilliumAPI.getInstance(), 1, 1);
@@ -63,25 +60,4 @@ public class FunModule extends TrilliumModule {
         }
     }
 
-    public double randomV() {
-        return Math.random() * 4 - 1;
-    }
-
-    public void throwcats(Location original, Player p) {
-
-        for (int cats = 1; cats < 8; cats++) {
-            final Ocelot cat = original.getWorld().spawn(original, Ocelot.class);
-            cat.setVelocity(new Vector(randomV(), randomV() + 1, randomV()));
-            Random random = new Random();
-            int i = random.nextInt(Ocelot.Type.values().length);
-            cat.setCatType(Ocelot.Type.values()[i]);
-            cat.setTamed(true);
-            cat.setBaby();
-            cat.setOwner(p);
-            cat.setBreed(false);
-            cat.setSitting(true);
-            cat.setAgeLock(true);
-            cat.setAge(6000);
-        }
-    }
 }

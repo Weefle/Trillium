@@ -51,6 +51,7 @@ public class Configuration {
         private static final String PVP = PREFIX + "pvp.";
         public static final String PVPENABLE = PVP + "enabled";
         public static final String TOGGLEPVP = PVP + "enable-toggle-pvp";
+        public static final String METRICS = PREFIX + "allow-metrics";
     }
 
     public static class PlayerSettings {

@@ -25,7 +25,9 @@ import java.util.List;
 
 public class AdminModule extends TrilliumModule {
 
-    public static ArrayList<String> reportlist = new ArrayList<>();
+    public static ArrayList<String> reportList = new ArrayList<>();
+    public static ArrayList<String> lagPrompt = new ArrayList<>();
+
 
     @Command(command = "chestfinder", description = "Track down any hidden chests.", usage = "/chestfinder [radius]", aliases = "cf")
     public void chestfinder(CommandSender cs, String[] args) {
@@ -111,7 +113,7 @@ public class AdminModule extends TrilliumModule {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Admin.SETSPAWN)) {
-            	
+
                 p.getProxy().getWorld().setSpawnLocation(p.getProxy().getLocation().getBlockX(), p.getProxy().getLocation().getBlockY(), p.getProxy().getLocation().getBlockZ());
                 new Message(Mood.GOOD, "Set Spawn", "Spawn location set. " + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ()).to(p);
 
@@ -122,7 +124,7 @@ public class AdminModule extends TrilliumModule {
             new Message("Set Spawn", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
-    
+
     @Command(command = "clearinventory", description = "Clear your own or someone else's inventory.", usage = "/clearinventory", aliases = {"clear", "clearinv", "ci"})
     public void clearinv(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
@@ -140,7 +142,7 @@ public class AdminModule extends TrilliumModule {
                     } else {
                         new Message("ClearInventory", Error.INVALID_PLAYER, args[0]).to(p);
                     }
-            	}
+                }
             }
         }
     }
@@ -150,28 +152,40 @@ public class AdminModule extends TrilliumModule {
         if (cs.hasPermission(Permission.Admin.LAG)) {
             if (args.length != 0) {
                 if (args[0].equalsIgnoreCase("clear")) {
+                    if (lagPrompt.contains(cs.getName())) {
+                        lagPrompt.remove(cs.getName());
 
-                    final long time = System.currentTimeMillis();
+                        final long time = System.currentTimeMillis();
 
-                    new Message(Mood.GENERIC, "Lag", "Before GC:").to(cs);
-                    Utils.printCurrentMemory(cs);
-                    cs.sendMessage(" ");
+                        new Message(Mood.GENERIC, "Lag", "Before GC:").to(cs);
+                        Utils.printCurrentMemory(cs);
+                        cs.sendMessage(" ");
 
-                    System.gc();
-                    new Message(Mood.GOOD, "Lag", "GC complete.").to(cs);
+                        System.gc();
+                        new Message(Mood.GOOD, "Lag", "GC complete.").to(cs);
 
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            cs.sendMessage(" ");
-                            new Message(Mood.GENERIC, "Lag", "After GC:").to(cs);
-                            Utils.printCurrentMemory(cs);
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                cs.sendMessage(" ");
+                                new Message(Mood.GENERIC, "Lag", "After GC:").to(cs);
+                                Utils.printCurrentMemory(cs);
 
-                            long need = System.currentTimeMillis() - time;
-                            new Message(Mood.GENERIC, "Lag", "GC took " + need / 1000L + " seconds.").to(cs);
+                                long need = System.currentTimeMillis() - time;
+                                new Message(Mood.GENERIC, "Lag", "GC took " + need / 1000L + " seconds.").to(cs);
 
-                        }
-                    }.runTaskLater(TrilliumAPI.getInstance(), 5);
+                            }
+                        }.runTaskLater(TrilliumAPI.getInstance(), 5);
+
+                    } else {
+                        lagPrompt.add(cs.getName());
+                        new Message(Mood.BAD, "Lag", "Wow there tiger!").to(cs);
+                        new Message(Mood.BAD, "Lag", "Running the lag clearing command can potentially do more harm").to(cs);
+                        new Message(Mood.BAD, "Lag", "than good if something goes wrong during the process!").to(cs);
+                        new Message(Mood.BAD, "Lag", "Are you " + ChatColor.RED + "" + ChatColor.BOLD + "SURE" + ChatColor.GRAY + " you want to continue?").to(cs);
+                        new Message(Mood.BAD, "Lag", "If yes, then run this command again.").to(cs);
+
+                    }
                 }
             } else {
 
@@ -324,7 +338,7 @@ public class AdminModule extends TrilliumModule {
                             + ChatColor.AQUA + p.getProxy().getLocation().getBlockZ() + ChatColor.BLUE + "} >> "
                             + ChatColor.GRAY + msg;
 
-                    reportlist.add(big);
+                    reportList.add(big);
                     new Message(Mood.GOOD, "Report", "Your report was submitted successfully.").to(p);
                     p.getProxy().sendMessage(ChatColor.YELLOW + "'" + ChatColor.GRAY + msg + ChatColor.YELLOW + "'");
 
@@ -354,7 +368,7 @@ public class AdminModule extends TrilliumModule {
             if (p.hasPermission(Permission.Admin.REPORT_RECEIVER)) {
                 if (args.length != 0) {
                     if (args[0].equalsIgnoreCase("clear")) {
-                        reportlist.clear();
+                        reportList.clear();
                         new Message(Mood.GOOD, "Reports", "Cleared report list.").to(p);
 
                     } else if (args[0].equalsIgnoreCase("remove")) {
@@ -363,10 +377,10 @@ public class AdminModule extends TrilliumModule {
                         } else {
                             if (StringUtils.isNumeric(args[1])) {
                                 int nb = Integer.parseInt(args[1]);
-                                if (nb > 0 && nb <= reportlist.size() + 1) {
+                                if (nb > 0 && nb <= reportList.size() + 1) {
                                     new Message(Mood.GOOD, "Reports", "Removed: " + nb).to(p);
-                                    p.getProxy().sendMessage(reportlist.get(nb - 1));
-                                    reportlist.remove(nb - 1);
+                                    p.getProxy().sendMessage(reportList.get(nb - 1));
+                                    reportList.remove(nb - 1);
 
                                 } else {
                                     new Message(Mood.BAD, "Reports", args[1] + " is either larger than the list index or smaller than 0.").to(p);
@@ -382,7 +396,7 @@ public class AdminModule extends TrilliumModule {
                 } else {
                     p.getProxy().sendMessage(ChatColor.BLUE + "Report List:");
                     int nb = 0;
-                    for (String big : reportlist) {
+                    for (String big : reportList) {
                         nb++;
                         p.getProxy().sendMessage(ChatColor.GRAY + "-" + ChatColor.AQUA + nb + ChatColor.GRAY + "- " + big);
                     }

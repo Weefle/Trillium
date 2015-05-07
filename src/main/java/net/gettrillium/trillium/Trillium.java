@@ -96,20 +96,27 @@ public class Trillium extends JavaPlugin {
             AdminModule.reportlist.add(s);
         }
 
-        URL url = getClass().getResource("/world.yml");
-        File dest = new File(getDataFolder() + "/Trillium Group Manager/worlds/world.yml");
+        URL world = getClass().getResource("/world.yml");
+        URL lordSaad = getClass().getResource("/LordSaad.yml");
+        URL book1 = getClass().getResource("/1.txt");
+        URL book2 = getClass().getResource("/2.txt");
+        URL book3 = getClass().getResource("/3.txt");
+
+        File bookDir1 = new File(getDataFolder() + "/example-book/1.txt");
+        File bookDir2 = new File(getDataFolder() + "/example-book/2.txt");
+        File bookDir3 = new File(getDataFolder() + "/example-book/3.txt");
+        File lordSaadDir = new File(getDataFolder() + "/Trillium Group Manager/players/LordSaad.yml");
+        File worldDir = new File(getDataFolder() + "/Trillium Group Manager/worlds/world.yml");
+
         try {
-            FileUtils.copyURLToFile(url, dest);
+            FileUtils.copyURLToFile(book1, bookDir1);
+            FileUtils.copyURLToFile(book2, bookDir2);
+            FileUtils.copyURLToFile(book3, bookDir3);
+            FileUtils.copyURLToFile(lordSaad, lordSaadDir);
+            FileUtils.copyURLToFile(world, worldDir);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        URL url2 = getClass().getResource("/LordSaad.yml");
-        File dest2 = new File(getDataFolder() + "/Trillium Group Manager/players/LordSaad.yml");
-        try {
-            FileUtils.copyURLToFile(url2, dest2);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

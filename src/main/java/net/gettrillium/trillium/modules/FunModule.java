@@ -47,7 +47,7 @@ public class FunModule extends TrilliumModule {
                             ParticleEffect.EXPLOSION_LARGE.display((float) 1.5, (float) 1.5, (float) 1.5, (float) 0, 3, cat.getLocation(), 30);
                             ParticleEffect.SMOKE_LARGE.display((float) 1.5, (float) 1.5, (float) 1.5, (float) 0, 3, cat.getLocation(), 30);
                             p.getProxy().playSound(p.getProxy().getLocation(), Sound.EXPLODE, 10, 1);
-                            Utils.throwcats(cat.getLocation(), p.getProxy());
+                            Utils.throwCats(cat.getLocation(), p.getProxy());
                         }
                     }
                 }.runTaskTimer(TrilliumAPI.getInstance(), 1, 1);

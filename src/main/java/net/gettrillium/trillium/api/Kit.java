@@ -50,7 +50,7 @@ public class Kit {
                             File[] pages = book.listFiles();
                             for (File page : pages != null ? pages : new File[0]) {
                                 if (StringUtils.isNumeric(page.getName())) {
-                                    String text = ChatColor.translateAlternateColorCodes('&', Utils.ReadFile(page));
+                                    String text = ChatColor.translateAlternateColorCodes('&', Utils.readFile(page));
                                     meta.setPage(Integer.parseInt(page.getName()), text);
                                 } else {
                                     TrilliumAPI.getInstance().getLogger().severe("Kits: Page '" + page.getName() + "' in book folder " + book.getName() + "' is NOT an integer. Cannot create book.");

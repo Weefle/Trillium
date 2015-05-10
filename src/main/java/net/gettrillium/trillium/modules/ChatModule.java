@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChatModule extends TrilliumModule {
@@ -498,6 +499,13 @@ public class ChatModule extends TrilliumModule {
     public void onChat(AsyncPlayerChatEvent event) {
         if (event.getPlayer().hasPermission(Permission.Chat.COLOR)) {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+        }
+
+        if (getConfig().getBoolean(Configuration.Chat.REDDIT_BOLD_ENABLED)) {
+            ArrayList<String> encapsulations = Utils.getEncapsulations(event.getMessage(), getConfig().getString(Configuration.Chat.REDDIT_BOLD_SYMBOL));
+            for (String encapsulated : encapsulations) {
+                event.setMessage(event.getMessage().replace(encapsulated, ChatColor.BOLD + "" + encapsulated));
+            }
         }
     }
 }

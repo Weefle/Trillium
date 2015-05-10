@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -66,11 +67,11 @@ public class Utils {
         }
         return centered;
     }
-    
+
     public static void clearChat(Player p) {
-    	for(int i = 0; i < 200; i++) {
-    		p.sendMessage("");
-    	}
+        for (int i = 0; i < 200; i++) {
+            p.sendMessage("");
+        }
     }
 
     // http://stackoverflow.com/a/12297231/4327834
@@ -165,7 +166,7 @@ public class Utils {
         p.getInventory().setArmorContents(null);
     }
 
-    public static String ReadFile(File f) {
+    public static String readFile(File f) {
 
         if (!f.exists()) {
             return "";
@@ -191,7 +192,7 @@ public class Utils {
         return Math.random() * 4 - 1;
     }
 
-    public static void throwcats(Location original, Player p) {
+    public static void throwCats(Location original, Player p) {
 
         final ArrayList<Ocelot> catList = new ArrayList<>();
 
@@ -220,7 +221,31 @@ public class Utils {
                     cat.setHealth(0);
                 }
             }
-        }.runTaskLater(TrilliumAPI.getInstance(), 30);
+        }.runTaskLater(TrilliumAPI.getInstance(), 50);
+    }
+
+    public static ArrayList<String> getEncapsulations(String message, String symbol) {
+        ArrayList<String> encapsulations = new ArrayList<>();
+        if (message.contains(symbol)) {
+            ArrayList<Integer> symbols = new ArrayList<>();
+            HashMap<Integer, Integer> patterns = new HashMap<>();
+
+            for (int index = message.indexOf(symbol); index >= 0; index = message.indexOf(symbol, index + 1))
+                symbols.add(index);
+
+            for (int start : symbols) {
+                for (int end : symbols) {
+                    if (start < end) {
+                        if (!patterns.containsKey(start) && !patterns.containsValue(end)) {
+                            encapsulations.add(message.substring(start, end));
+                            patterns.put(start, end);
+                        }
+                    }
+                }
+            }
+
+        }
+        return encapsulations;
     }
 
     public static void reload() {

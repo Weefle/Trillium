@@ -79,7 +79,25 @@ chat:
       allow-color-codes: true
   enable-death-messages: true
   # If set to true, death messages not appear.
-
+  twitter-mode:
+    symbol-@:
+    # When a player types @ followed by an online player's username. That name is highlighted with a formatting code
+    # and a tune is played/sent to said player.
+      enabled: true
+      format: "&l"
+    symbol-#:
+      # When a player types # followed by a word, that word is highlited with a formatting code
+      enabled: true
+      format: "&o"
+  reddit-mode:
+    italics:
+    # When a player encapsulates a word/sentence/letter with the defined symbol, the text between will become italicized
+      enabled: true
+      symbol: "*"
+    bold:
+    # When a player encapsulates a word/sentence/letter with the defined symbol, the text between will become bold
+      enabled: true
+      symbol: "**"
 #---------------[ Plugin Messages ]---------------#
 plugin-messages:
   # Format plugin messages

@@ -245,18 +245,18 @@ public class Utils {
         ArrayList<String> encapsulations = new ArrayList<>();
         if (message.contains(symbol)) {
             ArrayList<Integer> symbols = new ArrayList<>();
-            HashMap<Integer, Integer> patterns = new HashMap<>();
 
             for (int index = message.indexOf(symbol); index >= 0; index = message.indexOf(symbol, index + 1)) {
                 symbols.add(index);
             }
 
+            HashMap<Integer, Integer> patterns = new HashMap<>();
             for (int start : symbols) {
                 for (int end : symbols) {
                     if (start < end) {
                         if ((start + 1) != end) {
                             if (!patterns.containsKey(start) && !patterns.containsValue(end)) {
-                                encapsulations.add(message.substring(start, end));
+                                encapsulations.add(message.substring(start, end).replace(symbol, ""));
                                 patterns.put(start, end);
                             }
                         }

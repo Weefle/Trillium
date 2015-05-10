@@ -96,6 +96,9 @@ chat:
     # and a tune is played/sent to said player.
       enabled: true
       format: "&l"
+      tune:
+        play-tune: true
+        tune-name: "example-tune"
     symbol-#:
       # When a player types # followed by a word, that word is highlited with a formatting code
       enabled: true

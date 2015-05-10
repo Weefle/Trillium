@@ -43,6 +43,8 @@ public class Configuration {
         public static final String CCCOLOR = CHATCHANNEL + "allow-color-codes";
         public static final String TWITTER_AT_ENABLED = PREFIX + "twitter-mode.symbol-@.enabled";
         public static final String TWITTER_AT_FORMAT = PREFIX + "twitter-mode.symbol-@.format";
+        public static final String TWITTER_AT_TUNE_ENABLED = PREFIX + "twitter-mode.symbol-@.tune.play-tune";
+        public static final String TWITTER_AT_TUNE_NAME = PREFIX + "twitter-mode.symbol-@.tune.tune-name";
         public static final String TWITTER_HASH_ENABLED = PREFIX + "twitter-mode.symbol-#.enabled";
         public static final String TWITTER_HASH_FORMAT = PREFIX + "twitter-mode.symbol-#.format";
         public static final String REDDIT_ITALICS_ENABLED = PREFIX + "reddit-mode.italics.enabled";

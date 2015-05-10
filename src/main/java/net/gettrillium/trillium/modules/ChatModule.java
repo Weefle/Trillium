@@ -1,10 +1,7 @@
 package net.gettrillium.trillium.modules;
 
 import net.gettrillium.trillium.Utils;
-import net.gettrillium.trillium.api.Configuration;
-import net.gettrillium.trillium.api.Permission;
-import net.gettrillium.trillium.api.TrilliumAPI;
-import net.gettrillium.trillium.api.TrilliumModule;
+import net.gettrillium.trillium.api.*;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
@@ -519,6 +516,11 @@ public class ChatModule extends TrilliumModule {
             ArrayList<String> ats = Utils.getWordAfterSymbol(event.getMessage(), "@");
             for (String at : ats) {
                 event.setMessage(event.getMessage().replace(at, ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.Chat.TWITTER_AT_FORMAT)) + at));
+            }
+            if (ats.size() != 0) {
+                if (getConfig().getBoolean(Configuration.Chat.TWITTER_AT_TUNE_ENABLED)) {
+                    new Tune(Configuration.Chat.TWITTER_AT_TUNE_NAME).play(event.getPlayer());
+                }
             }
         }
 

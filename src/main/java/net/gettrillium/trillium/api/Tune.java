@@ -20,7 +20,7 @@ public class Tune {
         tune = Utils.readFileLines(new File(TrilliumAPI.getInstance().getDataFolder() + "/Tunes/" + name + ".txt"));
     }
 
-    public void Play() {
+    public void play() {
         final int index = tune.size();
 
         new BukkitRunnable() {
@@ -57,7 +57,7 @@ public class Tune {
         }.runTaskTimer(TrilliumAPI.getInstance(), 0, 1);
     }
 
-    public void Play(final Player p) {
+    public void play(final Player p) {
         final int index = tune.size();
 
         new BukkitRunnable() {
@@ -92,7 +92,7 @@ public class Tune {
         }.runTaskTimer(TrilliumAPI.getInstance(), 0, 1);
     }
 
-    public void Play(final TrilliumPlayer p) {
+    public void play(final TrilliumPlayer p) {
         final int index = tune.size();
 
         new BukkitRunnable() {

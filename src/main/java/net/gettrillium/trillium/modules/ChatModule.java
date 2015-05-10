@@ -516,16 +516,16 @@ public class ChatModule extends TrilliumModule {
         }
 
         if (getConfig().getBoolean(Configuration.Chat.TWITTER_AT_ENABLED)) {
-            ArrayList<String> ats = Utils.getEncapsulations(event.getMessage(), "@");
+            ArrayList<String> ats = Utils.getWordAfterSymbol(event.getMessage(), "@");
             for (String at : ats) {
                 event.setMessage(event.getMessage().replace(at, ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.Chat.TWITTER_AT_FORMAT)) + at));
             }
         }
 
         if (getConfig().getBoolean(Configuration.Chat.TWITTER_HASH_ENABLED)) {
-            ArrayList<String> hashes = Utils.getEncapsulations(event.getMessage(), "#");
+            ArrayList<String> hashes = Utils.getWordAfterSymbol(event.getMessage(), "#");
             for (String hash : hashes) {
-                event.setMessage(event.getMessage().replace(hash, ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.Chat.TWITTER_AT_FORMAT)) + hash));
+                event.setMessage(event.getMessage().replace(hash, ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.Chat.TWITTER_HASH_FORMAT)) + hash));
             }
         }
     }

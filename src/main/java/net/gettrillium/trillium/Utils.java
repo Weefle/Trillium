@@ -188,6 +188,23 @@ public class Utils {
         return "";
     }
 
+    public static ArrayList<String> readFileLines(File f) {
+        ArrayList<String> list = new ArrayList<>();
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(f));
+
+            String str;
+
+            while ((str = in.readLine()) != null) {
+                list.add(str);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     private static double randomV() {
         return Math.random() * 4 - 1;
     }

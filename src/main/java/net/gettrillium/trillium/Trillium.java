@@ -103,9 +103,9 @@ public class Trillium extends JavaPlugin {
         URL book2 = getClass().getResource("/2.txt");
         URL book3 = getClass().getResource("/3.txt");
 
-        File bookDir1 = new File(getDataFolder() + "/books/example-book/1.txt");
-        File bookDir2 = new File(getDataFolder() + "/books/example-book/2.txt");
-        File bookDir3 = new File(getDataFolder() + "/books/example-book/3.txt");
+        File bookDir1 = new File(getDataFolder() + "/Books/example-book/1.txt");
+        File bookDir2 = new File(getDataFolder() + "/Books/example-book/2.txt");
+        File bookDir3 = new File(getDataFolder() + "/Books/example-book/3.txt");
         File lordSaadDir = new File(getDataFolder() + "/Trillium Group Manager/players/LordSaad.yml");
         File worldDir = new File(getDataFolder() + "/Trillium Group Manager/worlds/world.yml");
 

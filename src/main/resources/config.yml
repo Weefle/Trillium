@@ -53,6 +53,17 @@ server:
     # You can use permission: tr.teleport.cooldown-exempt to remove cooldowns for specific players or groups.
     cooldown-time: "5s"
     # You can use s for seconds, m for minutes, and h for hours.
+  tune-instrument: "PIANO"
+  # Can be: PIANO, BASS_DRUM, BASS_GUITAR, SNAPE_DRUM, STICKS
+  # To make a new tune, simple make a new text file in the Tunes folder with the name of your tune.
+  # time interval between each note is 1 tick
+  # an empty line = 1 tick silence
+  # 1 dot = lowest pitch
+  # more dots = higher pitch
+  tune-note: "NATURAL"
+  # Can be: NATURAL, sharp, flat
+  tune-tone: "A"
+  # Can be a letter from A to G
 
 #---------------[ Chat ]---------------#
 chat:

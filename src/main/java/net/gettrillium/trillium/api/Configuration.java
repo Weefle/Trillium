@@ -60,6 +60,9 @@ public class Configuration {
         public static final String PVPENABLE = PVP + "enabled";
         public static final String TOGGLEPVP = PVP + "enable-toggle-pvp";
         public static final String METRICS = PREFIX + "allow-metrics";
+        public static final String INSTRUMENT = PREFIX + "tune-instrument";
+        public static final String NOTE = PREFIX + "tune-note";
+        public static final String TONE = PREFIX + "tune-tone";
     }
 
     public static class PlayerSettings {

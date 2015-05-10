@@ -507,5 +507,12 @@ public class ChatModule extends TrilliumModule {
                 event.setMessage(event.getMessage().replace(encapsulated, ChatColor.BOLD + "" + encapsulated));
             }
         }
+
+        if (getConfig().getBoolean(Configuration.Chat.REDDIT_ITALICS_ENABLED)) {
+            ArrayList<String> encapsulations = Utils.getEncapsulations(event.getMessage(), getConfig().getString(Configuration.Chat.REDDIT_ITALICS_SYMBOL));
+            for (String encapsulated : encapsulations) {
+                event.setMessage(event.getMessage().replace(encapsulated, ChatColor.ITALIC + "" + encapsulated));
+            }
+        }
     }
 }

@@ -236,9 +236,11 @@ public class Utils {
             for (int start : symbols) {
                 for (int end : symbols) {
                     if (start < end) {
-                        if (!patterns.containsKey(start) && !patterns.containsValue(end)) {
-                            encapsulations.add(message.substring(start, end));
-                            patterns.put(start, end);
+                        if ((start + 1) != end) {
+                            if (!patterns.containsKey(start) && !patterns.containsValue(end)) {
+                                encapsulations.add(message.substring(start, end));
+                                patterns.put(start, end);
+                            }
                         }
                     }
                 }

@@ -19,9 +19,4 @@ public class UtilsTest {
         assertEquals("00:01:05", Utils.TimeToString(65 * 20));
         assertEquals("00:03:20", Utils.TimeToString(200 * 20));
     }
-
-    @Test
-    public void getEcapsulationTest() {
-        assertEquals("bah", Utils.getEncapsulation("potato potato *bah* potato potato", "*"));
-    }
 }

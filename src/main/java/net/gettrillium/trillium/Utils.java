@@ -230,8 +230,9 @@ public class Utils {
             ArrayList<Integer> symbols = new ArrayList<>();
             HashMap<Integer, Integer> patterns = new HashMap<>();
 
-            for (int index = message.indexOf(symbol); index >= 0; index = message.indexOf(symbol, index + 1))
+            for (int index = message.indexOf(symbol); index >= 0; index = message.indexOf(symbol, index + 1)) {
                 symbols.add(index);
+            }
 
             for (int start : symbols) {
                 for (int end : symbols) {
@@ -248,6 +249,19 @@ public class Utils {
 
         }
         return encapsulations;
+    }
+
+    public static ArrayList<String> getWordAfterSymbol(String message, String symbol) {
+        ArrayList<String> words = new ArrayList<>();
+        if (message.contains(symbol)) {
+            String[] slices = message.split(" ");
+            for (String word : slices) {
+                if (word.startsWith(symbol)) {
+                    words.add(word);
+                }
+            }
+        }
+        return words;
     }
 
     public static void reload() {

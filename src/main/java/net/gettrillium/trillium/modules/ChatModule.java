@@ -499,16 +499,16 @@ public class ChatModule extends TrilliumModule {
         }
 
         if (getConfig().getBoolean(Configuration.Chat.REDDIT_BOLD_ENABLED)) {
-            ArrayList<String> encapsulations = Utils.getEncapsulations(event.getMessage(), getConfig().getString(Configuration.Chat.REDDIT_BOLD_SYMBOL));
+            ArrayList<String> encapsulations = Utils.redditReformat(event.getMessage());
             for (String encapsulated : encapsulations) {
-                event.setMessage(event.getMessage().replace(encapsulated, ChatColor.BOLD + "" + encapsulated));
+                event.setMessage(event.getMessage().replace(ChatColor.RESET + encapsulated, encapsulated));
             }
         }
 
         if (getConfig().getBoolean(Configuration.Chat.REDDIT_ITALICS_ENABLED)) {
-            ArrayList<String> encapsulations = Utils.getEncapsulations(event.getMessage(), getConfig().getString(Configuration.Chat.REDDIT_ITALICS_SYMBOL));
+            ArrayList<String> encapsulations = Utils.redditReformat(event.getMessage());
             for (String encapsulated : encapsulations) {
-                event.setMessage(event.getMessage().replace(encapsulated, ChatColor.ITALIC + "" + encapsulated));
+                event.setMessage(event.getMessage().replace(ChatColor.RESET + encapsulated, encapsulated));
             }
         }
 
@@ -519,7 +519,7 @@ public class ChatModule extends TrilliumModule {
             }
             if (ats.size() != 0) {
                 if (getConfig().getBoolean(Configuration.Chat.TWITTER_AT_TUNE_ENABLED)) {
-                    new Tune(Configuration.Chat.TWITTER_AT_TUNE_NAME).play(event.getPlayer());
+                    new Tune(getConfig().getString(Configuration.Chat.TWITTER_AT_TUNE_NAME)).play(event.getPlayer());
                 }
             }
         }

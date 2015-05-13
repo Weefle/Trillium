@@ -48,9 +48,7 @@ public class Configuration {
         public static final String TWITTER_HASH_ENABLED = PREFIX + "twitter-mode.symbol-#.enabled";
         public static final String TWITTER_HASH_FORMAT = PREFIX + "twitter-mode.symbol-#.format";
         public static final String REDDIT_ITALICS_ENABLED = PREFIX + "reddit-mode.italics.enabled";
-        public static final String REDDIT_ITALICS_SYMBOL = PREFIX + "reddit-mode.italics.symbol";
         public static final String REDDIT_BOLD_ENABLED = PREFIX + "reddit-mode.bold.enabled";
-        public static final String REDDIT_BOLD_SYMBOL = PREFIX + "reddit-mode.bold.symbol";
     }
 
     public static class Server {

@@ -241,31 +241,59 @@ public class Utils {
         }.runTaskLater(TrilliumAPI.getInstance(), 50);
     }
 
-    public static ArrayList<String> getEncapsulations(String message, String symbol) {
-        ArrayList<String> encapsulations = new ArrayList<>();
-        if (message.contains(symbol)) {
-            ArrayList<Integer> symbols = new ArrayList<>();
+    public static ArrayList<String> redditReformat(String message) {
+        ArrayList<String> single = new ArrayList<>();
+        ArrayList<String> doubl = new ArrayList<>();
+        ArrayList<String> fin = new ArrayList<>();
 
-            for (int index = message.indexOf(symbol); index >= 0; index = message.indexOf(symbol, index + 1)) {
-                symbols.add(index);
+        if (message.contains("*") && !message.contains("**")) {
+            ArrayList<Integer> asterisks = new ArrayList<>();
+
+            for (int index = message.indexOf("*"); index >= 0; index = message.indexOf("*", index + 1)) {
+                asterisks.add(index);
             }
 
             HashMap<Integer, Integer> patterns = new HashMap<>();
-            for (int start : symbols) {
-                for (int end : symbols) {
+            for (int start : asterisks) {
+                for (int end : asterisks) {
                     if (start < end) {
                         if ((start + 1) != end) {
                             if (!patterns.containsKey(start) && !patterns.containsValue(end)) {
-                                encapsulations.add(message.substring(start, end).replace(symbol, ""));
+                                single.add(message.substring(start, end));
                                 patterns.put(start, end);
+                            }
+                        } else {
+                            if (message.charAt(start + 1) == message.charAt(start)) {
+                                if (message.charAt(end + 1) == message.charAt(end)) {
+
+                                    ArrayList<Integer> doubleasterisks = new ArrayList<>();
+
+                                    if (!patterns.containsKey(start) && !patterns.containsValue(end)) {
+                                        doubl.add(message.substring(start + 2, end - 1));
+                                        if (doubleasterisks.size() < 2) {
+                                            doubleasterisks.add(start + end);
+                                        } else {
+                                            patterns.put(doubleasterisks.get(1), doubleasterisks.get(2));
+                                            doubleasterisks.clear();
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-
         }
-        return encapsulations;
+
+        for (String s : single) {
+            s = ChatColor.ITALIC + s;
+            fin.add(s);
+        }
+        for (String d : doubl) {
+            d = ChatColor.ITALIC + d;
+            fin.add(d);
+        }
+        return fin;
     }
 
     public static ArrayList<String> getWordAfterSymbol(String message, String symbol) {

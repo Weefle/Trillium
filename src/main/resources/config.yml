@@ -105,13 +105,11 @@ chat:
       format: "&o"
   reddit-mode:
     italics:
-    # When a player encapsulates a word/sentence/letter with the defined symbol, the text between will become italicized
+    # When a player encapsulates a word/sentence/letter with the ' * ' symbol, the text between will become italicized
       enabled: true
-      symbol: "*"
     bold:
-    # When a player encapsulates a word/sentence/letter with the defined symbol, the text between will become bold
+    # When a player encapsulates a word/sentence/letter with the ' ** ' symbol, the text between will become bold
       enabled: true
-      symbol: "**"
 #---------------[ Plugin Messages ]---------------#
 plugin-messages:
   # Format plugin messages

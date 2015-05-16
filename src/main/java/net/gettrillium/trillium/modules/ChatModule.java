@@ -52,26 +52,27 @@ public class ChatModule extends TrilliumModule {
             new Message("Motd", Error.NO_PERMISSION).to(cs);
         }
     }
-    
+
     @Command(command = "clearchat", description = "Clear global chat or a single players chat", usage = "/clearchat", aliases = {"cc", ""})
     public void clearchat(CommandSender cs, String[] args) {
         if (cs instanceof Player && cs.hasPermission(Permission.Chat.CLEARCHAT)) {
-        	if(!(args.length >= 0)) {
-        		Player p = (Player)cs;
-        		
-        		for(Player pl : Bukkit.getOnlinePlayers()) {
-        			Utils.clearChat(pl);
-        		}
-        	} else {
-        		Player target = Bukkit.getPlayer(args[0]);
-        		
-        		if(target != null) {
-        			Utils.clearChat(target);
-        			new Message(Mood.GOOD, "ClearChat", ChatColor.AQUA + target.getName() + "'s chat has been cleared!").to(cs);;
-        		} else {
-        			new Message("ClearChat", Error.INVALID_PLAYER, args[0]).to(cs);
-        		}
-        	}
+            if (!(args.length >= 0)) {
+                Player p = (Player) cs;
+
+                for (Player pl : Bukkit.getOnlinePlayers()) {
+                    Utils.clearChat(pl);
+                }
+            } else {
+                Player target = Bukkit.getPlayer(args[0]);
+
+                if (target != null) {
+                    Utils.clearChat(target);
+                    new Message(Mood.GOOD, "ClearChat", ChatColor.AQUA + target.getName() + "'s chat has been cleared!").to(cs);
+                    ;
+                } else {
+                    new Message("ClearChat", Error.INVALID_PLAYER, args[0]).to(cs);
+                }
+            }
         }
     }
 
@@ -499,16 +500,14 @@ public class ChatModule extends TrilliumModule {
         }
 
         if (getConfig().getBoolean(Configuration.Chat.REDDIT_BOLD_ENABLED)) {
-            ArrayList<String> encapsulations = Utils.redditReformat(event.getMessage());
-            for (String encapsulated : encapsulations) {
-                event.setMessage(event.getMessage().replace(ChatColor.RESET + encapsulated, encapsulated));
+            for (String encased : Utils.doubleAsteriskFinder(event.getMessage())) {
+                event.setMessage(event.getMessage().replace(encased, ChatColor.BOLD + encased));
             }
         }
 
         if (getConfig().getBoolean(Configuration.Chat.REDDIT_ITALICS_ENABLED)) {
-            ArrayList<String> encapsulations = Utils.redditReformat(event.getMessage());
-            for (String encapsulated : encapsulations) {
-                event.setMessage(event.getMessage().replace(ChatColor.RESET + encapsulated, encapsulated));
+            for (String encased : Utils.singleAsteriskFinder(event.getMessage())) {
+                event.setMessage(event.getMessage().replace(encased, ChatColor.ITALIC + encased));
             }
         }
 

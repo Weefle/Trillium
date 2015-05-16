@@ -57,7 +57,7 @@ public class Kit {
                                 }
                             }
                         } else {
-                            TrilliumAPI.getInstance().getLogger().severe("Kits: Found 'written_book' but could not find book directory of '" + book.getName() + "'. Ignoring...");
+                            TrilliumAPI.getInstance().getLogger().severe("Kits: Found 'written_book' but could not find book directory of '" + book.getName() + "' directory. Ignoring...");
                         }
                     } else {
                         TrilliumAPI.getInstance().getLogger().severe("Kits: Found 'written_book' but no book directory was specified. Ignoring...");

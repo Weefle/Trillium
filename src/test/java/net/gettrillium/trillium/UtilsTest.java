@@ -1,6 +1,5 @@
 package net.gettrillium.trillium;
 
-import org.bukkit.ChatColor;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -25,10 +24,8 @@ public class UtilsTest {
 
     @Test
     public void getEncapsulationsTest() {
-        ArrayList<String> ex = new ArrayList<>();
-        ex.add(ChatColor.ITALIC + "*lol*");
-
-        assertEquals(ex, Utils.redditReformat("haha *lol* potato"));
-
+        ArrayList<String> tests = new ArrayList<>();
+        tests.add("lol");
+        assertEquals(tests, Utils.singleAsteriskFinder("haha *lol* potato"));
     }
 }

@@ -23,10 +23,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utils {
 
@@ -241,59 +242,26 @@ public class Utils {
         }.runTaskLater(TrilliumAPI.getInstance(), 50);
     }
 
-    public static ArrayList<String> redditReformat(String message) {
-        ArrayList<String> single = new ArrayList<>();
-        ArrayList<String> doubl = new ArrayList<>();
-        ArrayList<String> fin = new ArrayList<>();
-
-        if (message.contains("*") && !message.contains("**")) {
-            ArrayList<Integer> asterisks = new ArrayList<>();
-
-            for (int index = message.indexOf("*"); index >= 0; index = message.indexOf("*", index + 1)) {
-                asterisks.add(index);
-            }
-
-            HashMap<Integer, Integer> patterns = new HashMap<>();
-            for (int start : asterisks) {
-                for (int end : asterisks) {
-                    if (start < end) {
-                        if ((start + 1) != end) {
-                            if (!patterns.containsKey(start) && !patterns.containsValue(end)) {
-                                single.add(message.substring(start, end));
-                                patterns.put(start, end);
-                            }
-                        } else {
-                            if (message.charAt(start + 1) == message.charAt(start)) {
-                                if (message.charAt(end + 1) == message.charAt(end)) {
-
-                                    ArrayList<Integer> doubleasterisks = new ArrayList<>();
-
-                                    if (!patterns.containsKey(start) && !patterns.containsValue(end)) {
-                                        doubl.add(message.substring(start + 2, end - 1));
-                                        if (doubleasterisks.size() < 2) {
-                                            doubleasterisks.add(start + end);
-                                        } else {
-                                            patterns.put(doubleasterisks.get(1), doubleasterisks.get(2));
-                                            doubleasterisks.clear();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    public static ArrayList<String> singleAsteriskFinder(String message) {
+        ArrayList<String> encased = new ArrayList<>();
+        Pattern p = Pattern.compile("\\*([^\"]*)\\*");
+        Matcher m = p.matcher(message);
+        while (m.find()) {
+            encased.add(m.group().replace("*", ""));
         }
 
-        for (String s : single) {
-            s = ChatColor.ITALIC + s;
-            fin.add(s);
+        return encased;
+    }
+
+    public static ArrayList<String> doubleAsteriskFinder(String message) {
+        ArrayList<String> encased = new ArrayList<>();
+        Pattern p = Pattern.compile("\\**([^\"]*)\\*");
+        Matcher m = p.matcher(message);
+        while (m.find()) {
+            encased.add(m.group().replace("*", ""));
         }
-        for (String d : doubl) {
-            d = ChatColor.ITALIC + d;
-            fin.add(d);
-        }
-        return fin;
+
+        return encased;
     }
 
     public static ArrayList<String> getWordAfterSymbol(String message, String symbol) {

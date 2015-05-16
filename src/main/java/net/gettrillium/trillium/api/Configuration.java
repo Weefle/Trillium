@@ -41,12 +41,15 @@ public class Configuration {
         public static final String CCENABLED = CHATCHANNEL + "enabled";
         public static final String CCFORMAT = CHATCHANNEL + "format";
         public static final String CCCOLOR = CHATCHANNEL + "allow-color-codes";
-        public static final String TWITTER_AT_ENABLED = PREFIX + "twitter-mode.symbol-@.enabled";
-        public static final String TWITTER_AT_FORMAT = PREFIX + "twitter-mode.symbol-@.format";
-        public static final String TWITTER_AT_TUNE_ENABLED = PREFIX + "twitter-mode.symbol-@.tune.play-tune";
-        public static final String TWITTER_AT_TUNE_NAME = PREFIX + "twitter-mode.symbol-@.tune.tune-name";
-        public static final String TWITTER_HASH_ENABLED = PREFIX + "twitter-mode.symbol-#.enabled";
-        public static final String TWITTER_HASH_FORMAT = PREFIX + "twitter-mode.symbol-#.format";
+        private static String TWITTER = PREFIX + "twitter-mode.";
+        public static final String TWITTER_AT_ENABLED = TWITTER + "symbol-@.enabled";
+        public static final String TWITTER_AT_FORMAT = TWITTER + "symbol-@.format";
+        public static final String TWITTER_AT_TUNE_ENABLED = TWITTER + "symbol-@.tune.play-tune";
+        public static final String TWITTER_AT_TUNE_NAME = TWITTER + ".symbol-@.tune.tune-name";
+        public static final String TWITTER_AT_CHECK_ACCOUNT_ONLINE = TWITTER + ".symbol-@.check-if-account-is-real";
+        public static final String TWITTER_AT_CHECK_USERNAME_ONLINE = TWITTER + ".symbol-@.check-if-username-is-online";
+        public static final String TWITTER_HASH_ENABLED = TWITTER + "symbol-#.enabled";
+        public static final String TWITTER_HASH_FORMAT = TWITTER + "symbol-#.format";
         public static final String REDDIT_ITALICS_ENABLED = PREFIX + "reddit-mode.italics.enabled";
         public static final String REDDIT_BOLD_ENABLED = PREFIX + "reddit-mode.bold.enabled";
     }

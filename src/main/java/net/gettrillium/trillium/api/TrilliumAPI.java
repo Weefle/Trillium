@@ -5,18 +5,17 @@ import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.command.TrilliumCommand;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.api.serializer.Serializer;
+import net.gettrillium.trillium.modules.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.SimplePluginManager;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class TrilliumAPI {
     private static Trillium instance;
@@ -71,10 +70,29 @@ public class TrilliumAPI {
     }
 
     public static void disposePlayer(Player proxy) {
-        if (players.containsKey(proxy.getUniqueId())) {
+        if (isLoaded(proxy)) {
             TrilliumPlayer player = players.remove(proxy.getUniqueId());
             player.dispose();
-        } // else { means that they are already unloaded... right?
+        }
+    }
+
+    public static void disposePlayers() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (isLoaded(player)) {
+                TrilliumPlayer p = players.remove(player.getUniqueId());
+                p.dispose();
+            }
+        }
+    }
+
+    public static void loadPlayers() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!players.containsKey(player.getUniqueId())) {
+                TrilliumPlayer p = new TrilliumPlayer(player);
+                p.load();
+                players.put(player.getUniqueId(), p);
+            }
+        }
     }
 
     public static File getPlayerFolder() {
@@ -96,9 +114,33 @@ public class TrilliumAPI {
 
     public static void registerModule(TrilliumModule module) {
         instance.getServer().getPluginManager().registerEvents(module, instance);
-        registerCommand(module);
+        registerCommands(module);
         module.register();
         modules.put(module.getClass(), module);
+    }
+
+    public static void registerModules() {
+        TrilliumAPI.registerModule(new AFKModule());
+        TrilliumAPI.registerModule(new PunishModule());
+        TrilliumAPI.registerModule(new AbilityModule());
+        TrilliumAPI.registerModule(new AdminModule());
+        TrilliumAPI.registerModule(new CoreModule());
+        TrilliumAPI.registerModule(new TeleportModule());
+        TrilliumAPI.registerModule(new ChatModule());
+        TrilliumAPI.registerModule(new FunModule());
+        TrilliumAPI.registerModule(new CommandBinderModule());
+        TrilliumAPI.registerModule(new KitModule());
+    }
+
+    public static void unregisterModules() {
+        HandlerList.unregisterAll();
+        Iterator it = modules.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry item = (Map.Entry) it.next();
+            unregisterCommands((TrilliumModule) item.getValue());
+            ((TrilliumModule) item.getValue()).unregister();
+            it.remove();
+        }
     }
 
     public static boolean isModuleEnabled(Class<? extends TrilliumModule> module) {
@@ -114,7 +156,7 @@ public class TrilliumAPI {
         return players.values();
     }
 
-    public static void registerCommand(TrilliumModule module) {
+    public static void registerCommands(TrilliumModule module) {
         try {
             Field field = SimplePluginManager.class.getDeclaredField("commandMap");
             field.setAccessible(true);
@@ -126,6 +168,17 @@ public class TrilliumAPI {
                     commandMap.register("trillium", c);
                 }
             }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void unregisterCommands(TrilliumModule module) {
+        try {
+            Field field = SimplePluginManager.class.getDeclaredField("commandMap");
+            field.setAccessible(true);
+            CommandMap commandMap = (CommandMap) (field.get(getInstance().getServer().getPluginManager()));
+            commandMap.clearCommands();
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }

@@ -27,7 +27,44 @@ public class AdminModule extends TrilliumModule {
 
     public static ArrayList<String> reportList = new ArrayList<>();
     public static ArrayList<String> lagPrompt = new ArrayList<>();
+    public static ArrayList<String> reloadPrompt = new ArrayList<>();
 
+    @Command(command = "trillium", description = "The main command of the plugin.", usage = "/tr", aliases = "tr")
+    public void trillium(CommandSender cs, String[] args) {
+        if (args.length == 0) {
+            cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
+            cs.sendMessage(ChatColor.GRAY + "            Plugin made with love by:");
+            cs.sendMessage(ChatColor.GRAY + "       LordSaad, VortexSeven, Turbotailz,");
+            cs.sendMessage(ChatColor.GRAY + "          samczsun, hintss, and colt");
+            cs.sendMessage(ChatColor.DARK_RED + "                         <3");
+            cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
+            cs.sendMessage(ChatColor.GRAY + "Version: " + ChatColor.YELLOW + TrilliumAPI.getInstance().getDescription().getVersion());
+            cs.sendMessage(ChatColor.GRAY + "Support email: " + ChatColor.YELLOW + "support@gettrillium.net");
+            cs.sendMessage(ChatColor.GRAY + "Website: " + ChatColor.YELLOW + "http://www.gettrillium.net/");
+            cs.sendMessage(ChatColor.GRAY + "Resource page: " + ChatColor.YELLOW + "http://www.spigotmc.org/resources/trillium.3882/");
+        } else {
+            if (args[0].equalsIgnoreCase("reload")) {
+                if (cs.hasPermission(Permission.Admin.TRILLIUM)) {
+                    if (reloadPrompt.contains(cs.getName())) {
+                        reloadPrompt.remove(cs.getName());
+                        Utils.reload();
+                        cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
+                        cs.sendMessage(ChatColor.GRAY + "         Plugin successfully reloaded");
+                        cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
+                    } else {
+                        reloadPrompt.add(cs.getName());
+                        new Message(Mood.BAD, "Trillium", "Wow there tiger!").to(cs);
+                        new Message(Mood.BAD, "Trillium", "Running the reload command isn't a walk in the park!").to(cs);
+                        new Message(Mood.BAD, "Trillium", "It's not advised to run this command frequently as it unloads and reloads a lot of things.").to(cs);
+                        new Message(Mood.BAD, "Trillium", "Are you " + ChatColor.RED + "" + ChatColor.BOLD + "SURE" + ChatColor.GRAY + " you want to continue?").to(cs);
+                        new Message(Mood.BAD, "Trillium", "If yes, then run this command again.").to(cs);
+                    }
+                } else {
+                    new Message("Trillium", Error.NO_PERMISSION).to(cs);
+                }
+            }
+        }
+    }
 
     @Command(command = "chestfinder", description = "Track down any hidden chests.", usage = "/chestfinder [radius]", aliases = "cf")
     public void chestfinder(CommandSender cs, String[] args) {

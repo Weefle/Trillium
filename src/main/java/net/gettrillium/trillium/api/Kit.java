@@ -2,6 +2,7 @@ package net.gettrillium.trillium.api;
 
 import net.gettrillium.trillium.Utils;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -11,6 +12,7 @@ import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,21 +39,33 @@ public class Kit {
 
         for (String items : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER + this.name + ".items").getKeys(false)) {
 
-            ItemStack stack = new ItemStack(Material.getMaterial(items.toUpperCase()));
+            if (items.equalsIgnoreCase("written_book")) {
 
-            if (stack.getType() == Material.WRITTEN_BOOK) {
+                ItemStack stack = new ItemStack(Material.WRITTEN_BOOK);
                 BookMeta meta = (BookMeta) stack.getItemMeta();
+
                 for (String data : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER + this.name + ".items." + items).getKeys(false)) {
 
                     if (data.equalsIgnoreCase("book")) {
 
-                        File book = new File(TrilliumAPI.getInstance().getDataFolder() + "/books/" + TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".book") + "/");
+                        File book = new File(TrilliumAPI.getInstance().getDataFolder() + "/books/" + TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".book-file") + "/");
+                        Bukkit.broadcastMessage("1");
                         if (book.exists()) {
                             File[] pages = book.listFiles();
+                            Bukkit.broadcastMessage("2");
                             for (File page : pages != null ? pages : new File[0]) {
+                                Bukkit.broadcastMessage("3");
                                 if (StringUtils.isNumeric(page.getName())) {
-                                    String text = ChatColor.translateAlternateColorCodes('&', Utils.readFile(page));
+                                    Bukkit.broadcastMessage("PAGE NAME: " + page.getName());
+                                    String text = null;
+                                    try {
+                                        text = ChatColor.translateAlternateColorCodes('&', Utils.readFile(page));
+                                        Bukkit.broadcastMessage("TEXT" + text);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                     meta.setPage(Integer.parseInt(page.getName()), text);
+                                    Bukkit.broadcastMessage("4");
                                 } else {
                                     TrilliumAPI.getInstance().getLogger().severe("Kits: Page '" + page.getName() + "' in book folder " + book.getName() + "' is NOT an integer. Cannot create book.");
                                 }
@@ -89,6 +103,7 @@ public class Kit {
 
                 }
             } else {
+                ItemStack stack = new ItemStack(Material.getMaterial(items.toUpperCase()));
                 ItemMeta meta = stack.getItemMeta();
 
                 for (String data : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER + this.name + ".items." + items).getKeys(false)) {

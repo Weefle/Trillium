@@ -8,10 +8,11 @@
 # If you have any problems with your configuration,
 # please consider downloading our configuration software from
 # http://www.gettrillium.net/
-# It's a GUI with buttons to configure everything.
+# It's a GUI with shiny buttons to configure everything.
 
-# If you have any questions or refuse to download the software or experiencing problems with it,
-# then please consider contacting us on our support email
+# If you have any questions or refuse to download the software or are experiencing problems with it,
+# then please consider contacting us on our support email for any questions or problems or really anything related to trillium
+# including any problems you are experiencing configuring this plugin
 # support@gettrillium.net
 
 # If you are looking for a specific option here, do CTRL + F and search for it's keyword.
@@ -28,10 +29,13 @@
 #---------------[ Server ]---------------#
 server:
   allow-metrics: true
-  # If true, the plugin will send a tiny bit of anonymous data from the server (not anywhere else on the system)
+  # If true, the plugin will send a tiny bit of anonymous data from the server (not bandwidth intensive at ALL)
   # to record statistics to http://mcstats.org so we can monitor how many servers use this plugin.
   automatic-backups: true
+  # The plugin will make automatic backups to the player database into the backup file in the trillium folder
+  # They will be zipped with the backup date as a name.
   automatic-backup-frequency: 2h
+  # The time-interval between each backup.
   spawn:
     spawn-per-group: false
     perm-for-each-spawn:
@@ -255,12 +259,12 @@ kits:
           name: "&aThe mighty half broken stone sword"
           durability: 50
         stone_pickaxe:
-          name: "&aA cool pick"
+          name: "&aShredder"
           enchantments:
             - "DURABILITY:5"
             - "DIG_SPEED:4"
         stone_axe:
-          name: "&aWood Chopa"
+          name: "&aChainsaw"
           enchantments:
             - "DURABILITY:5"
             - "DIG_SPEED:4"
@@ -277,7 +281,7 @@ kits:
             - "&aheavens!"
           amount: 20
         written_book:
-          book: "example-book"
+          book-file: "example-book"
           title: "&b&lWELCOME GUIDE"
           author: "Santa"
           lore:

@@ -27,4 +27,8 @@ public abstract class TrilliumModule implements Listener {
     protected void register() {
 
     }
+
+    protected void unregister() {
+
+    }
 }

@@ -4,6 +4,7 @@ import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
+import net.gettrillium.trillium.particleeffect.ParticleEffect;
 import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
 import net.gettrillium.trillium.runnables.GroupManagerRunnable;
@@ -169,26 +170,25 @@ public class Utils {
         p.getInventory().setArmorContents(null);
     }
 
-    public static String readFile(File f) {
+    public static String readFile(File f) throws IOException {
 
         if (!f.exists()) {
             return "";
         }
 
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(f));
+        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
             StringBuilder b = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                b.append(line);
-                b.append(System.getProperty("line.separator"));
+            try {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    b.append(line);
+                    b.append(System.getProperty("line.separator"));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             return b.toString();
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return "";
     }
 
     public static ArrayList<String> readFileLines(File f) {
@@ -235,13 +235,20 @@ public class Utils {
         }
 
         new BukkitRunnable() {
-            @Override
+            int countdown = 50;
             public void run() {
-                for (Ocelot cat : catList) {
-                    cat.setHealth(0);
+                if (countdown != 0) {
+                    for (Ocelot cat : catList) {
+                        ParticleEffect.DRIP_LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, 0, 5, cat.getLocation(), 500);
+                    }
+                } else {
+                    for (Ocelot cat : catList) {
+                        cat.setHealth(0);
+                    }
+                    cancel();
                 }
             }
-        }.runTaskLater(TrilliumAPI.getInstance(), 50);
+        }.runTaskTimer(TrilliumAPI.getInstance(), 1, 1);
     }
 
     public static ArrayList<String> singleAsteriskFinder(String message) {
@@ -294,10 +301,16 @@ public class Utils {
 
     public static void reload() {
         Bukkit.getScheduler().cancelAllTasks();
+
+        TrilliumAPI.disposePlayers();
+        TrilliumAPI.unregisterModules();
         new BukkitRunnable() {
             @Override
             public void run() {
                 TrilliumAPI.getInstance().reloadConfig();
+
+                TrilliumAPI.registerModules();
+                TrilliumAPI.loadPlayers();
 
                 Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
                 if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {

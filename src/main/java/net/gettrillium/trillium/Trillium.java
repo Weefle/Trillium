@@ -5,7 +5,7 @@ import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.serializer.LocationSerializer;
 import net.gettrillium.trillium.events.PlayerDeath;
 import net.gettrillium.trillium.events.ServerListPing;
-import net.gettrillium.trillium.modules.*;
+import net.gettrillium.trillium.modules.AdminModule;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,23 +24,12 @@ public class Trillium extends JavaPlugin {
 
         TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
 
-        TrilliumAPI.registerModule(new AFKModule());
-        TrilliumAPI.registerModule(new PunishModule());
-        TrilliumAPI.registerModule(new AbilityModule());
-        TrilliumAPI.registerModule(new AdminModule());
-        TrilliumAPI.registerModule(new CoreModule());
-        TrilliumAPI.registerModule(new TeleportModule());
-        TrilliumAPI.registerModule(new ChatModule());
-        TrilliumAPI.registerModule(new FunModule());
-        TrilliumAPI.registerModule(new CommandBinderModule());
-        TrilliumAPI.registerModule(new KitModule());
-        //TrilliumAPI.registerModule(new GroupManagerModule());
+        TrilliumAPI.registerModules();
 
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
         generateFiles();
-        Utils.reload();
 
         if (getConfig().getBoolean(Configuration.Server.METRICS)) {
             try {
@@ -128,6 +117,5 @@ public class Trillium extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

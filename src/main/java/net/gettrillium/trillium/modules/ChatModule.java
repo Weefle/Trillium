@@ -7,8 +7,6 @@ import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Statistic;
@@ -488,14 +486,6 @@ public class ChatModule extends TrilliumModule {
         if (getConfig().getBoolean(Configuration.Chat.TWITTER_AT_ENABLED)) {
             ArrayList<String> ats = Utils.getWordAfterSymbol(event.getMessage(), "@");
             for (String at : ats) {
-
-                if (getConfig().getBoolean(Configuration.Chat.TWITTER_AT_CHECK_ACCOUNT_ONLINE)) {
-                    if (Utils.twitterAccountIsValid(at)) {
-                        TextComponent ee = new TextComponent(event.getMessage());
-                        ee.setColor(net.md_5.bungee.api.ChatColor.BLUE);
-                        ee.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.twitter.com/" + at));
-                    }
-                }
 
                 if (getConfig().getBoolean(Configuration.Chat.TWITTER_AT_CHECK_USERNAME_ONLINE)) {
                     if (Bukkit.getPlayer(at) != null && Bukkit.getPlayer(at).isOnline()) {

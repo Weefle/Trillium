@@ -100,10 +100,6 @@ chat:
     # and a tune is played/sent to said player.
       enabled: true
       format: "&l"
-      check-if-account-is-real: true
-      # The plugin will contact twitter.com and will check if the username after the @ symbol
-      # is a real twitter account, if true, the username will turn blue and the text will be clickable
-      # to go to that account.
       tune:
         play-tune: true
         tune-name: "example-tune"

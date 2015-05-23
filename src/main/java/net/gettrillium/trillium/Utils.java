@@ -23,8 +23,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -284,19 +282,6 @@ public class Utils {
             }
         }
         return words;
-    }
-
-    public static boolean twitterAccountIsValid(String username) {
-        try {
-            URL url = new URL("https://www.twitter.com/" + username.replace("@", ""));
-            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-            huc.setRequestMethod("HEAD");
-            huc.connect();
-            return huc.getResponseCode() == 200;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     public static void reload() {

@@ -20,6 +20,14 @@
         </license>
     </licenses>
 
+    <distributionManagement>
+        <snapshotRepository>
+            <id>net.gettrillium</id>
+            <name>Trillium</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <scm>
         <connection>scm:git:git@github.com:juven/git-demo.git</connection>
         <developerConnection>scm:git:git@github.com:juven/git-demo.git</developerConnection>

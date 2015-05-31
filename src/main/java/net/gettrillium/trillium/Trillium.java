@@ -1,7 +1,11 @@
 package net.gettrillium.trillium;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
+import net.gettrillium.trillium.api.commandbinder.CommandBinder;
+import net.gettrillium.trillium.api.commandbinder.CommandBinderDatabase;
 import net.gettrillium.trillium.api.serializer.LocationSerializer;
 import net.gettrillium.trillium.events.PlayerDeath;
 import net.gettrillium.trillium.events.ServerListPing;
@@ -19,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 public class Trillium extends JavaPlugin {
 
@@ -54,6 +59,21 @@ public class Trillium extends JavaPlugin {
                 getLogger().warning("Failed to send plugin metrics... :(");
             }
         }
+
+        Table<String, Location, Boolean> table = HashBasedTable.create();
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
+        List<String> serialized = yml.getStringList("commands");
+        for (String deserialize : serialized) {
+            String command = deserialize.split(";")[0];
+            boolean player = Boolean.parseBoolean(deserialize.split(";")[1]);
+            int x = Integer.parseInt(deserialize.split(";")[2]);
+            int y = Integer.parseInt(deserialize.split(";")[3]);
+            int z = Integer.parseInt(deserialize.split(";")[4]);
+            String world = deserialize.split(";")[5];
+            Location loc = new Location(Bukkit.getWorld(world), x, y, z);
+            table.put(command, loc, player);
+        }
+        CommandBinder.setTable(table);
 
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         getLogger().info("Plugin made with love by:");

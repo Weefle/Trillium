@@ -1,151 +1,61 @@
 package net.gettrillium.trillium.api.commandbinder;
 
-import org.bukkit.Bukkit;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CommandBinder {
 
-    public static void set(String command, Location loc, boolean player) {
-            YamlConfiguration yaml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
+    static private Table<String, Location, Boolean> table = HashBasedTable.create();
 
+    public static void add(String command, Location loc, boolean player) {
+        table.put(command, loc, player);
+        save();
     }
 
-    public void setToWalkableBlock() {
-        if (player) {
-            YamlConfiguration yaml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
-            HashMap<String, Location> touch = new HashMap<>();
-            touch.put(command, loc);
-            touch.putAll(CommandBinderDeserializer(yaml.getStringList("walk-player")));
-
-            List<String> serialized = CommandBinderSerializer(touch);
-            yaml.set("walk-player", serialized);
-            try {
-                yaml.save(CommandBinderDatabase.cbd());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            YamlConfiguration yaml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
-            HashMap<String, Location> touch = new HashMap<>();
-            touch.put(command, loc);
-            touch.putAll(CommandBinderDeserializer(yaml.getStringList("walk-console")));
-
-            List<String> serialized = CommandBinderSerializer(touch);
-            yaml.set("walk-console", serialized);
-            try {
-                yaml.save(CommandBinderDatabase.cbd());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public static void remove(String command, Location loc) {
+        getTable().remove(command, loc);
+        save();
     }
 
-    public Boolean isPlayer() {
-        return Boolean.valueOf(getCommandUnsplit().split("#~#")[1]);
+    public static Table<String, Location, Boolean> getTable() {
+        return table;
     }
 
-    public HashMap<String, Location> getAllCommands() {
-        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
-        HashMap<String, Location> commands = new HashMap<>();
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-player")));
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-console")));
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-player")));
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-console")));
-        return commands;
+    public static void setTable(Table<String, Location, Boolean> newTable) {
+        table = newTable;
+        save();
     }
 
-    private String getCommandUnsplit() {
-
-        if (hasCommand()) {
-            HashMap<String, Location> commands = getAllCommands();
-
-            for (Map.Entry<String, Location> entry : commands.entrySet()) {
-                if (this.loc.equals(entry.getValue())) {
-                    return entry.getKey();
-                }
-            }
-        }
-        return "help#~#true";
+    private static String serializer(String command, Location loc, boolean player) {
+        int x = loc.getBlockX();
+        int y = loc.getBlockY();
+        int z = loc.getBlockZ();
+        String world = loc.getWorld().getName();
+        return command + ";" + player + ";" + x + ";" + y + ";" + z + ";" + world;
     }
 
-    public String getCommand() {
-        return getCommandUnsplit().split("#~#")[0];
-    }
-
-    public Boolean hasCommand() {
-        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
-        HashMap<String, Location> commands = new HashMap<>();
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-player")));
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-console")));
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-player")));
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-console")));
-
-        return commands.containsValue(loc);
-    }
-
-    public void removeCommand() {
-        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
-        HashMap<String, Location> commands = new HashMap<>();
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-player")));
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("touch-console")));
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-player")));
-        commands.putAll(CommandBinderDeserializer(yaml.getStringList("walk-console")));
-
-        if (commands.containsValue(loc) || commands.containsKey(command)) {
-            commands.remove(command);
-        }
-    }
-
-    public HashMap<String, Location> CommandBinderDeserializer(List<String> serialized) {
-        HashMap<String, Location> deserialized = new HashMap<>();
-        for (String deserialize : serialized) {
-            String[] split = deserialize.split(";");
-
-            String command = split[0];
-
-            String x = split[1];
-            String y = split[2];
-            String z = split[3];
-            String world = split[4];
-            Location loc = new Location(Bukkit.getWorld(world), Double.valueOf(x), Double.valueOf(y), Double.valueOf(z));
-
-            deserialized.put(command, loc);
-        }
-        return deserialized;
-    }
-
-    public List<String> CommandBinderSerializer(HashMap<String, Location> deserialized) {
-
+    private static void save() {
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
         ArrayList<String> serialized = new ArrayList<>();
-        ArrayList<Location> locations = new ArrayList<>();
-        ArrayList<String> commands = new ArrayList<>();
-
-        for (Map.Entry<String, Location> serialize : deserialized.entrySet()) {
-            if (serialize.getKey().split("#~#")[2] == null) {
-                commands.add(serialize.getKey());
-                locations.add(serialize.getValue());
+        Map<String, Map<Location, Boolean>> rows = table.rowMap();
+        for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
+            for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
+                serialized.add(serializer(row.getKey(), column.getKey(), column.getValue()));
             }
         }
 
-        for (String cmd : commands) {
-            for (Location location : locations) {
+        yml.set("rows", serialized);
 
-                String x = "" + location.getX();
-                String y = "" + location.getY();
-                String z = "" + location.getZ();
-                String world = location.getWorld().getName();
-
-                serialized.add(cmd + ";" + x + ";" + y + ";" + z + ";" + world);
-            }
+        try {
+            yml.save(CommandBinderDatabase.cbd());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return serialized;
     }
 }

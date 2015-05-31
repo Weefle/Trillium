@@ -12,51 +12,9 @@ import java.util.Map;
 
 public class CommandBinder {
 
-    private String command;
-    private Location loc;
-    private Boolean player;
-
-    public CommandBinder(String command, Boolean player, Location location) {
-        this.command = command;
-        this.player = player;
-        this.loc = location;
-    }
-
-    public CommandBinder(Location loc) {
-        this.loc = loc;
-        this.player = isPlayer();
-        this.command = getCommand();
-    }
-
-    public void setToBlock() {
-        if (player) {
+    public static void set(String command, Location loc, boolean player) {
             YamlConfiguration yaml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
-            HashMap<String, Location> touch = new HashMap<>();
-            touch.put(command, loc);
-            touch.putAll(CommandBinderDeserializer(yaml.getStringList("touch-player")));
 
-            List<String> serialized = CommandBinderSerializer(touch);
-            yaml.set("touch-player", serialized);
-            try {
-                yaml.save(CommandBinderDatabase.cbd());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            YamlConfiguration yaml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
-            HashMap<String, Location> touch = new HashMap<>();
-            touch.put(command, loc);
-            touch.putAll(CommandBinderDeserializer(yaml.getStringList("touch-console")));
-
-            List<String> serialized = CommandBinderSerializer(touch);
-            yaml.set("touch-console", serialized);
-            try {
-                yaml.save(CommandBinderDatabase.cbd());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     public void setToWalkableBlock() {

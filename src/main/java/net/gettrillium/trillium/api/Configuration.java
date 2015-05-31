@@ -66,13 +66,11 @@ public class Configuration {
         public static final String INSTRUMENT = PREFIX + "tune-instrument";
         public static final String NOTE = PREFIX + "tune-note";
         public static final String TONE = PREFIX + "tune-tone";
-        public static final String ENABLE_ERRORS = PREFIX + "enable-stack-traces";
-        public static final String AUTOMATIC_ERROR_REPORTING = PREFIX + "allow-automatic-error-reporting";
-        public static final String ANNOUNCE_ERRORS = PREFIX + "announce-errors-to-ops";
     }
 
     public static class PlayerSettings {
         private static String PREFIX = "player-settings.";
+        public static final String COOLDOWN_TP = "cooldown.teleportation";
         public static final String JOINMESSAGE = PREFIX + "join.message";
         public static final String LEAVEMESSAGE = PREFIX + "leave.message";
         private static String NICKNAME = PREFIX + "nicknames.";

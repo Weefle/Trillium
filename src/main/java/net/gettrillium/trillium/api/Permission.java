@@ -64,7 +64,7 @@ public class Permission {
         public static final String DELHOME = PREFIX + "home.delete";
         public static final String TPHOME = PREFIX + "home.tp";
         public static final String VIEWHOME = PREFIX + "home.view";
-        public static final String COOLDOWN_EXEMPT = "exempt";
+        public static final String COOLDOWN_EXEMPT = "cooldown-exempt";
     }
 
     public static class Chat {

@@ -12,10 +12,7 @@ public class CommandBinderDatabase {
         File file = new File(TrilliumAPI.getInstance().getDataFolder(), "CommandBinderDatabase.yml");
         if (!file.exists()) {
             YamlConfiguration db = YamlConfiguration.loadConfiguration(file);
-            db.set("walk-console", "");
-            db.set("walk-player", "");
-            db.set("touch-console", "");
-            db.set("touch-player", "");
+            db.set("commands", "");
             try {
                 db.save(file);
             } catch (IOException e) {

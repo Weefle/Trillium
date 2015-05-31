@@ -94,26 +94,7 @@ chat:
       allow-color-codes: true
   enable-death-messages: true
   # If set to true, death messages not appear.
-  twitter-mode:
-    symbol-@:
-    # When a player types @ followed by an online player's username. That name is highlighted with a formatting code
-    # and a tune is played/sent to said player.
-      enabled: true
-      format: "&l"
-      tune:
-        play-tune: true
-        tune-name: "example-tune"
-    symbol-#:
-      # When a player types # followed by a word, that word is highlited with a formatting code
-      enabled: true
-      format: "&o"
-  reddit-mode:
-    italics:
-    # When a player encapsulates a word/sentence/letter with the ' * ' symbol, the text between will become italicized
-      enabled: true
-    bold:
-    # When a player encapsulates a word/sentence/letter with the ' ** ' symbol, the text between will become bold
-      enabled: true
+
 #---------------[ Plugin Messages ]---------------#
 plugin-messages:
   # Format plugin messages
@@ -189,17 +170,19 @@ broadcast:
 
 #---------------[ Group Manager ]---------------#
 group-manager:
-  enabled: true
+  enabled: false
   # Trillium comes with it's own fully functional group and user manager to
   # set permissions to a group or a specific player. Permissions can be ANYTHING.
   # Literally ANY permission from ANY plugin is compatable with Trillium's group manager.
-  auto-reload-frequency: 1m
+  auto-reload-frequency: 1h
   # The time interval in which the group manager reloads the group files and
   # refreshes permissions automatically. (basically automatic reload)
   # You can use s for seconds, m for minutes, and h for hours.
 
 #---------------[ Player Settings ]---------------#
 player-settings:
+  cooldown:
+    teleportation: "20s"
   bed-spawn:
     enabled: true
     # When a player right clicks their bed, their bed spawn will be saved.

@@ -1,7 +1,10 @@
 package net.gettrillium.trillium.modules;
 
 import net.gettrillium.trillium.Utils;
-import net.gettrillium.trillium.api.*;
+import net.gettrillium.trillium.api.Configuration;
+import net.gettrillium.trillium.api.Permission;
+import net.gettrillium.trillium.api.TrilliumAPI;
+import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
@@ -15,7 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ChatModule extends TrilliumModule {
@@ -53,26 +55,30 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "clearchat", description = "Clear global chat or a single players chat", usage = "/clearchat", aliases = {"cc", ""})
+    @Command(command = "clearchat", description = "Clear global chat or a single players chat", usage = "/clearchat", aliases = {"cc"})
     public void clearchat(CommandSender cs, String[] args) {
-        if (cs instanceof Player && cs.hasPermission(Permission.Chat.CLEARCHAT)) {
-            if (!(args.length >= 0)) {
-                Player p = (Player) cs;
+        if (cs instanceof Player) {
+            if (cs.hasPermission(Permission.Chat.CLEARCHAT)) {
+                if (args.length != 0) {
+                    Player target = Bukkit.getPlayer(args[0]);
 
-                for (Player pl : Bukkit.getOnlinePlayers()) {
-                    Utils.clearChat(pl);
+                    if (target != null) {
+                        Utils.clearChat(target);
+                        new Message(Mood.GOOD, "Clear Chat", target.getName() + "'s chat has been cleared!").to(cs);
+                    } else {
+                        new Message("Clear Chat", Error.INVALID_PLAYER, args[0]).to(cs);
+                    }
+
+                } else {
+                    for (Player pl : Bukkit.getOnlinePlayers()) {
+                        Utils.clearChat(pl);
+                    }
                 }
             } else {
-                Player target = Bukkit.getPlayer(args[0]);
-
-                if (target != null) {
-                    Utils.clearChat(target);
-                    new Message(Mood.GOOD, "ClearChat", ChatColor.AQUA + target.getName() + "'s chat has been cleared!").to(cs);
-                    ;
-                } else {
-                    new Message("ClearChat", Error.INVALID_PLAYER, args[0]).to(cs);
-                }
+                new Message("Clear Chat", Error.NO_PERMISSION).to(cs);
             }
+        } else {
+            new Message("Clear Chat", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -469,42 +475,6 @@ public class ChatModule extends TrilliumModule {
     public void onChat(AsyncPlayerChatEvent event) {
         if (event.getPlayer().hasPermission(Permission.Chat.COLOR)) {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
-        }
-
-        if (getConfig().getBoolean(Configuration.Chat.REDDIT_BOLD_ENABLED)) {
-            for (String encased : Utils.doubleAsteriskFinder(event.getMessage())) {
-                event.setMessage(event.getMessage().replace(encased, ChatColor.BOLD + encased));
-            }
-        }
-
-        if (getConfig().getBoolean(Configuration.Chat.REDDIT_ITALICS_ENABLED)) {
-            for (String encased : Utils.singleAsteriskFinder(event.getMessage())) {
-                event.setMessage(event.getMessage().replace(encased, ChatColor.ITALIC + encased));
-            }
-        }
-
-        if (getConfig().getBoolean(Configuration.Chat.TWITTER_AT_ENABLED)) {
-            ArrayList<String> ats = Utils.getWordAfterSymbol(event.getMessage(), "@");
-            for (String at : ats) {
-
-                if (getConfig().getBoolean(Configuration.Chat.TWITTER_AT_CHECK_USERNAME_ONLINE)) {
-                    if (Bukkit.getPlayer(at) != null && Bukkit.getPlayer(at).isOnline()) {
-
-                        event.setMessage(event.getMessage().replace(at, ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.Chat.TWITTER_AT_FORMAT)) + at));
-
-                        if (getConfig().getBoolean(Configuration.Chat.TWITTER_AT_TUNE_ENABLED)) {
-                            new Tune(getConfig().getString(Configuration.Chat.TWITTER_AT_TUNE_NAME)).play(Bukkit.getPlayer(at));
-                        }
-                    }
-                }
-            }
-        }
-
-        if (getConfig().getBoolean(Configuration.Chat.TWITTER_HASH_ENABLED)) {
-            ArrayList<String> hashes = Utils.getWordAfterSymbol(event.getMessage(), "#");
-            for (String hash : hashes) {
-                event.setMessage(event.getMessage().replace(hash, ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.Chat.TWITTER_HASH_FORMAT)) + hash));
-            }
         }
     }
 }

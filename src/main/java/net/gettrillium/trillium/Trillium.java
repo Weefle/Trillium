@@ -6,6 +6,10 @@ import net.gettrillium.trillium.api.serializer.LocationSerializer;
 import net.gettrillium.trillium.events.PlayerDeath;
 import net.gettrillium.trillium.events.ServerListPing;
 import net.gettrillium.trillium.modules.AdminModule;
+import net.gettrillium.trillium.runnables.AFKRunnable;
+import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
+import net.gettrillium.trillium.runnables.GroupManagerRunnable;
+import net.gettrillium.trillium.runnables.TpsRunnable;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,16 +24,27 @@ public class Trillium extends JavaPlugin {
 
     public void onEnable() {
 
+        saveDefaultConfig();
+
         TrilliumAPI.setInstance(this);
-
         TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
-
         TrilliumAPI.registerModules();
 
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
 
         generateFiles();
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
+        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AutoBroadcastRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Broadcast.FREQUENCY)));
+        }
+        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Afk.AUTO_AFK_ENABLED)) {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AFKRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Afk.AUTO_AFK_TIME)));
+        }
+        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new GroupManagerRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.GM.RELOAD)));
+        }
 
         if (getConfig().getBoolean(Configuration.Server.METRICS)) {
             try {

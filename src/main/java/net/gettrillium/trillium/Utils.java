@@ -72,7 +72,7 @@ public class Utils {
 
     public static void clearChat(Player p) {
         for (int i = 0; i < 200; i++) {
-            p.sendMessage("");
+            p.sendMessage(" ");
         }
     }
 
@@ -123,7 +123,15 @@ public class Utils {
         return (seconds * 20) + (hours * 3600 * 20) + (minutes * 60 * 20) + (days * 86400 * 20);
     }
 
-    public static String TimeToString(int ticks) {
+    // http://stackoverflow.com/a/1590842/4327834
+    public static int safeLongToInt(long l) {
+        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException(l + " cannot be cast to int without changing its value.");
+        }
+        return (int) l;
+    }
+
+    public static String timeToString(int ticks) {
         int millis = ticks / 20 * 1000;
 
         return String.format("%02d:%02d:%02d",
@@ -234,6 +242,7 @@ public class Utils {
 
         new BukkitRunnable() {
             int countdown = 50;
+
             public void run() {
                 if (countdown != 0) {
                     for (Ocelot cat : catList) {
@@ -286,12 +295,12 @@ public class Utils {
 
     public static void reload() {
         Bukkit.getScheduler().cancelAllTasks();
-
         TrilliumAPI.disposePlayers();
         TrilliumAPI.unregisterModules();
         new BukkitRunnable() {
             @Override
             public void run() {
+                TrilliumAPI.getInstance().saveDefaultConfig();
                 TrilliumAPI.getInstance().reloadConfig();
 
                 TrilliumAPI.registerModules();

@@ -5,6 +5,8 @@ import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
+import net.gettrillium.trillium.api.cooldown.Cooldown;
+import net.gettrillium.trillium.api.cooldown.CooldownType;
 import net.gettrillium.trillium.api.events.PlayerHomeEvent;
 import net.gettrillium.trillium.api.events.PlayerWarpEvent;
 import net.gettrillium.trillium.api.messageutils.Error;
@@ -35,10 +37,16 @@ public class TeleportModule extends TrilliumModule {
         if (cs instanceof Player) {
             TrilliumPlayer player = player(cs.getName());
             if (player.getProxy().hasPermission(Permission.Teleport.BACK)) {
+                if (!player.getProxy().isOp() && !player.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT) && !Cooldown.hasCooldown(player.getProxy(), CooldownType.TP)) {
+                    Cooldown.setCooldown(player.getProxy(), CooldownType.TP);
+                }
 
-                new Message(Mood.GOOD, "Back", "You have been sent back to your last location.").to(player);
-                player.getProxy().teleport(player.getLastLocation());
-
+                if (!Cooldown.hasCooldown(player.getProxy(), CooldownType.TP)) {
+                    new Message(Mood.GOOD, "Back", "You have been sent back to your last location.").to(player);
+                    player.getProxy().teleport(player.getLastLocation());
+                } else {
+                    new Message(Mood.BAD, "Back", "Cooldown is still active: " + Utils.timeToString(Utils.timeToTickConverter(Configuration.PlayerSettings.COOLDOWN_TP))).to(player);
+                }
             } else {
                 new Message("Back", Error.NO_PERMISSION).to(cs);
             }
@@ -71,111 +79,120 @@ public class TeleportModule extends TrilliumModule {
 
         TrilliumPlayer p = player((Player) cs);
 
-        if (args.length == 0) {
-            if (!p.hasPermission(Permission.Teleport.TP)) {
-                new Message("TP", Error.NO_PERMISSION).to(cs);
-                return;
-            }
+        if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT) && !Cooldown.hasCooldown(p.getProxy(), CooldownType.TP)) {
+            Cooldown.setCooldown(p.getProxy(), CooldownType.TP);
+        }
 
-            new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [player]").to(p);
-        } else if (args.length == 1) {
-            if (!p.hasPermission(Permission.Teleport.TP)) {
-                new Message("TP", Error.NO_PERMISSION).to(p);
-                return;
-            }
+        if (!Cooldown.hasCooldown(p.getProxy(), CooldownType.TP)) {
 
-            Player target = Bukkit.getPlayer(args[0]);
+            if (args.length == 0) {
+                if (!p.hasPermission(Permission.Teleport.TP)) {
+                    new Message("TP", Error.NO_PERMISSION).to(cs);
+                    return;
+                }
 
-            if (target == null) {
-                new Message("TP", Error.INVALID_PLAYER, args[0]).to(p);
-                return;
-            }
+                new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [player]").to(p);
+            } else if (args.length == 1) {
+                if (!p.hasPermission(Permission.Teleport.TP)) {
+                    new Message("TP", Error.NO_PERMISSION).to(p);
+                    return;
+                }
 
-            p.getProxy().teleport(target);
-            new Message(Mood.GOOD, "TP", "You teleported to " + target.getName()).to(p);
-        } else if (args.length == 2) {
-            if (!p.hasPermission(Permission.Teleport.TP_OTHER)) {
-                new Message("TP", Error.NO_PERMISSION).to(p);
-                return;
-            }
+                Player target = Bukkit.getPlayer(args[0]);
 
-            TrilliumPlayer target1 = player(args[0]);
-            TrilliumPlayer target2 = player(args[1]);
+                if (target == null) {
+                    new Message("TP", Error.INVALID_PLAYER, args[0]).to(p);
+                    return;
+                }
 
-            if (target1 == null) {
-                new Message("TP", Error.INVALID_PLAYER, args[1]).to(p);
-                return;
-            }
+                p.getProxy().teleport(target);
+                new Message(Mood.GOOD, "TP", "You teleported to " + target.getName()).to(p);
+            } else if (args.length == 2) {
+                if (!p.hasPermission(Permission.Teleport.TP_OTHER)) {
+                    new Message("TP", Error.NO_PERMISSION).to(p);
+                    return;
+                }
 
-            if (target2 == null) {
-                new Message("TP", Error.INVALID_PLAYER, args[2]).to(p);
-                return;
-            }
+                TrilliumPlayer target1 = player(args[0]);
+                TrilliumPlayer target2 = player(args[1]);
 
-            target1.getProxy().teleport(target2.getProxy());
-            new Message(Mood.GOOD, "TP", "You teleported " + target1.getName() + " to " + target2.getName()).to(p);
-            new Message(Mood.GOOD, "TP", p.getName() + " teleported you to " + target2.getName()).to(target1);
-        } else {
-            if (!p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
-                new Message("TP", Error.NO_PERMISSION).to(cs);
-                return;
-            }
+                if (target1 == null) {
+                    new Message("TP", Error.INVALID_PLAYER, args[1]).to(p);
+                    return;
+                }
 
-            Player pl = Bukkit.getPlayer(args[0]);
+                if (target2 == null) {
+                    new Message("TP", Error.INVALID_PLAYER, args[2]).to(p);
+                    return;
+                }
 
-            if (pl == null) {
-                new Message("TP", Error.INVALID_PLAYER, args[0]).to(p);
-                return;
-            }
-
-            String xArg = args[1];
-            String yArg = args[2];
-            String zArg = args[3];
-
-            if (StringUtils.isNumeric(xArg) && StringUtils.isNumeric(yArg) && StringUtils.isNumeric(zArg)) {
-                int x = Integer.parseInt(xArg);
-                int y = Integer.parseInt(yArg);
-                int z = Integer.parseInt(zArg);
-
-                Location loc = new Location(p.getProxy().getWorld(), x, y, z);
-
-                pl.teleport(loc);
-                new Message(Mood.GOOD, "TP", "You teleported to " + ChatColor.AQUA + x + ", " + y + ", " + z).to(p);
+                target1.getProxy().teleport(target2.getProxy());
+                new Message(Mood.GOOD, "TP", "You teleported " + target1.getName() + " to " + target2.getName()).to(p);
+                new Message(Mood.GOOD, "TP", p.getName() + " teleported you to " + target2.getName()).to(target1);
             } else {
-                if (!xArg.startsWith("~") || !yArg.startsWith("~") || !zArg.startsWith("~")) {
-                    new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [x] [y] [z]").to(p);
+                if (!p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
+                    new Message("TP", Error.NO_PERMISSION).to(cs);
                     return;
                 }
 
-                if (!StringUtils.isNumeric(xArg.substring(1)) || !StringUtils.isNumeric(yArg.substring(1)) || !StringUtils.isNumeric(zArg.substring(1))) {
-                    new Message(Mood.BAD, "TP", "Something isn't a number...").to(p);
+                Player pl = Bukkit.getPlayer(args[0]);
+
+                if (pl == null) {
+                    new Message("TP", Error.INVALID_PLAYER, args[0]).to(p);
                     return;
                 }
 
-                int x, y, z;
+                String xArg = args[1];
+                String yArg = args[2];
+                String zArg = args[3];
 
-                if (xArg.substring(1).equals("") || xArg.substring(1).equals(" ")) {
-                    x = 0;
+                if (StringUtils.isNumeric(xArg) && StringUtils.isNumeric(yArg) && StringUtils.isNumeric(zArg)) {
+                    int x = Integer.parseInt(xArg);
+                    int y = Integer.parseInt(yArg);
+                    int z = Integer.parseInt(zArg);
+
+                    Location loc = new Location(p.getProxy().getWorld(), x, y, z);
+
+                    pl.teleport(loc);
+                    new Message(Mood.GOOD, "TP", "You teleported to " + ChatColor.AQUA + x + ", " + y + ", " + z).to(p);
                 } else {
-                    x = Integer.parseInt(xArg.substring(1));
-                }
+                    if (!xArg.startsWith("~") || !yArg.startsWith("~") || !zArg.startsWith("~")) {
+                        new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [x] [y] [z]").to(p);
+                        return;
+                    }
 
-                if (yArg.substring(1).equals("") || yArg.substring(1).equals(" ")) {
-                    y = 0;
-                } else {
-                    y = Integer.parseInt(yArg.substring(1));
-                }
+                    if (!StringUtils.isNumeric(xArg.substring(1)) || !StringUtils.isNumeric(yArg.substring(1)) || !StringUtils.isNumeric(zArg.substring(1))) {
+                        new Message(Mood.BAD, "TP", "Something isn't a number...").to(p);
+                        return;
+                    }
 
-                if (zArg.substring(1).equals("") || zArg.substring(1).equals(" ")) {
-                    z = 0;
-                } else {
-                    z = Integer.parseInt(zArg.substring(1));
-                }
+                    int x, y, z;
 
-                Location loc = p.getProxy().getLocation();
-                pl.teleport(new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z));
-                new Message(Mood.GOOD, "TP", "You teleported to " + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ()).to(p);
+                    if (xArg.substring(1).equals("") || xArg.substring(1).equals(" ")) {
+                        x = 0;
+                    } else {
+                        x = Integer.parseInt(xArg.substring(1));
+                    }
+
+                    if (yArg.substring(1).equals("") || yArg.substring(1).equals(" ")) {
+                        y = 0;
+                    } else {
+                        y = Integer.parseInt(yArg.substring(1));
+                    }
+
+                    if (zArg.substring(1).equals("") || zArg.substring(1).equals(" ")) {
+                        z = 0;
+                    } else {
+                        z = Integer.parseInt(zArg.substring(1));
+                    }
+
+                    Location loc = p.getProxy().getLocation();
+                    pl.teleport(new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z));
+                    new Message(Mood.GOOD, "TP", "You teleported to " + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ()).to(p);
+                }
             }
+        } else {
+            new Message(Mood.BAD, "TP", "Cooldown is still active: " + Utils.timeToString(Utils.safeLongToInt(Cooldown.getTime(p.getProxy(), CooldownType.TP))));
         }
     }
 

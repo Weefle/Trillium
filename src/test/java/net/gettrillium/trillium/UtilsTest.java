@@ -2,17 +2,17 @@ package net.gettrillium.trillium;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.assertEquals;
 
 public class UtilsTest {
 
     @Test
     public void timeToTickConverterTest() {
-        assertEquals("'' -> 0 tick", 0, Utils.timeToTickConverter(""));
-        assertEquals("'1s' -> 20 ticks", 20, Utils.timeToTickConverter("1s"));
-        assertEquals("invalid variable -> 0", 0, Utils.timeToTickConverter("invalid variable"));
+        assertEquals(0, Utils.timeToTickConverter(""));
+        assertEquals(20, Utils.timeToTickConverter("1s"));
+        assertEquals(400, Utils.timeToTickConverter("20s"));
+        assertEquals(12000, Utils.timeToTickConverter("10m"));
+        assertEquals(1240, Utils.timeToTickConverter("2s1m"));
     }
 
     @Test
@@ -20,12 +20,5 @@ public class UtilsTest {
         assertEquals("00:01:00", Utils.timeToString(60 * 20));
         assertEquals("00:01:05", Utils.timeToString(65 * 20));
         assertEquals("00:03:20", Utils.timeToString(200 * 20));
-    }
-
-    @Test
-    public void getEncapsulationsTest() {
-        ArrayList<String> tests = new ArrayList<>();
-        tests.add("lol");
-        assertEquals(tests, Utils.singleAsteriskFinder("haha *lol* potato"));
     }
 }

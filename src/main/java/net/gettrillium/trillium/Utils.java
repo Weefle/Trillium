@@ -93,6 +93,17 @@ public class Utils {
         return result;
     }
 
+    // http://stackoverflow.com/a/3083197/4327834
+    public static int endOfStringInt(String input) {
+        Pattern p = Pattern.compile("[0-9]+$");
+        Matcher m = p.matcher(input);
+        if (m.find()) {
+            return Integer.parseInt(m.group());
+        } else {
+            return 0;
+        }
+    }
+
     public static int timeToTickConverter(String time) {
         int seconds = 0;
         int hours = 0;
@@ -100,24 +111,16 @@ public class Utils {
         int days = 0;
 
         if (time.contains("s")) {
-            if (StringUtils.isNumeric(time.split("s")[0])) {
-                seconds = Integer.parseInt(time.split("s")[0]);
-            }
+            seconds = endOfStringInt(time.split("s")[0]);
         }
         if (time.contains("m")) {
-            if (StringUtils.isNumeric(time.split("m")[0])) {
-                minutes = Integer.parseInt(time.split("m")[0]);
-            }
+            minutes = endOfStringInt(time.split("m")[0]);
         }
         if (time.contains("h")) {
-            if (StringUtils.isNumeric(time.split("h")[0])) {
-                hours = Integer.parseInt(time.split("h")[0]);
-            }
+            hours = endOfStringInt(time.split("h")[0]);
         }
         if (time.contains("d")) {
-            if (StringUtils.isNumeric(time.split("d")[0])) {
-                days = Integer.parseInt(time.split("d")[0]);
-            }
+            days = endOfStringInt(time.split("d")[0]);
         }
 
         return (seconds * 20) + (hours * 3600 * 20) + (minutes * 60 * 20) + (days * 86400 * 20);

@@ -36,43 +36,50 @@ public class CommandBinderModule extends TrilliumModule {
             Player p = (Player) cs;
             if (p.hasPermission(Permission.Admin.CMDBINDER)) {
                 if (!setMode.contains(p.getUniqueId()) && !removeMode.contains(p.getUniqueId())) {
-                    if (args[0].equalsIgnoreCase("set")) {
-                        if (args.length >= 3) {
-                            if (args[1].equalsIgnoreCase("console")
-                                    || args[1].equalsIgnoreCase("c")
-                                    || args[1].equalsIgnoreCase("player")
-                                    || args[1].equalsIgnoreCase("p")) {
+                    if (args.length != 0) {
+                        if (args[0].equalsIgnoreCase("set")) {
+                            if (args.length >= 3) {
+                                if (args[1].equalsIgnoreCase("console")
+                                        || args[1].equalsIgnoreCase("c")
+                                        || args[1].equalsIgnoreCase("player")
+                                        || args[1].equalsIgnoreCase("p")) {
 
-                                String command = args[2].replace("/", "");
-                                if (!command.equalsIgnoreCase("") && !command.equalsIgnoreCase(" ")) {
-                                    boolean player;
-                                    player = !(args[1].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c"));
-                                    setMode.add(p.getUniqueId());
-                                    table.put(p.getUniqueId(), command, player);
-                                    new Message(Mood.GENERIC, "CMD Binder", "You are now in command binder's edit mode.").to(p);
-                                    new Message(Mood.BAD, "CMD Binder", ChatColor.RED + "" + ChatColor.BOLD + "DO NOT TOUCH ANYTHING AIMLESSLY").to(p);
-                                    new Message(Mood.GENERIC, "CMD Binder", "The next block you PUNCH will bind the command you entered to that block " +
-                                            "and any block you RIGHT CLICK will bind the block above it (air) to your entered command (as a walkable block)").to(p);
-
+                                    StringBuilder sb = new StringBuilder();
+                                    for (int i = 2; i < args.length; i++) {
+                                        sb.append(args[i]).append(" ");
+                                    }
+                                    String command = sb.toString().trim();
+                                    if (!command.equalsIgnoreCase("") && !command.equalsIgnoreCase(" ")) {
+                                        boolean player;
+                                        player = !(args[1].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c"));
+                                        setMode.add(p.getUniqueId());
+                                        table.put(p.getUniqueId(), command, player);
+                                        new Message(Mood.GENERIC, "CMD Binder", "You are now in command binder's edit mode.").to(p);
+                                        new Message(Mood.BAD, "CMD Binder", ChatColor.RED + "" + ChatColor.BOLD + "DO NOT TOUCH ANYTHING AIMLESSLY").to(p);
+                                        new Message(Mood.GENERIC, "CMD Binder", "The next block you PUNCH will bind the command you entered to that block " +
+                                                "and any block you RIGHT CLICK will bind the block above it (air) to your entered command (as a walkable block)").to(p);
+                                    } else {
+                                        new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set/remove> <console/player> <command>").to(p);
+                                    }
                                 } else {
-                                    new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb set <console/player> <command>").to(p);
+                                    new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set/remove> <console/player> <command>").to(p);
                                 }
                             } else {
-                                new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb set <console/player> <command>").to(p);
+                                new Message("CMD Binder", Error.TOO_FEW_ARGUMENTS, "/cb <set/remove> <console/player> <command>").to(p);
                             }
+
+                        } else if (args[0].equalsIgnoreCase("remove")) {
+                            removeMode.add(p.getUniqueId());
+                            new Message(Mood.GENERIC, "CMD Binder", "You are now in command binder's edit mode.").to(p);
+                            new Message(Mood.BAD, "CMD Binder", ChatColor.RED + "" + ChatColor.BOLD + "DO NOT TOUCH ANYTHING AIMLESSLY").to(p);
+                            new Message(Mood.GENERIC, "CMD Binder", "The next block you PUNCH will unbind any command bound to that block " +
+                                    "and any block you RIGHT CLICK will unbind any command bound to the block above it (air)").to(p);
+
                         } else {
-                            new Message("CMD Binder", Error.TOO_FEW_ARGUMENTS, "/cb set <console/player> <command>").to(p);
+                            new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set/remove> <console/player> <command>").to(p);
                         }
-
-                    } else if (args[0].equalsIgnoreCase("remove")) {
-                        removeMode.add(p.getUniqueId());
-                        new Message(Mood.GENERIC, "CMD Binder", "You are now in command binder's edit mode.").to(p);
-                        new Message(Mood.BAD, "CMD Binder", ChatColor.RED + "" + ChatColor.BOLD + "DO NOT TOUCH ANYTHING AIMLESSLY").to(p);
-                        new Message(Mood.GENERIC, "CMD Binder", "The next block you PUNCH will unbind any command bound to that block " +
-                                "and any block you RIGHT CLICK will unbind any command bound to the block above it (air)").to(p);
-
                     } else {
-                        new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb set <console/player> <command>").to(p);
+                        new Message("CMD Binder", Error.TOO_FEW_ARGUMENTS, "/cb <set/remove> <console/player> <command>").to(p);
                     }
                 } else {
                     new Message(Mood.BAD, "CMD Binder", "You are already in command binder's edit mode.").to(p);
@@ -123,6 +130,7 @@ public class CommandBinderModule extends TrilliumModule {
                         new Message(Mood.GOOD, "CMD Binder", "Command: " + column.getKey()).to(p);
                         new Message(Mood.GOOD, "CMD Binder", "Location: " + loc).to(p);
                         new Message(Mood.GOOD, "CMD Binder", "Command Sender: " + sender).to(p);
+                        event.setCancelled(true);
                     }
                 }
             }
@@ -133,6 +141,7 @@ public class CommandBinderModule extends TrilliumModule {
                 for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
                     if (column.getKey().equals(p.getLocation())) {
                         CommandBinder.remove(row.getKey(), column.getKey());
+                        event.setCancelled(true);
                     }
                 }
             }
@@ -142,11 +151,15 @@ public class CommandBinderModule extends TrilliumModule {
             for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
                 for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
                     if (column.getKey().equals(p.getLocation())) {
+                        Bukkit.broadcastMessage("loc: " + column.getKey());
+                        Bukkit.broadcastMessage("command: " + row.getKey());
+
                         if (column.getValue()) {
                             Bukkit.dispatchCommand(event.getPlayer(), row.getKey());
                         } else {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), row.getKey());
                         }
+                        event.setCancelled(true);
                     }
                 }
             }

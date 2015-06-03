@@ -16,7 +16,7 @@ public class Cooldown {
     public static void setCooldown(Player p, CooldownType type) {
         long time = 0;
         if (type.getCooldownType().equalsIgnoreCase("tp")) {
-            time = System.currentTimeMillis() + ((Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.COOLDOWN_TP)) / 20) * 1000);
+            time = System.currentTimeMillis() + (long) ((Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.PlayerSettings.COOLDOWN_TP)) / 20) * 1000);
         }
         cooldown.put(p.getUniqueId(), type, time);
     }

@@ -71,7 +71,7 @@ server:
 
 #---------------[ Chat ]---------------#
 chat:
-  server-list-motd: "&cPlease define a motd in the config.yml"
+  server-list-motd: "&aAn Epic Trillium Enhanced Minecraft Server."
   # The server list motd is the message you see on the server icon on the multiplayer menu.
   motd:
     - " "

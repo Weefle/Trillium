@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class Cooldown {
 
@@ -19,10 +18,13 @@ public class Cooldown {
 
     public static boolean hasCooldown(Player p, CooldownType type) {
         if (cooldown.contains(p.getUniqueId(), type)) {
-            Bukkit.broadcastMessage("COMPARE: " + (System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)));
+            Bukkit.broadcastMessage("GET: " + cooldown.get(p.getUniqueId(), type));
+            Bukkit.broadcastMessage("CURRENT MILLIS: " + System.currentTimeMillis());
+            Bukkit.broadcastMessage("SUBTRACTED: " + (System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)));
+            Bukkit.broadcastMessage("IN SECONDS: " + (System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)) / 1000.0);
             Bukkit.broadcastMessage("> WITH: " + (type.getTimeInTicks() / 20));
-            Bukkit.broadcastMessage("HAS COOLDOWN: " + (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)) > (type.getTimeInTicks() / 20)));
-            if (TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)) > (type.getTimeInTicks() / 20)) {
+            Bukkit.broadcastMessage("HAS COOLDOWN: " + (((System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)) / 1000.0) > (type.getTimeInTicks() / 20)));
+            if (((System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)) / 1000.0) > (type.getTimeInTicks() / 20)) {
                 return true;
             } else {
                 cooldown.remove(p.getUniqueId(), type);
@@ -35,7 +37,7 @@ public class Cooldown {
 
     public static String getTime(Player p, CooldownType type) {
         if (hasCooldown(p, type)) {
-            return Utils.timeToString((int) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)));
+            return Utils.timeToString((int) ((System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)) / 1000.0));
         } else {
             return null;
         }

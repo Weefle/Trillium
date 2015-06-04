@@ -79,11 +79,11 @@ public class TeleportModule extends TrilliumModule {
 
         TrilliumPlayer p = player((Player) cs);
 
-        if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT) && !Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
-            Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION);
-        }
 
         if (!Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
+            if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
+                Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION);
+            }
 
             if (args.length == 0) {
                 if (!p.hasPermission(Permission.Teleport.TP)) {
@@ -129,7 +129,8 @@ public class TeleportModule extends TrilliumModule {
                 target1.getProxy().teleport(target2.getProxy());
                 new Message(Mood.GOOD, "TP", "You teleported " + target1.getName() + " to " + target2.getName()).to(p);
                 new Message(Mood.GOOD, "TP", p.getName() + " teleported you to " + target2.getName()).to(target1);
-            } else {
+
+            } else if (args.length == 4) {
                 if (!p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
                     new Message("TP", Error.NO_PERMISSION).to(cs);
                     return;
@@ -190,6 +191,8 @@ public class TeleportModule extends TrilliumModule {
                     pl.teleport(new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z));
                     new Message(Mood.GOOD, "TP", "You teleported to " + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ()).to(p);
                 }
+            } else {
+                new Message("TP", Error.WRONG_ARGUMENTS, "/tp <player> [player / <x>, <y>, <z>]").to(p);
             }
         } else {
             new Message(Mood.BAD, "TP", "Cooldown is still active: " + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION));

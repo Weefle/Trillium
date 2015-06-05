@@ -36,8 +36,8 @@ public class KitModule extends TrilliumModule {
 
                                 }
 
-                            new Kit(args[0]).giveTo(p.getProxy());
-                            new Message(Mood.GOOD, "Kit", "You successfully received kit " + args[0]).to(p);
+                                new Kit(args[0]).giveTo(p.getProxy());
+                                new Message(Mood.GOOD, "Kit", "You successfully received kit " + args[0]).to(p);
 
                             } else {
                                 new Message(Mood.BAD, "Kit", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.KIT)).to(p);

@@ -9,6 +9,8 @@ import java.util.UUID;
 
 public class Cooldown {
 
+    // TODO: save cooldowns to player configs (kits and such)
+
     private static Table<UUID, CooldownType, Long> cooldown = HashBasedTable.create();
 
     public static void setCooldown(Player p, CooldownType type) {

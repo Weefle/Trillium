@@ -3,7 +3,6 @@ package net.gettrillium.trillium.api.cooldown;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import net.gettrillium.trillium.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -18,13 +17,10 @@ public class Cooldown {
 
     public static boolean hasCooldown(Player p, CooldownType type) {
         if (cooldown.contains(p.getUniqueId(), type)) {
-            Bukkit.broadcastMessage("GET: " + cooldown.get(p.getUniqueId(), type));
-            Bukkit.broadcastMessage("CURRENT MILLIS: " + System.currentTimeMillis());
-            Bukkit.broadcastMessage("SUBTRACTED: " + (System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)));
-            Bukkit.broadcastMessage("IN SECONDS: " + (System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)) / 1000.0);
-            Bukkit.broadcastMessage("> WITH: " + (type.getTimeInTicks() / 20));
-            Bukkit.broadcastMessage("HAS COOLDOWN: " + (((System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)) / 1000.0) > (type.getTimeInTicks() / 20)));
-            if (((System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)) / 1000.0) > (type.getTimeInTicks() / 20)) {
+            long startMillis = cooldown.get(p.getUniqueId(), type);
+            double elapsedSecs = (System.currentTimeMillis() - startMillis) / 1000.0;
+            long cooldownSecs = type.getTimeInTicks() / 20;
+            if (elapsedSecs < cooldownSecs) {
                 return true;
             } else {
                 cooldown.remove(p.getUniqueId(), type);
@@ -37,7 +33,8 @@ public class Cooldown {
 
     public static String getTime(Player p, CooldownType type) {
         if (hasCooldown(p, type)) {
-            return Utils.timeToString((int) ((System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)) / 1000.0));
+            Double d = (type.getTimeInTicks() / 20) - ((System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)) / 1000.0);
+            return Utils.timeToString(d.intValue() * 20);
         } else {
             return null;
         }

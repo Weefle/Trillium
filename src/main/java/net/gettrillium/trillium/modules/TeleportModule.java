@@ -35,17 +35,17 @@ public class TeleportModule extends TrilliumModule {
     @Command(command = "back", description = "Teleport to your last active position", usage = "/back")
     public void back(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
-            TrilliumPlayer player = player(cs.getName());
-            if (player.getProxy().hasPermission(Permission.Teleport.BACK)) {
-                if (!player.getProxy().isOp() && !player.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT) && !Cooldown.hasCooldown(player.getProxy(), CooldownType.TELEPORTATION)) {
-                    Cooldown.setCooldown(player.getProxy(), CooldownType.TELEPORTATION);
-                }
+            TrilliumPlayer p = player(cs.getName());
+            if (p.getProxy().hasPermission(Permission.Teleport.BACK)) {
+                if (!Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
+                    if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
+                        Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION);
+                    }
+                    new Message(Mood.GOOD, "Back", "You have been sent back to your last location.").to(p);
+                    p.getProxy().teleport(p.getLastLocation());
 
-                if (!Cooldown.hasCooldown(player.getProxy(), CooldownType.TELEPORTATION)) {
-                    new Message(Mood.GOOD, "Back", "You have been sent back to your last location.").to(player);
-                    player.getProxy().teleport(player.getLastLocation());
                 } else {
-                    new Message(Mood.BAD, "Back", "Cooldown is still active: " + Utils.timeToString(Utils.timeToTickConverter(Configuration.PlayerSettings.COOLDOWN_TP))).to(player);
+                    new Message(Mood.BAD, "Back", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
                 }
             } else {
                 new Message("Back", Error.NO_PERMISSION).to(cs);
@@ -195,7 +195,7 @@ public class TeleportModule extends TrilliumModule {
                 new Message("TP", Error.WRONG_ARGUMENTS, "/tp <player> [player / <x>, <y>, <z>]").to(p);
             }
         } else {
-            new Message(Mood.BAD, "TP", "Cooldown is still active: " + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION));
+            new Message(Mood.BAD, "TP", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
         }
     }
 

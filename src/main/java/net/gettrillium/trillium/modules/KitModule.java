@@ -40,7 +40,7 @@ public class KitModule extends TrilliumModule {
                             new Message(Mood.GOOD, "Kit", "You successfully received kit " + args[0]).to(p);
 
                             } else {
-                                new Message(Mood.BAD, "Spawn", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.KIT)).to(p);
+                                new Message(Mood.BAD, "Kit", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.KIT)).to(p);
                             }
                         } else {
                             new Message(Mood.BAD, "Kit", "You don't have permission to use that kit.").to(p);

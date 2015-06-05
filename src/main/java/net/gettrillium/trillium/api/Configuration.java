@@ -41,24 +41,10 @@ public class Configuration {
         public static final String CCENABLED = CHATCHANNEL + "enabled";
         public static final String CCFORMAT = CHATCHANNEL + "format";
         public static final String CCCOLOR = CHATCHANNEL + "allow-color-codes";
-        private static String TWITTER = PREFIX + "twitter-mode.";
-        public static final String TWITTER_AT_ENABLED = TWITTER + "symbol-@.enabled";
-        public static final String TWITTER_AT_FORMAT = TWITTER + "symbol-@.format";
-        public static final String TWITTER_AT_TUNE_ENABLED = TWITTER + "symbol-@.tune.play-tune";
-        public static final String TWITTER_AT_TUNE_NAME = TWITTER + ".symbol-@.tune.tune-name";
-        public static final String TWITTER_AT_CHECK_ACCOUNT_ONLINE = TWITTER + ".symbol-@.check-if-account-is-real";
-        public static final String TWITTER_AT_CHECK_USERNAME_ONLINE = TWITTER + ".symbol-@.check-if-username-is-online";
-        public static final String TWITTER_HASH_ENABLED = TWITTER + "symbol-#.enabled";
-        public static final String TWITTER_HASH_FORMAT = TWITTER + "symbol-#.format";
-        public static final String REDDIT_ITALICS_ENABLED = PREFIX + "reddit-mode.italics.enabled";
-        public static final String REDDIT_BOLD_ENABLED = PREFIX + "reddit-mode.bold.enabled";
     }
 
     public static class Server {
         private static String PREFIX = "server.";
-        private static final String TELEPORTATION = PREFIX + "teleportation.";
-        public static final String TELEPORTATION_COOLDOWN_TIME = TELEPORTATION + "cooldown-time";
-        public static final String TELEPORTATION_COOLDOWN_ENABLED = TELEPORTATION + "cooldown-enabled";
         private static final String PVP = PREFIX + "pvp.";
         public static final String PVPENABLE = PVP + "enabled";
         public static final String TOGGLEPVP = PVP + "enable-toggle-pvp";
@@ -70,7 +56,6 @@ public class Configuration {
 
     public static class PlayerSettings {
         private static String PREFIX = "player-settings.";
-        public static final String COOLDOWN_TP = "cooldown.teleportation";
         public static final String JOINMESSAGE = PREFIX + "join.message";
         public static final String LEAVEMESSAGE = PREFIX + "leave.message";
         private static String NICKNAME = PREFIX + "nicknames.";

@@ -52,11 +52,6 @@ server:
     enable-toggle-pvp: true
     # Toggle pvp allows players to run the /togglepvp command in which they can choose to disable
     # pvp for themselves only. Other players can't damage them and they can't damage others.
-  teleportation:
-    cooldown-enabled: true
-    # You can use permission: tr.teleport.cooldown-exempt to remove cooldowns for specific players or groups.
-    cooldown-time: "5s"
-    # You can use s for seconds, m for minutes, and h for hours.
   tune-instrument: "PIANO"
   # Can be: PIANO, BASS_DRUM, BASS_GUITAR, SNAPE_DRUM, STICKS
   # To make a new tune, simple make a new text file in the Tunes folder with the name of your tune.
@@ -68,6 +63,11 @@ server:
   # Can be: NATURAL, sharp, flat
   tune-tone: "A"
   # Can be a letter from A to G
+  cooldown:
+  # Set to 0 to disable
+    teleportation: "10s"
+    chat: "2s"
+    # Will stop all those nasty spammers that keep spamming the chat
 
 #---------------[ Chat ]---------------#
 chat:
@@ -181,8 +181,6 @@ group-manager:
 
 #---------------[ Player Settings ]---------------#
 player-settings:
-  cooldown:
-    teleportation: "20s"
   bed-spawn:
     enabled: true
     # When a player right clicks their bed, their bed spawn will be saved.

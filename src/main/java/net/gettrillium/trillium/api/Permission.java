@@ -81,6 +81,7 @@ public class Permission {
         public static final String CHATCHANNEL = PREFIX + "chatchannel.";
         public static final String COLOR = PREFIX + "color";
         public static final String CLEARCHAT = PREFIX + "clearchat";
+        public static final String COOLDOWN_EXEMPT = PREFIX + "cooldown-exempt";
     }
 
     public static class Fun {

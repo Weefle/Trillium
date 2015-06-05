@@ -6,6 +6,8 @@ import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
+import net.gettrillium.trillium.api.cooldown.Cooldown;
+import net.gettrillium.trillium.api.cooldown.CooldownType;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
@@ -17,6 +19,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import java.util.List;
 
@@ -475,6 +478,26 @@ public class ChatModule extends TrilliumModule {
     public void onChat(AsyncPlayerChatEvent event) {
         if (event.getPlayer().hasPermission(Permission.Chat.COLOR)) {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+        }
+        if (Cooldown.hasCooldown(event.getPlayer(), CooldownType.CHAT)) {
+            new Message(Mood.BAD, "Chat", "Your spamming! You can send messages in: " + ChatColor.AQUA + Cooldown.getTime(event.getPlayer(), CooldownType.CHAT)).to(event.getPlayer());
+            event.setCancelled(true);
+        } else {
+            if (!event.getPlayer().isOp() && !event.getPlayer().hasPermission(Permission.Chat.COOLDOWN_EXEMPT)) {
+                Cooldown.setCooldown(event.getPlayer(), CooldownType.CHAT);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent event) {
+        if (Cooldown.hasCooldown(event.getPlayer(), CooldownType.CHAT)) {
+            new Message(Mood.BAD, "Chat", "Your spamming! You can send messages in: " + ChatColor.AQUA + Cooldown.getTime(event.getPlayer(), CooldownType.CHAT)).to(event.getPlayer());
+            event.setCancelled(true);
+        } else {
+            if (!event.getPlayer().isOp() && !event.getPlayer().hasPermission(Permission.Chat.COOLDOWN_EXEMPT)) {
+                Cooldown.setCooldown(event.getPlayer(), CooldownType.CHAT);
+            }
         }
     }
 }

@@ -126,14 +126,6 @@ public class Utils {
         return (seconds * 20) + (hours * 3600 * 20) + (minutes * 60 * 20) + (days * 86400 * 20);
     }
 
-    // http://stackoverflow.com/a/1590842/4327834
-    public static int safeLongToInt(long l) {
-        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
-            throw new IllegalArgumentException(l + " cannot be cast to int without changing its value.");
-        }
-        return (int) l;
-    }
-
     public static String timeToString(int ticks) {
         int millis = ticks / 20 * 1000;
 

@@ -6,6 +6,7 @@ import net.gettrillium.trillium.api.TrilliumAPI;
 public enum CooldownType {
 
     TELEPORTATION("teleportation"),
+    KIT("kit"),
     CHAT("chat");
 
     private String cooldown;

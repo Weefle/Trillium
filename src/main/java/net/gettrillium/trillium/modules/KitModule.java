@@ -5,10 +5,13 @@ import net.gettrillium.trillium.api.Kit;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
+import net.gettrillium.trillium.api.cooldown.Cooldown;
+import net.gettrillium.trillium.api.cooldown.CooldownType;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -27,11 +30,18 @@ public class KitModule extends TrilliumModule {
                 } else {
                     if (getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER).contains(args[0])) {
                         if (p.getProxy().hasPermission(Permission.Kit.USE + args[0])) {
+                            if (!Cooldown.hasCooldown(p.getProxy(), CooldownType.KIT)) {
+                                if (!p.getProxy().isOp() && !p.hasPermission(Permission.Kit.COOLDOWN)) {
+                                    Cooldown.setCooldown(p.getProxy(), CooldownType.KIT);
+
+                                }
 
                             new Kit(args[0]).giveTo(p.getProxy());
-
                             new Message(Mood.GOOD, "Kit", "You successfully received kit " + args[0]).to(p);
 
+                            } else {
+                                new Message(Mood.BAD, "Spawn", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.KIT)).to(p);
+                            }
                         } else {
                             new Message(Mood.BAD, "Kit", "You don't have permission to use that kit.").to(p);
                         }

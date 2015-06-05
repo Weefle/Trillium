@@ -68,6 +68,7 @@ server:
     teleportation: "10s"
     chat: "2s"
     # Will stop all those nasty spammers that keep spamming the chat
+    kit: "10d"
 
 #---------------[ Chat ]---------------#
 chat:

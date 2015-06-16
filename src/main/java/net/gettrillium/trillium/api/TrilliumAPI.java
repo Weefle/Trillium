@@ -119,6 +119,17 @@ public class TrilliumAPI {
         modules.put(module.getClass(), module);
     }
 
+    public static void unregisterModules() {
+        HandlerList.unregisterAll();
+        Iterator it = modules.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry item = (Map.Entry) it.next();
+            unregisterCommands();
+            ((TrilliumModule) item.getValue()).unregister();
+            it.remove();
+        }
+    }
+
     public static void registerModules() {
         TrilliumAPI.registerModule(new AFKModule());
         TrilliumAPI.registerModule(new PunishModule());
@@ -130,17 +141,7 @@ public class TrilliumAPI {
         TrilliumAPI.registerModule(new FunModule());
         TrilliumAPI.registerModule(new CommandBinderModule());
         TrilliumAPI.registerModule(new KitModule());
-    }
 
-    public static void unregisterModules() {
-        HandlerList.unregisterAll();
-        Iterator it = modules.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry item = (Map.Entry) it.next();
-            unregisterCommands((TrilliumModule) item.getValue());
-            ((TrilliumModule) item.getValue()).unregister();
-            it.remove();
-        }
     }
 
     public static boolean isModuleEnabled(Class<? extends TrilliumModule> module) {
@@ -173,7 +174,7 @@ public class TrilliumAPI {
         }
     }
 
-    public static void unregisterCommands(TrilliumModule module) {
+    public static void unregisterCommands() {
         try {
             Field field = SimplePluginManager.class.getDeclaredField("commandMap");
             field.setAccessible(true);

@@ -33,10 +33,9 @@ public class Trillium extends JavaPlugin {
 
         TrilliumAPI.setInstance(this);
         TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
-        TrilliumAPI.registerModules();
-
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
+        TrilliumAPI.registerModules();
 
         generateFiles();
 

@@ -46,9 +46,9 @@ public class Kit {
 
                 for (String data : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER + this.name + ".items." + items).getKeys(false)) {
 
-                    if (data.equalsIgnoreCase("book")) {
+                    if (data.equalsIgnoreCase("book-file")) {
 
-                        File book = new File(TrilliumAPI.getInstance().getDataFolder() + "/books/" + TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".book-file") + "/");
+                        File book = new File(TrilliumAPI.getInstance().getDataFolder() + "/Books/" + TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".book-file") + "/");
                         Bukkit.broadcastMessage("1");
                         if (book.exists()) {
                             File[] pages = book.listFiles();
@@ -67,7 +67,7 @@ public class Kit {
                                     meta.setPage(Integer.parseInt(page.getName()), text);
                                     Bukkit.broadcastMessage("4");
                                 } else {
-                                    TrilliumAPI.getInstance().getLogger().severe("Kits: Page '" + page.getName() + "' in book folder " + book.getName() + "' is NOT an integer. Cannot create book.");
+                                    TrilliumAPI.getInstance().getLogger().severe("Kits: Page '" + page.getName() + "' in book folder '" + book.getName() + "' is NOT an integer. Cannot create book.");
                                 }
                             }
                         } else {
@@ -103,51 +103,53 @@ public class Kit {
 
                 }
             } else {
-                ItemStack stack = new ItemStack(Material.getMaterial(items.toUpperCase()));
-                ItemMeta meta = stack.getItemMeta();
+                if (Material.getMaterial(items.toUpperCase()) != null) {
+                    ItemStack stack = new ItemStack(Material.getMaterial(items.toUpperCase()));
+                    ItemMeta meta = stack.getItemMeta();
 
-                for (String data : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER + this.name + ".items." + items).getKeys(false)) {
+                    for (String data : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER + this.name + ".items." + items).getKeys(false)) {
 
-                    if (data.equalsIgnoreCase("name")) {
-                        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".name")));
-                    }
-
-                    if (data.equalsIgnoreCase("durability")) {
-                        if (StringUtils.isNumeric(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".durability"))) {
-                            stack.setDurability((short) Integer.parseInt(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".durability")));
-                        } else {
-                            TrilliumAPI.getInstance().getLogger().severe("Kits: Durability of item: '" + items + "' is not an integer! Ignoring...");
+                        if (data.equalsIgnoreCase("name")) {
+                            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".name")));
                         }
-                    }
 
-                    if (data.equalsIgnoreCase("lore")) {
-                        List<String> lore = new ArrayList<>();
-                        for (String lores : TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".lore")) {
-                            lore.add(ChatColor.translateAlternateColorCodes('&', lores));
+                        if (data.equalsIgnoreCase("durability")) {
+                            if (StringUtils.isNumeric(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".durability"))) {
+                                stack.setDurability((short) Integer.parseInt(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".durability")));
+                            } else {
+                                TrilliumAPI.getInstance().getLogger().severe("Kits: Durability of item: '" + items + "' is not an integer! Ignoring...");
+                            }
                         }
-                        meta.setLore(lore);
-                    }
 
-                    if (data.equalsIgnoreCase("enchantments")) {
-                        List<String> enchs = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".enchantments");
-                        for (String enchlevel : enchs) {
-                            Enchantment enchantment = Enchantment.getByName(enchlevel.split(":")[0]);
-                            int level = Integer.parseInt(enchlevel.split(":")[1]);
-                            meta.addEnchant(enchantment, level, true);
+                        if (data.equalsIgnoreCase("lore")) {
+                            List<String> lore = new ArrayList<>();
+                            for (String lores : TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".lore")) {
+                                lore.add(ChatColor.translateAlternateColorCodes('&', lores));
+                            }
+                            meta.setLore(lore);
                         }
-                    }
 
-                    if (data.equalsIgnoreCase("amount")) {
-                        if (StringUtils.isNumeric(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".amount"))) {
-                            stack.setAmount(Integer.parseInt(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".amount")));
-                        } else {
-                            TrilliumAPI.getInstance().getLogger().severe("Kits: Amount of item: '" + items + "' is not an integer! Ignoring...");
-                            stack.setAmount(1);
+                        if (data.equalsIgnoreCase("enchantments")) {
+                            List<String> enchs = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".enchantments");
+                            for (String enchlevel : enchs) {
+                                Enchantment enchantment = Enchantment.getByName(enchlevel.split(":")[0]);
+                                int level = Integer.parseInt(enchlevel.split(":")[1]);
+                                meta.addEnchant(enchantment, level, true);
+                            }
                         }
-                    }
 
-                    stack.setItemMeta(meta);
-                    stacks.add(stack);
+                        if (data.equalsIgnoreCase("amount")) {
+                            if (StringUtils.isNumeric(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".amount"))) {
+                                stack.setAmount(Integer.parseInt(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".amount")));
+                            } else {
+                                TrilliumAPI.getInstance().getLogger().severe("Kits: Amount of item: '" + items + "' is not an integer! Ignoring...");
+                                stack.setAmount(1);
+                            }
+                        }
+
+                        stack.setItemMeta(meta);
+                        stacks.add(stack);
+                    }
                 }
             }
         }

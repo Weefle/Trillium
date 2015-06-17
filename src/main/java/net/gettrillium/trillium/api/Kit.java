@@ -1,8 +1,8 @@
 package net.gettrillium.trillium.api;
 
 import net.gettrillium.trillium.Utils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -49,27 +49,21 @@ public class Kit {
                     if (data.equalsIgnoreCase("book-file")) {
 
                         File book = new File(TrilliumAPI.getInstance().getDataFolder() + "/Books/" + TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".book-file") + "/");
-                        Bukkit.broadcastMessage("1");
                         if (book.exists()) {
                             File[] pages = book.listFiles();
-                            Bukkit.broadcastMessage("2");
+                            ArrayList<String> content = new ArrayList<>();
                             for (File page : pages != null ? pages : new File[0]) {
-                                Bukkit.broadcastMessage("3");
-                                if (StringUtils.isNumeric(page.getName())) {
-                                    Bukkit.broadcastMessage("PAGE NAME: " + page.getName());
-                                    String text = null;
+                                if (StringUtils.isNumeric(FilenameUtils.removeExtension(page.getName()))) {
                                     try {
-                                        text = ChatColor.translateAlternateColorCodes('&', Utils.readFile(page));
-                                        Bukkit.broadcastMessage("TEXT" + text);
+                                        content.add(ChatColor.translateAlternateColorCodes('&', Utils.readFile(page)));
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
-                                    meta.setPage(Integer.parseInt(page.getName()), text);
-                                    Bukkit.broadcastMessage("4");
                                 } else {
                                     TrilliumAPI.getInstance().getLogger().severe("Kits: Page '" + page.getName() + "' in book folder '" + book.getName() + "' is NOT an integer. Cannot create book.");
                                 }
                             }
+                            meta.setPages(content);
                         } else {
                             TrilliumAPI.getInstance().getLogger().severe("Kits: Found 'written_book' but could not find book directory of '" + book.getName() + "' directory. Ignoring...");
                         }
@@ -80,13 +74,13 @@ public class Kit {
                     if (data.equalsIgnoreCase("title")) {
                         meta.setTitle(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".title")));
                     } else {
-                        meta.setTitle(ChatColor.RED + "<UNKNOWN>");
+                        meta.setTitle(ChatColor.RED + "<ERROR>");
                     }
 
                     if (data.equalsIgnoreCase("author")) {
                         meta.setAuthor(ChatColor.translateAlternateColorCodes('%', TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".author")));
                     } else {
-                        meta.setAuthor(ChatColor.RED + "<UNKNOWN>");
+                        meta.setAuthor(ChatColor.RED + "<ERROR>");
                     }
 
                     if (data.equalsIgnoreCase("lore")) {
@@ -98,58 +92,57 @@ public class Kit {
                             meta.setLore(lore);
                         }
                     }
+
                     stack.setItemMeta(meta);
                     stacks.add(stack);
 
                 }
             } else {
-                if (Material.getMaterial(items.toUpperCase()) != null) {
-                    ItemStack stack = new ItemStack(Material.getMaterial(items.toUpperCase()));
-                    ItemMeta meta = stack.getItemMeta();
+                ItemStack stack = new ItemStack(Material.valueOf(items.toUpperCase()));
+                ItemMeta meta = stack.getItemMeta();
 
-                    for (String data : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER + this.name + ".items." + items).getKeys(false)) {
+                for (String data : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER + this.name + ".items." + items).getKeys(false)) {
 
-                        if (data.equalsIgnoreCase("name")) {
-                            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".name")));
-                        }
-
-                        if (data.equalsIgnoreCase("durability")) {
-                            if (StringUtils.isNumeric(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".durability"))) {
-                                stack.setDurability((short) Integer.parseInt(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".durability")));
-                            } else {
-                                TrilliumAPI.getInstance().getLogger().severe("Kits: Durability of item: '" + items + "' is not an integer! Ignoring...");
-                            }
-                        }
-
-                        if (data.equalsIgnoreCase("lore")) {
-                            List<String> lore = new ArrayList<>();
-                            for (String lores : TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".lore")) {
-                                lore.add(ChatColor.translateAlternateColorCodes('&', lores));
-                            }
-                            meta.setLore(lore);
-                        }
-
-                        if (data.equalsIgnoreCase("enchantments")) {
-                            List<String> enchs = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".enchantments");
-                            for (String enchlevel : enchs) {
-                                Enchantment enchantment = Enchantment.getByName(enchlevel.split(":")[0]);
-                                int level = Integer.parseInt(enchlevel.split(":")[1]);
-                                meta.addEnchant(enchantment, level, true);
-                            }
-                        }
-
-                        if (data.equalsIgnoreCase("amount")) {
-                            if (StringUtils.isNumeric(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".amount"))) {
-                                stack.setAmount(Integer.parseInt(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".amount")));
-                            } else {
-                                TrilliumAPI.getInstance().getLogger().severe("Kits: Amount of item: '" + items + "' is not an integer! Ignoring...");
-                                stack.setAmount(1);
-                            }
-                        }
-
-                        stack.setItemMeta(meta);
-                        stacks.add(stack);
+                    if (data.equalsIgnoreCase("name")) {
+                        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".name")));
                     }
+
+                    if (data.equalsIgnoreCase("durability")) {
+                        if (StringUtils.isNumeric(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".durability"))) {
+                            stack.setDurability((short) Integer.parseInt(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".durability")));
+                        } else {
+                            TrilliumAPI.getInstance().getLogger().severe("Kits: Durability of item: '" + items + "' is not an integer! Ignoring...");
+                        }
+                    }
+
+                    if (data.equalsIgnoreCase("lore")) {
+                        List<String> lore = new ArrayList<>();
+                        for (String lores : TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".lore")) {
+                            lore.add(ChatColor.translateAlternateColorCodes('&', lores));
+                        }
+                        meta.setLore(lore);
+                    }
+
+                    if (data.equalsIgnoreCase("enchantments")) {
+                        List<String> enchs = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".enchantments");
+                        for (String enchlevel : enchs) {
+                            Enchantment enchantment = Enchantment.getByName(enchlevel.split(":")[0]);
+                            int level = Integer.parseInt(enchlevel.split(":")[1]);
+                            meta.addEnchant(enchantment, level, true);
+                        }
+                    }
+
+                    if (data.equalsIgnoreCase("amount")) {
+                        if (StringUtils.isNumeric(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".amount"))) {
+                            stack.setAmount(Integer.parseInt(TrilliumAPI.getInstance().getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".amount")));
+                        } else {
+                            TrilliumAPI.getInstance().getLogger().severe("Kits: Amount of item: '" + items + "' is not an integer! Ignoring...");
+                            stack.setAmount(1);
+                        }
+                    }
+
+                    stack.setItemMeta(meta);
+                    stacks.add(stack);
                 }
             }
         }

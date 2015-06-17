@@ -1,7 +1,5 @@
-&a==== HELLO ====
-
-&eThis is an example book!
-&eEach line in this book is a line in the text line of the corresponding page
-&eYou can make a new book by making a new folder in the trillium folder
-&ewith the name of what you want your book to be called.
-&eYou can also, of course, make ...
+&a==== HELLO ====\n
+&2This is an example book!\n
+Each line in this book is a line in the text file of the corresponding page.\n
+You make new books by making new folders in the trillium folder with any name you want.\n
+You can also, of course, make ...

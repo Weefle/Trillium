@@ -246,7 +246,7 @@ kits:
           enchantments:
             - "DURABILITY:5"
             - "DIG_SPEED:4"
-        stone_shovel:
+        stone_spade:
           name: "&aDiggy diggy hole"
           enchantments:
             - "DURABILITY:5"

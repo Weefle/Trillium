@@ -1,6 +1,4 @@
-&e... as many pages as you like!
-&eTo make a new page, simple make a new .txt file inside the book folder
-&eand name it the number of the page you want.
-&eThe page name HAS to be a number and it is advised to
-&efollow the number index in the page files.
-&eeg: 1.txt, 2.txt, 3.txt, 4.txt, etc...
+&2... as many pages as you like!\n
+To make a new page, simple make a new .txt file inside the book folder and name it the number of the page you want.\n
+The page name HAS to be a number that follows the the name index order.\n
+eg: 1.txt, 2.txt, 3.txt, etc...

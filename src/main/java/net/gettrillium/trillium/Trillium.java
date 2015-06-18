@@ -122,32 +122,19 @@ public class Trillium extends JavaPlugin {
 
         URL world = getClass().getResource("/world.yml");
         URL lordSaad = getClass().getResource("/LordSaad.yml");
-        URL book1 = getClass().getResource("/1.txt");
-        URL book2 = getClass().getResource("/2.txt");
-        URL book3 = getClass().getResource("/3.txt");
+        URL book = getClass().getResource("/example-book.txt");
         URL tune = getClass().getResource("/example-tune.txt");
 
-        File bookDir1 = new File(getDataFolder() + "/Books/example-book/1.txt");
-        File bookDir2 = new File(getDataFolder() + "/Books/example-book/2.txt");
-        File bookDir3 = new File(getDataFolder() + "/Books/example-book/3.txt");
+        File bookDir = new File(getDataFolder() + "/Books/example-book.txt");
         File lordSaadDir = new File(getDataFolder() + "/Trillium Group Manager/players/LordSaad.yml");
         File worldDir = new File(getDataFolder() + "/Trillium Group Manager/worlds/world.yml");
         File tuneDir = new File(getDataFolder() + "/Tunes/example-tune.txt");
 
         try {
-            FileUtils.copyURLToFile(book1, bookDir1);
-            FileUtils.copyURLToFile(book2, bookDir2);
-            FileUtils.copyURLToFile(book3, bookDir3);
-            getLogger().info("Successfully generated /example-book/");
-
+            FileUtils.copyURLToFile(book, bookDir);
             FileUtils.copyURLToFile(lordSaad, lordSaadDir);
-            getLogger().info("Successfully generated /Trillium Group Manager/players/LordSaad.yml");
-
             FileUtils.copyURLToFile(world, worldDir);
-            getLogger().info("Successfully generated /Trillium Group Manager/worlds/world.yml");
-
             FileUtils.copyURLToFile(tune, tuneDir);
-            getLogger().info("Successfully generated /Tunes/example-tune.yml");
         } catch (IOException e) {
             e.printStackTrace();
         }

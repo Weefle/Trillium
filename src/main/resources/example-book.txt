@@ -1,0 +1,13 @@
+&a==== HELLO ====
+&2This is an example book!
+&1Each line in this book is a line in the text file of the corresponding page.
+&3To make new books, make new folders in the trillium folder with any name you want.
+&5You can also make ...
+<-NEXT->
+&5... multiple pages!
+&6To make a new page, type "<-NEXT->" on a line by itself.
+&7You can use multiple &ac&2o&4l&1o&6r&bs &7and &neffects
+<-NEXT->
+&4&k;;;;;;;;;;;;
+&4ENJOY! ^-^
+&4&k;;;;;;;;;;;;

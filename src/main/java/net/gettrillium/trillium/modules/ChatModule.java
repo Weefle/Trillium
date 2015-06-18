@@ -484,7 +484,7 @@ public class ChatModule extends TrilliumModule {
             event.setCancelled(true);
         } else {
             if (!event.getPlayer().isOp() && !event.getPlayer().hasPermission(Permission.Chat.COOLDOWN_EXEMPT)) {
-                Cooldown.setCooldown(event.getPlayer(), CooldownType.CHAT);
+                Cooldown.setCooldown(event.getPlayer(), CooldownType.CHAT, false);
             }
         }
     }
@@ -496,7 +496,7 @@ public class ChatModule extends TrilliumModule {
             event.setCancelled(true);
         } else {
             if (!event.getPlayer().isOp() && !event.getPlayer().hasPermission(Permission.Chat.COOLDOWN_EXEMPT)) {
-                Cooldown.setCooldown(event.getPlayer(), CooldownType.CHAT);
+                Cooldown.setCooldown(event.getPlayer(), CooldownType.CHAT, false);
             }
         }
     }

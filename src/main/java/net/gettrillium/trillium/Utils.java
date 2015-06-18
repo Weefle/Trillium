@@ -9,6 +9,7 @@ import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
 import net.gettrillium.trillium.runnables.GroupManagerRunnable;
 import net.gettrillium.trillium.runnables.TpsRunnable;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,9 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -129,8 +128,9 @@ public class Utils {
     public static String timeToString(int ticks) {
         int millis = ticks / 20 * 1000;
 
-        return String.format("%02d:%02d:%02d",
-                TimeUnit.MILLISECONDS.toHours(millis),
+        return String.format("%02d:%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toDays(millis),
+                TimeUnit.MILLISECONDS.toHours(millis) % TimeUnit.DAYS.toHours(1),
                 TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
                 TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
     }
@@ -171,42 +171,32 @@ public class Utils {
         p.getInventory().setArmorContents(null);
     }
 
-    public static String readFile(File f) throws IOException {
-
-        if (!f.exists()) {
-            return "";
-        }
-
-        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-            StringBuilder b = new StringBuilder();
-            try {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    b.append(line);
-                    b.append(System.getProperty("line.separator"));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return b.toString();
-        }
-    }
-
-    public static ArrayList<String> readFileLines(File f) {
-        ArrayList<String> list = new ArrayList<>();
+    public static ArrayList<String> convertFileToBookPages(File book) {
+        ArrayList<String> lines = new ArrayList<>();
+        ArrayList<String> pages = new ArrayList<>();
         try {
-            BufferedReader in = new BufferedReader(new FileReader(f));
-
-            String str;
-
-            while ((str = in.readLine()) != null) {
-                list.add(str);
+            for (Object line : FileUtils.readLines(book)) {
+                String s = line + "";
+                s = ChatColor.translateAlternateColorCodes('&', s);
+                lines.add(s);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return list;
+        String s = "<-NEXT->";
+        for (String line : lines) {
+            if (!line.equals("<-NEXT->")) {
+                if (!s.equals("<-NEXT->")) {
+                    s = s + "\n" + line;
+                } else {
+                    s = line;
+                }
+            } else {
+                pages.add(s);
+                s = "<-NEXT->";
+            }
+        }
+        return pages;
     }
 
     private static double randomV() {

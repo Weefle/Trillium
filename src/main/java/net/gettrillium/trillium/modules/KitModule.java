@@ -31,9 +31,8 @@ public class KitModule extends TrilliumModule {
                     if (getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER).contains(args[0])) {
                         if (p.getProxy().hasPermission(Permission.Kit.USE + args[0])) {
                             if (!Cooldown.hasCooldown(p.getProxy(), CooldownType.KIT)) {
-                                if (!p.getProxy().isOp() && !p.hasPermission(Permission.Kit.COOLDOWN)) {
-                                    Cooldown.setCooldown(p.getProxy(), CooldownType.KIT);
-
+                                if (!p.getProxy().isOp() && !p.hasPermission(Permission.Kit.COOLDOWN_EXEMPT)) {
+                                    Cooldown.setCooldown(p.getProxy(), CooldownType.KIT, true);
                                 }
 
                                 new Kit(args[0]).giveTo(p.getProxy());

@@ -1,7 +1,7 @@
 package net.gettrillium.trillium.api;
 
-import net.gettrillium.trillium.Utils;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Tune {
@@ -17,7 +18,14 @@ public class Tune {
     protected ArrayList<String> tune;
 
     public Tune(String name) {
-        tune = Utils.readFileLines(new File(TrilliumAPI.getInstance().getDataFolder() + "/Tunes/" + name + ".txt"));
+        try {
+            for (Object line : FileUtils.readLines(new File(TrilliumAPI.getInstance().getDataFolder() + "/Tunes/" + name + ".txt"))) {
+                String s = line + "";
+                tune.add(s);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void play() {

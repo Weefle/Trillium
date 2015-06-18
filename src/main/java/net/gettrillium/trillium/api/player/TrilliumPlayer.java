@@ -9,7 +9,6 @@ import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.serializer.LocationSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -32,14 +31,24 @@ public class TrilliumPlayer {
     private boolean isVanished = false;
     private boolean hasNickname = false;
     private boolean pvp;
+    private File file;
+    private YamlConfiguration yml;
 
     public TrilliumPlayer(Player proxy) {
         this.proxy = proxy;
-        this.nickname = proxy.getName();
+        nickname = proxy.getName();
+        file = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
+        yml = YamlConfiguration.loadConfiguration(file);
         load();
     }
 
-
+    private void save() {
+        try {
+            yml.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public Player getProxy() {
         return proxy;
@@ -83,11 +92,11 @@ public class TrilliumPlayer {
     }
 
     public boolean isFlying() {
-        return getProxy().getAllowFlight() || getProxy().isFlying();
+        return proxy.getAllowFlight() || getProxy().isFlying();
     }
 
     public void setFlying(boolean enabled) {
-        getProxy().setAllowFlight(enabled);
+        proxy.setAllowFlight(enabled);
     }
 
     public boolean isGod() {
@@ -135,65 +144,51 @@ public class TrilliumPlayer {
     }
 
     public void dispose() {
-        File dataStore = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
-        FileConfiguration config = YamlConfiguration.loadConfiguration(dataStore);
-
-        config.set(Configuration.Player.NICKNAME, this.nickname);
-        config.set(Configuration.Player.LOCATION, TrilliumAPI.getSerializer(Location.class).serialize(proxy.getLocation()));
-        config.set(Configuration.Player.MUTED, this.isMuted);
-        config.getBoolean(Configuration.Player.GOD, this.isGod);
-        config.getBoolean(Configuration.Player.VANISH, this.isVanished);
-        try {
-            config.save(dataStore);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        yml.set(Configuration.Player.NICKNAME, this.nickname);
+        yml.set(Configuration.Player.LOCATION, TrilliumAPI.getSerializer(Location.class).serialize(proxy.getLocation()));
+        yml.set(Configuration.Player.MUTED, this.isMuted);
+        yml.getBoolean(Configuration.Player.GOD, this.isGod);
+        yml.getBoolean(Configuration.Player.VANISH, this.isVanished);
+        save();
 
         proxy = null;
     }
 
     public void load() {
         boolean newUser = false;
-        File dataStore = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
-        if (!dataStore.exists()) {
+        if (!file.exists()) {
             try {
-                dataStore.createNewFile();
+                file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             newUser = true;
         }
 
-        FileConfiguration config = YamlConfiguration.loadConfiguration(dataStore);
-
         if (newUser) {
-            config.set(Configuration.Player.NICKNAME, nickname);
-            config.set(Configuration.Player.LOCATION, TrilliumAPI.getSerializer(Location.class).serialize(proxy.getLocation()));
-            config.set(Configuration.Player.MUTED, isMuted());
-            config.set(Configuration.Player.GOD, isGod());
-            config.set(Configuration.Player.PVP, canPvp());
-            config.set(Configuration.Player.VANISH, isVanished());
-            config.set(Configuration.Player.BAN_REASON, "");
-            config.set(Configuration.Player.HOMES, "");
+            yml.set(Configuration.Player.NICKNAME, nickname);
+            yml.set(Configuration.Player.LOCATION, TrilliumAPI.getSerializer(Location.class).serialize(proxy.getLocation()));
+            yml.set(Configuration.Player.MUTED, isMuted());
+            yml.set(Configuration.Player.GOD, isGod());
+            yml.set(Configuration.Player.PVP, canPvp());
+            yml.set(Configuration.Player.VANISH, isVanished());
+            yml.set(Configuration.Player.BAN_REASON, "");
+            yml.set(Configuration.Player.HOMES, "");
             if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
-                config.set(Configuration.Player.GROUP, "default");
+                yml.set(Configuration.Player.GROUP, "default");
             }
         } else {
-            setDisplayName(config.getString(Configuration.Player.NICKNAME));
-            setLastLocation(TrilliumAPI.getSerializer(Location.class).deserialize(config.getString(Configuration.Player.LOCATION)));
-            setMuted(config.getBoolean(Configuration.Player.MUTED));
-            setGod(config.getBoolean(Configuration.Player.GOD));
-            setPvp(config.getBoolean(Configuration.Player.PVP));
-            setVanished(config.getBoolean(Configuration.Player.VANISH));
+            setDisplayName(yml.getString(Configuration.Player.NICKNAME));
+            setLastLocation(TrilliumAPI.getSerializer(Location.class).deserialize(yml.getString(Configuration.Player.LOCATION)));
+            setMuted(yml.getBoolean(Configuration.Player.MUTED));
+            setGod(yml.getBoolean(Configuration.Player.GOD));
+            setPvp(yml.getBoolean(Configuration.Player.PVP));
+            setVanished(yml.getBoolean(Configuration.Player.VANISH));
             if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
-                new GroupManager(getProxy()).setGroup(config.getString(Configuration.Player.GROUP));
+                new GroupManager(getProxy()).setGroup(yml.getString(Configuration.Player.GROUP));
             }
         }
-        try {
-            config.save(dataStore);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        save();
     }
 
     public Location getLastLocation() {
@@ -217,22 +212,14 @@ public class TrilliumPlayer {
     }
 
     public void setHome(String name, Location loc) {
-        File dataStore = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(dataStore);
-        List<String> homes = config.getStringList(Configuration.Player.HOMES);
+        List<String> homes = yml.getStringList(Configuration.Player.HOMES);
         homes.add(name + "~" + new LocationSerializer().serialize(loc));
-        config.set(Configuration.Player.HOMES, homes);
-        try {
-            config.save(dataStore);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        yml.set(Configuration.Player.HOMES, homes);
+        save();
     }
 
     public void delHome(String name) {
-        File dataStore = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(dataStore);
-        List<String> homes = config.getStringList(Configuration.Player.HOMES);
+        List<String> homes = yml.getStringList(Configuration.Player.HOMES);
         Iterator<String> iterator = homes.iterator();
 
         while (iterator.hasNext()) {
@@ -242,18 +229,12 @@ public class TrilliumPlayer {
             }
         }
 
-        config.set(Configuration.Player.HOMES, iterator);
-        try {
-            config.save(dataStore);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        yml.set(Configuration.Player.HOMES, iterator);
+        save();
     }
 
     public HashMap<String, Location> getHomes() {
-        File dataStore = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(dataStore);
-        List<String> homes = config.getStringList(Configuration.Player.HOMES);
+        List<String> homes = yml.getStringList(Configuration.Player.HOMES);
         HashMap<String, Location> deserialized = new HashMap<>();
 
         for (String home : homes) {
@@ -264,6 +245,26 @@ public class TrilliumPlayer {
             deserialized.put(name, loc);
         }
         return deserialized;
+    }
+
+    public void setCooldown(String cooldownName) {
+        yml.set(cooldownName, System.currentTimeMillis());
+        save();
+    }
+
+    public boolean hasCooldown(String cooldownName) {
+        return yml.get(cooldownName) != null;
+    }
+
+    public long getCooldown(String cooldownName) {
+        return yml.getLong(cooldownName);
+    }
+
+    public void removeCooldown(String cooldownName) {
+        if (yml.get(cooldownName) != null) {
+            yml.set(cooldownName, null);
+            save();
+        }
     }
 }
 

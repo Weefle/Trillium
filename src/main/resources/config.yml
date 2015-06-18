@@ -66,7 +66,7 @@ server:
   cooldown:
   # Set to 0 to disable
     teleportation: "10s"
-    chat: "2s"
+    chat: "0s"
     # Will stop all those nasty spammers that keep spamming the chat
     kit: "10d"
 
@@ -79,7 +79,7 @@ chat:
     - "&8<<<---{[0]}--->>> &aServer &8<<<---{[0]}--->>>"
     - "&7Welcome &6[USERNAME]&7!"
     - "&7There are currently &6[ONLINE]&7/&6[SLOTS]&7 players."
-    - "&7Have fun! <3"
+    - "&7Have fun! &4<3"
     - " "
     #The ingame motd. When a player logs on, they will see this message.
   chat-channels:
@@ -125,7 +125,7 @@ broadcast:
       - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
       # When you type /broadcast <message to broadcast here>, the message will appear
       # in this format.
-    centralize-broadcasts: true
+    centralize-broadcasts: false
     # The text will be midalized/centralized in the center of the chat and will
     # use more lines if necessary. It looks cool!
     # Beware, This feature might not work properly if the client has a resource pack

@@ -33,10 +33,10 @@ public class AdminModule extends TrilliumModule {
     public void trillium(CommandSender cs, String[] args) {
         if (args.length == 0) {
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
-            cs.sendMessage(ChatColor.GRAY + "            Plugin made with love by:");
-            cs.sendMessage(ChatColor.GRAY + "       LordSaad, VortexSeven, Turbotailz,");
-            cs.sendMessage(ChatColor.GRAY + "          samczsun, hintss, and colt");
-            cs.sendMessage(ChatColor.DARK_RED + "                         <3");
+            cs.sendMessage(ChatColor.GRAY + "Plugin made with love by:");
+            cs.sendMessage(ChatColor.GRAY + "LordSaad, VortexSeven, Turbotailz,");
+            cs.sendMessage(ChatColor.GRAY + "samczsun, hintss, and colt");
+            cs.sendMessage(ChatColor.DARK_RED + "<3");
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
             cs.sendMessage(ChatColor.GRAY + "Version: " + ChatColor.YELLOW + TrilliumAPI.getInstance().getDescription().getVersion());
             cs.sendMessage(ChatColor.GRAY + "Support email: " + ChatColor.YELLOW + "support@gettrillium.net");
@@ -49,14 +49,14 @@ public class AdminModule extends TrilliumModule {
                         reloadPrompt.remove(cs.getName());
                         Utils.reload();
                         cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
-                        cs.sendMessage(ChatColor.GRAY + "         Plugin successfully reloaded");
+                        cs.sendMessage(ChatColor.GRAY + "Plugin successfully reloaded");
                         cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
                     } else {
                         reloadPrompt.add(cs.getName());
                         new Message(Mood.BAD, "Trillium", "Wow there tiger!").to(cs);
                         new Message(Mood.BAD, "Trillium", "Running the reload command isn't a walk in the park!").to(cs);
                         new Message(Mood.BAD, "Trillium", "It's not advised to run this command frequently as it unloads and reloads a lot of things.").to(cs);
-                        new Message(Mood.BAD, "Trillium", "Are you " + ChatColor.RED + "" + ChatColor.BOLD + "SURE" + ChatColor.GRAY + " you want to continue?").to(cs);
+                        new Message(Mood.BAD, "Trillium", "Are you SURE you want to continue?").to(cs);
                         new Message(Mood.BAD, "Trillium", "If yes, then run this command again.").to(cs);
                     }
                 } else {
@@ -169,18 +169,22 @@ public class AdminModule extends TrilliumModule {
             if (p.hasPermission(Permission.Admin.CLEARINV)) {
                 if (args.length == 0) {
                     Utils.clearInventory(p);
-                    new Message(Mood.GOOD, "ClearInventory", "Inventory cleared.").to(p);
+                    new Message(Mood.GOOD, "Clear Inv", "Inventory cleared.").to(p);
                 } else {
                     Player target = Bukkit.getPlayer(args[0]);
 
                     if (target != null) {
                         Utils.clearInventory(target);
-                        new Message(Mood.GOOD, "ClearInventory", "You have cleared " + target.getName() + "'s inventory.").to(p);
+                        new Message(Mood.GOOD, "Clear Inv", "You have cleared " + target.getName() + "'s inventory.").to(p);
                     } else {
-                        new Message("ClearInventory", Error.INVALID_PLAYER, args[0]).to(p);
+                        new Message("Clear Inv", Error.INVALID_PLAYER, args[0]).to(p);
                     }
                 }
+            } else {
+                new Message("Clear Inv", Error.NO_PERMISSION).to(p);
             }
+        } else {
+            new Message("Clear Inv", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -219,13 +223,12 @@ public class AdminModule extends TrilliumModule {
                         new Message(Mood.BAD, "Lag", "Wow there tiger!").to(cs);
                         new Message(Mood.BAD, "Lag", "Running the lag clearing command can potentially do more harm").to(cs);
                         new Message(Mood.BAD, "Lag", "than good if something goes wrong during the process!").to(cs);
-                        new Message(Mood.BAD, "Lag", "Are you " + ChatColor.RED + "" + ChatColor.BOLD + "SURE" + ChatColor.GRAY + " you want to continue?").to(cs);
+                        new Message(Mood.BAD, "Lag", "Are you SURE you want to continue?").to(cs);
                         new Message(Mood.BAD, "Lag", "If yes, then run this command again.").to(cs);
 
                     }
                 }
             } else {
-
                 new Message(Mood.GENERIC, "Lag", "Server Statistics:").to(cs);
                 Utils.printCurrentMemory(cs);
             }

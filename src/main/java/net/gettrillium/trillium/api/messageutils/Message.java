@@ -14,25 +14,28 @@ public class Message {
     public Message(Mood mood, String command, String message) {
         format = TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.FORMAT);
         format = ChatColor.translateAlternateColorCodes('&', format);
-        format = format.replace("%COLOR%", mood.getColor());
         format = format.replace("%COMMAND%", command);
-        format = format.replace("%MESSAGE%", ChatColor.translateAlternateColorCodes('&', message));
+        format = format.replace("%MESSAGE%", message);
+        format = format.replace("%COLOR%", mood.getColor());
+        format = ChatColor.translateAlternateColorCodes('&', format);
     }
 
     public Message(String command, Error error) {
-        format = error.getError();
-        format = ChatColor.translateAlternateColorCodes('&', format);
+        format = TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.FORMAT);
+        format = format.replace("%MESSAGE%", error.getError());
         format = format.replace("%COMMAND%", command);
-
+        format = format.replace("%COLOR%", Mood.BAD.getColor());
+        format = ChatColor.translateAlternateColorCodes('&', format);
     }
 
     public Message(String command, Error error, String extra) {
-        format = error.getError();
-        format = ChatColor.translateAlternateColorCodes('&', format);
+        format = TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.FORMAT);
+        format = format.replace("%MESSAGE%", error.getError());
         format = format.replace("%COMMAND%", command);
         format = format.replace("%USAGE%", extra);
         format = format.replace("%PLAYER%", extra);
-
+        format = format.replace("%COLOR%", Mood.BAD.getColor());
+        format = ChatColor.translateAlternateColorCodes('&', format);
     }
 
     public void broadcast() {

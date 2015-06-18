@@ -98,20 +98,27 @@ chat:
 
 #---------------[ Plugin Messages ]---------------#
 plugin-messages:
-  # Format plugin messages
-  format: "&8[%COLOR%%COMMAND%&8] &9>> &7%MESSAGE%"
-  # The general format of messages the plugin sends to the player/server
-  from-to-to-message: "&b%FROM% &9> &b%TO% &9>> &7%MESSAGE%"
-  # The format of the person sending a private message to someone.
-  to-from-from-message: "&b%TO% &9< &b%FROM% &9>> &7%MESSAGE%"
-  # The format of the person receiving a private message from someone.
+  # Format plugin messages.
+  format: "%COLOR%%COMMAND% &7- %MESSAGE%"
+  # The general format of messages the plugin sends to the player/server.
+  from-to-to-message: "&7%TO% <- &b%MESSAGE%"
+  # The format of you sending a private message to someone.
+  # You can use %FROM% and %TO%
+  to-from-from-message: "&7%TO% -> &b%MESSAGE%"
+  # The format of you receiving a private message from someone.
+  # You can use %FROM% and %TO%
+  colors:
+  # The color a neutral, error, or good message will be.
+    neutral-message: "&6"
+    bad-message: "&c"
+    good-message: "&a"
   errors:
-  # The format of the common error messages. (other error messages use the format above"
-    invalid-player: "&8[&c%COMMAND%&8] &9>> &b%PLAYER% &7is either offline or does not exist."
-    no-permission: "&8[&c%COMMAND%&8] &9>> &7You don't have permission to do that."
-    console-not-allowed: "&8[&c%COMMAND%&8] &9>> &7You can't do that you silly console."
-    too-few-arguments: "&8[&c%COMMAND%&8] &9>> &7Too few aguments. %USAGE%"
-    wrong-arguments: "&8[&c%COMMAND%&8] &9>> &7Wrong arguments. %USAGE%"
+  # The common error messages. It uses the above format option."
+    invalid-player: "&b%PLAYER% &7is either offline or does not exist."
+    no-permission: "You don't have permission to do that."
+    console-not-allowed: "You can't do that you silly console."
+    too-few-arguments: "Too few aguments. Usage: %USAGE%"
+    wrong-arguments: "Wrong arguments. Usage: %USAGE%"
 
 #---------------[ Broadcast ]---------------#
 broadcast:

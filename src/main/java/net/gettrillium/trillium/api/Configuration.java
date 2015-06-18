@@ -101,7 +101,11 @@ public class Configuration {
     public static class PluginMessages {
         private static final String PREFIX = "plugin-messages.";
         private static final String ERRORS = PREFIX + "errors.";
+        private static final String COLORS = PREFIX + "colors.";
         public static String FORMAT = PREFIX + "format";
+        public static String NEUTRAL_COLOR = COLORS + "neutral-message";
+        public static String BAD_COLOR = COLORS + "bad-message";
+        public static String GOOD_COLOR = COLORS + "good-message";
         public static String INVALID_PLAYER = ERRORS + "invalid-player";
         public static String NO_PERMISSION = ERRORS + "no-permission";
         public static String CONSOLE_NOT_ALLOWED = ERRORS + "console-not-allowed";

@@ -198,7 +198,7 @@ public class AdminModule extends TrilliumModule {
 
                         final long time = System.currentTimeMillis();
 
-                        new Message(Mood.GENERIC, "Lag", "Before GC:").to(cs);
+                        new Message(Mood.NEUTRAL, "Lag", "Before GC:").to(cs);
                         Utils.printCurrentMemory(cs);
                         cs.sendMessage(" ");
 
@@ -209,11 +209,11 @@ public class AdminModule extends TrilliumModule {
                             @Override
                             public void run() {
                                 cs.sendMessage(" ");
-                                new Message(Mood.GENERIC, "Lag", "After GC:").to(cs);
+                                new Message(Mood.NEUTRAL, "Lag", "After GC:").to(cs);
                                 Utils.printCurrentMemory(cs);
 
                                 long need = System.currentTimeMillis() - time;
-                                new Message(Mood.GENERIC, "Lag", "GC took " + need / 1000L + " seconds.").to(cs);
+                                new Message(Mood.NEUTRAL, "Lag", "GC took " + need / 1000L + " seconds.").to(cs);
 
                             }
                         }.runTaskLater(TrilliumAPI.getInstance(), 5);
@@ -229,7 +229,7 @@ public class AdminModule extends TrilliumModule {
                     }
                 }
             } else {
-                new Message(Mood.GENERIC, "Lag", "Server Statistics:").to(cs);
+                new Message(Mood.NEUTRAL, "Lag", "Server Statistics:").to(cs);
                 Utils.printCurrentMemory(cs);
             }
         } else {
@@ -387,7 +387,7 @@ public class AdminModule extends TrilliumModule {
 
                             new Message(Mood.GOOD, "Report", "A new report was submitted by: " + p.getName()).to(pl);
                             pl.getProxy().sendMessage(big);
-                            new Message(Mood.GENERIC, "Report", "/reports for a list of all reports.").to(pl);
+                            new Message(Mood.NEUTRAL, "Report", "/reports for a list of all reports.").to(pl);
                         }
                     }
                 } else {

@@ -23,9 +23,9 @@ public class KitModule extends TrilliumModule {
             if (cs instanceof Player) {
                 TrilliumPlayer p = player((Player) cs);
                 if (args.length == 0) {
-                    new Message(Mood.GENERIC, "Kit", "Available kits:").to(p);
+                    new Message(Mood.NEUTRAL, "Kit", "Available kits:").to(p);
                     for (String s : getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER).getKeys(false)) {
-                        new Message(Mood.GENERIC, "Kit", s).to(p);
+                        new Message(Mood.NEUTRAL, "Kit", s).to(p);
                     }
                 } else {
                     if (getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER).contains(args[0])) {

@@ -257,11 +257,11 @@ public class TeleportModule extends TrilliumModule {
                                 Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
                             }
 
-                            new Message(Mood.GENERIC, "TPR", target.getName() + " is now pending. Please stand by.").to(p);
+                            new Message(Mood.NEUTRAL, "TPR", target.getName() + " is now pending. Please stand by.").to(p);
 
-                            new Message(Mood.GENERIC, "TPR", p.getName() + " would like to teleport to you.").to(target);
-                            new Message(Mood.GENERIC, "TPR", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.").to(target);
-                            new Message(Mood.GENERIC, "TPR", ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.").to(target);
+                            new Message(Mood.NEUTRAL, "TPR", p.getName() + " would like to teleport to you.").to(target);
+                            new Message(Mood.NEUTRAL, "TPR", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.").to(target);
+                            new Message(Mood.NEUTRAL, "TPR", ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.").to(target);
 
                             tpr.put(p.getProxy().getUniqueId(), target.getProxy().getUniqueId());
                         } else {
@@ -295,11 +295,11 @@ public class TeleportModule extends TrilliumModule {
                                 Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
                             }
 
-                            new Message(Mood.GENERIC, "TPRH", "Teleport request for " + target.getName() + " to here is now pending. Please stand by.").to(p);
+                            new Message(Mood.NEUTRAL, "TPRH", "Teleport request for " + target.getName() + " to here is now pending. Please stand by.").to(p);
 
-                            new Message(Mood.GENERIC, "TPRH", p.getName() + ChatColor.BLUE + " would like you to teleport to him").to(target);
-                            new Message(Mood.GENERIC, "TPRH", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.").to(target);
-                            new Message(Mood.GENERIC, "TPRH", ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.").to(target);
+                            new Message(Mood.NEUTRAL, "TPRH", p.getName() + ChatColor.BLUE + " would like you to teleport to him").to(target);
+                            new Message(Mood.NEUTRAL, "TPRH", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.").to(target);
+                            new Message(Mood.NEUTRAL, "TPRH", ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.").to(target);
                             tprh.put(p.getProxy().getUniqueId(), target.getProxy().getUniqueId());
 
                         } else {

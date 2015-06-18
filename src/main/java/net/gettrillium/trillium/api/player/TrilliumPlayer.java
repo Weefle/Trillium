@@ -64,9 +64,9 @@ public class TrilliumPlayer {
         if (!event.isCancelled()) {
             this.afk = !this.afk;
             if (this.afk) {
-                new Message(Mood.GENERIC, "AFK", getName() + " is now AFK.").broadcast();
+                new Message(Mood.NEUTRAL, "AFK", getName() + " is now AFK.").broadcast();
             } else {
-                new Message(Mood.GENERIC, "AFK", getName() + " is no longer AFK.").broadcast();
+                new Message(Mood.NEUTRAL, "AFK", getName() + " is no longer AFK.").broadcast();
             }
         }
     }

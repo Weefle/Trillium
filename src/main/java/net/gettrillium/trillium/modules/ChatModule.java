@@ -35,7 +35,7 @@ public class ChatModule extends TrilliumModule {
             }
             String message = sb.toString().trim();
 
-            new Message(Mood.GENERIC, ChatColor.LIGHT_PURPLE + "Console", message).broadcast();
+            new Message(Mood.NEUTRAL, ChatColor.LIGHT_PURPLE + "Console", message).broadcast();
 
         } else {
             new Message(Mood.BAD, "Say", "Say is for the console only. Not you.").to(cs);
@@ -94,25 +94,25 @@ public class ChatModule extends TrilliumModule {
                 TrilliumPlayer p = player(args[0]);
                 if (p != null) {
                     p.getProxy().sendMessage(" ");
-                    new Message(Mood.GENERIC, "Info", "Displaying Information On: " + ChatColor.AQUA + p.getName()).to(cs);
-                    new Message(Mood.GENERIC, "Nickname", "" + ChatColor.AQUA + p.getDisplayName()).to(cs);
-                    new Message(Mood.GENERIC, "Online", "" + ChatColor.AQUA + p.isVanished()).to(cs);
-                    new Message(Mood.GENERIC, "Gamemode", "" + ChatColor.AQUA + p.getProxy().getGameMode()).to(cs);
-                    new Message(Mood.GENERIC, "Banned", "" + ChatColor.AQUA + p.getProxy().isBanned()).to(cs);
+                    new Message(Mood.NEUTRAL, "Info", "Displaying Information On: " + ChatColor.AQUA + p.getName()).to(cs);
+                    new Message(Mood.NEUTRAL, "Nickname", "" + ChatColor.AQUA + p.getDisplayName()).to(cs);
+                    new Message(Mood.NEUTRAL, "Online", "" + ChatColor.AQUA + p.isVanished()).to(cs);
+                    new Message(Mood.NEUTRAL, "Gamemode", "" + ChatColor.AQUA + p.getProxy().getGameMode()).to(cs);
+                    new Message(Mood.NEUTRAL, "Banned", "" + ChatColor.AQUA + p.getProxy().isBanned()).to(cs);
                     if (p.getProxy().isBanned()) {
-                        new Message(Mood.GENERIC, "Ban Reason", ChatColor.RED + "You are the weakest link. Goodbye.").to(cs);
+                        new Message(Mood.NEUTRAL, "Ban Reason", ChatColor.RED + "You are the weakest link. Goodbye.").to(cs);
                     }
-                    new Message(Mood.GENERIC, "Muted", "" + ChatColor.AQUA + p.isMuted()).to(cs);
-                    new Message(Mood.GENERIC, "Flying", "" + ChatColor.AQUA + p.isFlying()).to(cs);
-                    new Message(Mood.GENERIC, "Location", "" + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ()).to(cs);
+                    new Message(Mood.NEUTRAL, "Muted", "" + ChatColor.AQUA + p.isMuted()).to(cs);
+                    new Message(Mood.NEUTRAL, "Flying", "" + ChatColor.AQUA + p.isFlying()).to(cs);
+                    new Message(Mood.NEUTRAL, "Location", "" + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ()).to(cs);
 
                     if (p.isVanished()) {
-                        new Message(Mood.GENERIC, "Last Found At", "" + ChatColor.AQUA + p.getLastLocation().getBlockX() + "," + p.getLastLocation().getBlockY() + ", " + p.getLastLocation().getBlockZ()).to(cs);
+                        new Message(Mood.NEUTRAL, "Last Found At", "" + ChatColor.AQUA + p.getLastLocation().getBlockX() + "," + p.getLastLocation().getBlockY() + ", " + p.getLastLocation().getBlockZ()).to(cs);
                     }
-                    new Message(Mood.GENERIC, "Food Level", "" + ChatColor.AQUA + p.getProxy().getFoodLevel()).to(cs);
-                    new Message(Mood.GENERIC, "Health Level", "" + ChatColor.AQUA + p.getProxy().getHealthScale()).to(cs);
-                    new Message(Mood.GENERIC, "Time Played in Hours", "" + ChatColor.AQUA + (p.getProxy().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60).to(cs);
-                    new Message(Mood.GENERIC, "Time Played in Days", "" + ChatColor.AQUA + ((p.getProxy().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60) / 24).to(cs);
+                    new Message(Mood.NEUTRAL, "Food Level", "" + ChatColor.AQUA + p.getProxy().getFoodLevel()).to(cs);
+                    new Message(Mood.NEUTRAL, "Health Level", "" + ChatColor.AQUA + p.getProxy().getHealthScale()).to(cs);
+                    new Message(Mood.NEUTRAL, "Time Played in Hours", "" + ChatColor.AQUA + (p.getProxy().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60).to(cs);
+                    new Message(Mood.NEUTRAL, "Time Played in Days", "" + ChatColor.AQUA + ((p.getProxy().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60) / 24).to(cs);
                 } else {
                     new Message("Info", Error.INVALID_PLAYER, args[0]);
                 }

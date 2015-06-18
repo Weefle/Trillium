@@ -17,8 +17,8 @@ public class UtilsTest {
 
     @Test
     public void TimeToStringTest() {
-        assertEquals("00:01:00", Utils.timeToString(60 * 20));
-        assertEquals("00:01:05", Utils.timeToString(65 * 20));
-        assertEquals("00:03:20", Utils.timeToString(200 * 20));
+        assertEquals("00:00:01:00", Utils.timeToString(60 * 20));
+        assertEquals("00:00:01:05", Utils.timeToString(65 * 20));
+        assertEquals("00:00:03:20", Utils.timeToString(200 * 20));
     }
 }

@@ -165,9 +165,7 @@ public class Utils {
     }
 
     public static void clearInventory(Player p) {
-        for (int i = 0; i < 35; i++) {
-            p.getInventory().setItem(i, null);
-        }
+        p.getInventory().clear();
         p.getInventory().setArmorContents(null);
     }
 
@@ -232,6 +230,7 @@ public class Utils {
                 if (countdown != 0) {
                     for (Ocelot cat : catList) {
                         ParticleEffect.DRIP_LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, 0, 5, cat.getLocation(), 500);
+                        countdown--;
                     }
                 } else {
                     for (Ocelot cat : catList) {
@@ -243,65 +242,29 @@ public class Utils {
         }.runTaskTimer(TrilliumAPI.getInstance(), 1, 1);
     }
 
-    public static ArrayList<String> singleAsteriskFinder(String message) {
-        ArrayList<String> encased = new ArrayList<>();
-        Pattern p = Pattern.compile("\\*([^\"]*)\\*");
-        Matcher m = p.matcher(message);
-        while (m.find()) {
-            encased.add(m.group().replace("*", ""));
-        }
-
-        return encased;
-    }
-
-    public static ArrayList<String> doubleAsteriskFinder(String message) {
-        ArrayList<String> encased = new ArrayList<>();
-        Pattern p = Pattern.compile("\\**([^\"]*)\\*");
-        Matcher m = p.matcher(message);
-        while (m.find()) {
-            encased.add(m.group().replace("*", ""));
-        }
-
-        return encased;
-    }
-
-    public static ArrayList<String> getWordAfterSymbol(String message, String symbol) {
-        ArrayList<String> words = new ArrayList<>();
-        if (message.contains(symbol)) {
-            String[] slices = message.split(" ");
-            for (String word : slices) {
-                if (word.startsWith(symbol)) {
-                    words.add(word);
-                }
-            }
-        }
-        return words;
-    }
 
     public static void reload() {
+        // STOP
         Bukkit.getScheduler().cancelAllTasks();
         TrilliumAPI.disposePlayers();
         TrilliumAPI.unregisterModules();
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                TrilliumAPI.getInstance().saveDefaultConfig();
-                TrilliumAPI.getInstance().reloadConfig();
 
-                TrilliumAPI.registerModules();
-                TrilliumAPI.loadPlayers();
+        // START
+        TrilliumAPI.getInstance().saveDefaultConfig();
+        TrilliumAPI.getInstance().reloadConfig();
 
-                Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
-                if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {
-                    Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AutoBroadcastRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Broadcast.FREQUENCY)));
-                }
-                if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Afk.AUTO_AFK_ENABLED)) {
-                    Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AFKRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Afk.AUTO_AFK_TIME)));
-                }
-                if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
-                    Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new GroupManagerRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.GM.RELOAD)));
-                }
-            }
-        }.runTaskLater(TrilliumAPI.getInstance(), 5);
+        TrilliumAPI.registerModules();
+        TrilliumAPI.loadPlayers();
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
+        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AutoBroadcastRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Broadcast.FREQUENCY)));
+        }
+        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Afk.AUTO_AFK_ENABLED)) {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AFKRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Afk.AUTO_AFK_TIME)));
+        }
+        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new GroupManagerRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.GM.RELOAD)));
+        }
     }
 }

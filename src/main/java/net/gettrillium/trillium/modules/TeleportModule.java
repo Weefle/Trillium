@@ -500,8 +500,7 @@ public class TeleportModule extends TrilliumModule {
             Player p = (Player) cs;
             if (p.hasPermission(Permission.Teleport.WARP)) {
 
-                p.sendMessage(ChatColor.GREEN + "Warps                   Locations");
-                p.sendMessage(ChatColor.GRAY + "--------------------------------------------");
+                p.sendMessage(ChatColor.GREEN + "Warps:");
                 for (Map.Entry<String, Location> warps : new Warp("").list().entrySet()) {
                     String loc = ChatColor.GRAY + "" +
                             +warps.getValue().getBlockX()
@@ -509,7 +508,7 @@ public class TeleportModule extends TrilliumModule {
                             + warps.getValue().getBlockY()
                             + ","
                             + warps.getValue().getBlockZ();
-                    p.sendMessage(Utils.tablizer(ChatColor.AQUA + warps.getKey(), 24) + Utils.tablizer(loc, 10));
+                    new Message(Mood.NEUTRAL, warps.getKey(), loc).to(p);
                 }
 
             } else {
@@ -634,8 +633,7 @@ public class TeleportModule extends TrilliumModule {
                                 new Message(Mood.BAD, "Home", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
                             }
                         } else {
-                            p.getProxy().sendMessage(ChatColor.GREEN + "Homes                          Locations");
-                            p.getProxy().sendMessage(ChatColor.GRAY + "--------------------------------------------");
+                            p.getProxy().sendMessage(ChatColor.GREEN + "Homes:");
                             for (Map.Entry<String, Location> homes : p.getHomes().entrySet()) {
                                 String loc = ChatColor.GRAY + "" +
                                         +homes.getValue().getBlockX()
@@ -643,7 +641,7 @@ public class TeleportModule extends TrilliumModule {
                                         + homes.getValue().getBlockY()
                                         + ","
                                         + homes.getValue().getBlockZ();
-                                p.getProxy().sendMessage(Utils.tablizer(ChatColor.AQUA + homes.getKey(), 24) + Utils.tablizer(loc, 10));
+                                new Message(Mood.NEUTRAL, homes.getKey(), loc).to(p);
                             }
                         }
                     } else {
@@ -689,8 +687,7 @@ public class TeleportModule extends TrilliumModule {
                             p.setHome("home", p.getProxy().getLocation());
                             new Message(Mood.GOOD, "Set Home", "New home position set.").to(p);
                         } else {
-                            p.getProxy().sendMessage(ChatColor.GREEN + "Homes                          Locations");
-                            p.getProxy().sendMessage(ChatColor.GRAY + "--------------------------------------------");
+                            p.getProxy().sendMessage(ChatColor.GREEN + "Homes:");
                             for (Map.Entry<String, Location> homes : p.getHomes().entrySet()) {
                                 String loc = ChatColor.GRAY + "" +
                                         +homes.getValue().getBlockX()
@@ -698,7 +695,7 @@ public class TeleportModule extends TrilliumModule {
                                         + homes.getValue().getBlockY()
                                         + ","
                                         + homes.getValue().getBlockZ();
-                                p.getProxy().sendMessage(Utils.tablizer(ChatColor.AQUA + homes.getKey(), 24) + Utils.tablizer(loc, 10));
+                                new Message(Mood.NEUTRAL, homes.getKey(), loc).to(p);
                             }
                         }
                     } else {
@@ -772,8 +769,7 @@ public class TeleportModule extends TrilliumModule {
 
                 if (p.hasPermission(Permission.Teleport.VIEWHOME)) {
 
-                    p.getProxy().sendMessage(ChatColor.GREEN + "Homes                          Locations");
-                    p.getProxy().sendMessage(ChatColor.GRAY + "--------------------------------------------");
+                    p.getProxy().sendMessage(ChatColor.GREEN + "Homes:");
                     for (Map.Entry<String, Location> homes : p.getHomes().entrySet()) {
                         String loc = ChatColor.GRAY + "" +
                                 +homes.getValue().getBlockX()
@@ -781,7 +777,7 @@ public class TeleportModule extends TrilliumModule {
                                 + homes.getValue().getBlockY()
                                 + ","
                                 + homes.getValue().getBlockZ();
-                        p.getProxy().sendMessage(Utils.tablizer(ChatColor.AQUA + homes.getKey(), 24) + Utils.tablizer(loc, 10));
+                        new Message(Mood.NEUTRAL, homes.getKey(), loc).to(p);
                     }
                 } else {
                     new Message("Homes", Error.NO_PERMISSION).to(p);

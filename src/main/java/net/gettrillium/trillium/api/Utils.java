@@ -1,7 +1,5 @@
-package net.gettrillium.trillium;
+package net.gettrillium.trillium.api;
 
-import net.gettrillium.trillium.api.Configuration;
-import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;

@@ -2,8 +2,8 @@ package net.gettrillium.trillium.api.cooldown;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import net.gettrillium.trillium.Utils;
 import net.gettrillium.trillium.api.TrilliumAPI;
+import net.gettrillium.trillium.api.Utils;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.bukkit.entity.Player;
 

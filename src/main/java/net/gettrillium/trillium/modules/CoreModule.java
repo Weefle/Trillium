@@ -1,10 +1,6 @@
 package net.gettrillium.trillium.modules;
 
-import net.gettrillium.trillium.Utils;
-import net.gettrillium.trillium.api.Configuration;
-import net.gettrillium.trillium.api.Permission;
-import net.gettrillium.trillium.api.TrilliumAPI;
-import net.gettrillium.trillium.api.TrilliumModule;
+import net.gettrillium.trillium.api.*;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
@@ -29,16 +25,16 @@ public class CoreModule extends TrilliumModule {
 
         if (p.hasPlayedBefore()) {
             String joinMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.JOINMESSAGE));
-            joinMessage = joinMessage.replace("[USERNAME]", p.getName());
+            joinMessage = joinMessage.replace("%USERNAME%", p.getName());
             e.setJoinMessage(joinMessage);
         } else {
             String joinMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.NEWJOINMESSAGE));
-            joinMessage = joinMessage.replace("[USERNAME]", p.getName());
+            joinMessage = joinMessage.replace("%USERNAME%", p.getName());
             e.setJoinMessage(joinMessage);
 
             List<String> commands = getConfig().getStringList(Configuration.PlayerSettings.COMMANDS_TO_RUN);
             for (String command : commands) {
-                command = command.replace("[p]", p.getName());
+                command = command.replace("@p", p.getName());
                 command = ChatColor.translateAlternateColorCodes('&', command);
                 Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), command);
             }
@@ -63,13 +59,13 @@ public class CoreModule extends TrilliumModule {
         if (p.hasPermission(Permission.Chat.MOTD)) {
             List<String> motd = getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
             for (String s : motd) {
-                s = s.replace("[USERNAME]", p.getName());
-                s = s.replace("[UUID]", p.getUniqueId().toString());
-                s = s.replace("[SLOTS]", "" + Bukkit.getMaxPlayers());
-                s = s.replace("[ONLINE]", "" + Bukkit.getOnlinePlayers().size());
-                s = s.replace("[UNIQUE]", "" + (Bukkit.getOfflinePlayers().length + Bukkit.getOnlinePlayers().size()));
-                s = s.replace("[IP-ADDRESS]", p.getAddress() + "");
-                s = s.replace("[NICKNAME]", TrilliumAPI.getPlayer(p).getDisplayName());
+                s = s.replace("%USERNAME%", p.getName());
+                s = s.replace("%UUID%", p.getUniqueId().toString());
+                s = s.replace("%SLOTS%", "" + Bukkit.getMaxPlayers());
+                s = s.replace("%ONLINE%", "" + Bukkit.getOnlinePlayers().size());
+                s = s.replace("%UNIQUE%", "" + (Bukkit.getOfflinePlayers().length + Bukkit.getOnlinePlayers().size()));
+                s = s.replace("%IP%", p.getAddress() + "");
+                s = s.replace("%NICK%", TrilliumAPI.getPlayer(p).getDisplayName());
                 s = ChatColor.translateAlternateColorCodes('&', s);
                 p.sendMessage(s);
             }
@@ -93,7 +89,7 @@ public class CoreModule extends TrilliumModule {
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
         String quitMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.LEAVEMESSAGE));
-        quitMessage = quitMessage.replace("[USERNAME]", p.getName());
+        quitMessage = quitMessage.replace("%USERNAME%", p.getName());
         e.setQuitMessage(quitMessage);
 
         TrilliumAPI.disposePlayer(p);

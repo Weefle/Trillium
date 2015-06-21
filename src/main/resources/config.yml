@@ -66,8 +66,8 @@ server:
   cooldown:
   # Set to 0 to disable
     teleportation: "10s"
-    chat: "0s"
-    # Will stop all those nasty spammers that keep spamming the chat
+    chat: "0"
+    # Will stop all those nasty spammers that keep spamming the chat.
     kit: "10d"
 
 #---------------[ Chat ]---------------#
@@ -77,8 +77,8 @@ chat:
   motd:
     - " "
     - "&8<<<---{[0]}--->>> &aServer &8<<<---{[0]}--->>>"
-    - "&7Welcome &6[USERNAME]&7!"
-    - "&7There are currently &6[ONLINE]&7/&6[SLOTS]&7 players."
+    - "&7Welcome &6%USERNAME%&7!"
+    - "&7There are currently &6%ONLINE%&7/&6%SLOTS%&7 players."
     - "&7Have fun! &4<3"
     - " "
     #The ingame motd. When a player logs on, they will see this message.
@@ -91,7 +91,7 @@ chat:
       # When the player types /cc <channel name> <msg>" they will send the message to anyone else with that permission.
       # For example: If you give permission to x, y, and z -> "tr.chat.chatchannel.staffchat"
       # When x or y or z types "/cc staffchat blah blah", blah blah will be seen by x, y, and z.
-      format: "&8[&9[CHANNELNAME]&8] &b[USERNAME] &9>> &7[MESSAGE]"
+      format: "&8[&9[CHANNELNAME]&8] &b%USERNAME% &9>> &7[MESSAGE]"
       allow-color-codes: true
   enable-death-messages: true
   # If set to true, death messages not appear.
@@ -104,7 +104,7 @@ plugin-messages:
   from-to-to-message: "&7%TO% <- &b%MESSAGE%"
   # The format of you sending a private message to someone.
   # You can use %FROM% and %TO%
-  to-from-from-message: "&7%TO% -> &b%MESSAGE%"
+  to-from-from-message: "&7%FROM% -> &b%MESSAGE%"
   # The format of you receiving a private message from someone.
   # You can use %FROM% and %TO%
   colors:
@@ -197,24 +197,24 @@ player-settings:
     character-limit: 25
     # The max length a nickname is allowed to be.
   join:
-    message: "&b[USERNAME] &9has joined the game!"
+    message: "&b%USERNAME% &9has joined the game!"
     # Change the message that tells everyone x player joined the server.
     new-players:
-      new-player-message: "&9Welcome &b[USERNAME] &9 to the server!"
+      new-player-message: "&9Welcome &b%USERNAME% &9to the server!"
       # Change the message that tells everyone x player joined the server for the first time.
       commands-to-run:
-       # - "give [p] stone_pickaxe"
-       # - "give [p] stone_sword"
-       # - "give [p] apple 10"
+       # - "give @p stone_pickaxe"
+       # - "give @p stone_sword"
+       # - "give @p apple 10"
        # When a new player joins the server, you can have any command run in the list.
-       # Examples are within the #, [p] is for the player.
+       # Examples are within the #, @p is for the player.
     temp-god-mode:
       enabled: true
         # When a player joins, they might need a bit of time until they can load the world.
         # Help them by giving them temporary invincibility. (Nothing can harm them and they can't harm anything)
       time-until-temp-is-over: 30s
   leave:
-    message: "&b[USERNAME] &9has left the game!"
+    message: "&b%USERNAME% &9has left the game!"
     # Change the message that tells everyone x player left the server.
   enable-homes: true
   # enable /home

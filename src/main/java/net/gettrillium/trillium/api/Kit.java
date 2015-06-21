@@ -1,7 +1,6 @@
 package net.gettrillium.trillium.api;
 
 import net.gettrillium.trillium.Trillium;
-import net.gettrillium.trillium.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

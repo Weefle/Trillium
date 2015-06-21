@@ -2,6 +2,7 @@ package net.gettrillium.trillium;
 
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
+import net.gettrillium.trillium.api.Utils;
 import net.gettrillium.trillium.api.commandbinder.CommandBinder;
 import net.gettrillium.trillium.api.serializer.LocationSerializer;
 import net.gettrillium.trillium.events.PlayerDeath;

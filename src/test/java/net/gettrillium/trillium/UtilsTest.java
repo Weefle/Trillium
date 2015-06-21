@@ -1,5 +1,6 @@
 package net.gettrillium.trillium;
 
+import net.gettrillium.trillium.api.Utils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

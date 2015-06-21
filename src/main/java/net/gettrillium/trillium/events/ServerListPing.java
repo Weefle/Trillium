@@ -13,8 +13,8 @@ public class ServerListPing implements Listener {
     public void onPing(ServerListPingEvent event) {
         String motd = TrilliumAPI.getInstance().getConfig().getString(Configuration.Chat.SERVER_LIST_MOTD);
         motd = ChatColor.translateAlternateColorCodes('&', motd);
-        motd = motd.replace("[onlineplayers]", String.valueOf(event.getNumPlayers()));
-        motd = motd.replace("[maxplayers]", String.valueOf(event.getMaxPlayers()));
+        motd = motd.replace("%ONLINEPLAYERS%", String.valueOf(event.getNumPlayers()));
+        motd = motd.replace("%MAXPLAYERS%", String.valueOf(event.getMaxPlayers()));
         event.setMotd(motd);
     }
 }

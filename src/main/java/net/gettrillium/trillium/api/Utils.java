@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
@@ -225,7 +226,32 @@ public class Utils {
         if (l == null) {
             return null;
         }
-        return l.getBlockX() + ", " + l.getBlockY() + ", " + l.getBlockZ() + ", " + l.getWorld().getName();
+
+        return l.getWorld().getName() + ", " + l.getBlockX() + ", " + l.getBlockY() + ", " + l.getBlockZ() + ", " + l.getPitch() + ", " + l.getY();
+    }
+
+    public static Location stringFromLocation(String s) {
+        if (s == null) {
+            return null;
+        }
+
+        World world = Bukkit.getWorld(s.split(", ")[0]);
+        int x = Integer.parseInt(s.split(", ")[1]);
+        int y = Integer.parseInt(s.split(", ")[2]);
+        int z = Integer.parseInt(s.split(", ")[3]);
+        int pitch = Integer.parseInt(s.split(", ")[4]);
+        int yaw = Integer.parseInt(s.split(", ")[5]);
+        return new Location(world, x, y, z, pitch, yaw);
+    }
+
+    public static Location locToBlockLoc(Location loc) {
+        int x = loc.getBlockX();
+        int y = loc.getBlockY();
+        int z = loc.getBlockZ();
+        float pitch = loc.getPitch();
+        float yaw = loc.getYaw();
+        World world = loc.getWorld();
+        return new Location(world, x, y, z, yaw, pitch);
     }
 
     public static String commandBlockify(String command, Player p) {
@@ -234,7 +260,6 @@ public class Utils {
 
     public static void reload() {
         // STOP
-
         Bukkit.getScheduler().cancelAllTasks();
         TrilliumAPI.disposePlayers();
         TrilliumAPI.unregisterModules();

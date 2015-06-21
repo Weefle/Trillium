@@ -4,7 +4,8 @@ import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.Utils;
 import net.gettrillium.trillium.api.commandbinder.CommandBinder;
-import net.gettrillium.trillium.modules.AdminModule;
+import net.gettrillium.trillium.api.report.ReportDatabase;
+import net.gettrillium.trillium.api.report.Reports;
 import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
 import net.gettrillium.trillium.runnables.GroupManagerRunnable;
@@ -52,6 +53,8 @@ public class Trillium extends JavaPlugin {
             }
         }
 
+        Reports.setReports(Reports.deserialize());
+
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         getLogger().info("Plugin made with love by:");
         getLogger().info("LordSaad, VortexSeven, Turbotailz,");
@@ -70,14 +73,9 @@ public class Trillium extends JavaPlugin {
     }
 
     public void onDisable() {
-        File reports = new File(getDataFolder(), "Reports.yml");
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(reports);
-        yml.set("Reports", AdminModule.reportList);
-        try {
-            yml.save(reports);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(ReportDatabase.report());
+        yml.set("rows", Reports.serialize());
+        Reports.save();
 
         Bukkit.getScheduler().cancelAllTasks();
         TrilliumAPI.disposePlayers();
@@ -85,23 +83,6 @@ public class Trillium extends JavaPlugin {
     }
 
     private void generateFiles() {
-        File reports = new File(getDataFolder(), "Reports.yml");
-
-        if (!reports.exists()) {
-            try {
-                reports.createNewFile();
-                getLogger().info("Successfully generated Reports.yml");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        YamlConfiguration ymlreports = YamlConfiguration.loadConfiguration(reports);
-
-        for (String s : ymlreports.getStringList("Reports")) {
-            AdminModule.reportList.add(s);
-        }
-
         URL world = getClass().getResource("/world.yml");
         URL lordSaad = getClass().getResource("/LordSaad.yml");
         URL book = getClass().getResource("/example-book.txt");

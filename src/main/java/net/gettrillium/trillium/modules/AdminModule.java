@@ -9,11 +9,8 @@ import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
+import net.gettrillium.trillium.api.report.Reports;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,12 +23,13 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class AdminModule extends TrilliumModule {
 
-    public static ArrayList<String> reportList = new ArrayList<>();
-    public static ArrayList<String> lagPrompt = new ArrayList<>();
-    public static ArrayList<String> reloadPrompt = new ArrayList<>();
+    private ArrayList<String> lagPrompt = new ArrayList<>();
+    private ArrayList<String> reloadPrompt = new ArrayList<>();
 
     @Command(command = "trillium", description = "The main command of the plugin.", usage = "/tr", aliases = "tr")
     public void trillium(CommandSender cs, String[] args) {
@@ -373,9 +371,7 @@ public class AdminModule extends TrilliumModule {
                     }
                     String msg = sb.toString().trim();
 
-                    String big = new Message(Mood.NEUTRAL, p.getName(), msg + ChatColor.AQUA + " [" + Utils.locationToString(p.getLocation()) + "]").asString();
-
-                    reportList.add(big);
+                    Reports.addReport(p, Utils.locToBlockLoc(p.getLocation()), msg);
                     new Message(Mood.GOOD, "Report", "Your report was submitted successfully.").to(p);
                     p.sendMessage(ChatColor.YELLOW + "'" + ChatColor.GRAY + msg + ChatColor.YELLOW + "'");
 
@@ -383,12 +379,9 @@ public class AdminModule extends TrilliumModule {
                         if (pl.hasPermission(Permission.Admin.REPORT_RECEIVER) && !pl.getProxy().getName().equals(p.getName())) {
 
                             new Message(Mood.GOOD, "Report", "A new report was submitted: ").to(pl);
-                            String loc = big.split(",")[0] + " " + big.split(",")[1] + " " + big.split(",")[2];
-                            TextComponent message = new TextComponent(big);
-                            message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "tp " + pl.getName() + " " + loc));
-                            message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Teleport to where this report was made").create()));
-                            pl.getProxy().spigot().sendMessage();
-                            new Message(Mood.NEUTRAL, "Report", "/reports for a list of all reports.").to(pl);
+                            new Message(Mood.NEUTRAL, "Player", p.getName()).to(pl);
+                            new Message(Mood.NEUTRAL, "Location", Utils.locationToString(p.getLocation())).to(pl);
+                            new Message(Mood.NEUTRAL, "Message", msg).to(pl);
                         }
                     }
                 } else {
@@ -409,7 +402,7 @@ public class AdminModule extends TrilliumModule {
             if (p.hasPermission(Permission.Admin.REPORT_RECEIVER)) {
                 if (args.length != 0) {
                     if (args[0].equalsIgnoreCase("clear")) {
-                        reportList.clear();
+                        Reports.clearReports();
                         new Message(Mood.GOOD, "Reports", "Cleared report list.").to(p);
 
                     } else if (args[0].equalsIgnoreCase("remove")) {
@@ -418,10 +411,10 @@ public class AdminModule extends TrilliumModule {
                         } else {
                             if (StringUtils.isNumeric(args[1])) {
                                 int nb = Integer.parseInt(args[1]);
-                                if (nb > 0 && nb <= reportList.size() + 1) {
+                                if (nb > 0 && nb <= Reports.getReports().size() + 1) {
                                     new Message(Mood.GOOD, "Reports", "Removed: " + nb).to(p);
-                                    p.getProxy().sendMessage(reportList.get(nb - 1));
-                                    reportList.remove(nb - 1);
+                                    new Message(Mood.NEUTRAL, "Reports", Reports.getReport(nb - 1));
+                                    Reports.removeReport(Reports.getReport(nb - 1));
 
                                 } else {
                                     new Message(Mood.BAD, "Reports", args[1] + " is either larger than the list index or smaller than 0.").to(p);
@@ -435,15 +428,16 @@ public class AdminModule extends TrilliumModule {
                     }
 
                 } else {
-                    p.getProxy().sendMessage(ChatColor.BLUE + "Report List:");
+                    p.getProxy().sendMessage(ChatColor.BLUE + "Reports:");
                     int nb = 0;
-                    for (String big : reportList) {
-                        String loc = big.split(",")[0] + " " + big.split(",")[1] + " " + big.split(",")[2];
-                        TextComponent message = new TextComponent(ChatColor.AQUA + "" + nb + ". " + big);
-                        message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "tp " + p.getName() + " " + loc));
-                        message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Teleport to where this report was made").create()));
-                        p.getProxy().spigot().sendMessage();
-                        nb++;
+                    for (Map.Entry<UUID, Map<Location, String>> row : Reports.getReports().rowMap().entrySet()) {
+                        for (Map.Entry<Location, String> column : row.getValue().entrySet()) {
+                            new Message(Mood.NEUTRAL, nb + "",
+                                    column.getValue() + ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + " ["
+                                            + Bukkit.getPlayer(row.getKey()).getName() + ", "
+                                            + Utils.locationToString(column.getKey()) + "]").to(p);
+                            nb++;
+                        }
                     }
                 }
             } else {

@@ -2,11 +2,13 @@ package net.gettrillium.trillium.api.commandbinder;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class CommandBinder {
@@ -57,5 +59,22 @@ public class CommandBinder {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void set() {
+        Table<String, Location, Boolean> table = HashBasedTable.create();
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
+        List<String> serialized = yml.getStringList("rows");
+        for (String deserialize : serialized) {
+            String command = deserialize.split(";")[0];
+            boolean player = Boolean.parseBoolean(deserialize.split(";")[1]);
+            int x = Integer.parseInt(deserialize.split(";")[2]);
+            int y = Integer.parseInt(deserialize.split(";")[3]);
+            int z = Integer.parseInt(deserialize.split(";")[4]);
+            String world = deserialize.split(";")[5];
+            Location loc = new Location(Bukkit.getWorld(world), x, y, z);
+            table.put(command, loc, player);
+        }
+        setTable(table);
     }
 }

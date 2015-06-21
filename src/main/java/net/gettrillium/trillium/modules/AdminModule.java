@@ -10,6 +10,10 @@ import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -152,7 +156,7 @@ public class AdminModule extends TrilliumModule {
             if (p.hasPermission(Permission.Admin.SETSPAWN)) {
 
                 p.getProxy().getWorld().setSpawnLocation(p.getProxy().getLocation().getBlockX(), p.getProxy().getLocation().getBlockY(), p.getProxy().getLocation().getBlockZ());
-                new Message(Mood.GOOD, "Set Spawn", "Spawn location set. " + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ()).to(p);
+                new Message(Mood.GOOD, "Set Spawn", "Spawn location set. " + ChatColor.AQUA + Utils.locationToString(p.getProxy().getLocation())).to(p);
 
             } else {
                 new Message("Set Spawn", Error.NO_PERMISSION).to(p);
@@ -359,7 +363,7 @@ public class AdminModule extends TrilliumModule {
     @Command(command = "report", description = "Send a report to the staff.", usage = "/report <msg>")
     public void report(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
-            TrilliumPlayer p = player((Player) cs);
+            Player p = (Player) cs;
             if (p.hasPermission(Permission.Admin.REPORT) || p.hasPermission(Permission.Admin.REPORT_RECEIVER)) {
                 if (args.length != 0) {
 
@@ -369,24 +373,21 @@ public class AdminModule extends TrilliumModule {
                     }
                     String msg = sb.toString().trim();
 
-                    String big = ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "Reports" + ChatColor.DARK_GRAY + "]"
-                            + ChatColor.BLUE + " {"
-                            + ChatColor.AQUA + p.getProxy().getName() + ChatColor.BLUE + ", "
-                            + ChatColor.AQUA + p.getProxy().getWorld().getName() + ChatColor.BLUE + ", "
-                            + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ChatColor.BLUE + ", "
-                            + ChatColor.AQUA + p.getProxy().getLocation().getBlockY() + ChatColor.BLUE + ", "
-                            + ChatColor.AQUA + p.getProxy().getLocation().getBlockZ() + ChatColor.BLUE + "} >> "
-                            + ChatColor.GRAY + msg;
+                    String big = new Message(Mood.NEUTRAL, p.getName(), msg + ChatColor.AQUA + " [" + Utils.locationToString(p.getLocation()) + "]").asString();
 
                     reportList.add(big);
                     new Message(Mood.GOOD, "Report", "Your report was submitted successfully.").to(p);
-                    p.getProxy().sendMessage(ChatColor.YELLOW + "'" + ChatColor.GRAY + msg + ChatColor.YELLOW + "'");
+                    p.sendMessage(ChatColor.YELLOW + "'" + ChatColor.GRAY + msg + ChatColor.YELLOW + "'");
 
                     for (TrilliumPlayer pl : TrilliumAPI.getOnlinePlayers()) {
-                        if (pl.hasPermission(Permission.Admin.REPORT_RECEIVER) && !pl.getProxy().getName().equals(p.getProxy().getName())) {
+                        if (pl.hasPermission(Permission.Admin.REPORT_RECEIVER) && !pl.getProxy().getName().equals(p.getName())) {
 
-                            new Message(Mood.GOOD, "Report", "A new report was submitted by: " + p.getName()).to(pl);
-                            pl.getProxy().sendMessage(big);
+                            new Message(Mood.GOOD, "Report", "A new report was submitted: ").to(pl);
+                            String loc = big.split(",")[0] + " " + big.split(",")[1] + " " + big.split(",")[2];
+                            TextComponent message = new TextComponent(big);
+                            message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "tp " + pl.getName() + " " + loc));
+                            message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Teleport to where this report was made").create()));
+                            pl.getProxy().spigot().sendMessage();
                             new Message(Mood.NEUTRAL, "Report", "/reports for a list of all reports.").to(pl);
                         }
                     }
@@ -437,8 +438,12 @@ public class AdminModule extends TrilliumModule {
                     p.getProxy().sendMessage(ChatColor.BLUE + "Report List:");
                     int nb = 0;
                     for (String big : reportList) {
+                        String loc = big.split(",")[0] + " " + big.split(",")[1] + " " + big.split(",")[2];
+                        TextComponent message = new TextComponent(ChatColor.AQUA + "" + nb + ". " + big);
+                        message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "tp " + p.getName() + " " + loc));
+                        message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Teleport to where this report was made").create()));
+                        p.getProxy().spigot().sendMessage();
                         nb++;
-                        p.getProxy().sendMessage(ChatColor.GRAY + "-" + ChatColor.AQUA + nb + ChatColor.GRAY + "- " + big);
                     }
                 }
             } else {

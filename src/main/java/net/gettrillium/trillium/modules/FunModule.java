@@ -7,8 +7,10 @@ import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
+import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Ocelot;
@@ -35,7 +37,7 @@ public class FunModule extends TrilliumModule {
                 p.getProxy().getWorld().playSound(p.getProxy().getLocation(), Sound.CAT_MEOW, 10, 1);
 
                 new BukkitRunnable() {
-                    int count = 30;
+                    int count = 50;
 
                     public void run() {
                         ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat.getLocation(), 30);
@@ -60,4 +62,28 @@ public class FunModule extends TrilliumModule {
         }
     }
 
+    @Command(command = "sudo", description = "Make a player forcefully run a certain command.", usage = "/sudo <player> <command>", aliases = {"pseudo"})
+    public void sudo(CommandSender cs, String[] args) {
+        if (cs.hasPermission(Permission.Fun.SUDO)) {
+            if (args.length >= 2) {
+                Player target = Bukkit.getPlayer(args[0]);
+                if (target != null) {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 1; i < args.length; i++) {
+                        sb.append(args[i]).append(" ");
+                    }
+                    String command = sb.toString().trim();
+
+                    Bukkit.dispatchCommand(target, command);
+                    new Message(Mood.GOOD, "Sudo", "Successfully ran '" + command + "' on " + target.getName()).to(cs);
+                } else {
+                    new Message("Sudo", Error.INVALID_PLAYER, args[0]).to(cs);
+                }
+            } else {
+                new Message("Sudo", Error.TOO_FEW_ARGUMENTS, "/sudo <player> <command>").to(cs);
+            }
+        } else {
+            new Message("Sudo", Error.NO_PERMISSION).to(cs);
+        }
+    }
 }

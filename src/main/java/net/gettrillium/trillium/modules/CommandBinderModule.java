@@ -2,6 +2,7 @@ package net.gettrillium.trillium.modules;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import net.gettrillium.trillium.Utils;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
@@ -49,6 +50,7 @@ public class CommandBinderModule extends TrilliumModule {
                                         sb.append(args[i]).append(" ");
                                     }
                                     String command = sb.toString().trim();
+
                                     if (!command.equalsIgnoreCase("") && !command.equalsIgnoreCase(" ")) {
                                         boolean player;
                                         player = !(args[1].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c"));
@@ -59,13 +61,13 @@ public class CommandBinderModule extends TrilliumModule {
                                         new Message(Mood.NEUTRAL, "CMD Binder", "The next block you PUNCH will bind the command you entered to that block " +
                                                 "and any block you RIGHT CLICK will bind the block above it (air) to your entered command (as a walkable block)").to(p);
                                     } else {
-                                        new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set/remove> <console/player> <command>").to(p);
+                                        new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <console/player> <command> / remove>").to(p);
                                     }
                                 } else {
-                                    new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set/remove> <console/player> <command>").to(p);
+                                    new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <console/player> <command> / remove>").to(p);
                                 }
                             } else {
-                                new Message("CMD Binder", Error.TOO_FEW_ARGUMENTS, "/cb <set/remove> <console/player> <command>").to(p);
+                                new Message("CMD Binder", Error.TOO_FEW_ARGUMENTS, "/cb <set <console/player> <command> / remove>").to(p);
                             }
 
                         } else if (args[0].equalsIgnoreCase("remove")) {
@@ -76,10 +78,10 @@ public class CommandBinderModule extends TrilliumModule {
                                     "and any block you RIGHT CLICK will unbind any command bound to the block above it (air)").to(p);
 
                         } else {
-                            new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set/remove> <console/player> <command>").to(p);
+                            new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <console/player> <command> / remove>").to(p);
                         }
                     } else {
-                        new Message("CMD Binder", Error.TOO_FEW_ARGUMENTS, "/cb <set/remove> <console/player> <command>").to(p);
+                        new Message("CMD Binder", Error.TOO_FEW_ARGUMENTS, "/cb <set <console/player> <command> / remove>").to(p);
                     }
                 } else {
                     new Message(Mood.BAD, "CMD Binder", "You are already in command binder's edit mode.").to(p);
@@ -96,70 +98,96 @@ public class CommandBinderModule extends TrilliumModule {
     public void onInteract(PlayerInteractEvent event) {
         Player p = event.getPlayer();
 
-        if (setMode.contains(p.getUniqueId())) {
-            Map<UUID, Map<String, Boolean>> rows = table.rowMap();
-            for (Map.Entry<UUID, Map<String, Boolean>> row : rows.entrySet()) {
-                if (p.getUniqueId().equals(row.getKey())) {
-                    for (Map.Entry<String, Boolean> column : row.getValue().entrySet()) {
+        if (event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
-                        String loc = null;
+            if (setMode.contains(p.getUniqueId())) {
+                Map<UUID, Map<String, Boolean>> rows = table.rowMap();
+                for (Map.Entry<UUID, Map<String, Boolean>> row : rows.entrySet()) {
+                    if (p.getUniqueId().equals(row.getKey())) {
+                        for (Map.Entry<String, Boolean> column : row.getValue().entrySet()) {
+
+                            Location loc = null;
+                            if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+                                CommandBinder.add(column.getKey(), event.getClickedBlock().getLocation(), column.getValue());
+
+                                loc = event.getClickedBlock().getLocation();
+
+                            } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                                CommandBinder.add(column.getKey(), event.getClickedBlock().getRelative(BlockFace.UP).getLocation(), column.getValue());
+
+                                loc = new Location(p.getWorld(), event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockX(),
+                                        event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockY(),
+                                        event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockZ());
+                            }
+
+                            String sender;
+                            if (column.getValue()) {
+                                sender = "player";
+                            } else {
+                                sender = "console";
+                            }
+
+                            setMode.remove(p.getUniqueId());
+                            table.remove(row.getKey(), column.getKey());
+
+                            new Message(Mood.GOOD, "CMD Binder", "Command bound successfully bound to block.").to(p);
+                            new Message(Mood.GOOD, "CMD Binder", "Command: " + column.getKey()).to(p);
+                            new Message(Mood.GOOD, "CMD Binder", "Location: " + Utils.locationToString(loc)).to(p);
+                            new Message(Mood.GOOD, "CMD Binder", "Command Sender: " + sender).to(p);
+                            event.setCancelled(true);
+                        }
+                    }
+                }
+
+            } else if (removeMode.contains(p.getUniqueId())) {
+                Map<String, Map<Location, Boolean>> rows = CommandBinder.getTable().rowMap();
+                for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
+                    for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
+
+                        Location loc = null;
                         if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                            CommandBinder.add(column.getKey(), event.getClickedBlock().getLocation(), column.getValue());
-                            loc = event.getClickedBlock().getLocation().getBlockX() + "; "
-                                    + event.getClickedBlock().getLocation().getBlockY() + "; "
-                                    + event.getClickedBlock().getLocation().getBlockZ();
+                            loc = event.getClickedBlock().getLocation();
 
                         } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                            CommandBinder.add(column.getKey(), event.getClickedBlock().getRelative(BlockFace.UP).getLocation(), column.getValue());
-                            loc = event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockX() + "; "
-                                    + event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockY() + "; "
-                                    + event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockZ();
+                            loc = new Location(p.getWorld(), event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockX(),
+                                    event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockY(),
+                                    event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockZ());
                         }
 
-                        String sender;
-                        if (column.getValue()) {
-                            sender = "player";
-                        } else {
-                            sender = "console";
+                        if (column.getKey().equals(loc)) {
+
+                            CommandBinder.remove(row.getKey(), column.getKey());
+                            removeMode.remove(p.getUniqueId());
+
+                            String sender;
+                            if (column.getValue()) {
+                                sender = "player";
+                            } else {
+                                sender = "console";
+                            }
+                            new Message(Mood.GOOD, "CMD Binder", "Command unbound successfully from block.").to(p);
+                            new Message(Mood.GOOD, "CMD Binder", "Command: " + row.getKey()).to(p);
+                            new Message(Mood.GOOD, "CMD Binder", "Location: " + Utils.locationToString(loc)).to(p);
+                            new Message(Mood.GOOD, "CMD Binder", "Command Sender: " + sender).to(p);
+                            event.setCancelled(true);
                         }
 
-                        setMode.remove(p.getUniqueId());
-                        table.remove(row.getKey(), column.getKey());
-
-                        new Message(Mood.GOOD, "CMD Binder", "Command bound successfully bound to block.").to(p);
-                        new Message(Mood.GOOD, "CMD Binder", "Command: " + column.getKey()).to(p);
-                        new Message(Mood.GOOD, "CMD Binder", "Location: " + loc).to(p);
-                        new Message(Mood.GOOD, "CMD Binder", "Command Sender: " + sender).to(p);
-                        event.setCancelled(true);
                     }
                 }
-            }
 
-        } else if (removeMode.contains(p.getUniqueId())) {
-            Map<String, Map<Location, Boolean>> rows = CommandBinder.getTable().rowMap();
-            for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
-                for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
-                    if (column.getKey().equals(p.getLocation())) {
-                        CommandBinder.remove(row.getKey(), column.getKey());
-                        event.setCancelled(true);
-                    }
-                }
-            }
+            } else {
+                Map<String, Map<Location, Boolean>> rows = CommandBinder.getTable().rowMap();
+                for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
+                    for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
+                        if (column.getKey().equals(event.getClickedBlock().getLocation())) {
 
-        } else {
-            Map<String, Map<Location, Boolean>> rows = CommandBinder.getTable().rowMap();
-            for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
-                for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
-                    if (column.getKey().equals(p.getLocation())) {
-                        Bukkit.broadcastMessage("loc: " + column.getKey());
-                        Bukkit.broadcastMessage("command: " + row.getKey());
-
-                        if (column.getValue()) {
-                            Bukkit.dispatchCommand(event.getPlayer(), row.getKey());
-                        } else {
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), row.getKey());
+                            if (column.getValue()) {
+                                Bukkit.dispatchCommand(event.getPlayer(), Utils.commandBlockify(row.getKey(), p));
+                            } else {
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Utils.commandBlockify(row.getKey(), p));
+                            }
+                            event.setCancelled(true);
                         }
-                        event.setCancelled(true);
                     }
                 }
             }
@@ -173,15 +201,23 @@ public class CommandBinderModule extends TrilliumModule {
                 || event.getFrom().getBlockY() != event.getTo().getBlockY()) {
             Player p = event.getPlayer();
 
-            if (!setMode.contains(p.getUniqueId())) {
+            if (!setMode.contains(p.getUniqueId()) && !removeMode.contains(p.getUniqueId())) {
                 Map<String, Map<Location, Boolean>> rows = CommandBinder.getTable().rowMap();
                 for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
                     for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
-                        if (column.getKey().equals(p.getLocation())) {
-                            if (column.getValue()) {
-                                Bukkit.dispatchCommand(event.getPlayer(), row.getKey());
-                            } else {
-                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), row.getKey());
+                        if (column.getKey() != null) {
+
+                            Location blockLoc = new Location(p.getWorld(),
+                                    p.getLocation().getBlockX(),
+                                    p.getLocation().getBlockY(),
+                                    p.getLocation().getBlockZ());
+
+                            if (column.getKey().equals(blockLoc)) {
+                                if (column.getValue()) {
+                                    Bukkit.dispatchCommand(event.getPlayer(), Utils.commandBlockify(row.getKey(), p));
+                                } else {
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), Utils.commandBlockify(row.getKey(), p));
+                                }
                             }
                         }
                     }

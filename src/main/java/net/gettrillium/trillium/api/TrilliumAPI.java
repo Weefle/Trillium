@@ -9,7 +9,6 @@ import net.gettrillium.trillium.modules.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.SimplePluginManager;
 
 import java.io.File;
@@ -120,11 +119,10 @@ public class TrilliumAPI {
     }
 
     public static void unregisterModules() {
-        HandlerList.unregisterAll();
+        unregisterCommands();
         Iterator it = modules.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry item = (Map.Entry) it.next();
-            unregisterCommands();
             ((TrilliumModule) item.getValue()).unregister();
             it.remove();
         }
@@ -140,8 +138,9 @@ public class TrilliumAPI {
         TrilliumAPI.registerModule(new ChatModule());
         TrilliumAPI.registerModule(new FunModule());
         TrilliumAPI.registerModule(new CommandBinderModule());
-        TrilliumAPI.registerModule(new KitModule());
-
+        if (getInstance().getConfig().getBoolean(Configuration.Kit.ENABLED)) {
+            TrilliumAPI.registerModule(new KitModule());
+        }
     }
 
     public static boolean isModuleEnabled(Class<? extends TrilliumModule> module) {

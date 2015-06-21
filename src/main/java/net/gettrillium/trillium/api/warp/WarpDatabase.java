@@ -9,7 +9,7 @@ import java.io.IOException;
 public class WarpDatabase {
 
     public static File wd() {
-        File file = new File(TrilliumAPI.getInstance().getDataFolder(), "Warp Drive.yml");
+        File file = new File(TrilliumAPI.getInstance().getDataFolder(), "warp drive.yml");
         if (!file.exists()) {
             YamlConfiguration db = YamlConfiguration.loadConfiguration(file);
             db.set("warps", "");

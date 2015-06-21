@@ -99,7 +99,7 @@ chat:
 #---------------[ Plugin Messages ]---------------#
 plugin-messages:
   # Format plugin messages.
-  format: "%COLOR%%COMMAND% &7- %MESSAGE%"
+  format: "%COLOR%%PREFIX% &7- %MESSAGE%"
   # The general format of messages the plugin sends to the player/server.
   from-to-to-message: "&7%TO% <- &b%MESSAGE%"
   # The format of you sending a private message to someone.
@@ -175,17 +175,6 @@ broadcast:
       - "&9 Thank you."
       - " "
       - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
-
-#---------------[ Group Manager ]---------------#
-group-manager:
-  enabled: false
-  # Trillium comes with it's own fully functional group and user manager to
-  # set permissions to a group or a specific player. Permissions can be ANYTHING.
-  # Literally ANY permission from ANY plugin is compatable with Trillium's group manager.
-  auto-reload-frequency: 1h
-  # The time interval in which the group manager reloads the group files and
-  # refreshes permissions automatically. (basically automatic reload)
-  # You can use s for seconds, m for minutes, and h for hours.
 
 #---------------[ Player Settings ]---------------#
 player-settings:

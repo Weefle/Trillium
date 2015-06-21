@@ -143,27 +143,6 @@ public class Utils {
         }
     }
 
-    // http://bukkit.org/threads/text-alignment-in-chat.83895/#post-2291644
-    public static String tablizer(String s, int size) {
-
-        String ret = s.toUpperCase();
-
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == 'I' || s.charAt(i) == ' ') {
-                ret += " ";
-            }
-        }
-
-        int subtract = size - s.length();
-        subtract = (subtract * 2);
-
-        for (int i = 0; i < subtract; i++) {
-            ret += " ";
-        }
-
-        return (ret);
-    }
-
     public static void clearInventory(Player p) {
         p.getInventory().clear();
         p.getInventory().setArmorContents(null);
@@ -205,7 +184,7 @@ public class Utils {
 
         final ArrayList<Ocelot> catList = new ArrayList<>();
 
-        for (int cats = 1; cats < 8; cats++) {
+        for (int cats = 1; cats < 10; cats++) {
 
             final Ocelot cat = original.getWorld().spawn(original, Ocelot.class);
             cat.setVelocity(new Vector(randomV(), randomV() + 1, randomV()));
@@ -227,9 +206,10 @@ public class Utils {
             int countdown = 50;
 
             public void run() {
-                if (countdown != 0) {
+                if (countdown > 0) {
                     for (Ocelot cat : catList) {
                         ParticleEffect.DRIP_LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, 0, 5, cat.getLocation(), 500);
+                        ParticleEffect.FLAME.display(0, 0, 0, 0, 1, cat.getLocation(), 500);
                         countdown--;
                     }
                 } else {
@@ -242,6 +222,16 @@ public class Utils {
         }.runTaskTimer(TrilliumAPI.getInstance(), 1, 1);
     }
 
+    public static String locationToString(Location l) {
+        if (l == null) {
+            return null;
+        }
+        return l.getBlockX() + ", " + l.getBlockY() + ", " + l.getBlockZ() + ", " + l.getWorld().getName();
+    }
+
+    public static String commandBlockify(String command, Player p) {
+        return command.replace("@p", p.getName());
+    }
 
     public static void reload() {
         // STOP

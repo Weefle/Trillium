@@ -1,5 +1,6 @@
 package net.gettrillium.trillium.api;
 
+import net.gettrillium.trillium.api.commandbinder.CommandBinder;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
@@ -233,6 +234,7 @@ public class Utils {
 
     public static void reload() {
         // STOP
+
         Bukkit.getScheduler().cancelAllTasks();
         TrilliumAPI.disposePlayers();
         TrilliumAPI.unregisterModules();
@@ -243,6 +245,7 @@ public class Utils {
 
         TrilliumAPI.registerModules();
         TrilliumAPI.loadPlayers();
+        CommandBinder.set();
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
         if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {

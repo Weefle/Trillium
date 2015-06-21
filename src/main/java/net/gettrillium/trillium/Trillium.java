@@ -4,9 +4,6 @@ import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.Utils;
 import net.gettrillium.trillium.api.commandbinder.CommandBinder;
-import net.gettrillium.trillium.api.serializer.LocationSerializer;
-import net.gettrillium.trillium.events.PlayerDeath;
-import net.gettrillium.trillium.events.ServerListPing;
 import net.gettrillium.trillium.modules.AdminModule;
 import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
@@ -14,7 +11,6 @@ import net.gettrillium.trillium.runnables.GroupManagerRunnable;
 import net.gettrillium.trillium.runnables.TpsRunnable;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,12 +25,10 @@ public class Trillium extends JavaPlugin {
         saveDefaultConfig();
 
         TrilliumAPI.setInstance(this);
-        TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
-        getServer().getPluginManager().registerEvents(new ServerListPing(), this);
-        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
-        TrilliumAPI.registerModules();
 
-        generateFiles();
+        TrilliumAPI.registerModules();
+        TrilliumAPI.loadPlayers();
+        CommandBinder.set();
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
         if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {
@@ -47,7 +41,7 @@ public class Trillium extends JavaPlugin {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new GroupManagerRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.GM.RELOAD)));
         }
 
-        CommandBinder.set();
+        generateFiles();
 
         if (getConfig().getBoolean(Configuration.Server.METRICS)) {
             try {
@@ -84,6 +78,10 @@ public class Trillium extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Bukkit.getScheduler().cancelAllTasks();
+        TrilliumAPI.disposePlayers();
+        TrilliumAPI.unregisterModules();
     }
 
     private void generateFiles() {

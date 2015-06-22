@@ -1,6 +1,5 @@
 package net.gettrillium.trillium.api;
 
-import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;

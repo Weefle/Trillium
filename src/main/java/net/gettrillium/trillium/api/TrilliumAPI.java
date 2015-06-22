@@ -3,7 +3,6 @@ package net.gettrillium.trillium.api;
 import net.gettrillium.trillium.Trillium;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.command.TrilliumCommand;
-import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import net.gettrillium.trillium.api.serializer.Serializer;
 import net.gettrillium.trillium.modules.*;
 import org.bukkit.Bukkit;

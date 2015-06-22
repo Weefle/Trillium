@@ -1,6 +1,5 @@
 package net.gettrillium.trillium.api;
 
-import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;

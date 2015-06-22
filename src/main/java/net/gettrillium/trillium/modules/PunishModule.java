@@ -2,11 +2,11 @@ package net.gettrillium.trillium.modules;
 
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
+import net.gettrillium.trillium.api.TrilliumPlayer;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
-import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

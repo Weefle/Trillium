@@ -3,7 +3,6 @@ package net.gettrillium.trillium.modules;
 import net.gettrillium.trillium.api.*;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
-import net.gettrillium.trillium.api.player.TrilliumPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

@@ -69,6 +69,10 @@ server:
     chat: "0"
     # Will stop all those nasty spammers that keep spamming the chat.
     kit: "10d"
+  sign-formats:
+    text-to-detect-as-sign: "-%SIGN%-"
+    success-sign: "&7-&a%SIGN%&7-"
+    error-sign: "&7-&cSIGN&7-"
 
 #---------------[ Chat ]---------------#
 chat:

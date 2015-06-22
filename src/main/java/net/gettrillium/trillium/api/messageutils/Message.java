@@ -2,7 +2,7 @@ package net.gettrillium.trillium.api.messageutils;
 
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
-import net.gettrillium.trillium.api.player.TrilliumPlayer;
+import net.gettrillium.trillium.api.TrilliumPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

@@ -1,8 +1,5 @@
-package net.gettrillium.trillium.api.player;
+package net.gettrillium.trillium.api;
 
-import net.gettrillium.trillium.api.Configuration;
-import net.gettrillium.trillium.api.GroupManager;
-import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.events.PlayerAFKEvent;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
@@ -104,6 +101,11 @@ public class TrilliumPlayer {
     }
 
     public void setGod(boolean enabled) {
+        if (enabled) {
+            proxy.setHealth(20.0);
+            proxy.setFoodLevel(20);
+            this.isGod = true;
+        }
         this.isGod = enabled;
     }
 

@@ -1,6 +1,6 @@
 package net.gettrillium.trillium.api.warp;
 
-import net.gettrillium.trillium.api.player.TrilliumPlayer;
+import net.gettrillium.trillium.api.TrilliumPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

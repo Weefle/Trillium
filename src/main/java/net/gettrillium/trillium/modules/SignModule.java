@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class SignModule extends TrilliumModule {
 
+    // Event trigger
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         if (event.getClickedBlock().getState() instanceof Sign) {
@@ -22,6 +23,10 @@ public class SignModule extends TrilliumModule {
             String defaultFormat = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_DETECT);
             String openSymbol = defaultFormat.split("%SIGN%")[0];
             String closeSymbol = defaultFormat.split("%SIGN%")[1];
+            if (!openSymbol.equalsIgnoreCase(closeSymbol)) {
+                openSymbol = openSymbol + " ";
+                closeSymbol = " " + closeSymbol;
+            }
             String requiredString = line.substring(line.indexOf(openSymbol) + 1, line.indexOf(closeSymbol));
 
             if (!requiredString.equals(" ")) {
@@ -38,6 +43,7 @@ public class SignModule extends TrilliumModule {
         }
     }
 
+    // Make a new sign
     @EventHandler
     public void onPlace(BlockPlaceEvent event) {
         if (event.getBlockPlaced().getState() instanceof Sign) {
@@ -49,6 +55,10 @@ public class SignModule extends TrilliumModule {
             String successFormat = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_SUCCESS);
             String openSymbol = defaultFormat.split("%SIGN%")[0];
             String closeSymbol = defaultFormat.split("%SIGN%")[1];
+            if (!openSymbol.equalsIgnoreCase(closeSymbol)) {
+                openSymbol = openSymbol + " ";
+                closeSymbol = " " + closeSymbol;
+            }
             String requiredString = line.substring(line.indexOf(openSymbol) + 1, line.indexOf(closeSymbol));
 
             if (!requiredString.equals(" ")) {
@@ -65,6 +75,7 @@ public class SignModule extends TrilliumModule {
         }
     }
 
+    // The actual magic
     @EventHandler
     public void signInteract(SignInteractEvent event) {
         if (event.getSignType() == SignType.FEED) {

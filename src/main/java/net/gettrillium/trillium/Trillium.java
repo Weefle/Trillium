@@ -6,12 +6,15 @@ import net.gettrillium.trillium.api.Utils;
 import net.gettrillium.trillium.api.commandbinder.CommandBinder;
 import net.gettrillium.trillium.api.report.ReportDatabase;
 import net.gettrillium.trillium.api.report.Reports;
+import net.gettrillium.trillium.api.serializer.LocationSerializer;
+import net.gettrillium.trillium.events.PlayerDeath;
+import net.gettrillium.trillium.events.ServerListPing;
 import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
-import net.gettrillium.trillium.runnables.GroupManagerRunnable;
 import net.gettrillium.trillium.runnables.TpsRunnable;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,8 +30,15 @@ public class Trillium extends JavaPlugin {
 
         TrilliumAPI.setInstance(this);
 
-        TrilliumAPI.registerModules();
         TrilliumAPI.loadPlayers();
+
+        TrilliumAPI.registerModules();
+        TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
+
+        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
+        getServer().getPluginManager().registerEvents(new ServerListPing(), this);
+        generateFiles();
+
         CommandBinder.set();
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
@@ -38,11 +48,7 @@ public class Trillium extends JavaPlugin {
         if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Afk.AUTO_AFK_ENABLED)) {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AFKRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Afk.AUTO_AFK_TIME)));
         }
-        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new GroupManagerRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.GM.RELOAD)));
-        }
 
-        generateFiles();
 
         if (getConfig().getBoolean(Configuration.Server.METRICS)) {
             try {
@@ -58,7 +64,7 @@ public class Trillium extends JavaPlugin {
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         getLogger().info("Plugin made with love by:");
         getLogger().info("LordSaad, VortexSeven, Turbotailz,");
-        getLogger().info("samczsun, hintss, and colt");
+        getLogger().info("samczsun, WouterG");
         getLogger().info("<3");
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("<<<-------------------------------------->>>");

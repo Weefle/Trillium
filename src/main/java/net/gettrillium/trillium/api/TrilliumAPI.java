@@ -137,9 +137,10 @@ public class TrilliumAPI {
         TrilliumAPI.registerModule(new ChatModule());
         TrilliumAPI.registerModule(new FunModule());
         TrilliumAPI.registerModule(new CommandBinderModule());
-        if (getInstance().getConfig().getBoolean(Configuration.Kit.ENABLED)) {
+        if (getInstance().getConfig().getBoolean(Configuration.Server.SIGN_ENABLED))
+            TrilliumAPI.registerModule(new SignModule());
+        if (getInstance().getConfig().getBoolean(Configuration.Kit.ENABLED))
             TrilliumAPI.registerModule(new KitModule());
-        }
     }
 
     public static boolean isModuleEnabled(Class<? extends TrilliumModule> module) {

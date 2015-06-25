@@ -3,6 +3,7 @@ package net.gettrillium.trillium.modules;
 import net.gettrillium.trillium.api.*;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
+import net.gettrillium.trillium.api.report.Reports;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -72,8 +73,8 @@ public class CoreModule extends TrilliumModule {
 
         // Send report warning
         if (p.hasPermission(Permission.Admin.REPORT_RECEIVER)) {
-            if (AdminModule.reportList.size() > 0) {
-                new Message(Mood.BAD, "Reports", "There are " + AdminModule.reportList.size() + " reports available for revision.").to(p);
+            if (Reports.getReportMessages().size() > 0) {
+                new Message(Mood.BAD, "Reports", "There are " + Reports.getReportMessages().size() + " reports available for revision.").to(p);
                 new Message(Mood.BAD, "Reports", "Do '/reports' to view them.").to(p);
             }
         }

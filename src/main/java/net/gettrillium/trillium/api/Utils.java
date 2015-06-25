@@ -3,10 +3,11 @@ package net.gettrillium.trillium.api;
 import net.gettrillium.trillium.api.commandbinder.CommandBinder;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
+import net.gettrillium.trillium.events.PlayerDeath;
+import net.gettrillium.trillium.events.ServerListPing;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
 import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
-import net.gettrillium.trillium.runnables.GroupManagerRunnable;
 import net.gettrillium.trillium.runnables.TpsRunnable;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -288,8 +289,8 @@ public class Utils {
         if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Afk.AUTO_AFK_ENABLED)) {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AFKRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Afk.AUTO_AFK_TIME)));
         }
-        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new GroupManagerRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.GM.RELOAD)));
-        }
+
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeath(), TrilliumAPI.getInstance());
+        Bukkit.getServer().getPluginManager().registerEvents(new ServerListPing(), TrilliumAPI.getInstance());
     }
 }

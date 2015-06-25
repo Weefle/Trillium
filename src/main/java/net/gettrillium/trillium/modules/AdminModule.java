@@ -33,7 +33,7 @@ public class AdminModule extends TrilliumModule {
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
             cs.sendMessage(ChatColor.GRAY + "Plugin made with love by:");
             cs.sendMessage(ChatColor.GRAY + "LordSaad, VortexSeven, Turbotailz,");
-            cs.sendMessage(ChatColor.GRAY + "samczsun, hintss, and colt");
+            cs.sendMessage(ChatColor.GRAY + "samczsun, WouterG");
             cs.sendMessage(ChatColor.DARK_RED + "<3");
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
             cs.sendMessage(ChatColor.GRAY + "Version: " + ChatColor.YELLOW + TrilliumAPI.getInstance().getDescription().getVersion());
@@ -74,7 +74,12 @@ public class AdminModule extends TrilliumModule {
                 int radius;
                 if (args.length != 0) {
                     if (StringUtils.isNumeric(args[0])) {
-                        radius = Integer.parseInt(args[0]);
+                        if (Integer.parseInt(args[0]) <= 100) {
+                            radius = Integer.parseInt(args[0]);
+                        } else {
+                            new Message(Mood.BAD, "Chest Finder", args[0] + " is too big and will crash your server. Setting radius to 50.").to(p);
+                            radius = 50;
+                        }
                     } else {
                         new Message(Mood.BAD, "Chest Finder", args[0] + " is not a number. Setting radius to 50.").to(p);
                         radius = 50;

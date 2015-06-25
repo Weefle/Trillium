@@ -79,11 +79,11 @@ public class SignModule extends TrilliumModule {
     @EventHandler
     public void signInteract(SignInteractEvent event) {
         if (event.getSignType() == SignType.FEED) {
-            if (event.getSign().getLine(1) != null) {
+            if (event.getSign().getLine(1) == null || event.getSign().getLine(1).equalsIgnoreCase("everyone") || event.getSign().getLine(1).equalsIgnoreCase("all")) {
                 event.getPlayer().setFoodLevel(20);
                 new Message(Mood.GOOD, "Feed", "Your hunger has been saturated.").to(event.getPlayer());
             } else {
-                if (event.getPlayer().hasPermission(event.getSign().getLine(1))) {
+                if (event.getPlayer().hasPermission(Permission.Sign.USE + event.getSignType().getSignType())) {
                     event.getPlayer().setFoodLevel(20);
                     new Message(Mood.GOOD, "Feed", "Your hunger has been saturated.").to(event.getPlayer());
                 }
@@ -91,11 +91,11 @@ public class SignModule extends TrilliumModule {
         }
 
         if (event.getSignType() == SignType.HEAL) {
-            if (event.getSign().getLine(1) != null) {
+            if (event.getSign().getLine(1) == null || event.getSign().getLine(1).equalsIgnoreCase("everyone") || event.getSign().getLine(1).equalsIgnoreCase("all")) {
                 event.getPlayer().setHealth(20.0);
                 new Message(Mood.GOOD, "Heal", "Your health has been restored.").to(event.getPlayer());
             } else {
-                if (event.getPlayer().hasPermission(event.getSign().getLine(1))) {
+                if (event.getPlayer().hasPermission(Permission.Sign.USE + event.getSignType().getSignType())) {
                     event.getPlayer().setHealth(20.0);
                     new Message(Mood.GOOD, "Heal", "Your health has been restored.").to(event.getPlayer());
                 }

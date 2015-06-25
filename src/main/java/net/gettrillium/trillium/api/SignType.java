@@ -15,12 +15,4 @@ public enum SignType {
     public String getSignType() {
         return sign;
     }
-
-    public int getRequiredLines() {
-        if (sign.equalsIgnoreCase("Warp")) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
 }

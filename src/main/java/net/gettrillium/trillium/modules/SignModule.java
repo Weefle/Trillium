@@ -8,7 +8,7 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class SignModule extends TrilliumModule {
@@ -45,30 +45,27 @@ public class SignModule extends TrilliumModule {
 
     // Make a new sign
     @EventHandler
-    public void onPlace(BlockPlaceEvent event) {
-        if (event.getBlockPlaced().getState() instanceof Sign) {
+    public void onSign(SignChangeEvent event) {
 
-            Sign sign = (Sign) event.getBlockPlaced().getState();
-            String line = sign.getLine(0);
-            String defaultFormat = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_DETECT);
-            String errorFormat = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_ERROR);
-            String successFormat = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_SUCCESS);
-            String openSymbol = defaultFormat.split("%SIGN%")[0];
-            String closeSymbol = defaultFormat.split("%SIGN%")[1];
-            if (!openSymbol.equalsIgnoreCase(closeSymbol)) {
-                openSymbol = openSymbol + " ";
-                closeSymbol = " " + closeSymbol;
-            }
-            String requiredString = line.substring(line.indexOf(openSymbol) + 1, line.indexOf(closeSymbol));
+        String line = event.getLine(0);
+        String defaultFormat = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_DETECT);
+        String errorFormat = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_ERROR);
+        String successFormat = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_SUCCESS);
+        String openSymbol = defaultFormat.split("%SIGN%")[0];
+        String closeSymbol = defaultFormat.split("%SIGN%")[1];
+        if (!openSymbol.equalsIgnoreCase(closeSymbol)) {
+            openSymbol = openSymbol + " ";
+            closeSymbol = " " + closeSymbol;
+        }
+        String requiredString = line.substring(line.indexOf(openSymbol) + 1, line.indexOf(closeSymbol));
 
-            if (!requiredString.equals(" ")) {
-                if (line.startsWith(openSymbol) && line.endsWith(closeSymbol)) {
-                    if (event.getPlayer().hasPermission(Permission.Sign.CREATE + requiredString.toLowerCase())) {
-                        if (Utils.isInEnum(requiredString, SignType.class)) {
-                            sign.setLine(0, ChatColor.translateAlternateColorCodes('&', successFormat.replace("%SIGN%", requiredString)));
-                        } else {
-                            sign.setLine(0, ChatColor.translateAlternateColorCodes('&', errorFormat.replace("%SIGN%", requiredString)));
-                        }
+        if (!requiredString.equals(" ")) {
+            if (line.startsWith(openSymbol) && line.endsWith(closeSymbol)) {
+                if (event.getPlayer().hasPermission(Permission.Sign.CREATE + requiredString.toLowerCase())) {
+                    if (Utils.isInEnum(requiredString, SignType.class)) {
+                        event.setLine(0, ChatColor.translateAlternateColorCodes('&', successFormat.replace("%SIGN%", requiredString)));
+                    } else {
+                        event.setLine(0, ChatColor.translateAlternateColorCodes('&', errorFormat.replace("%SIGN%", requiredString)));
                     }
                 }
             }

@@ -8,11 +8,11 @@ import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.events.SignInteractEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.help.HelpTopic;
 
 public class SignModule extends TrilliumModule {
 
@@ -21,13 +21,13 @@ public class SignModule extends TrilliumModule {
     public void onInteract(PlayerInteractEvent event) {
         if (event.getClickedBlock() != null) {
             if (event.getClickedBlock().getState() instanceof Sign) {
+                if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
 
-                Sign sign = (Sign) event.getClickedBlock().getState();
-                String line = ChatColor.stripColor(sign.getLine(0));
-                String openText = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_OPEN);
-                String closeText = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_CLOSE);
-                if (line.startsWith(openText) && line.endsWith(closeText)) {
-                    if (!sign.getLine(0).contains(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_COLOR_ERROR)))) {
+                    Sign sign = (Sign) event.getClickedBlock().getState();
+                    String line = ChatColor.stripColor(sign.getLine(0));
+                    String openText = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_OPEN);
+                    String closeText = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_CLOSE);
+                    if (line.startsWith(openText) && line.endsWith(closeText)) {
 
                         String command = line.substring(line.indexOf(openText) + 1, line.indexOf(closeText));
 
@@ -52,8 +52,7 @@ public class SignModule extends TrilliumModule {
     public void onSign(SignChangeEvent event) {
 
         String line = ChatColor.stripColor(event.getLine(0));
-        ChatColor errorColor = ChatColor.getByChar(TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_COLOR_ERROR));
-        ChatColor successColor = ChatColor.getByChar(TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_COLOR_SUCCESS));
+        ChatColor successColor = ChatColor.getByChar(TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_COLOR_SUCCESS).split("&")[0]);
         String openText = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_OPEN);
         String closeText = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_CLOSE);
 
@@ -63,21 +62,15 @@ public class SignModule extends TrilliumModule {
 
             if (!command.equals(" ")) {
                 if (event.getPlayer().hasPermission(Permission.Sign.CREATE + command.toLowerCase())) {
-                    HelpTopic htopic = Bukkit.getServer().getHelpMap().getHelpTopic(command);
-                    if (htopic != null) {
 
-                        event.setLine(0, ChatColor.GRAY + openText + successColor + command + ChatColor.GRAY + closeText);
+                    event.setLine(0, ChatColor.GRAY + openText + successColor + command + ChatColor.GRAY + closeText);
 
-                        if (event.getLine(3).contains("console")) {
-                            event.setLine(3, ChatColor.GOLD + "Console");
-                        } else {
-                            event.setLine(3, ChatColor.GOLD + "Player");
-                        }
-
+                    if (event.getLine(3).contains("console")) {
+                        event.setLine(3, ChatColor.GOLD + "Console");
                     } else {
-                        event.setLine(0, ChatColor.GRAY + openText + errorColor + command + ChatColor.GRAY + closeText);
-                        event.setLine(1, ChatColor.RED + "Command does not exist.");
+                        event.setLine(3, ChatColor.GOLD + "Player");
                     }
+
                 }
             }
         }

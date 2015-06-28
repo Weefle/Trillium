@@ -272,7 +272,7 @@ public class Utils {
 
         TrilliumAPI.registerModules();
         TrilliumAPI.loadPlayers();
-        CommandBinder.set();
+        CommandBinder.setTable();
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
         if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {

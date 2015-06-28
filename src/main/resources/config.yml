@@ -73,8 +73,7 @@ server:
     enabled: true
     open-text: "["
     close-text: "]"
-    success-color: "&c"
-    error-color: "&a"
+    success-color: "&a"
 
 #---------------[ Chat ]---------------#
 chat:

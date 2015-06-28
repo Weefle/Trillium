@@ -56,7 +56,6 @@ public class Configuration {
         public static final String SIGN_OPEN = SIGN + "open-text";
         public static final String SIGN_CLOSE = SIGN + "close-text";
         public static final String SIGN_COLOR_SUCCESS = SIGN + "success-color";
-        public static final String SIGN_COLOR_ERROR = SIGN + "error-color";
         public static final String SIGN_ENABLED = SIGN + "enabled";
     }
 

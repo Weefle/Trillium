@@ -268,5 +268,13 @@ public class TrilliumPlayer {
             save();
         }
     }
+
+    public YamlConfiguration getConfig() {
+        return yml;
+    }
+
+    public File getFile() {
+        return file;
+    }
 }
 

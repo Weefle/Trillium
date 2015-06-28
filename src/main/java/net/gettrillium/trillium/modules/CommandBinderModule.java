@@ -31,7 +31,7 @@ public class CommandBinderModule extends TrilliumModule {
     private ArrayList<UUID> removeMode = new ArrayList<>();
     private Table<UUID, String, Boolean> table = HashBasedTable.create();
 
-    @Command(command = "commandbinder", description = "Bind a command to a block, an air block, or an item.", usage = "/cb <touch/walk/item> <console/player> <command>", aliases = {"cmdbinder", "cmdb", "cb", "cbinder", "cbind"})
+    @Command(command = "commandbinder", description = "Bind a command to a block, an air block, or an item.", usage = "/cb <set <item/block> <console/player> <command>/remove <item/block>>", aliases = {"cmdbinder", "cmdb", "cb", "cbinder", "cbind"})
     public void commandbinder(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             Player p = (Player) cs;
@@ -39,35 +39,69 @@ public class CommandBinderModule extends TrilliumModule {
                 if (!setMode.contains(p.getUniqueId()) && !removeMode.contains(p.getUniqueId())) {
                     if (args.length != 0) {
                         if (args[0].equalsIgnoreCase("set")) {
-                            if (args.length >= 3) {
-                                if (args[1].equalsIgnoreCase("console")
-                                        || args[1].equalsIgnoreCase("c")
-                                        || args[1].equalsIgnoreCase("player")
-                                        || args[1].equalsIgnoreCase("p")) {
+                            if (args.length >= 4) {
+                                if (args[1].equalsIgnoreCase("block") || args[1].equalsIgnoreCase("b")) {
+                                    if (args[2].equalsIgnoreCase("console")
+                                            || args[2].equalsIgnoreCase("c")
+                                            || args[2].equalsIgnoreCase("player")
+                                            || args[2].equalsIgnoreCase("p")) {
 
-                                    StringBuilder sb = new StringBuilder();
-                                    for (int i = 2; i < args.length; i++) {
-                                        sb.append(args[i]).append(" ");
-                                    }
-                                    String command = sb.toString().trim();
+                                        StringBuilder sb = new StringBuilder();
+                                        for (int i = 3; i < args.length; i++) {
+                                            sb.append(args[i]).append(" ");
+                                        }
+                                        String command = sb.toString().trim();
 
-                                    if (!command.equalsIgnoreCase("") && !command.equalsIgnoreCase(" ")) {
-                                        boolean player;
-                                        player = !(args[1].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c"));
-                                        setMode.add(p.getUniqueId());
-                                        table.put(p.getUniqueId(), command, player);
-                                        new Message(Mood.NEUTRAL, "CMD Binder", "You are now in command binder's edit mode.").to(p);
-                                        new Message(Mood.BAD, "CMD Binder", ChatColor.RED + "" + ChatColor.BOLD + "DO NOT TOUCH ANYTHING AIMLESSLY").to(p);
-                                        new Message(Mood.NEUTRAL, "CMD Binder", "The next block you PUNCH will bind the command you entered to that block " +
-                                                "and any block you RIGHT CLICK will bind the block above it (air) to your entered command (as a walkable block)").to(p);
+                                        if (!command.equalsIgnoreCase("") && !command.equalsIgnoreCase(" ")) {
+                                            boolean player = !(args[2].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c"));
+                                            setMode.add(p.getUniqueId());
+                                            table.put(p.getUniqueId(), command, player);
+                                            new Message(Mood.NEUTRAL, "CMD Binder", "You are now in command binder's edit mode.").to(p);
+                                            new Message(Mood.BAD, "CMD Binder", ChatColor.RED + "" + ChatColor.BOLD + "DO NOT TOUCH ANYTHING AIMLESSLY").to(p);
+                                            new Message(Mood.NEUTRAL, "CMD Binder", "The next block you PUNCH will bind the command you entered to that block " +
+                                                    "and any block you RIGHT CLICK will bind the block above it (air) to your entered command (as a walkable block)").to(p);
+                                        } else {
+                                            new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <item/block> <console/player> <command>/remove <item/block>>").to(p);
+                                        }
                                     } else {
-                                        new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <console/player> <command> / remove>").to(p);
+                                        new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <item/block> <console/player> <command>/remove <item/block>>").to(p);
+                                    }
+
+                                } else if (args[1].equalsIgnoreCase("item") || args[1].equalsIgnoreCase("i")) {
+                                    if (args[2].equalsIgnoreCase("console")
+                                            || args[2].equalsIgnoreCase("c")
+                                            || args[2].equalsIgnoreCase("player")
+                                            || args[2].equalsIgnoreCase("p")) {
+                                        if (p.getItemInHand() != null) {
+
+                                            StringBuilder sb = new StringBuilder();
+                                            for (int i = 3; i < args.length; i++) {
+                                                sb.append(args[i]).append(" ");
+                                            }
+                                            String command = sb.toString().trim();
+
+                                            if (!command.equalsIgnoreCase("") && !command.equalsIgnoreCase(" ")) {
+                                                boolean player = !(args[2].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c"));
+                                                CommandBinder.Items.add(command, p, p.getItemInHand().getType(), player);
+
+                                                new Message(Mood.GOOD, "CMD Binder", "Command bound to item.").to(p);
+                                                new Message(Mood.NEUTRAL, "CMD Binder", "Item: " + p.getItemInHand().getType().name().replace("_", " ").toLowerCase()).to(p);
+                                                new Message(Mood.NEUTRAL, "CMD Binder", "Command: " + command).to(p);
+
+                                            } else {
+                                                new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <item/block> <console/player> <command>/remove <item/block>>").to(p);
+                                            }
+                                        } else {
+                                            new Message(Mood.BAD, "CMD Binder", "You aren't holding an item to bind.").to(p);
+                                        }
+                                    } else {
+                                        new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <item/block> <console/player> <command>/remove <item/block>>").to(p);
                                     }
                                 } else {
-                                    new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <console/player> <command> / remove>").to(p);
+                                    new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <item/block> <console/player> <command>/remove <item/block>>").to(p);
                                 }
                             } else {
-                                new Message("CMD Binder", Error.TOO_FEW_ARGUMENTS, "/cb <set <console/player> <command> / remove>").to(p);
+                                new Message("CMD Binder", Error.TOO_FEW_ARGUMENTS, "/cb <set <item/block> <console/player> <command>/remove <item/block>>").to(p);
                             }
 
                         } else if (args[0].equalsIgnoreCase("remove")) {
@@ -78,10 +112,10 @@ public class CommandBinderModule extends TrilliumModule {
                                     "and any block you RIGHT CLICK will unbind any command bound to the block above it (air)").to(p);
 
                         } else {
-                            new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <console/player> <command> / remove>").to(p);
+                            new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <item/block> <console/player> <command>/remove <item/block>>").to(p);
                         }
                     } else {
-                        new Message("CMD Binder", Error.TOO_FEW_ARGUMENTS, "/cb <set <console/player> <command> / remove>").to(p);
+                        new Message("CMD Binder", Error.TOO_FEW_ARGUMENTS, "/cb <set <item/block> <console/player> <command>/remove <item/block>>").to(p);
                     }
                 } else {
                     new Message(Mood.BAD, "CMD Binder", "You are already in command binder's edit mode.").to(p);
@@ -108,12 +142,12 @@ public class CommandBinderModule extends TrilliumModule {
 
                             Location loc = null;
                             if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                                CommandBinder.add(column.getKey(), event.getClickedBlock().getLocation(), column.getValue());
+                                CommandBinder.Blocks.add(column.getKey(), event.getClickedBlock().getLocation(), column.getValue());
 
                                 loc = event.getClickedBlock().getLocation();
 
                             } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                                CommandBinder.add(column.getKey(), event.getClickedBlock().getRelative(BlockFace.UP).getLocation(), column.getValue());
+                                CommandBinder.Blocks.add(column.getKey(), event.getClickedBlock().getRelative(BlockFace.UP).getLocation(), column.getValue());
 
                                 loc = new Location(p.getWorld(), event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockX(),
                                         event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockY(),
@@ -140,7 +174,7 @@ public class CommandBinderModule extends TrilliumModule {
                 }
 
             } else if (removeMode.contains(p.getUniqueId())) {
-                Map<String, Map<Location, Boolean>> rows = CommandBinder.getTable().rowMap();
+                Map<String, Map<Location, Boolean>> rows = CommandBinder.Blocks.getTable().rowMap();
                 for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
                     for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
 
@@ -156,7 +190,7 @@ public class CommandBinderModule extends TrilliumModule {
 
                         if (column.getKey().equals(loc)) {
 
-                            CommandBinder.remove(row.getKey(), column.getKey());
+                            CommandBinder.Blocks.remove(row.getKey(), column.getKey());
                             removeMode.remove(p.getUniqueId());
 
                             String sender;
@@ -176,7 +210,7 @@ public class CommandBinderModule extends TrilliumModule {
                 }
 
             } else {
-                Map<String, Map<Location, Boolean>> rows = CommandBinder.getTable().rowMap();
+                Map<String, Map<Location, Boolean>> rows = CommandBinder.Blocks.getTable().rowMap();
                 for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
                     for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
                         if (column.getKey().equals(event.getClickedBlock().getLocation())) {
@@ -202,7 +236,7 @@ public class CommandBinderModule extends TrilliumModule {
             Player p = event.getPlayer();
 
             if (!setMode.contains(p.getUniqueId()) && !removeMode.contains(p.getUniqueId())) {
-                Map<String, Map<Location, Boolean>> rows = CommandBinder.getTable().rowMap();
+                Map<String, Map<Location, Boolean>> rows = CommandBinder.Blocks.getTable().rowMap();
                 for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
                     for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
                         if (column.getKey() != null) {

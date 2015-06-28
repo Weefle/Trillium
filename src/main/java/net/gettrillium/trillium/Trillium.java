@@ -47,7 +47,8 @@ public class Trillium extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ServerListPing(), this);
         generateFiles();
 
-        CommandBinder.set();
+        CommandBinder.Blocks.setTable();
+        CommandBinder.Items.setTable();
 
         if (!setupEconomy()) {
             getLogger().severe("Could not find vault. Could not create economy hook.");

@@ -1,43 +1,47 @@
 package net.gettrillium.trillium.modules;
 
-import net.gettrillium.trillium.api.*;
+import net.gettrillium.trillium.Trillium;
+import net.gettrillium.trillium.api.Configuration;
+import net.gettrillium.trillium.api.Permission;
+import net.gettrillium.trillium.api.TrilliumAPI;
+import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.events.SignInteractEvent;
-import net.gettrillium.trillium.api.messageutils.Message;
-import net.gettrillium.trillium.api.messageutils.Mood;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.help.HelpTopic;
 
 public class SignModule extends TrilliumModule {
 
     // Event trigger
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        if (event.getClickedBlock().getState() instanceof Sign) {
+        if (event.getClickedBlock() != null) {
+            if (event.getClickedBlock().getState() instanceof Sign) {
 
-            Sign sign = (Sign) event.getClickedBlock().getState();
-            String line = sign.getLine(0);
-            String defaultFormat = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_DETECT);
-            String openSymbol = defaultFormat.split("%SIGN%")[0];
-            String closeSymbol = defaultFormat.split("%SIGN%")[1];
-            if (!openSymbol.equalsIgnoreCase(closeSymbol)) {
-                openSymbol = openSymbol + " ";
-                closeSymbol = " " + closeSymbol;
-            }
-            String requiredString = line.substring(line.indexOf(openSymbol) + 1, line.indexOf(closeSymbol));
+                Sign sign = (Sign) event.getClickedBlock().getState();
+                String line = ChatColor.stripColor(sign.getLine(0));
+                String openText = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_OPEN);
+                String closeText = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_CLOSE);
+                if (line.startsWith(openText) && line.endsWith(closeText)) {
+                    if (!sign.getLine(0).contains(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_COLOR_ERROR)))) {
 
-            if (!requiredString.equals(" ")) {
-                if (line.startsWith(openSymbol) && line.endsWith(closeSymbol)) {
-                    if (Utils.isInEnum(requiredString, SignType.class)) {
-                        if (event.getPlayer().hasPermission(Permission.Sign.USE + requiredString.toLowerCase())) {
-                            SignInteractEvent e = new SignInteractEvent(event.getPlayer(), sign, SignType.valueOf(requiredString.toUpperCase()));
-                            Bukkit.getPluginManager().callEvent(e);
+                        String command = line.substring(line.indexOf(openText) + 1, line.indexOf(closeText));
+
+                        if (!command.equals(" ")) {
+                            if (sign.getLine(3).equalsIgnoreCase("console")) {
+                                SignInteractEvent e = new SignInteractEvent(event.getPlayer(), sign, command, Bukkit.getConsoleSender());
+                                Bukkit.getPluginManager().callEvent(e);
+                                event.setCancelled(true);
+                            } else {
+                                SignInteractEvent e = new SignInteractEvent(event.getPlayer(), sign, command, event.getPlayer());
+                                Bukkit.getPluginManager().callEvent(e);
+                            }
                         }
                     }
-                    event.setCancelled(true);
                 }
             }
         }
@@ -47,25 +51,32 @@ public class SignModule extends TrilliumModule {
     @EventHandler
     public void onSign(SignChangeEvent event) {
 
-        String line = event.getLine(0);
-        String defaultFormat = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_DETECT);
-        String errorFormat = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_ERROR);
-        String successFormat = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_SUCCESS);
-        String openSymbol = defaultFormat.split("%SIGN%")[0];
-        String closeSymbol = defaultFormat.split("%SIGN%")[1];
-        if (!openSymbol.equalsIgnoreCase(closeSymbol)) {
-            openSymbol = openSymbol + " ";
-            closeSymbol = " " + closeSymbol;
-        }
-        String requiredString = line.substring(line.indexOf(openSymbol) + 1, line.indexOf(closeSymbol));
+        String line = ChatColor.stripColor(event.getLine(0));
+        ChatColor errorColor = ChatColor.getByChar(TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_COLOR_ERROR));
+        ChatColor successColor = ChatColor.getByChar(TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_COLOR_SUCCESS));
+        String openText = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_OPEN);
+        String closeText = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.SIGN_CLOSE);
 
-        if (!requiredString.equals(" ")) {
-            if (line.startsWith(openSymbol) && line.endsWith(closeSymbol)) {
-                if (event.getPlayer().hasPermission(Permission.Sign.CREATE + requiredString.toLowerCase())) {
-                    if (Utils.isInEnum(requiredString, SignType.class)) {
-                        event.setLine(0, ChatColor.translateAlternateColorCodes('&', successFormat.replace("%SIGN%", requiredString)));
+        if (line.startsWith(openText) && line.endsWith(closeText)) {
+
+            String command = line.substring(line.indexOf(openText) + 1, line.indexOf(closeText));
+
+            if (!command.equals(" ")) {
+                if (event.getPlayer().hasPermission(Permission.Sign.CREATE + command.toLowerCase())) {
+                    HelpTopic htopic = Bukkit.getServer().getHelpMap().getHelpTopic(command);
+                    if (htopic != null) {
+
+                        event.setLine(0, ChatColor.GRAY + openText + successColor + command + ChatColor.GRAY + closeText);
+
+                        if (event.getLine(3).contains("console")) {
+                            event.setLine(3, ChatColor.GOLD + "Console");
+                        } else {
+                            event.setLine(3, ChatColor.GOLD + "Player");
+                        }
+
                     } else {
-                        event.setLine(0, ChatColor.translateAlternateColorCodes('&', errorFormat.replace("%SIGN%", requiredString)));
+                        event.setLine(0, ChatColor.GRAY + openText + errorColor + command + ChatColor.GRAY + closeText);
+                        event.setLine(1, ChatColor.RED + "Command does not exist.");
                     }
                 }
             }
@@ -75,26 +86,15 @@ public class SignModule extends TrilliumModule {
     // The actual magic
     @EventHandler
     public void signInteract(SignInteractEvent event) {
-        if (event.getSignType() == SignType.FEED) {
-            if (event.getSign().getLine(1) == null || event.getSign().getLine(1).equalsIgnoreCase("everyone") || event.getSign().getLine(1).equalsIgnoreCase("all")) {
-                event.getPlayer().setFoodLevel(20);
-                new Message(Mood.GOOD, "Feed", "Your hunger has been saturated.").to(event.getPlayer());
+        if (!event.isCancelled()) {
+            if (event.getSign().getLine(2) == null) {
+                Bukkit.dispatchCommand(event.getSender(), event.getCommand());
             } else {
-                if (event.getPlayer().hasPermission(Permission.Sign.USE + event.getSignType().getSignType())) {
-                    event.getPlayer().setFoodLevel(20);
-                    new Message(Mood.GOOD, "Feed", "Your hunger has been saturated.").to(event.getPlayer());
-                }
-            }
-        }
-
-        if (event.getSignType() == SignType.HEAL) {
-            if (event.getSign().getLine(1) == null || event.getSign().getLine(1).equalsIgnoreCase("everyone") || event.getSign().getLine(1).equalsIgnoreCase("all")) {
-                event.getPlayer().setHealth(20.0);
-                new Message(Mood.GOOD, "Heal", "Your health has been restored.").to(event.getPlayer());
-            } else {
-                if (event.getPlayer().hasPermission(Permission.Sign.USE + event.getSignType().getSignType())) {
-                    event.getPlayer().setHealth(20.0);
-                    new Message(Mood.GOOD, "Heal", "Your health has been restored.").to(event.getPlayer());
+                if (Trillium.permission != null) {
+                    if (Trillium.permission.has(event.getPlayer(), event.getSign().getLine(2))
+                            || Trillium.permission.playerInGroup(event.getPlayer(), event.getSign().getLine(2))) {
+                        Bukkit.dispatchCommand(event.getSender(), event.getCommand());
+                    }
                 }
             }
         }

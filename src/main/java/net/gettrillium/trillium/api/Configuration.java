@@ -53,9 +53,10 @@ public class Configuration {
         public static final String NOTE = PREFIX + "tune-note";
         public static final String TONE = PREFIX + "tune-tone";
         private static final String SIGN = PREFIX + "signs.";
-        public static final String SIGN_DETECT = SIGN + "text-to-detect-as-sign";
-        public static final String SIGN_SUCCESS = SIGN + "success-sign";
-        public static final String SIGN_ERROR = SIGN + "error-sign";
+        public static final String SIGN_OPEN = SIGN + "open-text";
+        public static final String SIGN_CLOSE = SIGN + "close-text";
+        public static final String SIGN_COLOR_SUCCESS = SIGN + "success-color";
+        public static final String SIGN_COLOR_ERROR = SIGN + "error-color";
         public static final String SIGN_ENABLED = SIGN + "enabled";
     }
 

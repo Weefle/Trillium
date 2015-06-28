@@ -71,9 +71,10 @@ server:
     kit: "10d"
   signs:
     enabled: true
-    text-to-detect-as-sign: "-%SIGN%-"
-    success-sign: "&7-&a%SIGN%&7-"
-    error-sign: "&7-&cSIGN&7-"
+    open-text: "["
+    close-text: "]"
+    success-color: "&c"
+    error-color: "&a"
 
 #---------------[ Chat ]---------------#
 chat:

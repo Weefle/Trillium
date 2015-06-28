@@ -52,8 +52,9 @@ public class Trillium extends JavaPlugin {
         if (!setupEconomy()) {
             getLogger().severe("Could not find vault. Could not create economy hook.");
         }
-        setupChat();
-        setupPermissions();
+        if (!setupPermissions()) {
+            getLogger().severe("Could not find vault. Could not create permission hook.");
+        }
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
         if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {

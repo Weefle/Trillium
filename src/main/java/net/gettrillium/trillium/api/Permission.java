@@ -95,9 +95,4 @@ public class Permission {
         public static final String COOLDOWN_EXEMPT = "tr.kit.cooldown-exempt";
     }
 
-    public static class Sign {
-        private static final String PREFIX = "tr.sign.";
-        public static final String CREATE = PREFIX + "create.";
-        public static final String USE = PREFIX + "use.";
-    }
 }

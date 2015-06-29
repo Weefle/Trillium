@@ -52,11 +52,6 @@ public class Configuration {
         public static final String INSTRUMENT = PREFIX + "tune-instrument";
         public static final String NOTE = PREFIX + "tune-note";
         public static final String TONE = PREFIX + "tune-tone";
-        private static final String SIGN = PREFIX + "signs.";
-        public static final String SIGN_OPEN = SIGN + "open-text";
-        public static final String SIGN_CLOSE = SIGN + "close-text";
-        public static final String SIGN_COLOR_SUCCESS = SIGN + "success-color";
-        public static final String SIGN_ENABLED = SIGN + "enabled";
     }
 
     public static class PlayerSettings {

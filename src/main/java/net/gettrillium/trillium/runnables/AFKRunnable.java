@@ -26,6 +26,7 @@ public class AFKRunnable implements Runnable {
 
             if (player.getLastActive() < System.currentTimeMillis()) {
                 if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Afk.AUTO_AFK_KICK)) {
+                    if (!player.getProxy().isOp())
                     toKick.add(player);
                 } else {
                     toUnAfk.add(player);

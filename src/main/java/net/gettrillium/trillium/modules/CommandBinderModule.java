@@ -105,7 +105,7 @@ public class CommandBinderModule extends TrilliumModule {
                             }
 
                         } else if (args[0].equalsIgnoreCase("remove")) {
-                            if (args.length > 2) {
+                            if (args.length >= 2) {
                                 if (args[1].equalsIgnoreCase("block")) {
 
                                     removeMode.add(p.getUniqueId());

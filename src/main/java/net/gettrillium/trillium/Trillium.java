@@ -65,7 +65,6 @@ public class Trillium extends JavaPlugin {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AFKRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Afk.AUTO_AFK_TIME)));
         }
 
-
         if (getConfig().getBoolean(Configuration.Server.METRICS)) {
             try {
                 Metrics metrics = new Metrics(this);

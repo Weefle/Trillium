@@ -105,10 +105,6 @@ public class CommandBinder {
             return command + ";" + mat.name() + ";" + player;
         }
 
-        public static Table<UUID, String, HashMap<Material, Boolean>> getTable() {
-            return table;
-        }
-
         public static void setTable() {
             for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
                 List<String> serialized = p.getConfig().getStringList("command-binder-items");
@@ -142,16 +138,7 @@ public class CommandBinder {
             }
         }
 
-        public static ArrayList<String> getCommands(Player p) {
-            ArrayList<String> commands = new ArrayList<>();
-
-            for (String deserialize : TrilliumAPI.getPlayer(p).getConfig().getStringList("command-binder-items")) {
-                commands.add(deserialize.split(";")[0]);
-            }
-            return commands;
-        }
-
-        public static ArrayList<String> getSpecificCommands(Player p, Material mat) {
+        public static ArrayList<String> getCommands(Player p, Material mat) {
             ArrayList<String> commands = new ArrayList<>();
             for (String deserialize : TrilliumAPI.getPlayer(p).getConfig().getStringList("command-binder-items")) {
                 if (deserialize.split(";")[1].equals(mat.name())) {

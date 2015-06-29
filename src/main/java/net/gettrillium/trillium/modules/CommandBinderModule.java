@@ -243,7 +243,7 @@ public class CommandBinderModule extends TrilliumModule {
             }
         }
 
-        for (String command : CommandBinder.Items.getSpecificCommands(p, p.getItemInHand().getType())) {
+        for (String command : CommandBinder.Items.getCommands(p, p.getItemInHand().getType())) {
             Bukkit.dispatchCommand(CommandBinder.Items.getSender(p, command), command);
         }
     }

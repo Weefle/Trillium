@@ -11,10 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CommandBinder {
 
@@ -80,25 +77,25 @@ public class CommandBinder {
     }
 
     public static class Items {
-        private static Table<String, Player, HashMap<Material, Boolean>> table = HashBasedTable.create();
+        private static Table<String, UUID, HashMap<Material, Boolean>> table = HashBasedTable.create();
 
         public static void add(String command, Player p, Material mat, Boolean player) {
             HashMap<Material, Boolean> map = new HashMap<>();
             map.put(mat, player);
-            table.put(command, p, map);
+            table.put(command, p.getUniqueId(), map);
             save(p);
         }
 
         public static void remove(String command, Player p) {
-            table.remove(command, p);
+            table.remove(command, p.getUniqueId());
             save(p);
         }
 
-        public static String serializer(String command, Player p, Material mat, Boolean player) {
-            return command + ";" + p.getName() + ";" + mat.name() + ";" + player;
+        public static String serializer(String command, UUID uuid, Material mat, Boolean player) {
+            return command + ";" + uuid + ";" + mat.name() + ";" + player;
         }
 
-        public static Table<String, Player, HashMap<Material, Boolean>> getTable() {
+        public static Table<String, UUID, HashMap<Material, Boolean>> getTable() {
             return table;
         }
 
@@ -107,17 +104,17 @@ public class CommandBinder {
                 String serialized = p.getConfig().getString("command-binder-item");
                 HashMap<Material, Boolean> map = new HashMap<>();
                 map.put(Material.valueOf(serialized.split(";")[2]), Boolean.parseBoolean(serialized.split(";")[3]));
-                table.put(serialized.split(";")[0], Bukkit.getPlayer(serialized.split(";")[1]), map);
+                table.put(serialized.split(";")[0], Bukkit.getPlayer(serialized.split(";")[1]).getUniqueId(), map);
             }
         }
 
         public static void save(Player player) {
             TrilliumPlayer p = TrilliumAPI.getPlayer(player);
-            Map<String, Map<Player, HashMap<Material, Boolean>>> rows = table.rowMap();
+            Map<String, Map<UUID, HashMap<Material, Boolean>>> rows = table.rowMap();
 
-            for (Map.Entry<String, Map<Player, HashMap<Material, Boolean>>> row : rows.entrySet()) {
-                for (Map.Entry<Player, HashMap<Material, Boolean>> column : row.getValue().entrySet()) {
-                    if (column.getKey().getUniqueId().equals(player.getUniqueId())) {
+            for (Map.Entry<String, Map<UUID, HashMap<Material, Boolean>>> row : rows.entrySet()) {
+                for (Map.Entry<UUID, HashMap<Material, Boolean>> column : row.getValue().entrySet()) {
+                    if (column.getKey().equals(player.getUniqueId())) {
                         for (Map.Entry<Material, Boolean> secondColumn : column.getValue().entrySet()) {
                             p.getConfig().set("command-binder-item", serializer(row.getKey(), column.getKey(), secondColumn.getKey(), secondColumn.getValue()));
                         }

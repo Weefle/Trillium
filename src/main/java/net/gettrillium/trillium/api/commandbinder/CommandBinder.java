@@ -7,6 +7,7 @@ import net.gettrillium.trillium.api.TrilliumPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -77,53 +78,63 @@ public class CommandBinder {
     }
 
     public static class Items {
-        private static Table<String, UUID, HashMap<Material, Boolean>> table = HashBasedTable.create();
+        private static Table<UUID, String, HashMap<Material, Boolean>> table = HashBasedTable.create();
 
-        public static void add(String command, Player p, Material mat, Boolean player) {
+        public static void add(Player p, String command, Material mat, Boolean player) {
             HashMap<Material, Boolean> map = new HashMap<>();
             map.put(mat, player);
-            table.put(command, p.getUniqueId(), map);
+            table.put(p.getUniqueId(), command, map);
             save(p);
         }
 
-        public static void remove(String command, Player p) {
-            table.remove(command, p.getUniqueId());
+        public static void remove(Player p) {
+            Map<UUID, Map<String, HashMap<Material, Boolean>>> rows = new HashMap<>();
+            rows.putAll(table.rowMap());
+
+            for (Map.Entry<UUID, Map<String, HashMap<Material, Boolean>>> row : rows.entrySet()) {
+                if (row.getKey().equals(p.getUniqueId())) {
+                    for (Map.Entry<String, HashMap<Material, Boolean>> column : row.getValue().entrySet()) {
+                        table.remove(row.getKey(), column.getKey());
+                    }
+                }
+            }
             save(p);
         }
 
-        public static String serializer(String command, UUID uuid, Material mat, Boolean player) {
-            return command + ";" + uuid + ";" + mat.name() + ";" + player;
+        public static String serializer(String command, Material mat, Boolean player) {
+            return command + ";" + mat.name() + ";" + player;
         }
 
-        public static Table<String, UUID, HashMap<Material, Boolean>> getTable() {
+        public static Table<UUID, String, HashMap<Material, Boolean>> getTable() {
             return table;
         }
 
         public static void setTable() {
             for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
-                String serialized = p.getConfig().getString("command-binder-item");
-                HashMap<Material, Boolean> map = new HashMap<>();
-                map.put(Material.valueOf(serialized.split(";")[2]), Boolean.parseBoolean(serialized.split(";")[3]));
-                table.put(serialized.split(";")[0], Bukkit.getPlayer(serialized.split(";")[1]).getUniqueId(), map);
+                List<String> serialized = p.getConfig().getStringList("command-binder-items");
+                for (String deserialized : serialized) {
+                    HashMap<Material, Boolean> map = new HashMap<>();
+                    map.put(Material.valueOf(deserialized.split(";")[1]), Boolean.parseBoolean(deserialized.split(";")[2]));
+                    table.put(p.getProxy().getUniqueId(), deserialized.split(";")[0], map);
+                }
             }
         }
 
         public static void save(Player player) {
             TrilliumPlayer p = TrilliumAPI.getPlayer(player);
-            Map<String, Map<UUID, HashMap<Material, Boolean>>> rows = table.rowMap();
+            Map<UUID, Map<String, HashMap<Material, Boolean>>> rows = table.rowMap();
 
-            for (Map.Entry<String, Map<UUID, HashMap<Material, Boolean>>> row : rows.entrySet()) {
-                for (Map.Entry<UUID, HashMap<Material, Boolean>> column : row.getValue().entrySet()) {
-                    if (column.getKey().equals(player.getUniqueId())) {
+            for (Map.Entry<UUID, Map<String, HashMap<Material, Boolean>>> row : rows.entrySet()) {
+                if (row.getKey().equals(player.getUniqueId())) {
+                    for (Map.Entry<String, HashMap<Material, Boolean>> column : row.getValue().entrySet()) {
                         for (Map.Entry<Material, Boolean> secondColumn : column.getValue().entrySet()) {
-                            p.getConfig().set("command-binder-item", serializer(row.getKey(), column.getKey(), secondColumn.getKey(), secondColumn.getValue()));
+                            List<String> bindings = p.getConfig().getStringList("command-binder-items");
+                            bindings.add(serializer(column.getKey(), secondColumn.getKey(), secondColumn.getValue()));
+                            p.getConfig().set("command-binder-items", bindings);
                         }
-                    } else {
-                        p.getConfig().set("command-binder-item", null);
                     }
                 }
             }
-
             try {
                 p.getConfig().save(p.getFile());
             } catch (IOException e) {
@@ -131,9 +142,38 @@ public class CommandBinder {
             }
         }
 
-        public static Boolean hasItemBound(Player player) {
-            TrilliumPlayer p = TrilliumAPI.getPlayer(player);
-            return p.getConfig().get("command-binder-item") != null;
+        public static ArrayList<String> getCommands(Player p) {
+            ArrayList<String> commands = new ArrayList<>();
+
+            for (String deserialize : TrilliumAPI.getPlayer(p).getConfig().getStringList("command-binder-items")) {
+                commands.add(deserialize.split(";")[0]);
+            }
+            return commands;
+        }
+
+        public static ArrayList<String> getSpecificCommands(Player p, Material mat) {
+            ArrayList<String> commands = new ArrayList<>();
+            for (String deserialize : TrilliumAPI.getPlayer(p).getConfig().getStringList("command-binder-items")) {
+                if (deserialize.split(";")[1].equals(mat.name())) {
+                    commands.add(deserialize.split(";")[0]);
+                }
+            }
+            return commands;
+        }
+
+        public static CommandSender getSender(Player p, String command) {
+            CommandSender sender = p;
+
+            for (String deserialize : TrilliumAPI.getPlayer(p).getConfig().getStringList("command-binder-items")) {
+                if (deserialize.split(";")[0].equals(command)) {
+                    if (Boolean.parseBoolean(deserialize.split(";")[2])) {
+                        sender = p;
+                    } else {
+                        sender = Bukkit.getConsoleSender();
+                    }
+                }
+            }
+            return sender;
         }
     }
 }

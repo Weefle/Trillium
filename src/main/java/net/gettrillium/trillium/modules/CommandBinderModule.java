@@ -82,7 +82,7 @@ public class CommandBinderModule extends TrilliumModule {
 
                                             if (!command.equalsIgnoreCase("") && !command.equalsIgnoreCase(" ")) {
                                                 boolean player = !(args[2].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c"));
-                                                CommandBinder.Items.add(command, p, p.getItemInHand().getType(), player);
+                                                CommandBinder.Items.add(p, command, p.getItemInHand().getType(), player);
 
                                                 new Message(Mood.GOOD, "CMD Binder", "Command bound to item.").to(p);
                                                 new Message(Mood.NEUTRAL, "CMD Binder", "Item: " + p.getItemInHand().getType().name().replace("_", " ").toLowerCase()).to(p);
@@ -105,12 +105,28 @@ public class CommandBinderModule extends TrilliumModule {
                             }
 
                         } else if (args[0].equalsIgnoreCase("remove")) {
-                            removeMode.add(p.getUniqueId());
-                            new Message(Mood.NEUTRAL, "CMD Binder", "You are now in command binder's edit mode.").to(p);
-                            new Message(Mood.BAD, "CMD Binder", ChatColor.RED + "" + ChatColor.BOLD + "DO NOT TOUCH ANYTHING AIMLESSLY").to(p);
-                            new Message(Mood.NEUTRAL, "CMD Binder", "The next block you PUNCH will unbind any command bound to that block " +
-                                    "and any block you RIGHT CLICK will unbind any command bound to the block above it (air)").to(p);
+                            if (args.length > 2) {
+                                if (args[1].equalsIgnoreCase("block")) {
 
+                                    removeMode.add(p.getUniqueId());
+                                    new Message(Mood.NEUTRAL, "CMD Binder", "You are now in command binder's edit mode.").to(p);
+                                    new Message(Mood.BAD, "CMD Binder", ChatColor.RED + "" + ChatColor.BOLD + "DO NOT TOUCH ANYTHING AIMLESSLY").to(p);
+                                    new Message(Mood.NEUTRAL, "CMD Binder", "The next block you PUNCH will unbind any command bound to that block " +
+                                            "and any block you RIGHT CLICK will unbind any command bound to the block above it (air)").to(p);
+                                } else if (args[0].equalsIgnoreCase("item")) {
+                                    if (p.getItemInHand().getType() != null) {
+
+                                        CommandBinder.Items.remove(p);
+                                        new Message(Mood.GOOD, "CMD Binder", "All commands unbound from the item you're holding.").to(p);
+                                    } else {
+                                        new Message(Mood.BAD, "CMD Binder", "You aren't holding an item to unbind.").to(p);
+                                    }
+                                } else {
+                                    new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <item/block> <console/player> <command>/remove <item/block>>").to(p);
+                                }
+                            } else {
+                                new Message("CMD Binder", Error.TOO_FEW_ARGUMENTS, "/cb <set <item/block> <console/player> <command>/remove <item/block>>").to(p);
+                            }
                         } else {
                             new Message("CMD Binder", Error.WRONG_ARGUMENTS, "/cb <set <item/block> <console/player> <command>/remove <item/block>>").to(p);
                         }
@@ -225,6 +241,10 @@ public class CommandBinderModule extends TrilliumModule {
                     }
                 }
             }
+        }
+
+        for (String command : CommandBinder.Items.getSpecificCommands(p, p.getItemInHand().getType())) {
+            Bukkit.dispatchCommand(CommandBinder.Items.getSender(p, command), command);
         }
     }
 

@@ -86,8 +86,8 @@ public class Permission {
 
     public static class Fun {
         private static final String PREFIX = "tr.fun.";
-        public static final String KITTYBOMB = PREFIX + "kittybomb";
         public static final String SUDO = PREFIX + "sudo";
+        public static final String SMITE = PREFIX + "smite";
     }
 
     public static class Kit {

@@ -1,60 +1,49 @@
 package net.gettrillium.trillium.modules;
 
-import net.gettrillium.trillium.api.*;
+import net.gettrillium.trillium.api.Permission;
+import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
-import net.gettrillium.trillium.particleeffect.ParticleEffect;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class FunModule extends TrilliumModule {
 
-    @Command(command = "kittybomb", description = "KITTEHBAMB!!", usage = "/kb", aliases = {"kittehbamb", "kittehbomb", "kittybamb", "kittyb", "kbomb", "kb"})
-    public void kittybomb(CommandSender cs, String[] args) {
+    @Command(command = "smite", description = "Strike lightning somewhere or upon someone.", usage = "/smite [player]", aliases = "thor")
+    public void smite(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
-            final TrilliumPlayer p = player((Player) cs);
-            if (p.hasPermission(Permission.Fun.KITTYBOMB)) {
-                final Ocelot cat = p.getProxy().getWorld().spawn(p.getProxy().getEyeLocation(), Ocelot.class);
-                cat.setVelocity(p.getProxy().getLocation().getDirection().multiply(3));
-                cat.setCatType(Ocelot.Type.BLACK_CAT);
-                cat.setTamed(true);
-                cat.setBaby();
-                cat.setOwner(p.getProxy());
-                cat.setSitting(true);
-                cat.setBreed(false);
-                cat.setAgeLock(true);
-                cat.setAge(6000);
-                p.getProxy().getWorld().playSound(p.getProxy().getLocation(), Sound.CAT_MEOW, 10, 1);
+            Player p = (Player) cs;
+            if (cs.hasPermission(Permission.Fun.SMITE)) {
+                if (args.length == 0) {
 
-                new BukkitRunnable() {
-                    int count = 50;
+                    Set<Material> set = new HashSet<>();
+                    Location loc = p.getTargetBlock(set, 100).getLocation();
+                    p.getWorld().strikeLightning(loc);
 
-                    public void run() {
-                        ParticleEffect.LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, (float) 0, 3, cat.getLocation(), 30);
-                        if (count != 0) {
-                            count--;
-                        } else {
-                            cancel();
-                            cat.setHealth(0.0);
-                            ParticleEffect.EXPLOSION_LARGE.display((float) 1.5, (float) 1.5, (float) 1.5, (float) 0, 3, cat.getLocation(), 30);
-                            ParticleEffect.SMOKE_LARGE.display((float) 1.5, (float) 1.5, (float) 1.5, (float) 0, 3, cat.getLocation(), 30);
-                            p.getProxy().playSound(p.getProxy().getLocation(), Sound.EXPLODE, 10, 1);
-                            Utils.throwCats(cat.getLocation(), p.getProxy());
-                        }
+                } else {
+                    Player target = Bukkit.getPlayer(args[0]);
+                    if (target != null) {
+                        p.getWorld().strikeLightning(target.getLocation());
+                        new Message(Mood.GOOD, "Smiite", p.getName() + " has struck lightning upon you!").to(target);
+                        new Message(Mood.GOOD, "Smite", "You struck lightning upon " + target.getName()).to(p);
+
+                    } else {
+                        new Message("Smite", Error.INVALID_PLAYER).to(p);
                     }
-                }.runTaskTimer(TrilliumAPI.getInstance(), 1, 1);
-
+                }
             } else {
-                new Message("Kitty Bomb", Error.NO_PERMISSION).to(p);
+                new Message("Smite", Error.NO_PERMISSION).to(p);
             }
         } else {
-            new Message("Kitty Bomb", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            new Message("Smite", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 

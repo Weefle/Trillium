@@ -32,7 +32,7 @@ public class FunModule extends TrilliumModule {
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null) {
                         p.getWorld().strikeLightning(target.getLocation());
-                        new Message(Mood.GOOD, "Smiite", p.getName() + " has struck lightning upon you!").to(target);
+                        new Message(Mood.GOOD, "Smite", p.getName() + " has struck lightning upon you!").to(target);
                         new Message(Mood.GOOD, "Smite", "You struck lightning upon " + target.getName()).to(p);
 
                     } else {

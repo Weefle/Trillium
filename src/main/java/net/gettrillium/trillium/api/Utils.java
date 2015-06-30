@@ -5,7 +5,6 @@ import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.events.PlayerDeath;
 import net.gettrillium.trillium.events.ServerListPing;
-import net.gettrillium.trillium.particleeffect.ParticleEffect;
 import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
 import net.gettrillium.trillium.runnables.TpsRunnable;
@@ -16,16 +15,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -179,48 +174,6 @@ public class Utils {
 
     private static double randomV() {
         return Math.random() * 4 - 1;
-    }
-
-    public static void throwCats(Location original, Player p) {
-
-        final ArrayList<Ocelot> catList = new ArrayList<>();
-
-        for (int cats = 1; cats < 10; cats++) {
-
-            final Ocelot cat = original.getWorld().spawn(original, Ocelot.class);
-            cat.setVelocity(new Vector(randomV(), randomV() + 1, randomV()));
-            Random random = new Random();
-            int i = random.nextInt(Ocelot.Type.values().length);
-            cat.setCatType(Ocelot.Type.values()[i]);
-            cat.setTamed(true);
-            cat.setBaby();
-            cat.setOwner(p);
-            cat.setBreed(false);
-            cat.setSitting(true);
-            cat.setAgeLock(true);
-            cat.setAge(6000);
-
-            catList.add(cat);
-        }
-
-        new BukkitRunnable() {
-            int countdown = 50;
-
-            public void run() {
-                if (countdown > 0) {
-                    for (Ocelot cat : catList) {
-                        ParticleEffect.DRIP_LAVA.display((float) 0.5, (float) 0.5, (float) 0.5, 0, 5, cat.getLocation(), 500);
-                        ParticleEffect.FLAME.display(0, 0, 0, 0, 1, cat.getLocation(), 500);
-                        countdown--;
-                    }
-                } else {
-                    for (Ocelot cat : catList) {
-                        cat.setHealth(0);
-                    }
-                    cancel();
-                }
-            }
-        }.runTaskTimer(TrilliumAPI.getInstance(), 1, 1);
     }
 
     public static String locationToString(Location l) {

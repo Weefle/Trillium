@@ -25,6 +25,11 @@ public class FunModule extends TrilliumModule {
                 if (args.length == 0) {
 
                     Set<Material> set = new HashSet<>();
+                    set.add(Material.AIR);
+                    set.add(Material.WATER);
+                    set.add(Material.STATIONARY_WATER);
+                    set.add(Material.LAVA);
+                    set.add(Material.STATIONARY_LAVA);
                     Location loc = p.getTargetBlock(set, 100).getLocation();
                     p.getWorld().strikeLightning(loc);
 

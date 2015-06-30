@@ -113,7 +113,7 @@ public class CommandBinderModule extends TrilliumModule {
                                     new Message(Mood.BAD, "CMD Binder", ChatColor.RED + "" + ChatColor.BOLD + "DO NOT TOUCH ANYTHING AIMLESSLY").to(p);
                                     new Message(Mood.NEUTRAL, "CMD Binder", "The next block you PUNCH will unbind any command bound to that block " +
                                             "and any block you RIGHT CLICK will unbind any command bound to the block above it (air)").to(p);
-                                } else if (args[0].equalsIgnoreCase("item")) {
+                                } else if (args[1].equalsIgnoreCase("item")) {
                                     if (p.getItemInHand().getType() != null) {
 
                                         CommandBinder.Items.remove(p);

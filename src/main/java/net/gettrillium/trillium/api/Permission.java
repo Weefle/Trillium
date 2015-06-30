@@ -92,7 +92,8 @@ public class Permission {
 
     public static class Kit {
         public static final String USE = "tr.kit.";
-        public static final String COOLDOWN_EXEMPT = "tr.kit.cooldown-exempt";
+        public static final String GIVE = USE + "give";
+        public static final String COOLDOWN_EXEMPT = USE + "cooldown-exempt";
     }
 
 }

@@ -42,9 +42,9 @@ public class ChatModule extends TrilliumModule {
         if (cs.hasPermission(Permission.Chat.MOTD)) {
             List<String> motd = getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
             for (String s : motd) {
-                s = s.replace("[USERNAME]", cs.getName());
-                s = s.replace("[SLOTS]", "" + Bukkit.getMaxPlayers());
-                s = s.replace("[ONLINE]", "" + Bukkit.getOnlinePlayers().size());
+                s = s.replace("%USERNAME%", cs.getName());
+                s = s.replace("%SLOTS%", "" + Bukkit.getMaxPlayers());
+                s = s.replace("%ONLINE%", "" + Bukkit.getOnlinePlayers().size());
                 s = ChatColor.translateAlternateColorCodes('&', s);
                 cs.sendMessage(s);
             }
@@ -53,7 +53,7 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "clearchat", description = "Clear global chat or a single players chat", usage = "/clearchat", aliases = {"cc"})
+    @Command(command = "clearchat", description = "Clear global chat or a single player's chat", usage = "/clearchat", aliases = {"cc"})
     public void clearchat(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             if (cs.hasPermission(Permission.Chat.CLEARCHAT)) {
@@ -99,7 +99,7 @@ public class ChatModule extends TrilliumModule {
                     }
                     new Message(Mood.NEUTRAL, "Muted", "" + ChatColor.AQUA + p.isMuted()).to(cs);
                     new Message(Mood.NEUTRAL, "Flying", "" + ChatColor.AQUA + p.isFlying()).to(cs);
-                    new Message(Mood.NEUTRAL, "Location", "" + ChatColor.AQUA + p.getProxy().getLocation().getBlockX() + ", " + p.getProxy().getLocation().getBlockY() + ", " + p.getProxy().getLocation().getBlockZ()).to(cs);
+                    new Message(Mood.NEUTRAL, "Location", "" + ChatColor.AQUA + Utils.locationToString(p.getProxy().getLocation())).to(cs);
 
                     if (p.isVanished()) {
                         new Message(Mood.NEUTRAL, "Last Found At", "" + ChatColor.AQUA + p.getLastLocation().getBlockX() + "," + p.getLastLocation().getBlockY() + ", " + p.getLastLocation().getBlockZ()).to(cs);
@@ -363,9 +363,9 @@ public class ChatModule extends TrilliumModule {
 
                                 String f = getConfig().getString(Configuration.Chat.CCFORMAT);
 
-                                f = f.replace("[CHANNELNAME]", args[0]);
-                                f = f.replace("[USERNAME]", p.getProxy().getName());
-                                f = f.replace("[MESSAGE]", msg);
+                                f = f.replace("%CHANNELNAME%", args[0]);
+                                f = f.replace("%USERNAME%", p.getProxy().getName());
+                                f = f.replace("%MESSAGE%", msg);
                                 if (getConfig().getBoolean(Configuration.Chat.CCCOLOR)) {
                                     f = ChatColor.translateAlternateColorCodes('&', f);
                                 }
@@ -389,83 +389,48 @@ public class ChatModule extends TrilliumModule {
 
     @Command(command = "broadcast", description = "Broadcast a message to the world", usage = "/broadcast <message>", aliases = "bc")
     public void broadcast(CommandSender cs, String[] args) {
-        if (cs.hasPermission(Permission.Chat.BROADCAST)) {
-            if (args.length == 0) {
-                new Message("Broadcast", Error.TOO_FEW_ARGUMENTS, "/broadcast <message>").to(cs);
-            } else {
-                String perm = null;
-                int argsToStartWith = 0;
-                if (args[0].startsWith("-p")) {
-                    if (args.length <= 2) {
-                        new Message("Broadcast", Error.TOO_FEW_ARGUMENTS, "/broadcast <message>").to(cs);
-                    } else {
-                        perm = args[1];
-                        argsToStartWith = 2;
-                    }
-                }
+        if (!cs.hasPermission(Permission.Chat.BROADCAST)) {
+            new Message("Broadcast", Error.NO_PERMISSION).to(cs);
+            return;
+        }
+        if (args.length == 0) {
+            new Message("Broadcast", Error.TOO_FEW_ARGUMENTS, "/broadcast <message>").to(cs);
+            return;
+        }
 
-                String defaultcolor = ChatColor.translateAlternateColorCodes(
-                        '&', TrilliumAPI.getInstance().getConfig().getString(
-                                Configuration.Broadcast.COLOR_TO_USE).trim());
+        String defaultcolor = ChatColor.translateAlternateColorCodes('&',
+                getConfig().getString(Configuration.Broadcast.COLOR_TO_USE).trim());
 
-                StringBuilder sb = new StringBuilder();
-                for (int i = argsToStartWith; i < args.length; i++) {
-                    sb.append(args[i]).append(" ");
-                }
-                String message = sb.toString().trim();
+        StringBuilder sb = new StringBuilder();
+        for (String arg : args) {
+            sb.append(arg).append(" ");
+        }
+        String message = sb.toString().trim();
 
-                if (getConfig().getBoolean(Configuration.Broadcast.CENTRALIZE)) {
+        if (getConfig().getBoolean(Configuration.Broadcast.CENTRALIZE)) {
 
-                    List<String> centered = Utils.centerText(message);
-                    List<String> format = getConfig().getStringList(Configuration.Broadcast.FORMAT);
-                    for (String s : format) {
-                        if (s.contains("[msg]")) {
-                            for (String slices : centered) {
-                                s = s.replace("[msg]", "");
-                                s = ChatColor.translateAlternateColorCodes('&', s);
-                                if (perm != null) {
-                                    for (Player p : Bukkit.getOnlinePlayers()) {
-                                        if (p.hasPermission(perm)) {
-                                            p.sendMessage(defaultcolor + slices);
-                                        }
-                                    }
-                                } else {
-                                    Bukkit.broadcastMessage(defaultcolor + slices);
-                                }
-                            }
-                        } else {
-                            s = ChatColor.translateAlternateColorCodes('&', s);
-                            if (perm != null) {
-                                for (Player p : Bukkit.getOnlinePlayers()) {
-                                    if (p.hasPermission(perm)) {
-                                        p.sendMessage(defaultcolor + s);
-                                    }
-                                }
-                            } else {
-                                Bukkit.broadcastMessage(s);
-                            }
-                        }
+            List<String> centered = Utils.centerText(message);
+            List<String> format = getConfig().getStringList(Configuration.Broadcast.FORMAT);
+            for (String s : format) {
+                s = ChatColor.translateAlternateColorCodes('&', s);
+                if (s.contains("[msg]")) {
+                    for (String slices : centered) {
+                        s = s.replace("[msg]", "");
+                        Bukkit.broadcastMessage(defaultcolor + slices);
                     }
                 } else {
-
-                    List<String> format = getConfig().getStringList(Configuration.Broadcast.FORMAT);
-                    for (String s : format) {
-                        s = s.replace("[msg]", ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.Broadcast.COLOR_TO_USE) + message));
-                        s = ChatColor.translateAlternateColorCodes('&', s);
-                        if (perm != null) {
-                            for (Player p : Bukkit.getOnlinePlayers()) {
-                                if (p.hasPermission(perm)) {
-                                    p.sendMessage(defaultcolor + s);
-                                }
-                            }
-                        } else {
-                            Bukkit.broadcastMessage(s);
-                        }
-                    }
+                    Bukkit.broadcastMessage(s);
                 }
             }
         } else {
-            new Message("Broadcast", Error.NO_PERMISSION).to(cs);
+
+            List<String> format = getConfig().getStringList(Configuration.Broadcast.FORMAT);
+            for (String s : format) {
+                s = s.replace("[msg]", ChatColor.translateAlternateColorCodes('&',
+                        getConfig().getString(Configuration.Broadcast.COLOR_TO_USE) + message));
+                s = ChatColor.translateAlternateColorCodes('&', s);
+                Bukkit.broadcastMessage(s);
+            }
         }
     }
 

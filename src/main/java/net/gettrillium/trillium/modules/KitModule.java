@@ -7,6 +7,7 @@ import net.gettrillium.trillium.api.cooldown.CooldownType;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -22,11 +23,13 @@ public class KitModule extends TrilliumModule {
                 for (String s : getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER).getKeys(false)) {
                     new Message(Mood.NEUTRAL, "Kit", s).to(p);
                 }
-            } else {
+            } else if (args.length == 1) {
                 if (getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER).contains(args[0])) {
                     if (p.getProxy().hasPermission(Permission.Kit.USE + args[0])) {
                         if (!Cooldown.hasCooldown(p.getProxy(), CooldownType.KIT)) {
-                            if (!p.getProxy().isOp() && !p.hasPermission(Permission.Kit.COOLDOWN_EXEMPT)) {
+                            if (!p.getProxy().isOp()
+                                    && !p.hasPermission(Permission.Kit.COOLDOWN_EXEMPT)
+                                    && !p.hasPermission(Permission.Kit.GIVE)) {
                                 Cooldown.setCooldown(p.getProxy(), CooldownType.KIT, true);
                             }
 
@@ -41,6 +44,19 @@ public class KitModule extends TrilliumModule {
                     }
                 } else {
                     new Message(Mood.BAD, "Kit", args[0] + " is not a valid kit.").to(p);
+                }
+            } else {
+                if (p.getProxy().hasPermission(Permission.Kit.GIVE)) {
+                    Player target = Bukkit.getPlayer(args[1]);
+                    if (target != null) {
+                        new Kit(args[0]).giveTo(target);
+                        new Message(Mood.GOOD, "Kit", target.getName() + " has successfully received kit " + args[1]).to(p);
+                        new Message(Mood.GOOD, "Kit", p.getName() + " gave you kit " + args[1]).to(target);
+                    } else {
+                        new Message("Kit", Error.INVALID_PLAYER).to(p);
+                    }
+                } else {
+                    new Message(Mood.BAD, "Kit", "Your have reached your /kit limits.").to(p);
                 }
             }
         } else {

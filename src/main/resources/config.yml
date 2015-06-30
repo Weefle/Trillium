@@ -91,7 +91,7 @@ chat:
       # When the player types /cc <channel name> <msg>" they will send the message to anyone else with that permission.
       # For example: If you give permission to x, y, and z -> "tr.chat.chatchannel.staffchat"
       # When x or y or z types "/cc staffchat blah blah", blah blah will be seen by x, y, and z.
-      format: "&8[&9[CHANNELNAME]&8] &b%USERNAME% &9>> &7[MESSAGE]"
+      format: "&6%CHANNELNAME% &7- &b%USERNAME%&7: &7%MESSAGE%"
       allow-color-codes: true
   enable-death-messages: true
   # If set to true, death messages not appear.

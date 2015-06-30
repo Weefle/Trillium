@@ -102,8 +102,8 @@ public class AdminModule extends TrilliumModule {
                 }
 
                 if (!chests.isEmpty()) {
-                    for (Location b : chests) {
-                        new Message(Mood.GOOD, "Chest Finder", b.getX() + ", " + b.getY() + ", " + b.getZ()).to(p);
+                    for (Location block : chests) {
+                        new Message(Mood.GOOD, "Chest Finder", Utils.locationToString(block)).to(p);
                     }
 
                     new BukkitRunnable() {
@@ -151,11 +151,11 @@ public class AdminModule extends TrilliumModule {
     @Command(command = "setspawn", description = "Set the spawn of the server.", usage = "/setspawn")
     public void setspawn(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
-            TrilliumPlayer p = player((Player) cs);
+            Player p = (Player) cs;
             if (p.hasPermission(Permission.Admin.SETSPAWN)) {
 
-                p.getProxy().getWorld().setSpawnLocation(p.getProxy().getLocation().getBlockX(), p.getProxy().getLocation().getBlockY(), p.getProxy().getLocation().getBlockZ());
-                new Message(Mood.GOOD, "Set Spawn", "Spawn location set. " + ChatColor.AQUA + Utils.locationToString(p.getProxy().getLocation())).to(p);
+                p.getWorld().setSpawnLocation(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
+                new Message(Mood.GOOD, "Set Spawn", "Spawn location set. " + ChatColor.AQUA + Utils.locationToString(p.getLocation())).to(p);
 
             } else {
                 new Message("Set Spawn", Error.NO_PERMISSION).to(p);
@@ -246,7 +246,7 @@ public class AdminModule extends TrilliumModule {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Admin.KILLALL)) {
                 if (args.length <= 1) {
-                    new Message("Killall", Error.TOO_FEW_ARGUMENTS, "/killall <radius> <mobs/players/animals/monsters/items/everything>").to(p);
+                    new Message("Kill All", Error.TOO_FEW_ARGUMENTS, "/killall <radius> <mobs/players/animals/monsters/items/everything>").to(p);
                 } else {
                     if (StringUtils.isNumeric(args[0])) {
                         List<Entity> entities = p.getProxy().getNearbyEntities(Double.parseDouble(args[0]), Double.parseDouble(args[0]), Double.parseDouble(args[0]));
@@ -255,11 +255,11 @@ public class AdminModule extends TrilliumModule {
                                 || args[1].equalsIgnoreCase("animals")
                                 || args[1].equalsIgnoreCase("players")
                                 || args[1].equalsIgnoreCase("monsters")) {
-                            new Message(Mood.GOOD, "Killall", "Successfully murdered all " + args[1] + " in a radius of " + args[0]).to(p);
+                            new Message(Mood.GOOD, "Kill All", "Successfully murdered all " + args[1] + " in a radius of " + args[0]).to(p);
                         } else if (args[1].equalsIgnoreCase("items")) {
-                            new Message(Mood.GOOD, "Killall", "Successfully destroyed all items in a radius of " + args[0]).to(p);
+                            new Message(Mood.GOOD, "Kill All", "Successfully destroyed all items in a radius of " + args[0]).to(p);
                         } else if (args[1].equalsIgnoreCase("everything")) {
-                            new Message(Mood.GOOD, "Killall", "Successfully destroyed and murdered everything... you monster...").to(p);
+                            new Message(Mood.GOOD, "Kill All", "Successfully destroyed and murdered everything... you monster...").to(p);
                         } else {
                             p.getProxy().sendMessage("");
                         }
@@ -291,18 +291,18 @@ public class AdminModule extends TrilliumModule {
                                     e.remove();
                                 }
                             } else {
-                                new Message("Killall", Error.WRONG_ARGUMENTS, "/killall <radius> <mobs/players/animals/monsters/items/everything>").to(p);
+                                new Message("Kill All", Error.WRONG_ARGUMENTS, "/killall <radius> <mobs/players/animals/monsters/items/everything>").to(p);
                             }
                         }
                     } else {
-                        new Message(Mood.BAD, "Killall", args[0] + " is not a number.").to(p);
+                        new Message(Mood.BAD, "Kill All", args[0] + " is not a number.").to(p);
                     }
                 }
             } else {
-                new Message("Killall", Error.NO_PERMISSION);
+                new Message("Kill All", Error.NO_PERMISSION);
             }
         } else {
-            new Message("Killall", Error.CONSOLE_NOT_ALLOWED);
+            new Message("Kill All", Error.CONSOLE_NOT_ALLOWED);
         }
     }
 

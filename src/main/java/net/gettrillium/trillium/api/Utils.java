@@ -172,10 +172,6 @@ public class Utils {
         return pages;
     }
 
-    private static double randomV() {
-        return Math.random() * 4 - 1;
-    }
-
     public static String locationToString(Location l) {
         if (l == null) {
             return null;

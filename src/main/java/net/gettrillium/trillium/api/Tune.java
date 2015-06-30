@@ -34,10 +34,10 @@ public class Tune {
             int queue = 0;
 
             public void run() {
-                if (queue < index) {
+                if (queue <= index) {
                     queue++;
                     for (String note : tune) {
-                        int dots = note.length() - note.replace(".", "").length();
+                        int dots = note.length();
                         if (dots <= 5 && dots > 0) {
                             String tone = TrilliumAPI.getInstance().getConfig().getString(Configuration.Server.TONE);
                             if (StringUtils.isAlpha(tone) && tone.length() == 1) {

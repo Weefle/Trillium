@@ -27,7 +27,11 @@ public class AdminModule extends TrilliumModule {
     private ArrayList<String> lagPrompt = new ArrayList<>();
     private ArrayList<String> reloadPrompt = new ArrayList<>();
 
-    @Command(command = "trillium", description = "The main command of the plugin.", usage = "/tr", aliases = "tr")
+    @Command(command = "trillium",
+            description = "The main command of the plugin.",
+            usage = "/tr",
+            aliases = "tr",
+            permissions = {Permission.Admin.TRILLIUM})
     public void trillium(CommandSender cs, String[] args) {
         if (args.length == 0) {
             cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
@@ -64,7 +68,11 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "chestfinder", description = "Track down any hidden chests.", usage = "/chestfinder [radius]", aliases = "cf")
+    @Command(command = "chestfinder",
+            description = "Track down any hidden chests.",
+            usage = "/chestfinder [radius]",
+            aliases = "cf",
+            permissions = {Permission.Admin.CHESTFINDER})
     public void chestfinder(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             final TrilliumPlayer p = player((Player) cs);
@@ -148,7 +156,10 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "setspawn", description = "Set the spawn of the server.", usage = "/setspawn")
+    @Command(command = "setspawn",
+            description = "Set the spawn of the server.",
+            usage = "/setspawn",
+            permissions = {Permission.Admin.SETSPAWN})
     public void setspawn(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             Player p = (Player) cs;
@@ -165,7 +176,11 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "clearinventory", description = "Clear your own or someone else's inventory.", usage = "/clearinventory", aliases = {"clear", "clearinv", "ci"})
+    @Command(command = "clearinventory",
+            description = "Clear your own or someone else's inventory.",
+            usage = "/clearinventory",
+            aliases = {"clear", "clearinv", "ci"},
+            permissions = {Permission.Admin.CLEARINV})
     public void clearinv(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             Player p = (Player) cs;
@@ -191,7 +206,10 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "lag", description = "Statistics on server lag and also clears lag through gc.", usage = "/lag [clear]")
+    @Command(command = "lag",
+            description = "Statistics on server lag and also clears lag through gc.",
+            usage = "/lag [clear]",
+            permissions = {Permission.Admin.LAG})
     public void lag(final CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Admin.LAG)) {
             if (args.length != 0) {
@@ -240,7 +258,10 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "killall", description = "Kill everything in a radius.", usage = "/killall <radius> <mobs/players/animals/monsters/items/everything>")
+    @Command(command = "killall",
+            description = "Kill everything in a radius.",
+            usage = "/killall <radius> <mobs/players/animals/monsters/items/everything>",
+            permissions = {Permission.Admin.KILLALL})
     public void killall(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
@@ -306,7 +327,11 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "inventory", description = "Open a crafting table GUI, or someone else's inventory or enderchest.", usage = "/inv <player [enderchest]/crafting>", aliases = "inv")
+    @Command(command = "inventory",
+            description = "Open a crafting table GUI, or someone else's inventory or enderchest.",
+            usage = "/inv <player [enderchest]/crafting>",
+            aliases = "inv",
+            permissions = {Permission.Admin.INV_CRAFTING, Permission.Admin.INV_PLAYER, Permission.Admin.INV_ENDERCHEST})
     public void inventory(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
@@ -359,7 +384,10 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "report", description = "Send a report to the staff.", usage = "/report <msg>")
+    @Command(command = "report",
+            description = "Send a report to the staff.",
+            usage = "/report <msg>",
+            permissions = {Permission.Admin.REPORT, Permission.Admin.REPORT_RECEIVER})
     public void report(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             Player p = (Player) cs;
@@ -396,7 +424,10 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "reports", description = "View the list of submitted reports. Clear reports & remove a report.", usage = "/reports [clear/remove <index>]")
+    @Command(command = "reports",
+            description = "View the list of submitted reports. Clear reports & remove a report.",
+            usage = "/reports [clear/remove <index>]",
+            permissions = {Permission.Admin.REPORT_RECEIVER})
     public void reports(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);

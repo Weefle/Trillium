@@ -17,7 +17,11 @@ import java.util.Set;
 
 public class FunModule extends TrilliumModule {
 
-    @Command(command = "smite", description = "Strike lightning somewhere or upon someone.", usage = "/smite [player]", aliases = "thor")
+    @Command(command = "smite",
+            description = "Strike lightning somewhere or upon someone.",
+            usage = "/smite [player]",
+            aliases = "thor",
+            permissions = {Permission.Fun.SMITE})
     public void smite(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             Player p = (Player) cs;
@@ -52,7 +56,11 @@ public class FunModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "sudo", description = "Make a player forcefully run a certain command.", usage = "/sudo <player> <command>", aliases = {"pseudo"})
+    @Command(command = "sudo",
+            description = "Make a player forcefully run a certain command.",
+            usage = "/sudo <player> <command>",
+            aliases = {"pseudo"},
+            permissions = {Permission.Fun.SUDO})
     public void sudo(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Fun.SUDO)) {
             if (args.length >= 2) {

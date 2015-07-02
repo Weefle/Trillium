@@ -17,7 +17,10 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class PunishModule extends TrilliumModule {
 
-    @Command(command = "mute", description = "Silence/unsilence someone's voice.", usage = "/mute <player>")
+    @Command(command = "mute",
+            description = "Silence/unsilence someone's voice.",
+            usage = "/mute <player>",
+            permissions = {Permission.Punish.MUTE})
     public void mute(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.MUTE)) {
             if (args.length == 0) {
@@ -44,7 +47,10 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "kick", description = "Kick a player from the server.", usage = "/kick <player> [reason]")
+    @Command(command = "kick",
+            description = "Kick a player from the server.",
+            usage = "/kick <player> [reason]",
+            permissions = {Permission.Punish.KICK})
     public void kick(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.KICK)) {
             if (args.length < 2) {
@@ -69,7 +75,10 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "ban", description = "Ban a player from the server.", usage = "/ban <player> [reason]")
+    @Command(command = "ban",
+            description = "Ban a player from the server.",
+            usage = "/ban <player> [reason]",
+            permissions = {Permission.Punish.BAN})
     public void ban(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.BAN)) {
             if (args.length == 0) {
@@ -103,7 +112,11 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "unban", description = "Unban a player.", usage = "/unban <player>", aliases = "pardon")
+    @Command(command = "unban",
+            description = "Unban a player.",
+            usage = "/unban <player>",
+            aliases = "pardon",
+            permissions = {Permission.Punish.UNBAN})
     public void unban(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.UNBAN)) {
             if (args.length == 0) {
@@ -117,7 +130,10 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "banip", description = "Ban the ip of a player from the server.", usage = "/banip <player> [reason]")
+    @Command(command = "banip",
+            description = "Ban the ip of a player from the server.",
+            usage = "/banip <player> [reason]",
+            permissions = {Permission.Punish.BANIP})
     public void banip(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.BANIP)) {
             if (args.length == 0) {
@@ -151,7 +167,11 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "unbanip", description = "Unban the IP of a player.", usage = "/unbanip <IP>", aliases = "pardonip")
+    @Command(command = "unbanip",
+            description = "Unban the IP of a player.",
+            usage = "/unbanip <IP>",
+            aliases = "pardonip",
+            permissions = {Permission.Punish.UNBANIP})
     public void unbanip(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.UNBANIP)) {
             if (args.length == 0) {

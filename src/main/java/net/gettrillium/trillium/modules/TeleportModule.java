@@ -33,7 +33,10 @@ public class TeleportModule extends TrilliumModule {
     HashMap<UUID, UUID> tpr = new HashMap<>();
     HashMap<UUID, UUID> tprh = new HashMap<>();
 
-    @Command(command = "back", description = "Teleport to your last active position", usage = "/back")
+    @Command(command = "back",
+            description = "Teleport to your last active position",
+            usage = "/back",
+            permissions = {Permission.Teleport.BACK, Permission.Teleport.COOLDOWN_EXEMPT})
     public void back(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player(cs.getName());
@@ -56,7 +59,10 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "spawn", description = "Teleport to the server's spawn.", usage = "/spawn")
+    @Command(command = "spawn",
+            description = "Teleport to the server's spawn.",
+            usage = "/spawn",
+            permissions = {Permission.Teleport.SPAWN, Permission.Teleport.COOLDOWN_EXEMPT})
     public void spawn(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
@@ -78,7 +84,11 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "teleport", description = "Teleport to a person or a set of coordinates.", usage = "/tp <player> [player / <x>, <y>, <z>]", aliases = "tp")
+    @Command(command = "teleport",
+            description = "Teleport to a person or a set of coordinates.",
+            usage = "/tp <player> [player / <x>, <y>, <z>]",
+            aliases = "tp",
+            permissions = {Permission.Teleport.TP, Permission.Teleport.COOLDOWN_EXEMPT, Permission.Teleport.TP_OTHER, Permission.Teleport.TP_COORDS})
     public void tp(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
             new Message("TP", Error.CONSOLE_NOT_ALLOWED).to(cs);
@@ -207,7 +217,11 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "teleporthere", description = "Teleport a player to you.", usage = "/tph <player>", aliases = "tph")
+    @Command(command = "teleporthere",
+            description = "Teleport a player to you.",
+            usage = "/tph <player>",
+            aliases = "tph",
+            permissions = {Permission.Teleport.TPHERE, Permission.Teleport.COOLDOWN_EXEMPT})
     public void teleporthere(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
             new Message("TPH", Error.CONSOLE_NOT_ALLOWED).to(cs);
@@ -244,7 +258,11 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "teleportrequest", description = "Request permission to teleport to a player.", usage = "/tpr <player>", aliases = "tpr")
+    @Command(command = "teleportrequest",
+            description = "Request permission to teleport to a player.",
+            usage = "/tpr <player>",
+            aliases = "tpr",
+            permissions = {Permission.Teleport.TPREQEST, Permission.Teleport.COOLDOWN_EXEMPT})
     public void teleportrequest(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
@@ -282,7 +300,11 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "teleportrequesthere", description = "Request permission to teleport a player to you.", usage = "/tprh <player>", aliases = "tprh")
+    @Command(command = "teleportrequesthere",
+            description = "Request permission to teleport a player to you.",
+            usage = "/tprh <player>",
+            aliases = "tprh",
+            permissions = {Permission.Teleport.TPREQESTHERE, Permission.Teleport.COOLDOWN_EXEMPT})
     public void teleportrequesthere(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
@@ -320,7 +342,11 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "teleportrequestaccept", description = "Accept a teleport request.", usage = "/tpra", aliases = "tpra")
+    @Command(command = "teleportrequestaccept",
+            description = "Accept a teleport request.",
+            usage = "/tpra",
+            aliases = "tpra",
+            permissions = {Permission.Teleport.TPRRESPOND, Permission.Teleport.COOLDOWN_EXEMPT})
     public void teleportrequestaccept(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
@@ -372,7 +398,11 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "teleportrequestdeny", description = "Deny a teleport request.", usage = "/tprd", aliases = "tprd")
+    @Command(command = "teleportrequestdeny",
+            description = "Deny a teleport request.",
+            usage = "/tprd",
+            aliases = "tprd",
+            permissions = {Permission.Teleport.TPRRESPOND})
     public void teleportrequestdeny(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
             new Message("TPRD", Error.CONSOLE_NOT_ALLOWED).to(cs);
@@ -404,7 +434,11 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "teleportcoordinates", description = "Teleport to a set of coordinates.", usage = "/tpc <x> <y> <z>", aliases = "tpc")
+    @Command(command = "teleportcoordinates",
+            description = "Teleport to a set of coordinates.",
+            usage = "/tpc <x> <y> <z>",
+            aliases = "tpc",
+            permissions = {Permission.Teleport.TP_COORDS, Permission.Teleport.COOLDOWN_EXEMPT})
     public void teleportcoordinates(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
             new Message("TP", Error.CONSOLE_NOT_ALLOWED).to(cs);
@@ -490,7 +524,10 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "warps", description = "View the list of warps available.", usage = "/warps [page index]")
+    @Command(command = "warps",
+            description = "View the list of warps available.",
+            usage = "/warps [page index]",
+            permissions = {Permission.Teleport.WARP})
     public void warps(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             Player p = (Player) cs;
@@ -515,7 +552,10 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "warp", description = "Teleport to a certain defined point.", usage = "/warp <name>")
+    @Command(command = "warp",
+            description = "Teleport to a certain defined point.",
+            usage = "/warp <name>",
+            permissions = {Permission.Teleport.WARP, Permission.Teleport.COOLDOWN_EXEMPT})
     public void warp(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             Player p = (Player) cs;
@@ -549,7 +589,10 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "setwarp", description = "Save a new warp.", usage = "/setwarp <name>")
+    @Command(command = "setwarp",
+            description = "Save a new warp.",
+            usage = "/setwarp <name>",
+            permissions = {Permission.Teleport.WARP_SET})
     public void setwarp(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             Player p = (Player) cs;
@@ -574,7 +617,10 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "delwarp", description = "Delete a warp.", usage = "/delwarp <name>")
+    @Command(command = "delwarp",
+            description = "Delete a warp.",
+            usage = "/delwarp <name>",
+            permissions = {Permission.Teleport.WARP_SET})
     public void delwarp(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             Player p = (Player) cs;
@@ -597,7 +643,10 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "home", description = "Teleport to your home or view your home.", usage = "/home [home name]")
+    @Command(command = "home",
+            description = "Teleport to your home or view your home.",
+            usage = "/home [home name]",
+            permissions = {Permission.Teleport.TPHOME, Permission.Teleport.COOLDOWN_EXEMPT})
     public void home(CommandSender cs, String[] args) {
         if (getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
             if (cs instanceof Player) {
@@ -667,7 +716,10 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "sethome", description = "Set a new home.", usage = "/sethome [home name]")
+    @Command(command = "sethome",
+            description = "Set a new home.",
+            usage = "/sethome [home name]",
+            permissions = {Permission.Teleport.SETHOME, Permission.Teleport.SETHOME + "<input>"})
     public void sethome(CommandSender cs, String[] args) {
         if (getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
             if (cs instanceof Player) {
@@ -729,7 +781,11 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "delhome", description = "Delete a home.", usage = "/delhome [home name]", aliases = "deletehome")
+    @Command(command = "delhome",
+            description = "Delete a home.",
+            usage = "/delhome [home name]",
+            aliases = "deletehome",
+            permissions = {Permission.Teleport.DELHOME})
     public void delhome(CommandSender cs, String[] args) {
         if (getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
             if (cs instanceof Player) {
@@ -757,7 +813,10 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "homes", description = "View a list of all your homes.", usage = "/homes")
+    @Command(command = "homes",
+            description = "View a list of all your homes.",
+            usage = "/homes",
+            permissions = {Permission.Teleport.VIEWHOME})
     public void homes(CommandSender cs, String[] args) {
         if (getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
             if (cs instanceof Player) {

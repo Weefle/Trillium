@@ -20,7 +20,9 @@ import java.util.List;
 
 public class ChatModule extends TrilliumModule {
 
-    @Command(command = "say", description = "Talk from the console", usage = "/say")
+    @Command(command = "say",
+            description = "Talk from the console",
+            usage = "/say")
     public void say(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
 
@@ -37,7 +39,10 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "motd", description = "View the server's motd", usage = "/motd")
+    @Command(command = "motd",
+            description = "View the server's motd",
+            usage = "/motd",
+            permissions = {Permission.Chat.MOTD})
     public void motd(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Chat.MOTD)) {
             List<String> motd = getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
@@ -53,7 +58,11 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "clearchat", description = "Clear global chat or a single player's chat", usage = "/clearchat", aliases = {"cc"})
+    @Command(command = "clearchat",
+            description = "Clear global chat or a single player's chat",
+            usage = "/clearchat",
+            aliases = {"cc"},
+            permissions = {Permission.Chat.CLEARCHAT})
     public void clearchat(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             if (cs.hasPermission(Permission.Chat.CLEARCHAT)) {
@@ -80,7 +89,11 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "information", description = "View information about a certain player.", usage = "/info", aliases = "info")
+    @Command(command = "information",
+            description = "View information about a certain player.",
+            usage = "/info",
+            aliases = "info",
+            permissions = {Permission.Chat.INFO})
     public void information(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Chat.INFO)) {
             if (args.length == 0) {
@@ -117,7 +130,10 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "me", description = "Share your feelings/thoughts to everyone in the third person.", usage = "/me")
+    @Command(command = "me",
+            description = "Share your feelings/thoughts to everyone in the third person.",
+            usage = "/me",
+            permissions = {Permission.Chat.ME})
     public void me(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
@@ -139,7 +155,11 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "message", description = "Send a private message to a player.", usage = "/msg <player> <msg>", aliases = {"msg", "m"})
+    @Command(command = "message",
+            description = "Send a private message to a player.",
+            usage = "/msg <player> <msg>",
+            aliases = {"msg", "m"},
+            permissions = {Permission.Chat.MESSAGE})
     public void message(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
@@ -183,7 +203,11 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "nickname", description = "Change your nickname to anything you want.", usage = "/nick <nickname> [player]", aliases = "nick")
+    @Command(command = "nickname",
+            description = "Change your nickname to anything you want.",
+            usage = "/nick <nickname> [player]",
+            aliases = "nick",
+            permissions = {Permission.Chat.NICK, Permission.Chat.NICK_COLOR, Permission.Chat.NICK_OTHER, Permission.Chat.NICK_OTHER_COLOR})
     public void nickname(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
@@ -343,7 +367,11 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "chatchannel", description = "Talk to a group of people in private.", usage = "/cc <channel> <msg>", aliases = "cc")
+    @Command(command = "chatchannel",
+            description = "Talk to a group of people in private.",
+            usage = "/cc <channel> <msg>",
+            aliases = "cc",
+            permissions = {Permission.Chat.CHATCHANNEL + "<input>"})
     public void chatchannel(CommandSender cs, String[] args) {
         if (getConfig().getBoolean(Configuration.Chat.CCENABLED)) {
             if (cs instanceof Player) {
@@ -387,7 +415,11 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "broadcast", description = "Broadcast a message to the world", usage = "/broadcast <message>", aliases = "bc")
+    @Command(command = "broadcast",
+            description = "Broadcast a message to the world.",
+            usage = "/broadcast <message>",
+            aliases = "bc",
+            permissions = {Permission.Chat.BROADCAST})
     public void broadcast(CommandSender cs, String[] args) {
         if (!cs.hasPermission(Permission.Chat.BROADCAST)) {
             new Message("Broadcast", Error.NO_PERMISSION).to(cs);

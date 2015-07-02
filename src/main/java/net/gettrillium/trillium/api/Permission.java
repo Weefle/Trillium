@@ -91,7 +91,7 @@ public class Permission {
     }
 
     public static class Kit {
-        public static final String PREFIX = "tr.kit.";
+        private static final String PREFIX = "tr.kit.";
         public static final String USE = PREFIX + "use.";
         public static final String GIVE = PREFIX + "give";
         public static final String COOLDOWN_EXEMPT = PREFIX + "cooldown-exempt";

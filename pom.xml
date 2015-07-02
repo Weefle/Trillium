@@ -25,6 +25,7 @@
             <id>net.gettrillium</id>
             <name>Trillium</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <layout>default</layout>
         </snapshotRepository>
     </distributionManagement>
 

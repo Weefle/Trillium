@@ -124,6 +124,7 @@ public class Trillium extends JavaPlugin {
         }
     }
 
+
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;

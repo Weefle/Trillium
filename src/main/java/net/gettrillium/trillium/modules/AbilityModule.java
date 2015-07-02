@@ -23,7 +23,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class AbilityModule extends TrilliumModule {
 
-    @Command(command = "fly", description = "SOAR THROUGH THE AIR LIKE A MAJESTIC BUTTERFLY!", usage = "/fly")
+    @Command(command = "fly",
+            description = "SOAR THROUGH THE AIR LIKE A MAJESTIC BUTTERFLY!",
+            usage = "/fly",
+            permissions = {Permission.Ability.FLY, Permission.Ability.FLY_OTHER})
     public void fly(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
             new Message("Fly", Error.CONSOLE_NOT_ALLOWED).to(cs);
@@ -66,7 +69,10 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "god", description = "Become invincible to anything.", usage = "/god")
+    @Command(command = "god",
+            description = "Become invincible to anything.",
+            usage = "/god",
+            permissions = {Permission.Ability.GOD, Permission.Ability.GOD_OTHER})
     public void god(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer player = player(cs.getName());
@@ -108,7 +114,11 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "vanish", description = "Turn completely invisible and roam the world undetected.!", usage = "/vanish [player]", aliases = "v")
+    @Command(command = "vanish",
+            description = "Turn completely invisible and roam the world undetected.!",
+            usage = "/vanish [player]",
+            aliases = "v",
+            permissions = {Permission.Ability.VANISH, Permission.Ability.VANISH_OTHER})
     public void vanish(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer player = player(cs.getName());
@@ -161,7 +171,10 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "speed", description = "Change your speed without potion effects", usage = "/speed <fly/walk> <speed>")
+    @Command(command = "speed",
+            description = "Change your speed without potion effects",
+            usage = "/speed <fly/walk> <speed>",
+            permissions = {Permission.Ability.SPEED})
     public void speed(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
@@ -219,7 +232,11 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "gamemode", description = "Change your gamemode.", usage = "/gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp] [player]", aliases = "gm")
+    @Command(command = "gamemode",
+            description = "Change your gamemode.",
+            usage = "/gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp] [player]",
+            aliases = "gm",
+            permissions = {Permission.Ability.GAMEMODE, Permission.Ability.GAMEMODE_OTHER})
     public void gamemode(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
@@ -305,7 +322,10 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "pvp", description = "Toggle your pvp status whether you want to disable/enable pvp for yourself.", usage = "/pvp")
+    @Command(command = "pvp",
+            description = "Toggle your pvp status whether you want to disable/enable pvp for yourself.",
+            usage = "/pvp",
+            permissions = {Permission.Ability.PVP})
     public void pvp(CommandSender cs, String[] args) {
         if (getConfig().getBoolean(Configuration.Server.PVPENABLE)) {
             if (getConfig().getBoolean(Configuration.Server.TOGGLEPVP)) {

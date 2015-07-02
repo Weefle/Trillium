@@ -14,4 +14,6 @@ public @interface Command {
     String usage();
 
     String[] aliases() default {};
+
+    String[] permissions() default {};
 }

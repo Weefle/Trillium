@@ -12,14 +12,10 @@ import net.gettrillium.trillium.events.ServerListPing;
 import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
 import net.gettrillium.trillium.runnables.TpsRunnable;
-import net.milkbowl.vault.chat.Chat;
-import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -27,10 +23,6 @@ import java.io.IOException;
 import java.net.URL;
 
 public class Trillium extends JavaPlugin {
-
-    public static Permission permission = null;
-    public static Economy economy = null;
-    public static Chat chat = null;
 
     public void onEnable() {
 
@@ -49,13 +41,6 @@ public class Trillium extends JavaPlugin {
 
         CommandBinder.Blocks.setTable();
         CommandBinder.Items.setTable();
-
-        if (!setupEconomy()) {
-            getLogger().severe("Could not find vault. Could not create economy hook.");
-        }
-        if (!setupPermissions()) {
-            getLogger().severe("Could not find vault. Could not create permission hook.");
-        }
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
         if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {
@@ -122,30 +107,5 @@ public class Trillium extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        economy = rsp.getProvider();
-        return economy != null;
-    }
-
-    private boolean setupChat() {
-        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
-        chat = rsp.getProvider();
-        return chat != null;
-    }
-
-    private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        permission = rsp.getProvider();
-        return permission != null;
     }
 }

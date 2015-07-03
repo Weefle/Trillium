@@ -3,4 +3,3 @@ description: The Premium Essentials.
 main: net.gettrillium.trillium.Trillium
 name: Trillium
 version: 0.3.0
-softDepend: [Vault]

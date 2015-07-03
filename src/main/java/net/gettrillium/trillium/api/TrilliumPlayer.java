@@ -199,7 +199,7 @@ public class TrilliumPlayer {
 
             List<String> serialized = yml.getStringList(Configuration.Player.HOMES);
             for (String deserialize : serialized) {
-                homes.put(deserialize.split(";")[0], Utils.stringFromLocation(deserialize.split(";")[1]));
+                homes.put(deserialize.split(";")[0], Utils.locationFromString(deserialize.split(";")[1]));
             }
         }
         save();

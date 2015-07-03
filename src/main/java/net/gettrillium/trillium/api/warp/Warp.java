@@ -65,7 +65,7 @@ public class Warp {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(WarpDatabase.wd());
         List<String> serialized = yml.getStringList("rows");
         for (String deserialize : serialized) {
-            warps.put(deserialize.split(";")[0], Utils.stringFromLocation(deserialize.split(";")[1]));
+            warps.put(deserialize.split(";")[0], Utils.locationFromString(deserialize.split(";")[1]));
         }
     }
 }

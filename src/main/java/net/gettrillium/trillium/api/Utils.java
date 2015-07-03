@@ -179,10 +179,10 @@ public class Utils {
             return null;
         }
 
-        return l.getWorld().getName() + ", " + l.getBlockX() + ", " + l.getBlockY() + ", " + l.getBlockZ() + ", " + l.getPitch() + ", " + l.getY();
+        return l.getWorld().getName() + ", " + l.getBlockX() + ", " + l.getBlockY() + ", " + l.getBlockZ();
     }
 
-    public static Location stringFromLocation(String s) {
+    public static Location locationFromString(String s) {
         if (s == null) {
             return null;
         }
@@ -191,9 +191,7 @@ public class Utils {
         int x = Integer.parseInt(s.split(", ")[1]);
         int y = Integer.parseInt(s.split(", ")[2]);
         int z = Integer.parseInt(s.split(", ")[3]);
-        int pitch = Integer.parseInt(s.split(", ")[4]);
-        int yaw = Integer.parseInt(s.split(", ")[5]);
-        return new Location(world, x, y, z, pitch, yaw);
+        return new Location(world, x, y, z);
     }
 
     public static Location locToBlockLoc(Location loc) {
@@ -219,7 +217,7 @@ public class Utils {
         CommandBinder.Blocks.setTable();
         CommandBinder.Items.setTable();
         Warp.setWarps();
-        Reports.setReports(Reports.deserialize());
+        Reports.setReports();
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
         if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {

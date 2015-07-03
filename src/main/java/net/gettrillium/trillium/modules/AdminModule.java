@@ -19,8 +19,6 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 public class AdminModule extends TrilliumModule {
 
@@ -401,7 +399,7 @@ public class AdminModule extends TrilliumModule {
                     }
                     String msg = sb.toString().trim();
 
-                    Reports.addReport(p, Utils.locToBlockLoc(p.getLocation()), msg);
+                    Reports.addReport(p, msg, p.getLocation());
                     new Message(Mood.GOOD, "Report", "Your report was submitted successfully.").to(p);
                     p.sendMessage(ChatColor.YELLOW + "'" + ChatColor.GRAY + msg + ChatColor.YELLOW + "'");
 
@@ -444,10 +442,11 @@ public class AdminModule extends TrilliumModule {
                         } else {
                             if (StringUtils.isNumeric(args[1])) {
                                 int nb = Integer.parseInt(args[1]);
-                                if (nb > 0 && nb <= Reports.getReports().size() + 1) {
+                                if (nb > 0 && nb <= Reports.getReportMessages().size()) {
+
                                     new Message(Mood.GOOD, "Reports", "Removed: " + nb).to(p);
-                                    new Message(Mood.NEUTRAL, "Reports", Reports.getReport(nb - 1));
-                                    Reports.removeReport(Reports.getReport(nb - 1));
+                                    Reports.getReport(nb).to(p);
+                                    Reports.removeReport(nb);
 
                                 } else {
                                     new Message(Mood.BAD, "Reports", args[1] + " is either larger than the list index or smaller than 0.").to(p);
@@ -462,15 +461,8 @@ public class AdminModule extends TrilliumModule {
 
                 } else {
                     p.getProxy().sendMessage(ChatColor.BLUE + "Reports:");
-                    int nb = 0;
-                    for (Map.Entry<UUID, Map<Location, String>> row : Reports.getReports().rowMap().entrySet()) {
-                        for (Map.Entry<Location, String> column : row.getValue().entrySet()) {
-                            new Message(Mood.NEUTRAL, nb + "",
-                                    column.getValue() + ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + " ["
-                                            + Bukkit.getPlayer(row.getKey()).getName() + ", "
-                                            + Utils.locationToString(column.getKey()) + "]").to(p);
-                            nb++;
-                        }
+                    for (Message msg : Reports.getReportMessages()) {
+                        msg.to(p);
                     }
                 }
             } else {

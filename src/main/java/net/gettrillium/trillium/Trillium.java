@@ -3,19 +3,8 @@ package net.gettrillium.trillium;
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.Utils;
-import net.gettrillium.trillium.api.commandbinder.CommandBinder;
-import net.gettrillium.trillium.api.report.ReportDatabase;
-import net.gettrillium.trillium.api.report.Reports;
-import net.gettrillium.trillium.api.serializer.LocationSerializer;
-import net.gettrillium.trillium.events.PlayerDeath;
-import net.gettrillium.trillium.events.ServerListPing;
-import net.gettrillium.trillium.runnables.AFKRunnable;
-import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
-import net.gettrillium.trillium.runnables.TpsRunnable;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -30,25 +19,8 @@ public class Trillium extends JavaPlugin {
 
         TrilliumAPI.setInstance(this);
 
-        TrilliumAPI.loadPlayers();
-
-        TrilliumAPI.registerModules();
-        TrilliumAPI.registerSerializer(Location.class, new LocationSerializer());
-
-        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
-        getServer().getPluginManager().registerEvents(new ServerListPing(), this);
+        Utils.load();
         generateFiles();
-
-        CommandBinder.Blocks.setTable();
-        CommandBinder.Items.setTable();
-
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
-        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AutoBroadcastRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Broadcast.FREQUENCY)));
-        }
-        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Afk.AUTO_AFK_ENABLED)) {
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new AFKRunnable(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Afk.AUTO_AFK_TIME)));
-        }
 
         if (getConfig().getBoolean(Configuration.Server.METRICS)) {
             try {
@@ -58,8 +30,6 @@ public class Trillium extends JavaPlugin {
                 getLogger().warning("Failed to send plugin metrics... :(");
             }
         }
-
-        Reports.setReports(Reports.deserialize());
 
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         getLogger().info("Plugin made with love by:");
@@ -79,13 +49,7 @@ public class Trillium extends JavaPlugin {
     }
 
     public void onDisable() {
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(ReportDatabase.report());
-        yml.set("rows", Reports.serialize());
-        Reports.save();
-
-        Bukkit.getScheduler().cancelAllTasks();
-        TrilliumAPI.disposePlayers();
-        TrilliumAPI.unregisterModules();
+        Utils.unload();
     }
 
     private void generateFiles() {

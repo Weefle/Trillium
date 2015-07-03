@@ -49,7 +49,8 @@ public class AdminModule extends TrilliumModule {
                 if (cs.hasPermission(Permission.Admin.TRILLIUM)) {
                     if (reloadPrompt.contains(cs.getName())) {
                         reloadPrompt.remove(cs.getName());
-                        Utils.reload();
+                        Utils.unload();
+                        Utils.load();
                         cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
                         cs.sendMessage(ChatColor.GRAY + "Plugin successfully reloaded");
                         cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");

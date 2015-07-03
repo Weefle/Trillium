@@ -3,6 +3,8 @@ package net.gettrillium.trillium.api;
 import net.gettrillium.trillium.api.commandbinder.CommandBinder;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
+import net.gettrillium.trillium.api.report.Reports;
+import net.gettrillium.trillium.api.warp.Warp;
 import net.gettrillium.trillium.events.PlayerDeath;
 import net.gettrillium.trillium.events.ServerListPing;
 import net.gettrillium.trillium.runnables.AFKRunnable;
@@ -208,21 +210,16 @@ public class Utils {
         return command.replace("@p", p.getName());
     }
 
-
-    public static void reload() {
-        // STOP
-        Bukkit.getScheduler().cancelAllTasks();
-        TrilliumAPI.disposePlayers();
-        TrilliumAPI.unregisterModules();
-
-        // START
+    public static void load() {
         TrilliumAPI.getInstance().saveDefaultConfig();
-        TrilliumAPI.getInstance().reloadConfig();
 
         TrilliumAPI.registerModules();
         TrilliumAPI.loadPlayers();
+
         CommandBinder.Blocks.setTable();
         CommandBinder.Items.setTable();
+        Warp.setWarps();
+        Reports.setReports(Reports.deserialize());
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(TrilliumAPI.getInstance(), new TpsRunnable(), 100, 1);
         if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {
@@ -234,5 +231,11 @@ public class Utils {
 
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeath(), TrilliumAPI.getInstance());
         Bukkit.getServer().getPluginManager().registerEvents(new ServerListPing(), TrilliumAPI.getInstance());
+    }
+
+    public static void unload() {
+        Bukkit.getScheduler().cancelAllTasks();
+        TrilliumAPI.disposePlayers();
+        TrilliumAPI.unregisterModules();
     }
 }

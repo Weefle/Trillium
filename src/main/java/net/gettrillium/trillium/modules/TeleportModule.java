@@ -29,8 +29,8 @@ public class TeleportModule extends TrilliumModule {
 
     // TODO: compress and improve
 
-    HashMap<UUID, UUID> tpr = new HashMap<>();
-    HashMap<UUID, UUID> tprh = new HashMap<>();
+    private HashMap<UUID, UUID> tpr = new HashMap<>();
+    private HashMap<UUID, UUID> tprh = new HashMap<>();
 
     @Command(command = "back",
             description = "Teleport to your last active position",

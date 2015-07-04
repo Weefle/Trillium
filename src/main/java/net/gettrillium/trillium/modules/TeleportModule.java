@@ -598,7 +598,7 @@ public class TeleportModule extends TrilliumModule {
                         new Message(Mood.GOOD, "Set Warp", "Warp saved as " + args[0]).to(p);
                     } else {
                         Warp.setWarp(args[0], p.getLocation());
-                        new Message(Mood.GOOD, "Set Warp", "Warp" + args[0] + "'s position changed.").to(p);
+                        new Message(Mood.GOOD, "Set Warp", "Warp " + args[0] + "'s position changed.").to(p);
                     }
                 }
             } else {
@@ -751,7 +751,7 @@ public class TeleportModule extends TrilliumModule {
                     }
                 } else {
                     for (int i = 0; i < getConfig().getInt(Configuration.PlayerSettings.HOMES_MAX); i++) {
-                        if (p.hasPermission(Permission.Teleport.SETHOME + "." + i)) {
+                        if (p.hasPermission(Permission.Teleport.SETHOME + "." + i) || p.getProxy().isOp()) {
                             if (args.length != 0) {
                                 if (p.getHomeList().size() < i) {
                                     p.setHome(args[0], p.getProxy().getLocation());

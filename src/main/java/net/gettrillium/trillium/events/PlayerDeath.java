@@ -2,8 +2,6 @@ package net.gettrillium.trillium.events;
 
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
-import net.gettrillium.trillium.modules.AbilityModule;
-import net.gettrillium.trillium.modules.ChatModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +12,7 @@ public class PlayerDeath implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player p = event.getEntity();
-        if (TrilliumAPI.getModule(AbilityModule.class).getConfig().getBoolean(Configuration.Ability.AUTO_RESPAWN)) {
+        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Ability.AUTO_RESPAWN)) {
             try {
                 Object nmsPlayer = p.getClass().getMethod("getHandle").invoke(p);
                 Object packet = Class.forName(nmsPlayer.getClass().getPackage().getName() + ".PacketPlayInClientCommand").newInstance();
@@ -34,7 +32,7 @@ public class PlayerDeath implements Listener {
         }
 
 
-        if (!TrilliumAPI.getModule(ChatModule.class).getConfig().getBoolean(Configuration.Chat.ENABLE_DEATH_MESSAGES)) {
+        if (!TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Chat.ENABLE_DEATH_MESSAGES)) {
             event.setDeathMessage("");
         }
     }

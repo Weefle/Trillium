@@ -64,7 +64,7 @@ public class Reports {
             for (Map.Entry<String, HashMap<String, Location>> value : row.getValue().entrySet()) {
                 for (Map.Entry<String, Location> value2 : value.getValue().entrySet()) {
                     format.add(new Message(Mood.NEUTRAL, row.getKey() + "",
-                            value.getKey() + " - " + value2.getKey() + ChatColor.DARK_GRAY + " - "
+                            value.getKey() + " - '" + value2.getKey() + "'" + ChatColor.DARK_GRAY + " - "
                                     + Utils.locationToString(value2.getValue())));
                 }
             }

@@ -129,15 +129,6 @@ public class TrilliumAPI {
             TrilliumAPI.registerModule(new KitModule());
     }
 
-    public static boolean isModuleEnabled(Class<? extends TrilliumModule> module) {
-        return modules.containsKey(module);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> T getModule(Class<T> module) {
-        return (T) modules.get(module);
-    }
-
     public static Collection<? extends TrilliumPlayer> getOnlinePlayers() {
         return players.values();
     }

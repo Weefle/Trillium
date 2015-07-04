@@ -1,17 +1,17 @@
 package net.gettrillium.trillium.api;
 
 public class Configuration {
+
     public static class Player {
-        private static String prefix = "player.";
-        public static final String NICKNAME = prefix + "nickname";
-        public static final String LOCATION = prefix + "location";
-        public static final String MUTED = prefix + "muted";
-        public static final String GOD = prefix + "god";
-        public static final String VANISH = prefix + "vanish";
-        public static final String BAN_REASON = prefix + "banreason";
-        public static final String GROUP = prefix + "group";
-        public static final String PVP = prefix + "pvp";
-        public static final String HOMES = prefix + "homes";
+        public static final String NICKNAME = "nickname";
+        public static final String LOCATION = "location";
+        public static final String MUTED = "muted";
+        public static final String GOD = "god";
+        public static final String VANISH = "vanish";
+        public static final String BAN_REASON = "ban-reason";
+        public static final String GROUP = "group";
+        public static final String PVP = "pvp";
+        public static final String HOMES = "homes";
     }
 
     public static class Ability {

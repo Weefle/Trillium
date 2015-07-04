@@ -194,13 +194,18 @@ public class Utils {
         return new Location(world, x, y, z);
     }
 
-    public static Location locToBlockLoc(Location loc) {
-        int x = loc.getBlockX();
-        int y = loc.getBlockY();
-        int z = loc.getBlockZ();
-        float pitch = loc.getPitch();
-        float yaw = loc.getYaw();
-        World world = loc.getWorld();
+    public static String locationSerializer(Location loc) {
+        return loc.getWorld() + "%" + loc.getX() + "%" + loc.getY() + "%" + loc.getZ() + "%" + loc.getPitch() + "%" + loc.getYaw();
+    }
+
+    public static Location locationDeserializer(String loc) {
+        World world = Bukkit.getWorld(loc.split("%")[0]);
+        double x = Double.parseDouble(loc.split("%")[1]);
+        double y = Double.parseDouble(loc.split("%")[2]);
+        double z = Double.parseDouble(loc.split("%")[3]);
+        float pitch = Float.parseFloat(loc.split("%")[4]);
+        float yaw = Float.parseFloat(loc.split("%")[5]);
+
         return new Location(world, x, y, z, yaw, pitch);
     }
 

@@ -3,7 +3,6 @@ package net.gettrillium.trillium.api;
 import net.gettrillium.trillium.Trillium;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.command.TrilliumCommand;
-import net.gettrillium.trillium.api.serializer.Serializer;
 import net.gettrillium.trillium.modules.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
@@ -19,7 +18,6 @@ public class TrilliumAPI {
     private static Trillium instance;
     private static File playerFolder;
     private static Map<UUID, TrilliumPlayer> players;
-    private static Map<Class<?>, Serializer<?>> serializers;
     private static Map<Class<? extends TrilliumModule>, TrilliumModule> modules;
 
     public static Trillium getInstance() {
@@ -31,7 +29,6 @@ public class TrilliumAPI {
         if (className.equalsIgnoreCase(Trillium.class.getCanonicalName())) {
             TrilliumAPI.instance = instance;
             TrilliumAPI.players = new HashMap<>();
-            TrilliumAPI.serializers = new HashMap<>();
             TrilliumAPI.modules = new HashMap<>();
 
             TrilliumAPI.instance.saveDefaultConfig();
@@ -99,15 +96,6 @@ public class TrilliumAPI {
 
     public static boolean isLoaded(Player p) {
         return players.containsKey(p.getUniqueId());
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> Serializer<T> getSerializer(Class<T> clazz) {
-        return (Serializer<T>) serializers.get(clazz);
-    }
-
-    public static <T> void registerSerializer(Class<T> clazz, Serializer<T> serializer) {
-        serializers.put(clazz, serializer);
     }
 
     public static void registerModule(TrilliumModule module) {

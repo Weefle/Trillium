@@ -30,14 +30,27 @@ public class TrilliumPlayer {
     private boolean pvp;
     private File file;
     private YamlConfiguration yml;
-    private HashMap<String, Location> homes;
+    private HashMap<String, Location> homes = new HashMap<>();
+    private boolean newUser;
 
     public TrilliumPlayer(Player proxy) {
-        this.proxy = proxy;
-        nickname = proxy.getName();
-        file = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
-        yml = YamlConfiguration.loadConfiguration(file);
-        load();
+        if (proxy != null) {
+            this.proxy = proxy;
+            nickname = proxy.getName();
+            file = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
+            if (!file.exists()) {
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                newUser = true;
+            } else {
+                newUser = false;
+            }
+            yml = YamlConfiguration.loadConfiguration(file);
+            load();
+        }
     }
 
     private void save() {
@@ -78,15 +91,15 @@ public class TrilliumPlayer {
     }
 
     public long getLastActive() {
-        return this.lastActive;
+        return lastActive;
     }
 
     public boolean isMuted() {
-        return this.isMuted;
+        return isMuted;
     }
 
     public void setMuted(boolean enabled) {
-        this.isMuted = enabled;
+        isMuted = enabled;
     }
 
     public boolean isFlying() {
@@ -105,13 +118,13 @@ public class TrilliumPlayer {
         if (enabled) {
             proxy.setHealth(20.0);
             proxy.setFoodLevel(20);
-            this.isGod = true;
+            isGod = true;
         }
-        this.isGod = enabled;
+        isGod = enabled;
     }
 
     public String getDisplayName() {
-        return this.nickname;
+        return nickname;
     }
 
     public void setDisplayName(String nickname) {
@@ -148,35 +161,27 @@ public class TrilliumPlayer {
 
     public void dispose() {
         yml.set(Configuration.Player.NICKNAME, this.nickname);
-        yml.set(Configuration.Player.LOCATION, TrilliumAPI.getSerializer(Location.class).serialize(proxy.getLocation()));
+        yml.set(Configuration.Player.LOCATION, Utils.locationSerializer(proxy.getLocation()));
         yml.set(Configuration.Player.MUTED, this.isMuted);
-        yml.getBoolean(Configuration.Player.GOD, this.isGod);
-        yml.getBoolean(Configuration.Player.VANISH, this.isVanished);
+        yml.set(Configuration.Player.GOD, this.isGod);
+        yml.set(Configuration.Player.VANISH, this.isVanished);
 
         ArrayList<String> serialized = new ArrayList<>();
         for (Map.Entry<String, Location> row : homes.entrySet()) {
             serialized.add(row.getKey() + ";" + Utils.locationToString(row.getValue()));
         }
         yml.set(Configuration.Player.HOMES, serialized);
+
         save();
 
         proxy = null;
     }
 
     public void load() {
-        boolean newUser = false;
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            newUser = true;
-        }
 
         if (newUser) {
-            yml.set(Configuration.Player.NICKNAME, nickname);
-            yml.set(Configuration.Player.LOCATION, TrilliumAPI.getSerializer(Location.class).serialize(proxy.getLocation()));
+            yml.set(Configuration.Player.NICKNAME, getDisplayName());
+            yml.set(Configuration.Player.LOCATION, Utils.locationSerializer(proxy.getLocation()));
             yml.set(Configuration.Player.MUTED, isMuted());
             yml.set(Configuration.Player.GOD, isGod());
             yml.set(Configuration.Player.PVP, canPvp());
@@ -186,9 +191,10 @@ public class TrilliumPlayer {
             if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
                 yml.set(Configuration.Player.GROUP, "default");
             }
+            save();
         } else {
             setDisplayName(yml.getString(Configuration.Player.NICKNAME));
-            setLastLocation(TrilliumAPI.getSerializer(Location.class).deserialize(yml.getString(Configuration.Player.LOCATION)));
+            setLastLocation(Utils.locationDeserializer(yml.getString(Configuration.Player.LOCATION)));
             setMuted(yml.getBoolean(Configuration.Player.MUTED));
             setGod(yml.getBoolean(Configuration.Player.GOD));
             setPvp(yml.getBoolean(Configuration.Player.PVP));
@@ -198,27 +204,30 @@ public class TrilliumPlayer {
             }
 
             List<String> serialized = yml.getStringList(Configuration.Player.HOMES);
-            for (String deserialize : serialized) {
-                homes.put(deserialize.split(";")[0], Utils.locationFromString(deserialize.split(";")[1]));
+            if (serialized != null) {
+                for (String deserialize : serialized) {
+                    if (deserialize != null) {
+                        homes.put(deserialize.split(";")[0], Utils.locationFromString(deserialize.split(";")[1]));
+                    }
+                }
             }
         }
-        save();
     }
 
     public Location getLastLocation() {
-        return this.previousLocation;
+        return previousLocation;
     }
 
     public void setLastLocation(Location loc) {
-        this.previousLocation = loc;
+        previousLocation = loc;
     }
 
     public void setPvp(boolean b) {
-        this.pvp = b;
+        pvp = b;
     }
 
     public boolean canPvp() {
-        return this.pvp;
+        return pvp;
     }
 
     public String getName() {

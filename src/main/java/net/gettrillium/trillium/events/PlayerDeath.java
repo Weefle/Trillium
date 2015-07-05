@@ -13,6 +13,7 @@ public class PlayerDeath implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player p = event.getEntity();
         if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Ability.AUTO_RESPAWN)) {
+            // p.spigot().respawn(); ???
             try {
                 Object nmsPlayer = p.getClass().getMethod("getHandle").invoke(p);
                 Object packet = Class.forName(nmsPlayer.getClass().getPackage().getName() + ".PacketPlayInClientCommand").newInstance();

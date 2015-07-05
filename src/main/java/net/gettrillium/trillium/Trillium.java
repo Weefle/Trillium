@@ -3,8 +3,12 @@ package net.gettrillium.trillium;
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.Utils;
+import net.milkbowl.vault.chat.Chat;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -12,6 +16,10 @@ import java.io.IOException;
 import java.net.URL;
 
 public class Trillium extends JavaPlugin {
+
+    public static Economy economy = null;
+    public static Permission perms = null;
+    public static Chat chat = null;
 
     public void onEnable() {
 
@@ -31,6 +39,19 @@ public class Trillium extends JavaPlugin {
             }
         }
 
+        if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+            getLogger().info("Vault plugin detected! Attempting to hook into it...");
+            if (setupChat()) {
+                getLogger().info("Successfully hooked into vault chat.");
+            }
+            if (setupPermissions()) {
+                getLogger().info("Successfully hooked into vault permissions.");
+            }
+            if (setupEconomy()) {
+                getLogger().info("Successfully hooked into vault economy.");
+            }
+        }
+
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         getLogger().info("Plugin made with love by:");
         getLogger().info("LordSaad, VortexSeven, Turbotailz,");
@@ -41,9 +62,10 @@ public class Trillium extends JavaPlugin {
 
         if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
             getLogger().info("<<<-------------------------------------->>>");
-            getLogger().warning("Essentials plugin detected!");
+            getLogger().warning("ESSENTIALS PLUGIN DETECTED!");
             getLogger().warning("Essentials might heavily interfere with Trillium!");
             getLogger().warning("Please consider removing it!");
+            getLogger().warning("EWW! GET IT OFF, GET IT OFF, GET IT OFF! ~_~");
             getLogger().info("<<<-------------------------------------->>>");
         }
     }
@@ -71,5 +93,23 @@ public class Trillium extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean setupEconomy() {
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        economy = rsp.getProvider();
+        return economy != null;
+    }
+
+    private boolean setupChat() {
+        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
+        chat = rsp.getProvider();
+        return chat != null;
+    }
+
+    private boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        perms = rsp.getProvider();
+        return perms != null;
     }
 }

@@ -44,10 +44,12 @@ public class Trillium extends JavaPlugin {
             } else {
                 getLogger().warning("Could not hook into vault chat.");
             }
-            if (setupEconomy()) {
-                getLogger().info("Successfully hooked into vault economy.");
-            } else {
-                getLogger().warning("Could not hook into vault economy.");
+            if (getConfig().getBoolean(Configuration.Economy.ENABLED)) {
+                if (setupEconomy()) {
+                    getLogger().info("Successfully hooked into vault economy.");
+                } else {
+                    getLogger().warning("Could not hook into vault economy.");
+                }
             }
         }
 

@@ -127,6 +127,8 @@ public class TrilliumAPI {
         TrilliumAPI.registerModule(new CommandBinderModule());
         if (getInstance().getConfig().getBoolean(Configuration.Kit.ENABLED))
             TrilliumAPI.registerModule(new KitModule());
+        if (getInstance().getConfig().getBoolean(Configuration.Economy.ENABLED))
+            TrilliumAPI.registerModule(new EconomyModule());
     }
 
     public static Collection<? extends TrilliumPlayer> getOnlinePlayers() {

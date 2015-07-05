@@ -97,4 +97,10 @@ public class Permission {
         public static final String COOLDOWN_EXEMPT = PREFIX + "cooldown-exempt";
     }
 
+    public static class Economy {
+        private static final String PREFIX = "tr.economy.";
+        public static final String PAY = PREFIX + "pay";
+        public static final String BALANCE = PREFIX + "balance";
+        public static final String ADMIN = PREFIX + "admin";
+    }
 }

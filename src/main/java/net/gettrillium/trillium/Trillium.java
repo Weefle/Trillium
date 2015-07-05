@@ -5,7 +5,6 @@ import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.Utils;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -18,7 +17,6 @@ import java.net.URL;
 public class Trillium extends JavaPlugin {
 
     public static Economy economy = null;
-    public static Permission perms = null;
     public static Chat chat = null;
 
     public void onEnable() {
@@ -45,11 +43,6 @@ public class Trillium extends JavaPlugin {
                 getLogger().info("Successfully hooked into vault chat.");
             } else {
                 getLogger().warning("Could not hook into vault chat.");
-            }
-            if (setupPermissions()) {
-                getLogger().info("Successfully hooked into vault permissions.");
-            } else {
-                getLogger().warning("Could not hook into vault permissions.");
             }
             if (setupEconomy()) {
                 getLogger().info("Successfully hooked into vault economy.");
@@ -111,11 +104,5 @@ public class Trillium extends JavaPlugin {
         RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
         chat = rsp.getProvider();
         return chat != null;
-    }
-
-    private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        perms = rsp.getProvider();
-        return perms != null;
     }
 }

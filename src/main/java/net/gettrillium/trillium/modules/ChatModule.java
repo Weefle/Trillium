@@ -207,7 +207,7 @@ public class ChatModule extends TrilliumModule {
     @Command(command = "nickname",
             description = "Change your nickname to anything you want.",
             usage = "/nick <nickname> [player]",
-            aliases = "nick",
+            aliases = {"nick"},
             permissions = {Permission.Chat.NICK, Permission.Chat.NICK_COLOR, Permission.Chat.NICK_OTHER, Permission.Chat.NICK_OTHER_COLOR})
     public void nickname(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
@@ -371,7 +371,7 @@ public class ChatModule extends TrilliumModule {
     @Command(command = "chatchannel",
             description = "Talk to a group of people in private.",
             usage = "/cc <channel> <msg>",
-            aliases = "cc",
+            aliases = {"cc"},
             permissions = {Permission.Chat.CHATCHANNEL + "<input>"})
     public void chatchannel(CommandSender cs, String[] args) {
         if (getConfig().getBoolean(Configuration.Chat.CCENABLED)) {
@@ -419,7 +419,7 @@ public class ChatModule extends TrilliumModule {
     @Command(command = "broadcast",
             description = "Broadcast a message to the world.",
             usage = "/broadcast <message>",
-            aliases = "bc",
+            aliases = {"bc"},
             permissions = {Permission.Chat.BROADCAST})
     public void broadcast(CommandSender cs, String[] args) {
         if (!cs.hasPermission(Permission.Chat.BROADCAST)) {

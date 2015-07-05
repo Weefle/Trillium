@@ -479,6 +479,10 @@ public class ChatModule extends TrilliumModule {
                 Cooldown.setCooldown(event.getPlayer(), CooldownType.CHAT, false);
             }
         }
+
+        if (getConfig().getBoolean(Configuration.Chat.CHAT_FORMAT_ENABLED)) {
+
+        }
     }
 
     @EventHandler

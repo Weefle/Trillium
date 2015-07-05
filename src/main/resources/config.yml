@@ -91,10 +91,24 @@ chat:
       # When the player types /cc <channel name> <msg>" they will send the message to anyone else with that permission.
       # For example: If you give permission to x, y, and z -> "tr.chat.chatchannel.staffchat"
       # When x or y or z types "/cc staffchat blah blah", blah blah will be seen by x, y, and z.
-      format: "&6%CHANNELNAME% &7- &b%USERNAME%&7: &7%MESSAGE%"
+      format: "&6%CHANNELNAME% &7- &b%NICKNAME%&7: &7%MESSAGE%"
       allow-color-codes: true
   enable-death-messages: true
   # If set to true, death messages not appear.
+  chat-format:
+    enabled: true
+    # Will override the default minecraft chat format into the below settings
+    global-format: "&6%NICKNAME% &7- %MESSAGE%"
+    # The global chat format.
+    # You can use %GROUPNAME%
+    permission-specific-formats:
+    # Anyone with the permissions set below will have the format specified.
+      tr.example.admin: "&6[&4Admin&6] &a%DISPLAYNAME% &7- &a%MESSAGE%"
+      tr.anotherexample.moderator: "&6[&aMod&6] &e%DISPLAYNAME% &7- &e%MESSAGE%"
+    group-specific-formats:
+    # Anyone with the groups set below will have the format specified.
+      example-admin: "&6[&4Admin&6] &a%DISPLAYNAME% &7- &a%MESSAGE%"
+      example-mod: "&6[&aMod&6] &e%DISPLAYNAME% &7- &e%MESSAGE%"
 
 #---------------[ Plugin Messages ]---------------#
 plugin-messages:
@@ -114,7 +128,7 @@ plugin-messages:
     good-message: "&a"
   errors:
   # The common error messages. It uses the above format option."
-    invalid-player: "&b%PLAYER% &7is either offline or does not exist."
+    invalid-player: "&b%USERNAME% &7is either offline or does not exist."
     no-permission: "You don't have permission to do that."
     console-not-allowed: "You can't do that you silly console."
     too-few-arguments: "Too few aguments. Usage: %USAGE%"

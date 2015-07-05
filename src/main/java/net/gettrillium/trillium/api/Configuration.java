@@ -37,10 +37,17 @@ public class Configuration {
         public static final String INGAME_MOTD = PREFIX + "motd";
         public static final String SERVER_LIST_MOTD = PREFIX + "server-list-motd";
         public static final String ENABLE_DEATH_MESSAGES = PREFIX + "enable-death-messages";
+
         private static String CHATCHANNEL = PREFIX + "chat-channels.";
         public static final String CCENABLED = CHATCHANNEL + "enabled";
         public static final String CCFORMAT = CHATCHANNEL + "format";
         public static final String CCCOLOR = CHATCHANNEL + "allow-color-codes";
+
+        private static String CHAT_FORMAT = PREFIX + "chat-format.";
+        public static final String CHAT_FORMAT_ENABLED = CHAT_FORMAT + "enabled";
+        public static final String GLOBAL_FORMAT_OVERRIDE = CHAT_FORMAT + "global-format";
+        public static final String PERM_SPECIFIC_FORMATS = CHAT_FORMAT + "permission-specific-formats";
+        public static final String GROUP_SPECIFIC_FORMATS = CHAT_FORMAT + "group-specific-formats";
     }
 
     public static class Server {

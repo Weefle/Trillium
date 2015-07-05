@@ -43,12 +43,18 @@ public class Trillium extends JavaPlugin {
             getLogger().info("Vault plugin detected! Attempting to hook into it...");
             if (setupChat()) {
                 getLogger().info("Successfully hooked into vault chat.");
+            } else {
+                getLogger().warning("Could not hook into vault chat.");
             }
             if (setupPermissions()) {
                 getLogger().info("Successfully hooked into vault permissions.");
+            } else {
+                getLogger().warning("Could not hook into vault permissions.");
             }
             if (setupEconomy()) {
                 getLogger().info("Successfully hooked into vault economy.");
+            } else {
+                getLogger().warning("Could not hook into vault economy.");
             }
         }
 

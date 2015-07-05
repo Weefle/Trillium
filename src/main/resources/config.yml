@@ -103,6 +103,7 @@ chat:
     # You can use %GROUPNAME%
     permission-specific-formats:
     # Anyone with the permissions set below will have the format specified.
+    # These permission specific formats override the group specific formats if bound to the same player.
       tr.example.admin: "&6[&4Admin&6] &a%DISPLAYNAME% &7- &a%MESSAGE%"
       tr.anotherexample.moderator: "&6[&aMod&6] &e%DISPLAYNAME% &7- &e%MESSAGE%"
     group-specific-formats:

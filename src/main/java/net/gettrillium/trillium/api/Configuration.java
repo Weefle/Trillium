@@ -45,7 +45,7 @@ public class Configuration {
 
         private static String CHAT_FORMAT = PREFIX + "chat-format.";
         public static final String CHAT_FORMAT_ENABLED = CHAT_FORMAT + "enabled";
-        public static final String GLOBAL_FORMAT_OVERRIDE = CHAT_FORMAT + "global-format";
+        public static final String GLOBAL_FORMAT = CHAT_FORMAT + "global-format";
         public static final String PERM_SPECIFIC_FORMATS = CHAT_FORMAT + "permission-specific-formats";
         public static final String GROUP_SPECIFIC_FORMATS = CHAT_FORMAT + "group-specific-formats";
     }

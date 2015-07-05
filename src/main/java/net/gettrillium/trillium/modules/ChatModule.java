@@ -1,5 +1,6 @@
 package net.gettrillium.trillium.modules;
 
+import net.gettrillium.trillium.Trillium;
 import net.gettrillium.trillium.api.*;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.cooldown.Cooldown;
@@ -472,7 +473,7 @@ public class ChatModule extends TrilliumModule {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
         }
         if (Cooldown.hasCooldown(event.getPlayer(), CooldownType.CHAT)) {
-            new Message(Mood.BAD, "Chat", "Your spamming! You can send messages in: " + ChatColor.AQUA + Cooldown.getTime(event.getPlayer(), CooldownType.CHAT)).to(event.getPlayer());
+            new Message(Mood.BAD, "Chat", "Your spamming! You can resume chatting in: " + ChatColor.AQUA + Cooldown.getTime(event.getPlayer(), CooldownType.CHAT)).to(event.getPlayer());
             event.setCancelled(true);
         } else {
             if (!event.getPlayer().isOp() && !event.getPlayer().hasPermission(Permission.Chat.COOLDOWN_EXEMPT)) {
@@ -482,6 +483,48 @@ public class ChatModule extends TrilliumModule {
 
         if (getConfig().getBoolean(Configuration.Chat.CHAT_FORMAT_ENABLED)) {
 
+            for (String perm : getConfig().getConfigurationSection(Configuration.Chat.PERM_SPECIFIC_FORMATS).getKeys(false)) {
+                for (String group : getConfig().getConfigurationSection(Configuration.Chat.GROUP_SPECIFIC_FORMATS).getKeys(false)) {
+
+                    boolean global = true;
+                    if (event.getPlayer().hasPermission(perm)) {
+                        global = false;
+                        String format = getConfig().getString(Configuration.Chat.PERM_SPECIFIC_FORMATS + perm);
+                        format = format.replace("%USERNAME%", event.getPlayer().getName());
+                        format = format.replace("%NICKNAME%", event.getPlayer().getDisplayName());
+                        if (Trillium.chat != null) {
+                            format = format.replace("%GROUPNAME%", Trillium.chat.getPrimaryGroup(event.getPlayer()));
+                        }
+                        format = format.replace("%MESSAGE%", event.getMessage());
+                        format = ChatColor.translateAlternateColorCodes('&', format);
+                        event.setFormat(format);
+
+                    } else if (Trillium.chat != null) {
+                        if (Trillium.chat.playerInGroup(event.getPlayer(), group)) {
+                            global = false;
+                            String format = getConfig().getString(Configuration.Chat.GROUP_SPECIFIC_FORMATS + group);
+                            format = format.replace("%USERNAME%", event.getPlayer().getName());
+                            format = format.replace("%NICKNAME%", event.getPlayer().getDisplayName());
+                            format = format.replace("%GROUPNAME%", Trillium.chat.getPrimaryGroup(event.getPlayer()));
+                            format = format.replace("%MESSAGE%", event.getMessage());
+                            format = ChatColor.translateAlternateColorCodes('&', format);
+                            event.setFormat(format);
+                        }
+                    }
+
+                    if (global) {
+                        String format = getConfig().getString(Configuration.Chat.GLOBAL_FORMAT);
+                        format = format.replace("%USERNAME%", event.getPlayer().getName());
+                        format = format.replace("%NICKNAME%", event.getPlayer().getDisplayName());
+                        if (Trillium.chat != null) {
+                            format = format.replace("%GROUPNAME%", Trillium.chat.getPrimaryGroup(event.getPlayer()));
+                        }
+                        format = format.replace("%MESSAGE%", event.getMessage());
+                        format = ChatColor.translateAlternateColorCodes('&', format);
+                        event.setFormat(format);
+                    }
+                }
+            }
         }
     }
 

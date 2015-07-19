@@ -76,7 +76,7 @@ chat:
   # The server list motd is the message you see on the server icon on the multiplayer menu.
   motd:
     - " "
-    - "&8<<<---{[0]}--->>> &aServer &8<<<---{[0]}--->>>"
+    - "&6&m------------  &7Server &6&m------------"
     - "&7Welcome &6%USERNAME%&7!"
     - "&7There are currently &6%ONLINE%&7/&6%SLOTS%&7 players."
     - "&7Have fun! &4<3"
@@ -140,11 +140,11 @@ broadcast:
   regular-broadcasts:
     broadcast-format:
       - " "
-      - "&8[&a*&8]&b&m------------------&8[ &a&lBroadcast &8]&b&m------------------&8[&a*&8]"
+      - "&6&m----------------- &7Broadcast &6&m-----------------"
       - " "
       - "[msg]"
       - " "
-      - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
+      - "&6&m----------------------------------------------------"
       # When you type /broadcast <message to broadcast here>, the message will appear
       # in this format.
     centralize-broadcasts: false
@@ -169,10 +169,10 @@ broadcast:
     # You can add more by adding to the below pattern.
     # To add more broacasts, you HAVE to add to the incrementing numbers. They represent the queue
       1:
-        - "&8[&a*&8]&b&m--------------&8[ &a&lAuto Broadcast1 &8]&b&m--------------&8[&a*&8]"
+        - "&6&m----------------- &a&lAuto Broadcast1 &6&m-----------------"
         - "&9 Lorem ipsum dolor sit amet."
       2:
-        - "&8[&a*&8]&b&m--------------&8[ &a&lAuto Broadcast2 &8]&b&m--------------&8[&a*&8]"
+        - "&6&m----------------- &a&lAuto Broadcast2 &6&m-----------------"
         - "&9 Trillium is awesome."
   important-broadcast:
     enabled: false
@@ -182,14 +182,14 @@ broadcast:
     # a message to all your players.
     broadcast:
       - " "
-      - "&8[&a*&8]&b&m-----&8[ &a&lImportant Broadcast Example &8]&b&m-----&8[&a*&8]"
+      - "&6&m----------- &a&lImportant Broadcast Example &6&m-----------"
       - " "
       - "&9 ATTENTION EVERYONE! The server's map is going to RESET soon!"
       - "&9 Don't worry though! Everyone will get a copy of the current map."
       - "&9 The map will be uploaded once the new map is installed."
       - "&9 Thank you."
       - " "
-      - "&8[&a*&8]&b&m-------------------------------------------------&8[&a*&8]"
+      - "&6&m----------------------------------------------------"
 
 #---------------[ Player Settings ]---------------#
 player-settings:

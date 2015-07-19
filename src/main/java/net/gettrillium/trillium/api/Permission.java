@@ -9,6 +9,8 @@ public class Permission {
         public static final String UNBAN = PREFIX + "unban";
         public static final String BANIP = PREFIX + "banip";
         public static final String UNBANIP = PREFIX + "unbanip";
+        public static final String SHADOW_BAN = PREFIX + "shadow-ban";
+        public static final String SHADOW_MUTE = PREFIX + "shadow-mute";
     }
 
     public static class Ability {

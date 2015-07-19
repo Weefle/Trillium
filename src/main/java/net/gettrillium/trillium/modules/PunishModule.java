@@ -47,6 +47,33 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
+    @Command(command = "shadowmute",
+            description = "Silently Silence/unsilence someone's voice.",
+            usage = "/smute <player>",
+            permissions = {Permission.Punish.SHADOW_MUTE})
+    public void shadowmute(CommandSender cs, String[] args) {
+        if (cs.hasPermission(Permission.Punish.MUTE)) {
+            if (args.length == 0) {
+                new Message("Shadow Mute", Error.TOO_FEW_ARGUMENTS, "/smute <player>").to(cs);
+            } else {
+                TrilliumPlayer target = player(args[0]);
+                if (target != null) {
+                    if (target.isShadowMuted()) {
+                        target.setShadowMuted(false);
+                        new Message(Mood.GOOD, "Shadow Mute", target.getName() + " has been silently unmuted.").to(cs);
+                    } else {
+                        target.setShadowBanned(true);
+                        new Message(Mood.GOOD, "Shadow Mute", target.getName() + " has been silently muted.").to(cs);
+                    }
+                } else {
+                    new Message("Mute", Error.INVALID_PLAYER, args[0]).to(cs);
+                }
+            }
+        } else {
+            new Message("Mute", Error.NO_PERMISSION).to(cs);
+        }
+    }
+
     @Command(command = "kick",
             description = "Kick a player from the server.",
             usage = "/kick <player> [reason]",
@@ -109,6 +136,52 @@ public class PunishModule extends TrilliumModule {
             }
         } else {
             new Message("Ban", Error.NO_PERMISSION).to(cs);
+        }
+    }
+
+    @Command(command = "shadowban",
+            description = "Silently ban a player by making them 100% invisible to other players.",
+            usage = "/sban <player>", aliases = {"sban"}, permissions = {Permission.Punish.SHADOW_BAN})
+    public void shadowban(CommandSender cs, String[] args) {
+        if (cs.hasPermission(Permission.Punish.SHADOW_BAN)) {
+            if (args.length != 0) {
+                TrilliumPlayer target = player(args[0]);
+                if (target != null) {
+
+                    target.setShadowBanned(true);
+                    new Message(Mood.GOOD, "Shadow Ban", target.getName() + " has been silently banned.").to(cs);
+
+                } else {
+                    new Message("Shadow Ban", Error.INVALID_PLAYER, args[0]).to(cs);
+                }
+            } else {
+                new Message("Shadow Ban", Error.TOO_FEW_ARGUMENTS, "/sban <player>").to(cs);
+            }
+        } else {
+            new Message("Shadow Ban", Error.NO_PERMISSION).to(cs);
+        }
+    }
+
+    @Command(command = "shadowunban",
+            description = "unshadow ban a shadow banned player.",
+            usage = "/sunban <player>", aliases = {"sunban"}, permissions = {Permission.Punish.SHADOW_BAN})
+    public void shadowunban(CommandSender cs, String[] args) {
+        if (cs.hasPermission(Permission.Punish.SHADOW_BAN)) {
+            if (args.length != 0) {
+                TrilliumPlayer target = player(args[0]);
+                if (target != null) {
+
+                    target.setShadowBanned(false);
+                    new Message(Mood.GOOD, "Shadow Ban", target.getName() + " has been silently unbanned.").to(cs);
+
+                } else {
+                    new Message("Shadow Ban", Error.INVALID_PLAYER, args[0]).to(cs);
+                }
+            } else {
+                new Message("Shadow Ban", Error.TOO_FEW_ARGUMENTS, "/sunban <player>").to(cs);
+            }
+        } else {
+            new Message("Shadow Ban", Error.NO_PERMISSION).to(cs);
         }
     }
 
@@ -187,10 +260,14 @@ public class PunishModule extends TrilliumModule {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        TrilliumPlayer player = player(e.getPlayer());
-        if (player.isMuted()) {
+        TrilliumPlayer p = player(e.getPlayer());
+
+        if (p.isMuted() && !p.isShadowBanned()) {
+            new Message(Mood.BAD, "Mute", "Your voice has been silenced.").to(p);
+        }
+
+        if (p.isMuted() || p.isShadowBanned()) {
             e.setCancelled(true);
-            new Message(Mood.BAD, "Mute", "Your voice has been silenced.").to(player);
         }
     }
 }

@@ -32,6 +32,11 @@ public class TrilliumPlayer {
     private YamlConfiguration yml;
     private HashMap<String, Location> homes = new HashMap<>();
     private boolean newUser;
+    private boolean shadowBanned;
+    private boolean shadowMuted;
+    private boolean canBreakBlocks;
+    private boolean canPlaceBlocks;
+    private boolean canInteract;
 
     public TrilliumPlayer(Player proxy) {
         if (proxy != null) {
@@ -157,6 +162,53 @@ public class TrilliumPlayer {
                 p.getProxy().showPlayer(getProxy());
             }
         }
+    }
+
+    public void setShadowBanned(boolean shadowBanned) {
+        this.shadowBanned = shadowBanned;
+        setVanished(shadowBanned);
+        setMuted(shadowBanned);
+        setCanBreakBlocks(!shadowBanned);
+        setCanPlaceBlocks(!shadowBanned);
+        setCanInteract(!shadowBanned);
+        setGod(shadowBanned);
+    }
+
+    public boolean isShadowBanned() {
+        return shadowBanned;
+    }
+
+    public void setShadowMuted(boolean shadowMuted) {
+        this.shadowMuted = shadowMuted;
+        setMuted(shadowMuted);
+    }
+
+    public boolean isShadowMuted() {
+        return this.shadowMuted;
+    }
+
+    public void setCanBreakBlocks(boolean canBreakBlocks) {
+        this.canBreakBlocks = canBreakBlocks;
+    }
+
+    public boolean getCanBreakBlocks() {
+        return canBreakBlocks;
+    }
+
+    public void setCanPlaceBlocks(boolean canPlaceBlocks) {
+        this.canPlaceBlocks = canPlaceBlocks;
+    }
+
+    public boolean getCanPlaceBlocks() {
+        return this.canPlaceBlocks;
+    }
+
+    public void setCanInteract(boolean canInteract) {
+        this.canInteract = canInteract;
+    }
+
+    public boolean getCanInteract() {
+        return this.canInteract;
     }
 
     public void dispose() {

@@ -12,14 +12,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
 public class AbilityModule extends TrilliumModule {
 
@@ -421,11 +420,7 @@ public class AbilityModule extends TrilliumModule {
         }
 
         TrilliumPlayer player = player(event.getTarget().getName());
-        if (player.isGod()) {
-            event.setCancelled(true);
-        }
-
-        if (player.isVanished()) {
+        if (player.isGod() || player.isVanished()) {
             event.setCancelled(true);
         }
     }
@@ -436,12 +431,19 @@ public class AbilityModule extends TrilliumModule {
         if (player.isVanished() && !getConfig().getBoolean(Configuration.Ability.PICK_UP_ITEM)) {
             event.setCancelled(true);
         }
+
+        if (player.isShadowBanned()) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
         TrilliumPlayer player = player(event.getPlayer());
         if (player.isVanished() && !getConfig().getBoolean(Configuration.Ability.DROP_ITEM)) {
+            event.setCancelled(true);
+        }
+        if (player.isShadowBanned()) {
             event.setCancelled(true);
         }
     }
@@ -457,8 +459,12 @@ public class AbilityModule extends TrilliumModule {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         TrilliumPlayer player = player(e.getPlayer());
-        if (player.isVanished()) {
+
+        if (player.isVanished() || player.isShadowBanned()) {
             e.setJoinMessage(null);
+        }
+
+        if (player.isVanished() && !player.isShadowBanned()) {
 
             new Message(Mood.BAD, "Vanish", "Remember! You are still in vanish mode!").to(player);
             for (TrilliumPlayer online : TrilliumAPI.getOnlinePlayers()) {
@@ -466,8 +472,32 @@ public class AbilityModule extends TrilliumModule {
             }
         }
 
-        if (player.isGod()) {
+        if (player.isGod() && !player.isShadowBanned()) {
             new Message(Mood.BAD, "God", "Remember! You are still in god mode!").to(player);
+        }
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        TrilliumPlayer p = player(event.getPlayer());
+        if (p.isShadowBanned()) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        TrilliumPlayer p = player(event.getPlayer());
+        if (p.isShadowBanned()) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        TrilliumPlayer p = player(event.getPlayer());
+        if (p.isShadowBanned()) {
+            event.setCancelled(true);
         }
     }
 }

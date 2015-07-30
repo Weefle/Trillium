@@ -9,6 +9,7 @@ import net.gettrillium.trillium.api.report.Reports;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
+import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -91,15 +92,26 @@ public class AdminModule extends TrilliumModule {
                 } else {
                     radius = 50;
                 }
+
                 final ArrayList<Location> chests = new ArrayList<>();
 
-                for (int X = loc.getBlockX() - radius; X <= loc.getBlockX() + radius; X++) {
-                    for (int Y = loc.getBlockY() - radius; Y <= loc.getBlockY() + radius; Y++) {
-                        for (int Z = loc.getBlockZ() - radius; Z <= loc.getBlockZ() + radius; Z++) {
-                            Material block = loc.getWorld().getBlockAt(X, Y, Z).getType();
+                World w = loc.getWorld();
+                int radiusSquared = radius * radius;
 
-                            if (block == Material.CHEST || block == Material.TRAPPED_CHEST) {
-                                chests.add(loc.getWorld().getBlockAt(X, Y, Z).getLocation());
+                int chunkRadius = radius / 16 + 1;
+                Chunk centerChunk = loc.getWorld().getChunkAt(loc);
+                int centerX = centerChunk.getX();
+                int centerZ = centerChunk.getZ();
+
+                for (int x = centerX - chunkRadius; x < centerX + chunkRadius; x++) {
+                    for (int z = centerZ - chunkRadius; z < centerZ + chunkRadius; z++) {
+                        for (BlockState bs : w.getChunkAt(x, z).getTileEntities()) {
+                            if (bs.getType() == Material.CHEST || bs.getType() == Material.TRAPPED_CHEST) {
+                                Location chestLoc = bs.getLocation();
+
+                                if (loc.distanceSquared(chestLoc) < radiusSquared) {
+                                    chests.add(bs.getLocation());
+                                }
                             }
                         }
                     }
@@ -114,12 +126,11 @@ public class AdminModule extends TrilliumModule {
                         int count = 30;
 
                         public void run() {
-                            if (count != 0) {
-                                count--;
-                            } else {
+                            if (count == 0) {
                                 cancel();
-                                chests.clear();
                             }
+
+                            count--;
 
                             for (Location b : chests) {
                                 Vector v1 = p.getProxy().getLocation().toVector();

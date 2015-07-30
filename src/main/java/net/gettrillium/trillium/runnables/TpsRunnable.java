@@ -1,6 +1,8 @@
 package net.gettrillium.trillium.runnables;
 
-public class TpsRunnable implements Runnable {
+import org.bukkit.scheduler.BukkitRunnable;
+
+public class TpsRunnable extends BukkitRunnable {
 
     public static int tickCount = 0;
     public static long[] ticks = new long[600];

@@ -5,12 +5,13 @@ import net.gettrillium.trillium.api.TrilliumAPI;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class AutoBroadcastRunnable implements Runnable {
+public class AutoBroadcastRunnable extends BukkitRunnable {
 
     private int queue = 1;
 

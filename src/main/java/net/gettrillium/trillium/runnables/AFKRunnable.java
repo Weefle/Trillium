@@ -5,11 +5,12 @@ import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumPlayer;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AFKRunnable implements Runnable {
+public class AFKRunnable extends BukkitRunnable {
 
     public void run() {
         List<TrilliumPlayer> toKick = new ArrayList<>();

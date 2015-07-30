@@ -105,7 +105,10 @@ public class AdminModule extends TrilliumModule {
 
                 for (int x = centerX - chunkRadius; x < centerX + chunkRadius; x++) {
                     for (int z = centerZ - chunkRadius; z < centerZ + chunkRadius; z++) {
-                        for (BlockState bs : w.getChunkAt(x, z).getTileEntities()) {
+                        Chunk c = w.getChunkAt(x, z);
+                        c.load();
+
+                        for (BlockState bs : c.getTileEntities()) {
                             if (bs.getType() == Material.CHEST || bs.getType() == Material.TRAPPED_CHEST) {
                                 Location chestLoc = bs.getLocation();
 

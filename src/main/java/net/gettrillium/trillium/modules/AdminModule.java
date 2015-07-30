@@ -83,7 +83,7 @@ public class AdminModule extends TrilliumModule {
                             radius = Integer.parseInt(args[0]);
                         } else {
                             new Message(Mood.BAD, "Chest Finder", args[0] + " is too big and will crash your server. Setting radius to 50.").to(p);
-                            radius = 50;
+                            radius = Integer.parseInt(args[0]);
                         }
                     } else {
                         new Message(Mood.BAD, "Chest Finder", args[0] + " is not a number. Setting radius to 50.").to(p);

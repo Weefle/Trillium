@@ -24,13 +24,14 @@ public class AutoBroadcastRunnable extends BukkitRunnable {
 
             if (num > max) {
                 max = num;
-                queue = num;
             }
 
             if (num < min) {
-                queue = min;
+                min = num;
             }
         }
+
+        queue = min;
     }
 
     public void run() {

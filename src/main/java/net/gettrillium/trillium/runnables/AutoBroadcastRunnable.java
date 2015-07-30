@@ -19,16 +19,13 @@ public class AutoBroadcastRunnable implements Runnable {
 
         for (String i : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Configuration.Broadcast.AUTO_BROADCASTS).getKeys(false)) {
             if (StringUtils.isNumeric(i)) {
-
                 set.add(Integer.parseInt(i));
 
                 if (Integer.parseInt(i) == this.queue) {
                     if (set.last() == this.queue) {
-                        if (this.queue != set.first()) {
-                            this.queue = set.first();
-                        }
+                        this.queue = set.first();
                     } else {
-                        this.queue = this.queue + 1;
+                        this.queue++;
                     }
                 }
             }

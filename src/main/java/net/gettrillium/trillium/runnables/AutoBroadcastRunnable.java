@@ -24,7 +24,9 @@ public class AutoBroadcastRunnable extends BukkitRunnable {
 
             if (num > max) {
                 max = num;
-            } else if (num < min) {
+            }
+
+            if (num < min) {
                 min = num;
             }
         }

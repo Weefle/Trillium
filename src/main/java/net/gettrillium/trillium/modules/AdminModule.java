@@ -8,10 +8,7 @@ import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.report.Reports;
 import net.gettrillium.trillium.particleeffect.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -125,7 +122,7 @@ public class AdminModule extends TrilliumModule {
                             }
 
                             for (Location b : chests) {
-                                Vector v1 = p.getProxy().getLocation().clone().toVector();
+                                Vector v1 = p.getProxy().getLocation().toVector();
                                 Vector v2 = b.toVector();
                                 Vector diff = v2.subtract(v1);
 

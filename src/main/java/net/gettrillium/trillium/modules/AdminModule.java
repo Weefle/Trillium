@@ -122,6 +122,12 @@ public class AdminModule extends TrilliumModule {
                         new Message(Mood.GOOD, "Chest Finder", Utils.locationToString(block)).to(p);
                     }
 
+                    final List<Vector> blockVectors = new ArrayList<>();
+
+                    for (Location chest : chests) {
+                        blockVectors.add(chest.toVector());
+                    }
+
                     new BukkitRunnable() {
                         int count = 30;
 
@@ -132,21 +138,23 @@ public class AdminModule extends TrilliumModule {
 
                             count--;
 
-                            for (Location b : chests) {
-                                Vector v1 = p.getProxy().getLocation().toVector();
-                                Vector v2 = b.toVector();
-                                Vector diff = v2.subtract(v1);
+                            Location loc = p.getProxy().getLocation();
+                            Vector playerVector = loc.toVector();
 
-                                double dist = diff.length();
-                                double dx = (diff.getX() / dist) * 0.5;
-                                double dy = (diff.getY() / dist) * 0.5;
-                                double dz = (diff.getZ() / dist) * 0.5;
+                            for (Vector v : blockVectors) {
+                                // this is fine, since its just a stack alloc, and not creating a new object
+                                v.subtract(playerVector);
 
-                                Location loc = p.getProxy().getLocation().clone();
+                                double dist = v.length();
+                                double dx = (v.getX() / dist) * 0.5;
+                                double dy = (v.getY() / dist) * 0.5;
+                                double dz = (v.getZ() / dist) * 0.5;
+
+                                // re-add the playerVector to this vector so we can reuse this vector next run
+                                v.add(playerVector);
 
                                 for (double d = 0; d <= dist; d += 0.5) {
-                                    loc.add(dx, dy, dz);
-                                    ParticleEffect.FLAME.display(0, 0, 0, 0, 1, loc, p.getProxy());
+                                    ParticleEffect.FLAME.display(0, 0, 0, 0, 1, loc.clone().add(dx, dy, dz), p.getProxy());
                                 }
                             }
                         }

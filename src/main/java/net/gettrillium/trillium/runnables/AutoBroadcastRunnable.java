@@ -28,7 +28,7 @@ public class AutoBroadcastRunnable extends BukkitRunnable {
             }
 
             if (num < min) {
-                queue = num;
+                queue = min;
             }
         }
     }

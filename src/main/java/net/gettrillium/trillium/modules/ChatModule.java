@@ -63,7 +63,6 @@ public class ChatModule extends TrilliumModule {
     @Command(command = "clearchat",
             description = "Clear global chat or a single player's chat",
             usage = "/clearchat",
-            aliases = {"cc"},
             permissions = {Permission.Chat.CLEARCHAT})
     public void clearchat(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
@@ -78,10 +77,12 @@ public class ChatModule extends TrilliumModule {
                         new Message("Clear Chat", Error.INVALID_PLAYER, args[0]).to(cs);
                     }
 
-                } else {
+                } else if (args[0].equalsIgnoreCase("global")) {
                     for (Player pl : Bukkit.getOnlinePlayers()) {
                         Utils.clearChat(pl);
                     }
+                } else {
+                    new Message("Clear Chat", Error.WRONG_ARGUMENTS).to(cs);
                 }
             } else {
                 new Message("Clear Chat", Error.NO_PERMISSION).to(cs);
@@ -182,19 +183,19 @@ public class ChatModule extends TrilliumModule {
                         String format1 = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PluginMessages.TO_FROM_FROM_MESSAGE));
                         String format2 = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PluginMessages.FROM_TO_TO_MESSAGE));
 
-                        format1 = format1.replace("%FROM%", p.getName());
-                        format1 = format1.replace("%TO%", target.getName());
+                        format1 = format1.replace("%TO%", p.getName());
+                        format1 = format1.replace("%FROM%", target.getName());
                         format1 = format1.replace("%MESSAGE%", msg);
 
-                        format2 = format2.replace("%FROM%", p.getName());
-                        format2 = format2.replace("%TO%", target.getName());
+                        format2 = format2.replace("%TO%", p.getName());
+                        format2 = format2.replace("%FROM%", target.getName());
                         format2 = format2.replace("%MESSAGE%", msg);
 
                         p.getProxy().sendMessage(format1);
                         target.getProxy().sendMessage(format2);
 
                     } else {
-                        new Message("Message", Error.INVALID_PLAYER, args[0]);
+                        new Message("Message", Error.INVALID_PLAYER, args[0]).to(p);
                     }
                 }
             } else {
@@ -362,10 +363,10 @@ public class ChatModule extends TrilliumModule {
                     new Message("Nickname", Error.NO_PERMISSION).to(p);
                 }
             } else {
-                new Message("Nickname", Error.TOO_FEW_ARGUMENTS, "/nick <nickname> [player]");
+                new Message("Nickname", Error.TOO_FEW_ARGUMENTS, "/nick <nickname> [player]").to(p);
             }
         } else {
-            new Message("Nickname", Error.CONSOLE_NOT_ALLOWED);
+            new Message("Nickname", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 

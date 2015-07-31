@@ -98,15 +98,15 @@ chat:
   chat-format:
     enabled: true
     # Will override the default minecraft chat format into the below settings
-    global-format: "&6%NICKNAME% &7- %MESSAGE%"
+    global-format: "&6%NICKNAME% &7- &f%MESSAGE%"
     # The global chat format.
     # You can use %GROUPNAME%
     permission-specific-formats:
     # Anyone with the permissions set below will have the format specified.
     # These permission specific formats override the group specific formats if bound to the same player.
     # The permissions follow the format: "tr.chat.perm-format.<permission below>"
-      admin: "&6[&4Admin&6] &a%NICKNAME% &7- &a%MESSAGE%"
-      moderator: "&6[&aMod&6] &e%NICKNAME% &7- &e%MESSAGE%"
+      admin: "&6[&4Admin&6] &a%NICKNAME% &7- &f%MESSAGE%"
+      moderator: "&6[&aMod&6] &e%NICKNAME% &7- &f%MESSAGE%"
     group-specific-formats:
     # Anyone with the groups set below will have the format specified.
       example-admin: "&6[&4Admin&6] &a%NICKNAME% &7- &a%MESSAGE%"
@@ -206,7 +206,7 @@ player-settings:
     # If an operator on the server doesn't have a nickname, their name will be the color above.
     # Color codes are between 0-9 or a-f.
     # "" to remove the op color.
-    prefix: "~"
+    prefix: "#"
     # If a player has a nickname, they will have the above symbol before their nickname.
     # example with "~": ~LordSaadCustomNick: Hello!
     # "" to remove prefixes.

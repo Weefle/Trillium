@@ -254,9 +254,9 @@ public class CommandBinderModule extends TrilliumModule {
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
-        if (event.getFrom().getBlockX() != event.getTo().getBlockX()
-                || event.getFrom().getBlockZ() != event.getTo().getBlockZ()
-                || event.getFrom().getBlockY() != event.getTo().getBlockY()) {
+        if (event.getFrom().getX() != event.getTo().getX()
+                || event.getFrom().getZ() != event.getTo().getZ()
+                || event.getFrom().getY() != event.getTo().getY()) {
             Player p = event.getPlayer();
 
             if (!setMode.contains(p.getUniqueId()) && !removeMode.contains(p.getUniqueId())) {

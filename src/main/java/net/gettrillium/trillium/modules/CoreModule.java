@@ -17,11 +17,13 @@ import java.util.List;
 
 public class CoreModule extends TrilliumModule {
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
 
         TrilliumAPI.loadPlayer(e.getPlayer());
+
+        final TrilliumPlayer player = player(e.getPlayer());
 
         if (p.hasPlayedBefore()) {
             String joinMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.JOINMESSAGE));
@@ -40,7 +42,6 @@ public class CoreModule extends TrilliumModule {
             }
 
             if (getConfig().getBoolean(Configuration.PlayerSettings.TEMP_GOD_MODE_ENABLED)) {
-                final TrilliumPlayer player = player(p);
 
                 player.setGod(true);
                 new BukkitRunnable() {
@@ -83,14 +84,37 @@ public class CoreModule extends TrilliumModule {
         if (getConfig().getBoolean(Configuration.Broadcast.IMP_ENABLED)) {
             Utils.broadcastImportantMessage();
         }
+
+
+        if (player.isVanished() || player.isShadowBanned()) {
+            e.setJoinMessage(null);
+        }
+
+        if (player.isVanished() && !player.isShadowBanned()) {
+
+            new Message(Mood.BAD, "Vanish", "Remember! You are still in vanish mode!").to(player);
+            for (TrilliumPlayer online : TrilliumAPI.getOnlinePlayers()) {
+                online.getProxy().hidePlayer(player.getProxy());
+            }
+        }
+
+        if (player.isGod() && !player.isShadowBanned()) {
+            new Message(Mood.BAD, "God", "Remember! You are still in god mode!").to(player);
+        }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
+        TrilliumPlayer player = player(e.getPlayer());
+
         String quitMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.LEAVEMESSAGE));
         quitMessage = quitMessage.replace("%USERNAME%", p.getName());
-        e.setQuitMessage(quitMessage);
+        if (!player.isVanished()) {
+            e.setQuitMessage(quitMessage);
+        } else {
+            e.setQuitMessage(null);
+        }
 
         TrilliumAPI.disposePlayer(p);
     }

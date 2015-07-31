@@ -14,6 +14,7 @@ import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
@@ -393,7 +394,7 @@ public class ChatModule extends TrilliumModule {
                                 String f = getConfig().getString(Configuration.Chat.CCFORMAT);
 
                                 f = f.replace("%CHANNELNAME%", args[0]);
-                                f = f.replace("%USERNAME%", p.getProxy().getName());
+                                f = f.replace("%NICKNAME%", p.getProxy().getName());
                                 f = f.replace("%MESSAGE%", msg);
                                 if (getConfig().getBoolean(Configuration.Chat.CCCOLOR)) {
                                     f = ChatColor.translateAlternateColorCodes('&', f);
@@ -483,33 +484,39 @@ public class ChatModule extends TrilliumModule {
 
         if (getConfig().getBoolean(Configuration.Chat.CHAT_FORMAT_ENABLED)) {
 
+
             for (String perm : getConfig().getConfigurationSection(Configuration.Chat.PERM_SPECIFIC_FORMATS).getKeys(false)) {
                 for (String group : getConfig().getConfigurationSection(Configuration.Chat.GROUP_SPECIFIC_FORMATS).getKeys(false)) {
 
                     boolean global = true;
-                    if (event.getPlayer().hasPermission(perm)) {
-                        global = false;
-                        String format = getConfig().getString(Configuration.Chat.PERM_SPECIFIC_FORMATS + perm);
-                        format = format.replace("%USERNAME%", event.getPlayer().getName());
-                        format = format.replace("%NICKNAME%", event.getPlayer().getDisplayName());
-                        if (Trillium.chat != null) {
-                            format = format.replace("%GROUPNAME%", Trillium.chat.getPrimaryGroup(event.getPlayer()));
-                        }
-                        format = format.replace("%MESSAGE%", event.getMessage());
-                        format = ChatColor.translateAlternateColorCodes('&', format);
-                        event.setFormat(format);
-
-                    } else if (Trillium.chat != null) {
-                        if (Trillium.chat.playerInGroup(event.getPlayer(), group)) {
+                    if (!event.getPlayer().isOp()) {
+                        if (event.getPlayer().hasPermission(Permission.Chat.PERM_FORMAT + perm)) {
                             global = false;
-                            String format = getConfig().getString(Configuration.Chat.GROUP_SPECIFIC_FORMATS + group);
+                            Bukkit.broadcastMessage(getConfig().getString(Configuration.Chat.PERM_SPECIFIC_FORMATS + "." + perm));
+                            String format = getConfig().getString(Configuration.Chat.PERM_SPECIFIC_FORMATS + "." + perm);
                             format = format.replace("%USERNAME%", event.getPlayer().getName());
                             format = format.replace("%NICKNAME%", event.getPlayer().getDisplayName());
-                            format = format.replace("%GROUPNAME%", Trillium.chat.getPrimaryGroup(event.getPlayer()));
+                            if (Trillium.chat != null) {
+                                format = format.replace("%GROUPNAME%", Trillium.chat.getPrimaryGroup(event.getPlayer()));
+                            }
                             format = format.replace("%MESSAGE%", event.getMessage());
                             format = ChatColor.translateAlternateColorCodes('&', format);
                             event.setFormat(format);
+
+                        } else if (Trillium.chat != null) {
+                            if (Trillium.chat.playerInGroup(event.getPlayer(), group)) {
+                                global = false;
+                                String format = getConfig().getString(Configuration.Chat.GROUP_SPECIFIC_FORMATS + "." + group);
+                                format = format.replace("%USERNAME%", event.getPlayer().getName());
+                                format = format.replace("%NICKNAME%", event.getPlayer().getDisplayName());
+                                format = format.replace("%GROUPNAME%", Trillium.chat.getPrimaryGroup(event.getPlayer()));
+                                format = format.replace("%MESSAGE%", event.getMessage());
+                                format = ChatColor.translateAlternateColorCodes('&', format);
+                                event.setFormat(format);
+                            }
                         }
+                    } else {
+                        global = true;
                     }
 
                     if (global) {

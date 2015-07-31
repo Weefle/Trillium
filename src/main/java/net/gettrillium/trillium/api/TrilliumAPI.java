@@ -157,7 +157,9 @@ public class TrilliumAPI {
             Field field = SimplePluginManager.class.getDeclaredField("commandMap");
             field.setAccessible(true);
             CommandMap commandMap = (CommandMap) (field.get(getInstance().getServer().getPluginManager()));
-            commandMap.clearCommands();
+            if (commandMap.getCommand("trillium").isRegistered()) {
+                commandMap.getCommand("trillium").unregister(commandMap);
+            }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }

@@ -76,7 +76,7 @@ chat:
   # The server list motd is the message you see on the server icon on the multiplayer menu.
   motd:
     - " "
-    - "&6&m------------  &7Server &6&m------------"
+    - "&6&m------------&7 Server &6&m------------"
     - "&7Welcome &6%USERNAME%&7!"
     - "&7There are currently &6%ONLINE%&7/&6%SLOTS%&7 players."
     - "&7Have fun! &4<3"
@@ -104,12 +104,13 @@ chat:
     permission-specific-formats:
     # Anyone with the permissions set below will have the format specified.
     # These permission specific formats override the group specific formats if bound to the same player.
-      tr.example.admin: "&6[&4Admin&6] &a%DISPLAYNAME% &7- &a%MESSAGE%"
-      tr.anotherexample.moderator: "&6[&aMod&6] &e%DISPLAYNAME% &7- &e%MESSAGE%"
+    # The permissions follow the format: "tr.chat.perm-format.<permission below>"
+      admin: "&6[&4Admin&6] &a%NICKNAME% &7- &a%MESSAGE%"
+      moderator: "&6[&aMod&6] &e%NICKNAME% &7- &e%MESSAGE%"
     group-specific-formats:
     # Anyone with the groups set below will have the format specified.
-      example-admin: "&6[&4Admin&6] &a%DISPLAYNAME% &7- &a%MESSAGE%"
-      example-mod: "&6[&aMod&6] &e%DISPLAYNAME% &7- &e%MESSAGE%"
+      example-admin: "&6[&4Admin&6] &a%NICKNAME% &7- &a%MESSAGE%"
+      example-mod: "&6[&aMod&6] &e%NICKNAME% &7- &e%MESSAGE%"
 
 #---------------[ Plugin Messages ]---------------#
 plugin-messages:
@@ -302,7 +303,7 @@ afk:
     kick-on-afk: false
     # If a player is AFK (auto AFK-ed). they will be kicked from the server.
 
-#---------------[ AFK ]---------------#
+#---------------[ ECONOMY ]---------------#
 economy:
   enabled: true
   currency-symbol: "$"

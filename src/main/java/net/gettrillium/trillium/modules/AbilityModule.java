@@ -449,35 +449,6 @@ public class AbilityModule extends TrilliumModule {
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent e) {
-        TrilliumPlayer player = player(e.getPlayer());
-        if (player.isVanished()) {
-            e.setQuitMessage(null);
-        }
-    }
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
-        TrilliumPlayer player = player(e.getPlayer());
-
-        if (player.isVanished() || player.isShadowBanned()) {
-            e.setJoinMessage(null);
-        }
-
-        if (player.isVanished() && !player.isShadowBanned()) {
-
-            new Message(Mood.BAD, "Vanish", "Remember! You are still in vanish mode!").to(player);
-            for (TrilliumPlayer online : TrilliumAPI.getOnlinePlayers()) {
-                online.getProxy().hidePlayer(player.getProxy());
-            }
-        }
-
-        if (player.isGod() && !player.isShadowBanned()) {
-            new Message(Mood.BAD, "God", "Remember! You are still in god mode!").to(player);
-        }
-    }
-
-    @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         TrilliumPlayer p = player(event.getPlayer());
         if (p.isShadowBanned()) {

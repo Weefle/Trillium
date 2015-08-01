@@ -1,6 +1,10 @@
 package net.gettrillium.trillium.modules;
 
-import net.gettrillium.trillium.api.*;
+import net.gettrillium.trillium.api.Configuration;
+import net.gettrillium.trillium.api.Configuration.Server;
+import net.gettrillium.trillium.api.Permission.Ability;
+import net.gettrillium.trillium.api.TrilliumModule;
+import net.gettrillium.trillium.api.TrilliumPlayer;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
@@ -9,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -370,25 +375,31 @@ public class AbilityModule extends TrilliumModule {
             return;
         }
 
-        if (!(event.getDamager() instanceof Player) && !(event.getDamager() instanceof Projectile)) {
-            return;
-        }
+        TrilliumPlayer damaged = player((Player) event.getEntity());
 
-        TrilliumPlayer p = player((Player) event.getEntity());
+        Entity e = event.getDamager();
+        TrilliumPlayer damager;
 
-        if (!(event.getDamager() instanceof Player)) {
-            return;
-        }
-
-        TrilliumPlayer damager = (TrilliumPlayer) event.getDamager();
-
-        if (getConfig().getBoolean(Configuration.Server.PVPENABLE)) {
-            if (!getConfig().getBoolean(Configuration.Server.TOGGLEPVP)) {
+        if (e instanceof Player) {
+            damager = (TrilliumPlayer) event.getDamager();
+        } else if (e instanceof Projectile) {
+            ProjectileSource shooter = ((Projectile) e).getShooter();
+            if (!(shooter instanceof Player)) {
                 return;
             }
 
-            if (!p.canPvp() || !damager.canPvp()) {
-                if (p.getProxy().getUniqueId() != damager.getProxy().getUniqueId()) {
+            damager = ((TrilliumPlayer) shooter);
+        } else {
+            return;
+        }
+
+        if (getConfig().getBoolean(Server.PVPENABLE)) {
+            if (!getConfig().getBoolean(Server.TOGGLEPVP)) {
+                return;
+            }
+
+            if (!damaged.canPvp() || !damager.canPvp()) {
+                if (!damaged.getProxy().getUniqueId().equals(damager.getProxy().getUniqueId())) {
                     event.setCancelled(true);
                 }
             }
@@ -397,7 +408,7 @@ public class AbilityModule extends TrilliumModule {
                 return;
             }
 
-            if (p.getProxy().getUniqueId() != damager.getProxy().getUniqueId()) {
+            if (!damaged.getProxy().getUniqueId().equals(damager.getProxy().getUniqueId())) {
                 event.setCancelled(true);
             }
         }

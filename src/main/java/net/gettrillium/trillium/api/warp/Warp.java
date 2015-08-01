@@ -11,19 +11,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class Warp {
 
-    private static HashMap<String, Location> warps = new HashMap<>();
+    private static Map<String, Location> warps = new HashMap<>();
+    private static final List<Message> cachedWarpList = new ArrayList<>();
+
+    private Warp() {}
 
     public static void setWarp(String name, Location loc) {
         warps.put(name, loc);
         save();
+
+        cachedWarpList.clear();
     }
 
     public static void delWarp(String name) {
         warps.remove(name);
         save();
+
+        cachedWarpList.clear();
     }
 
     public static Location getLocation(String name) {
@@ -31,25 +39,30 @@ public class Warp {
     }
 
     public static boolean isNotNull(String name) {
-        return warps.get(name) != null;
+        return warps.containsKey(name);
     }
 
-    public static ArrayList<Message> getWarpList() {
-        ArrayList<Message> format = new ArrayList<>();
+    public static List<Message> getWarpList() {
+        if (cachedWarpList.isEmpty()) {
+            List<Message> format = new ArrayList<>(warps.size());
 
-        for (Map.Entry<String, Location> row : warps.entrySet()) {
-            format.add(new Message(Mood.NEUTRAL, row.getKey(), Utils.locationToString(row.getValue())));
+            for (Entry<String, Location> row : warps.entrySet()) {
+                format.add(new Message(Mood.NEUTRAL, row.getKey(), Utils.locationToString(row.getValue())));
+            }
+
+            cachedWarpList.clear();
+            cachedWarpList.addAll(format);
         }
 
-        return format;
+        return new ArrayList<>(cachedWarpList);
     }
 
     private static void save() {
-        ArrayList<String> serialized = new ArrayList<>();
+        List<String> serialized = new ArrayList<>(warps.size());
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(WarpDatabase.wd());
 
-        for (Map.Entry<String, Location> row : warps.entrySet()) {
-            serialized.add(row.getKey() + ";" + Utils.locationToString(row.getValue()));
+        for (Entry<String, Location> row : warps.entrySet()) {
+            serialized.add(row.getKey() + ';' + Utils.locationToString(row.getValue()));
         }
 
         yml.set("rows", serialized);
@@ -67,5 +80,7 @@ public class Warp {
         for (String deserialize : serialized) {
             warps.put(deserialize.split(";")[0], Utils.locationFromString(deserialize.split(";")[1]));
         }
+
+        cachedWarpList.clear();
     }
 }

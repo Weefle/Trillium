@@ -2,5 +2,5 @@ authors: [ LordSaad44, VortexSeven, Turbotailz, samczsun, hintss ]
 description: The Premium Essentials.
 main: net.gettrillium.trillium.Trillium
 name: Trillium
-version: 0.3.0
+version: 0.4.0
 softDepend: [Vault]

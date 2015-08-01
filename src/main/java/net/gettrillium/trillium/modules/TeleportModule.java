@@ -661,7 +661,7 @@ public class TeleportModule extends TrilliumModule {
     }
 
     @Command(command = "home",
-            description = "View a list of all your homes.",
+            description = "Create, delete, list, and tp to your home waypoints.",
             usage = "/home <set/del/list/tp> [home]",
             permissions = {Permission.Teleport.HOME_CREATE, Permission.Teleport.HOME_LIST, Permission.Teleport.HOME_TP, Permission.Teleport.COOLDOWN_EXEMPT})
     public void home(CommandSender cs, String[] args) {

@@ -6,12 +6,17 @@ import net.gettrillium.trillium.api.Utils;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.StringUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 public class Trillium extends JavaPlugin {
@@ -53,6 +58,18 @@ public class Trillium extends JavaPlugin {
             }
         }
 
+        // Update check
+        String version = null;
+        InputStream in = null;
+        try {
+            in = new URL("http://gettrillium.net/versionupdate/version.txt").openStream();
+            version = StringEscapeUtils.escapeHtml(IOUtils.toString(in));
+        } catch (IOException e) {
+            getLogger().severe("Failed to check for updates!");
+        } finally {
+            IOUtils.closeQuietly(in);
+        }
+
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
         getLogger().info("Plugin made with love by:");
         getLogger().info("LordSaad, VortexSeven, Turbotailz,");
@@ -60,6 +77,14 @@ public class Trillium extends JavaPlugin {
         getLogger().info("<3");
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("<<<-------------------------------------->>>");
+
+        if (Utils.compareVersion(version, getDescription().getVersion())) {
+            getLogger().info("<<<-------------------------------------->>>");
+            getLogger().severe("NEW UPDATE AVAILABLE!");
+            getLogger().severe("New version: " + version);
+            getLogger().severe("http://gettrillium.net/");
+            getLogger().info("<<<-------------------------------------->>>");
+        }
 
         if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
             getLogger().info("<<<-------------------------------------->>>");

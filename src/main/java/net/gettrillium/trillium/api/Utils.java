@@ -104,6 +104,19 @@ public class Utils {
         }
     }
 
+    public static boolean compareVersion(String version1, String version2) {
+        if (version1 != null && version2 != null) {
+            String[] a = version1.split("\\.");
+            String[] b = version2.split("\\.");
+            for (int i = 0; i < a.length || i < b.length; ++i) {
+                if (i < a.length && i < b.length) {
+                    if (Integer.valueOf(a[i]) > Integer.valueOf(b[i])) return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static int timeToTickConverter(String time) {
         int seconds = 0;
         int hours = 0;

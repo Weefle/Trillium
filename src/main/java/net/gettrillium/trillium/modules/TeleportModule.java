@@ -1,9 +1,6 @@
 package net.gettrillium.trillium.modules;
 
-import net.gettrillium.trillium.api.Configuration;
-import net.gettrillium.trillium.api.Permission;
-import net.gettrillium.trillium.api.TrilliumModule;
-import net.gettrillium.trillium.api.TrilliumPlayer;
+import net.gettrillium.trillium.api.*;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.cooldown.Cooldown;
 import net.gettrillium.trillium.api.cooldown.CooldownType;
@@ -85,134 +82,77 @@ public class TeleportModule extends TrilliumModule {
 
     @Command(command = "teleport",
             description = "Teleport to a person or a set of coordinates.",
-            usage = "/tp <player> [player / <x>, <y>, <z>]",
+            usage = "/tp <player> [player/<x> <y> <z>]",
             aliases = "tp",
             permissions = {Permission.Teleport.TP, Permission.Teleport.COOLDOWN_EXEMPT, Permission.Teleport.TP_OTHER, Permission.Teleport.TP_COORDS})
     public void tp(CommandSender cs, String[] args) {
-        if (!(cs instanceof Player)) {
-            new Message("TP", Error.CONSOLE_NOT_ALLOWED).to(cs);
+        if (!cs.hasPermission(Permission.Teleport.TP_COORDS)) {
+            new Message("TP", Error.NO_PERMISSION).to(cs);
             return;
         }
 
-        TrilliumPlayer p = player((Player) cs);
+        if (args.length < 2) {
+            new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [player]/<x>, <y>, <z>]").to(cs);
+            return;
+        }
 
+        Player target = Bukkit.getPlayer(args[0]);
+        Player target2 = Bukkit.getPlayer(args[1]);
 
-        if (!Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
-            if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
-                Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
-            }
-
-            if (args.length == 0) {
-                if (!p.hasPermission(Permission.Teleport.TP)) {
-                    new Message("TP", Error.NO_PERMISSION).to(cs);
-                    return;
-                }
-
-                new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [player]").to(p);
-            } else if (args.length == 1) {
-                if (!p.hasPermission(Permission.Teleport.TP)) {
-                    new Message("TP", Error.NO_PERMISSION).to(p);
-                    return;
-                }
-
-                Player target = Bukkit.getPlayer(args[0]);
-
-                if (target == null) {
-                    new Message("TP", Error.INVALID_PLAYER, args[0]).to(p);
-                    return;
-                }
-
-                p.getProxy().teleport(target);
-                new Message(Mood.GOOD, "TP", "You teleported to " + target.getName()).to(p);
-            } else if (args.length == 2) {
-                if (!p.hasPermission(Permission.Teleport.TP_OTHER)) {
-                    new Message("TP", Error.NO_PERMISSION).to(p);
-                    return;
-                }
-
-                TrilliumPlayer target1 = player(args[0]);
-                TrilliumPlayer target2 = player(args[1]);
-
-                if (target1 == null) {
-                    new Message("TP", Error.INVALID_PLAYER, args[1]).to(p);
-                    return;
-                }
-
-                if (target2 == null) {
-                    new Message("TP", Error.INVALID_PLAYER, args[2]).to(p);
-                    return;
-                }
-
-                target1.getProxy().teleport(target2.getProxy());
-                new Message(Mood.GOOD, "TP", "You teleported " + target1.getName() + " to " + target2.getName()).to(p);
-                new Message(Mood.GOOD, "TP", p.getName() + " teleported you to " + target2.getName()).to(target1);
-
-            } else if (args.length == 4) {
-                if (!p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
-                    new Message("TP", Error.NO_PERMISSION).to(cs);
-                    return;
-                }
-
-                Player pl = Bukkit.getPlayer(args[0]);
-
-                if (pl == null) {
-                    new Message("TP", Error.INVALID_PLAYER, args[0]).to(p);
-                    return;
-                }
-
-                String xArg = args[1];
-                String yArg = args[2];
-                String zArg = args[3];
-
-                if (StringUtils.isNumeric(xArg) && StringUtils.isNumeric(yArg) && StringUtils.isNumeric(zArg)) {
-                    int x = Integer.parseInt(xArg);
-                    int y = Integer.parseInt(yArg);
-                    int z = Integer.parseInt(zArg);
-
-                    Location loc = new Location(p.getProxy().getWorld(), x, y, z);
-
-                    pl.teleport(loc);
-                    new Message(Mood.GOOD, "TP", "You teleported to " + ChatColor.AQUA + x + ", " + y + ", " + z).to(p);
+        if (target != null) {
+            if (target2 != null) {
+                target.teleport(target2);
+                if (!target.getName().equals(cs.getName())) {
+                    new Message(Mood.GOOD, "TP", target.getName() + " was teleported to " + target2.getName()).to(cs);
                 } else {
-                    if (!xArg.startsWith("~") || !yArg.startsWith("~") || !zArg.startsWith("~")) {
-                        new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [x] [y] [z]").to(p);
-                        return;
-                    }
-
-                    if (!StringUtils.isNumeric(xArg.substring(1)) || !StringUtils.isNumeric(yArg.substring(1)) || !StringUtils.isNumeric(zArg.substring(1))) {
-                        new Message(Mood.BAD, "TP", "Something isn't a number...").to(p);
-                        return;
-                    }
-
-                    int x, y, z;
-
-                    if (xArg.substring(1).equals("") || xArg.substring(1).equals(" ")) {
-                        x = 0;
-                    } else {
-                        x = Integer.parseInt(xArg.substring(1));
-                    }
-
-                    if (yArg.substring(1).equals("") || yArg.substring(1).equals(" ")) {
-                        y = 0;
-                    } else {
-                        y = Integer.parseInt(yArg.substring(1));
-                    }
-
-                    if (zArg.substring(1).equals("") || zArg.substring(1).equals(" ")) {
-                        z = 0;
-                    } else {
-                        z = Integer.parseInt(zArg.substring(1));
-                    }
-
-                    Location loc = p.getProxy().getLocation();
-                    pl.teleport(new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z));
-                    new Message(Mood.GOOD, "TP", "You teleported to " + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ()).to(p);
+                    new Message(Mood.GOOD, "TP", "You were teleported to " + target2.getName()).to(cs);
                 }
+
             } else {
-                new Message("TP", Error.WRONG_ARGUMENTS, "/tp <player> [player / <x>, <y>, <z>]").to(p);
+                if (args.length >= 4) {
+
+                    double x;
+                    double y;
+                    double z;
+
+                    if (StringUtils.isNumeric(args[1])) {
+                        x = Double.parseDouble(args[1]);
+                    } else if (args[1].startsWith("~")) {
+                        x = target.getLocation().getX() + Double.parseDouble(args[1]);
+                    } else {
+                        new Message("TP", Error.WRONG_ARGUMENTS, args[1]).to(cs);
+                        return;
+                    }
+
+                    if (StringUtils.isNumeric(args[2])) {
+                        y = Double.parseDouble(args[2]);
+                    } else if (args[2].startsWith("~")) {
+                        y = target.getLocation().getX() + Double.parseDouble(args[2]);
+                    } else {
+                        new Message("TP", Error.WRONG_ARGUMENTS, args[2]).to(cs);
+                        return;
+                    }
+
+                    if (StringUtils.isNumeric(args[3])) {
+                        z = Double.parseDouble(args[3]);
+                    } else if (args[3].startsWith("~")) {
+                        z = target.getLocation().getX() + Double.parseDouble(args[3]);
+                    } else {
+                        new Message("TP", Error.WRONG_ARGUMENTS, args[3]).to(cs);
+                        return;
+                    }
+
+                    Location loc = new Location(target.getLocation().getWorld(), x, y, z);
+                    target.teleport(loc);
+                    new Message(Mood.GOOD, "TP", cs.getName() + " teleported you to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(target);
+                    new Message(Mood.GOOD, "TP", "You teleported " + target.getName() + " to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(cs);
+
+                } else {
+                    new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [player]/<x>, <y>, <z>]").to(cs);
+                }
             }
         } else {
-            new Message(Mood.BAD, "TP", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
+
         }
     }
 
@@ -423,7 +363,7 @@ public class TeleportModule extends TrilliumModule {
             return;
         }
 
-        Player p =(Player) cs;
+        Player p = (Player) cs;
 
         if (!p.hasPermission(Permission.Teleport.TPRRESPOND)) {
             new Message("TPRD", Error.NO_PERMISSION).to(p);
@@ -431,7 +371,7 @@ public class TeleportModule extends TrilliumModule {
         }
 
         if (tpr.containsValue(p.getUniqueId())) {
-            Player requester =Bukkit.getPlayer(tpr.get(p.getUniqueId()));
+            Player requester = Bukkit.getPlayer(tpr.get(p.getUniqueId()));
 
             new Message(Mood.GOOD, "TPRD", "You denied " + ChatColor.AQUA + requester.getName() + "'s teleport request.").to(p);
             new Message(Mood.GOOD, "TPRD", p.getName() + " denied your teleport request.").to(requester);
@@ -466,63 +406,92 @@ public class TeleportModule extends TrilliumModule {
             return;
         }
 
-        if (Cooldown.hasCooldown(cs, CooldownType.TELEPORTATION)) {
-            new Message(Mood.BAD, "TPC", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p, CooldownType.TELEPORTATION)).to(p);
-            return;
-        }
-        if (!p.getProxy().isOp() && !cs.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
-                Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
-            }
+        Player target = Bukkit.getPlayer(args[0]);
 
-            String xArg = args[0];
-            String yArg = args[1];
-            String zArg = args[2];
+        if (target != null) {
+            if (args.length >= 4) {
 
-            if (StringUtils.isNumeric(xArg) && StringUtils.isNumeric(yArg) && StringUtils.isNumeric(zArg)) {
-                int x = Integer.parseInt(xArg);
-                int y = Integer.parseInt(yArg);
-                int z = Integer.parseInt(zArg);
+                double x;
+                double y;
+                double z;
 
-                Location loc = new Location(p.getProxy().getWorld(), x, y, z);
-                p.getProxy().teleport(loc);
-                new Message(Mood.GOOD, "TPC", "You teleported to" + ChatColor.AQUA + x + ", " + y + ", " + z).to(p);
+                if (StringUtils.isNumeric(args[1])) {
+                    x = Double.parseDouble(args[1]);
+                } else if (args[1].startsWith("~")) {
+                    x = target.getLocation().getX() + Double.parseDouble(args[1]);
+                } else {
+                    new Message("TPC", Error.WRONG_ARGUMENTS, args[1]).to(cs);
+                    return;
+                }
+
+                if (StringUtils.isNumeric(args[2])) {
+                    y = Double.parseDouble(args[2]);
+                } else if (args[2].startsWith("~")) {
+                    y = target.getLocation().getX() + Double.parseDouble(args[2]);
+                } else {
+                    new Message("TPC", Error.WRONG_ARGUMENTS, args[2]).to(cs);
+                    return;
+                }
+
+                if (StringUtils.isNumeric(args[3])) {
+                    z = Double.parseDouble(args[3]);
+                } else if (args[3].startsWith("~")) {
+                    z = target.getLocation().getX() + Double.parseDouble(args[3]);
+                } else {
+                    new Message("TPC", Error.WRONG_ARGUMENTS, args[3]).to(cs);
+                    return;
+                }
+
+                Location loc = new Location(target.getLocation().getWorld(), x, y, z);
+                target.teleport(loc);
+                new Message(Mood.GOOD, "TPC", "The console teleported you to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(target);
+                new Message(Mood.GOOD, "TPC", "You teleported " + target.getName() + " to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(cs);
+
             } else {
-                if (!xArg.startsWith("~") || !yArg.startsWith("~") || !zArg.startsWith("~")) {
-                    new Message("TPC", Error.TOO_FEW_ARGUMENTS, "/tp <player> [x] [y] [z]").to(p);
-                    return;
-                }
-
-                if (!StringUtils.isNumeric(xArg.substring(1)) || !StringUtils.isNumeric(yArg.substring(1)) || !StringUtils.isNumeric(zArg.substring(1))) {
-                    new Message(Mood.BAD, "TPC", "Something isn't a number...").to(p);
-                    return;
-                }
-
-                int x;
-                int y;
-                int z;
-
-                if (xArg.substring(1).equals("") || xArg.substring(1).equals(" ")) {
-                    x = 0;
-                } else {
-                    x = Integer.parseInt(xArg.substring(1));
-                }
-
-                if (yArg.substring(1).equals("") || yArg.substring(1).equals(" ")) {
-                    y = 0;
-                } else {
-                    y = Integer.parseInt(xArg.substring(1));
-                }
-
-                if (zArg.substring(1).equals("") || zArg.substring(1).equals(" ")) {
-                    z = 0;
-                } else {
-                    z = Integer.parseInt(xArg.substring(1));
-                }
-
-                Location loc = p.getProxy().getLocation();
-                p.getProxy().teleport(new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z));
-                new Message(Mood.GOOD, "TPC", "You teleported to" + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ()).to(p);
+                new Message("TPC", Error.TOO_FEW_ARGUMENTS, "/tpc [player] <x> <y> <z>").to(cs);
             }
+        } else {
+            if (!(cs instanceof Player)) {
+                new Message("TPC", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                return;
+            }
+
+            Player p = (Player) cs;
+            double x;
+            double y;
+            double z;
+
+            if (StringUtils.isNumeric(args[0])) {
+                x = Double.parseDouble(args[0]);
+            } else if (args[0].startsWith("~")) {
+                x = p.getLocation().getX() + Double.parseDouble(args[0]);
+            } else {
+                new Message("TPC", Error.WRONG_ARGUMENTS, args[0]).to(cs);
+                return;
+            }
+
+            if (StringUtils.isNumeric(args[1])) {
+                y = Double.parseDouble(args[1]);
+            } else if (args[1].startsWith("~")) {
+                y = p.getLocation().getX() + Double.parseDouble(args[1]);
+            } else {
+                new Message("TPC", Error.WRONG_ARGUMENTS, args[1]).to(cs);
+                return;
+            }
+
+            if (StringUtils.isNumeric(args[2])) {
+                z = Double.parseDouble(args[2]);
+            } else if (args[2].startsWith("~")) {
+                z = p.getLocation().getX() + Double.parseDouble(args[2]);
+            } else {
+                new Message("TPC", Error.WRONG_ARGUMENTS, args[2]).to(cs);
+                return;
+            }
+
+            Location loc = new Location(p.getLocation().getWorld(), x, y, z);
+            p.teleport(loc);
+            new Message(Mood.GOOD, "TPC", "You were teleported to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(p);
+        }
     }
 
     @EventHandler

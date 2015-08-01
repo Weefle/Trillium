@@ -375,14 +375,12 @@ public class AbilityModule extends TrilliumModule {
         }
 
         TrilliumPlayer p = player((Player) event.getEntity());
-        TrilliumPlayer damager;
 
-        if (event.getDamager() instanceof Player) {
-            damager = player((Player) event.getDamager());
-        } else {
-            Projectile arrow = (Projectile) event.getDamager();
-            damager = player((Player) arrow.getShooter());
+        if (!(event.getDamager() instanceof Player)) {
+            return;
         }
+
+        TrilliumPlayer damager = (TrilliumPlayer) event.getDamager();
 
         if (getConfig().getBoolean(Configuration.Server.PVPENABLE)) {
             if (!getConfig().getBoolean(Configuration.Server.TOGGLEPVP)) {

@@ -4,3 +4,6 @@ jdk:
   - oraclejdk8
   - oraclejdk7
   - openjdk7
+
+notifications:
+  slack: teamtrillium:P5f5xEQfrZbhn0NeFiValIEA

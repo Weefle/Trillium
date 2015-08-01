@@ -264,31 +264,31 @@ public class TeleportModule extends TrilliumModule {
             permissions = {Permission.Teleport.TPREQEST, Permission.Teleport.COOLDOWN_EXEMPT})
     public void teleportrequest(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
-            new Message("Teleport Request", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            new Message("TPR", Error.CONSOLE_NOT_ALLOWED).to(cs);
             return;
         }
 
         TrilliumPlayer p = player((Player) cs);
 
         if (!p.hasPermission(Permission.Teleport.TPREQEST)) {
-            new Message("Teleport Request", Error.NO_PERMISSION).to(p);
+            new Message("TPR", Error.NO_PERMISSION).to(p);
             return;
         }
 
         if (args.length != 0) {
-            new Message("Teleport Request", Error.TOO_FEW_ARGUMENTS, "/tpr <player>").to(p);
+            new Message("TPR", Error.TOO_FEW_ARGUMENTS, "/tpr <player>").to(p);
             return;
         }
 
         TrilliumPlayer target = player(args[0]);
 
         if (target == null) {
-            new Message("Teleport Request", Error.INVALID_PLAYER, args[0]).to(p);
+            new Message("TPR", Error.INVALID_PLAYER, args[0]).to(p);
             return;
         }
 
         if (Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
-            new Message(Mood.BAD, "Teleport Request", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
+            new Message(Mood.BAD, "TPR", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
             return;
         }
 
@@ -296,11 +296,11 @@ public class TeleportModule extends TrilliumModule {
             Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
         }
 
-        new Message(Mood.NEUTRAL, "Teleport Request", target.getName() + " is now pending. Please stand by.").to(p);
+        new Message(Mood.NEUTRAL, "TPR", target.getName() + " is now pending. Please stand by.").to(p);
 
-        new Message(Mood.NEUTRAL, "Teleport Request", p.getName() + " would like to teleport to you.").to(target);
-        new Message(Mood.NEUTRAL, "Teleport Request", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.").to(target);
-        new Message(Mood.NEUTRAL, "Teleport Request", ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.").to(target);
+        new Message(Mood.NEUTRAL, "TPR", p.getName() + " would like to teleport to you.").to(target);
+        new Message(Mood.NEUTRAL, "TPR", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.").to(target);
+        new Message(Mood.NEUTRAL, "TPR", ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.").to(target);
 
         tpr.put(p.getProxy().getUniqueId(), target.getProxy().getUniqueId());
     }
@@ -312,44 +312,44 @@ public class TeleportModule extends TrilliumModule {
             permissions = {Permission.Teleport.TPREQESTHERE, Permission.Teleport.COOLDOWN_EXEMPT})
     public void teleportrequesthere(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
-            new Message("Teleport Request Here", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            new Message("TPRH", Error.CONSOLE_NOT_ALLOWED).to(cs);
             return;
         }
 
-        TrilliumPlayer p = player((Player) cs);
+        Player p = (Player) cs;
 
         if (!p.hasPermission(Permission.Teleport.TPREQESTHERE)) {
-            new Message("Teleport Request Here", Error.NO_PERMISSION).to(p);
+            new Message("TPRH", Error.NO_PERMISSION).to(p);
             return;
         }
 
         if (args.length == 0) {
-            new Message("Teleport Request Here", Error.TOO_FEW_ARGUMENTS, "/tprh <player>").to(p);
+            new Message("TPRH", Error.TOO_FEW_ARGUMENTS, "/tprh <player>").to(p);
             return;
         }
 
-        TrilliumPlayer target = player(args[0]);
+        Player target = Bukkit.getPlayer(args[0]);
 
         if (target == null) {
-            new Message("Teleport Request Here", Error.INVALID_PLAYER, args[0]).to(p);
+            new Message("TPRH", Error.INVALID_PLAYER, args[0]).to(p);
             return;
         }
 
-        if (Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
-            new Message(Mood.BAD, "Teleport Request Here", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
+        if (Cooldown.hasCooldown(p, CooldownType.TELEPORTATION)) {
+            new Message(Mood.BAD, "TPRH", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p, CooldownType.TELEPORTATION)).to(p);
             return;
         }
 
-        if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
-            Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
+        if (!p.isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
+            Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
         }
 
-        new Message(Mood.NEUTRAL, "Teleport Request Here", "Teleport request for " + target.getName() + " to here is now pending. Please stand by.").to(p);
+        new Message(Mood.NEUTRAL, "TPRH", "Teleport request for " + target.getName() + " to here is now pending. Please stand by.").to(p);
 
-        new Message(Mood.NEUTRAL, "Teleport Request Here", p.getName() + ChatColor.BLUE + " would like you to teleport to him").to(target);
-        new Message(Mood.NEUTRAL, "Teleport Request Here", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.").to(target);
-        new Message(Mood.NEUTRAL, "Teleport Request Here", ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.").to(target);
-        tprh.put(p.getProxy().getUniqueId(), target.getProxy().getUniqueId());
+        new Message(Mood.NEUTRAL, "TPRH", p.getName() + ChatColor.BLUE + " would like you to teleport to him").to(target);
+        new Message(Mood.NEUTRAL, "TPRH", ChatColor.AQUA + "/tpra " + ChatColor.BLUE + "to accept the teleport.").to(target);
+        new Message(Mood.NEUTRAL, "TPRH", ChatColor.AQUA + "/tprd " + ChatColor.BLUE + "to deny the teleport.").to(target);
+        tprh.put(p.getUniqueId(), target.getUniqueId());
     }
 
     @Command(command = "teleportrequestaccept",
@@ -363,49 +363,52 @@ public class TeleportModule extends TrilliumModule {
             return;
         }
 
-        TrilliumPlayer p = player((Player) cs);
-        if (p.hasPermission(Permission.Teleport.TPRRESPOND)) {
-            if (tpr.containsValue(p.getProxy().getUniqueId())) {
+        Player p = (Player) cs;
 
-                if (!Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
-                    if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
-                        Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
-                    }
-
-                    TrilliumPlayer requester = player(Bukkit.getPlayer(tpr.get(p.getProxy().getUniqueId())));
-                    requester.getProxy().teleport(p.getProxy());
-
-                    new Message(Mood.GOOD, "TPRA", "You teleported " + requester.getName() + " to you.").to(p);
-                    new Message(Mood.GOOD, "TPRA", p.getName() + " accepted your teleport request.").to(requester);
-                    tpr.remove(p.getProxy().getUniqueId());
-
-                } else {
-                    new Message(Mood.BAD, "TPRA", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
-                }
-
-            } else if (tprh.containsValue(p.getProxy().getUniqueId())) {
-
-                if (!Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
-                    if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
-                        Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
-                    }
-
-                    TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getProxy().getUniqueId())));
-
-                    p.getProxy().teleport(requester.getProxy());
-                    new Message(Mood.GOOD, "TPRA", "You teleported to " + requester.getName()).to(p);
-                    new Message(Mood.GOOD, "TPRA", p.getName() + " accepted to teleport to you.").to(requester);
-
-                    tprh.remove(p.getProxy().getUniqueId());
-
-                } else {
-                    new Message(Mood.BAD, "TPRA", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
-                }
-            } else {
-                new Message(Mood.BAD, "TPRA", "No pending teleport requests to accept.").to(p);
-            }
-        } else {
+        if (!p.hasPermission(Permission.Teleport.TPRRESPOND)) {
             new Message("TPRA", Error.NO_PERMISSION).to(p);
+            return;
+        }
+
+        if (tpr.containsValue(p.getUniqueId())) {
+
+            if (Cooldown.hasCooldown(p, CooldownType.TELEPORTATION)) {
+                new Message(Mood.BAD, "TPRA", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p, CooldownType.TELEPORTATION)).to(p);
+                return;
+            }
+
+            if (!p.isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
+                Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
+            }
+
+            TrilliumPlayer requester = player(Bukkit.getPlayer(tpr.get(p.getUniqueId())));
+            requester.getProxy().teleport(p);
+
+            new Message(Mood.GOOD, "TPRA", "You teleported " + requester.getName() + " to you.").to(p);
+            new Message(Mood.GOOD, "TPRA", p.getName() + " accepted your teleport request.").to(requester);
+            tpr.remove(p.getUniqueId());
+
+        } else if (tprh.containsValue(p.getUniqueId())) {
+
+            if (Cooldown.hasCooldown(p, CooldownType.TELEPORTATION)) {
+                new Message(Mood.BAD, "TPRA", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p, CooldownType.TELEPORTATION)).to(p);
+                return;
+            }
+
+            if (!p.isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
+                Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
+            }
+
+            TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getUniqueId())));
+
+            p.teleport(requester.getProxy());
+            new Message(Mood.GOOD, "TPRA", "You teleported to " + requester.getName()).to(p);
+            new Message(Mood.GOOD, "TPRA", p.getName() + " accepted to teleport to you.").to(requester);
+
+            tprh.remove(p.getUniqueId());
+
+        } else {
+            new Message(Mood.BAD, "TPRA", "No pending teleport requests to accept.").to(p);
         }
     }
 
@@ -417,28 +420,29 @@ public class TeleportModule extends TrilliumModule {
     public void teleportrequestdeny(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
             new Message("TPRD", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            return;
         }
 
-        TrilliumPlayer p = player((Player) cs);
+        Player p =(Player) cs;
 
         if (!p.hasPermission(Permission.Teleport.TPRRESPOND)) {
             new Message("TPRD", Error.NO_PERMISSION).to(p);
             return;
         }
 
-        if (tpr.containsValue(p.getProxy().getUniqueId())) {
-            TrilliumPlayer requester = player(Bukkit.getPlayer(tpr.get(p.getProxy().getUniqueId())));
+        if (tpr.containsValue(p.getUniqueId())) {
+            Player requester =Bukkit.getPlayer(tpr.get(p.getUniqueId()));
 
             new Message(Mood.GOOD, "TPRD", "You denied " + ChatColor.AQUA + requester.getName() + "'s teleport request.").to(p);
             new Message(Mood.GOOD, "TPRD", p.getName() + " denied your teleport request.").to(requester);
-            tpr.remove(p.getProxy().getUniqueId());
+            tpr.remove(p.getUniqueId());
 
-        } else if (tprh.containsValue(p.getProxy().getUniqueId())) {
-            TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getProxy().getUniqueId())));
+        } else if (tprh.containsValue(p.getUniqueId())) {
+            Player requester = Bukkit.getPlayer(tprh.get(p.getUniqueId()));
 
             new Message(Mood.GOOD, "TPRD", "You denied " + ChatColor.AQUA + requester.getName() + "'s teleport request.").to(p);
             new Message(Mood.GOOD, "TPRD", p.getName() + " denied your teleport request.").to(requester);
-            tprh.remove(p.getProxy().getUniqueId());
+            tprh.remove(p.getUniqueId());
 
         } else {
             new Message(Mood.BAD, "TPRD", "No pending teleport requests to deny.").to(p);
@@ -447,29 +451,26 @@ public class TeleportModule extends TrilliumModule {
 
     @Command(command = "teleportcoordinates",
             description = "Teleport to a set of coordinates.",
-            usage = "/tpc <x> <y> <z>",
+            usage = "/tpc [player] <x> <y> <z>",
             aliases = "tpc",
             permissions = {Permission.Teleport.TP_COORDS, Permission.Teleport.COOLDOWN_EXEMPT})
     public void teleportcoordinates(CommandSender cs, String[] args) {
-        if (!(cs instanceof Player)) {
-            new Message("TP", Error.CONSOLE_NOT_ALLOWED).to(cs);
-            return;
-        }
 
-        TrilliumPlayer p = player((Player) cs);
-
-        if (!p.getProxy().hasPermission(Permission.Teleport.TP_COORDS)) {
-            new Message("TP", Error.NO_PERMISSION).to(p);
+        if (!cs.hasPermission(Permission.Teleport.TP_COORDS)) {
+            new Message("TPC", Error.NO_PERMISSION).to(cs);
             return;
         }
 
         if (args.length < 3) {
-            new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <x> <y> <z>").to(p);
+            new Message("TPC", Error.TOO_FEW_ARGUMENTS, "/tpc [player] <x> <y> <z>").to(cs);
             return;
         }
 
-        if (!Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
-            if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
+        if (Cooldown.hasCooldown(cs, CooldownType.TELEPORTATION)) {
+            new Message(Mood.BAD, "TPC", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p, CooldownType.TELEPORTATION)).to(p);
+            return;
+        }
+        if (!p.getProxy().isOp() && !cs.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
                 Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
             }
 
@@ -484,15 +485,15 @@ public class TeleportModule extends TrilliumModule {
 
                 Location loc = new Location(p.getProxy().getWorld(), x, y, z);
                 p.getProxy().teleport(loc);
-                new Message(Mood.GOOD, "TP", "You teleported to" + ChatColor.AQUA + x + ", " + y + ", " + z).to(p);
+                new Message(Mood.GOOD, "TPC", "You teleported to" + ChatColor.AQUA + x + ", " + y + ", " + z).to(p);
             } else {
                 if (!xArg.startsWith("~") || !yArg.startsWith("~") || !zArg.startsWith("~")) {
-                    new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [x] [y] [z]").to(p);
+                    new Message("TPC", Error.TOO_FEW_ARGUMENTS, "/tp <player> [x] [y] [z]").to(p);
                     return;
                 }
 
                 if (!StringUtils.isNumeric(xArg.substring(1)) || !StringUtils.isNumeric(yArg.substring(1)) || !StringUtils.isNumeric(zArg.substring(1))) {
-                    new Message(Mood.BAD, "TP", "Something isn't a number...").to(p);
+                    new Message(Mood.BAD, "TPC", "Something isn't a number...").to(p);
                     return;
                 }
 
@@ -522,9 +523,6 @@ public class TeleportModule extends TrilliumModule {
                 p.getProxy().teleport(new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y, loc.getZ() + z));
                 new Message(Mood.GOOD, "TPC", "You teleported to" + ChatColor.AQUA + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ()).to(p);
             }
-        } else {
-            new Message(Mood.BAD, "TPC", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
-        }
     }
 
     @EventHandler

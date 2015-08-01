@@ -560,117 +560,97 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "warps",
-            description = "View the list of warps available.",
-            usage = "/warps",
-            permissions = {Permission.Teleport.WARP})
-    public void warps(CommandSender cs, String[] args) {
-        if (cs instanceof Player) {
-            Player p = (Player) cs;
-            if (p.hasPermission(Permission.Teleport.WARP)) {
-
-                p.sendMessage(ChatColor.GREEN + "Warps:");
-                for (Message warps : Warp.getWarpList()) {
-                    warps.to(p);
-                }
-
-            } else {
-                new Message("Warps", Error.NO_PERMISSION).to(p);
-            }
-        } else {
-            new Message("Warps", Error.CONSOLE_NOT_ALLOWED).to(cs);
-        }
-    }
-
     @Command(command = "warp",
-            description = "Teleport to a certain defined point.",
-            usage = "/warp <name>",
-            permissions = {Permission.Teleport.WARP, Permission.Teleport.COOLDOWN_EXEMPT})
+            description = "Create, delete, list, and tp to warps.",
+            usage = "/warp <set/del/list/tp> [warp]",
+            permissions = {Permission.Teleport.WARP_CREATE, Permission.Teleport.WARP_LIST, Permission.Teleport.WARP_TP})
     public void warp(CommandSender cs, String[] args) {
-        if (cs instanceof Player) {
-            Player p = (Player) cs;
-            if (p.hasPermission(Permission.Teleport.WARP)) {
-                if (args.length == 0) {
-                    new Message("Warp", Error.TOO_FEW_ARGUMENTS, "/warps for a list of warps. /warp <name> to tp to a warp.").to(p);
-                } else {
-                    if (Warp.isNotNull(args[0])) {
-                        if (!Cooldown.hasCooldown(p, CooldownType.TELEPORTATION)) {
-                            if (!p.isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
-                                Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
-                            }
-                            PlayerWarpEvent event = new PlayerWarpEvent(args[0], p, p.getLocation(), Warp.getLocation(args[0]));
-                            Bukkit.getPluginManager().callEvent(event);
-                            if (!event.isCancelled()) {
-                                p.teleport(Warp.getLocation(args[0]));
-                                new Message(Mood.GOOD, "Warp", "You were teleported to " + args[0]).to(p);
-                            }
-                        } else {
-                            new Message(Mood.BAD, "Warp", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p, CooldownType.TELEPORTATION)).to(p);
-                        }
-                    } else {
-                        new Message(Mood.BAD, "Warp", "There are no warps with that name.").to(p);
-                    }
-                }
-            } else {
-                new Message("Warp", Error.NO_PERMISSION).to(p);
-            }
-        } else {
+        if (!(cs instanceof Player)) {
             new Message("Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            return;
+        }
+
+        Player p = (Player) cs;
+
+        if (args[0].equalsIgnoreCase("set")) {
+            if (!p.hasPermission(Permission.Teleport.WARP_CREATE)) {
+                new Message("Warp", Error.NO_PERMISSION).to(p);
+                return;
+            }
+
+            if (args.length < 2) {
+                new Message("Warp", Error.TOO_FEW_ARGUMENTS).to(p);
+                return;
+            }
+
+            Warp.setWarp(args[1], p.getLocation());
+
+            if (Warp.isNotNull(args[1])) {
+                new Message(Mood.GOOD, "Warp", "Warp " + args[1] + "'s location changed.").to(p);
+            } else {
+                new Message(Mood.GOOD, "Warp", "Warp " + args[1] + " set.").to(p);
+            }
+
+        } else if (args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del")) {
+            if (!p.hasPermission(Permission.Teleport.WARP_CREATE)) {
+                new Message("Warp", Error.NO_PERMISSION).to(p);
+                return;
+            }
+
+            if (args.length < 2) {
+                new Message("Warp", Error.TOO_FEW_ARGUMENTS).to(p);
+                return;
+            }
+
+            if (Warp.isNotNull(args[1])) {
+                Warp.delWarp(args[1]);
+                new Message(Mood.GOOD, "Warp", "Warp " + args[1] + " removed.").to(p);
+            } else {
+                new Message(Mood.BAD, "Warp", "Warp " + args[1] + " does not exist.").to(p);
+            }
+
+        } else if (args[0].equalsIgnoreCase("list")) {
+            if (!p.hasPermission(Permission.Teleport.WARP_LIST)) {
+                new Message("Warp", Error.NO_PERMISSION).to(p);
+                return;
+            }
+
+            if (args.length < 1) {
+                new Message("Warp", Error.TOO_FEW_ARGUMENTS).to(p);
+                return;
+            }
+
+            if (Warp.getWarpList().size() > 0) {
+                new Message(Mood.GOOD, "Warp", "Warps:").to(p);
+                for (Message msg : Warp.getWarpList()) {
+                    msg.to(p);
+                }
+            } else {
+                new Message(Mood.BAD, "Warp", "No warps available.").to(p);
+            }
+
+        } else if (args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("tp")) {
+            if (!p.hasPermission(Permission.Teleport.WARP_TP)) {
+                new Message("Warp", Error.NO_PERMISSION).to(p);
+                return;
+            }
+
+            if (args.length < 2) {
+                new Message("Warp", Error.TOO_FEW_ARGUMENTS).to(p);
+                return;
+            }
+
+            if (!Warp.isNotNull(args[1])) {
+                new Message(Mood.BAD, "Warp", "Warp " + args[1] + " does not exist.").to(p);
+                return;
+            }
+
+            p.teleport(Warp.getLocation(args[1]));
+            new Message(Mood.GOOD, "Warp", "You were teleported to warp " + args[1]).to(p);
         }
     }
 
-    @Command(command = "setwarp",
-            description = "Save a new warp.",
-            usage = "/setwarp <name>",
-            permissions = {Permission.Teleport.WARP_SET})
-    public void setwarp(CommandSender cs, String[] args) {
-        if (cs instanceof Player) {
-            Player p = (Player) cs;
-            if (p.hasPermission(Permission.Teleport.WARP_SET)) {
-                if (args.length == 0) {
-                    new Message("Set Warp", Error.TOO_FEW_ARGUMENTS, "/setwarp <name>").to(p);
-                } else {
-                    if (Warp.isNotNull(args[0])) {
-                        Warp.setWarp(args[0], p.getLocation());
-                        new Message(Mood.GOOD, "Set Warp", "Warp saved as " + args[0]).to(p);
-                    } else {
-                        Warp.setWarp(args[0], p.getLocation());
-                        new Message(Mood.GOOD, "Set Warp", "Warp " + args[0] + "'s position changed.").to(p);
-                    }
-                }
-            } else {
-                new Message("Set Warp", Error.NO_PERMISSION).to(p);
-            }
-        } else {
-            new Message("Set Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
-        }
-    }
 
-    @Command(command = "delwarp",
-            description = "Delete a warp.",
-            usage = "/delwarp <name>",
-            permissions = {Permission.Teleport.WARP_SET})
-    public void delwarp(CommandSender cs, String[] args) {
-        if (cs instanceof Player) {
-            Player p = (Player) cs;
-            if (p.hasPermission(Permission.Teleport.WARP_SET)) {
-                if (args.length == 0) {
-                    new Message("Delete Warp", Error.TOO_FEW_ARGUMENTS, "/setwarp <name>").to(p);
-                } else {
-                    if (Warp.isNotNull(args[0])) {
-                        Warp.delWarp(args[0]);
-                        new Message(Mood.GOOD, "Delete Warp", "Warp deleted was: " + args[0]).to(p);
-                    } else {
-                        new Message(Mood.BAD, "Delete Warp", "There are no warps with that name.").to(p);
-                    }
-                }
-            } else {
-                new Message("Delete Warp", Error.NO_PERMISSION).to(p);
-            }
-        } else {
-            new Message("Delete Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
-        }
-    }
 
     @Command(command = "homes",
             description = "View a list of all your homes.",

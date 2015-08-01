@@ -4,27 +4,36 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class TpsRunnable extends BukkitRunnable {
 
-    public static int tickCount = 0;
-    public static long[] ticks = new long[600];
+    // 0 to ticks.length - 1
+    // this is the count of the LAST tick
+    private static int currentTick;
+    private static long[] ticks = new long[600];
 
     public static double getTPS() {
         return getTPS(100);
     }
 
-    public static double getTPS(int ticks) {
-        if (tickCount <= ticks) {
-            return 20.0D;
+    public static double getTPS(int tickCount) {
+        // prevent wraparounds
+        if (tickCount > ticks.length) {
+            tickCount = ticks.length;
         }
 
-        int target = (tickCount - 1 - ticks) % TpsRunnable.ticks.length;
-        long elapsed = System.currentTimeMillis() - TpsRunnable.ticks[target];
+        // if the array isn't filled up until this point yet
+        if (ticks[tickCount] == 0.0) {
+            tickCount = currentTick;
+        }
 
-        return ticks / (elapsed / 1000.0D);
+        int index = ((currentTick - tickCount) + ticks.length) % ticks.length;
+        long elapsed = ticks[currentTick] - ticks[index];
+
+        return (double) tickCount / ((double) elapsed / 1000.0D);
     }
 
+    @Override
     public void run() {
-        ticks[(tickCount % ticks.length)] = System.currentTimeMillis();
+        currentTick = ++currentTick % ticks.length;
 
-        tickCount += 1;
+        ticks[currentTick] = System.currentTimeMillis();
     }
 }

@@ -64,10 +64,10 @@ public class Permission {
         public static final String WARP_CREATE = WARP + "create";
         public static final String WARP_LIST = WARP + "list";
         public static final String WARP_TP = WARP + "teleport";
-        public static final String SETHOME = PREFIX + "set";
-        public static final String DELHOME = PREFIX + "home.delete";
-        public static final String TPHOME = PREFIX + "home.tp";
-        public static final String VIEWHOME = PREFIX + "home.view";
+        private static final String HOME = PREFIX + "home.";
+        public static final String HOME_CREATE = HOME + "create";
+        public static final String HOME_TP = HOME + "tp";
+        public static final String HOME_LIST = HOME + "view";
         public static final String COOLDOWN_EXEMPT = "cooldown-exempt";
     }
 

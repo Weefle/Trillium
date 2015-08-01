@@ -45,7 +45,7 @@ public class TeleportModule extends TrilliumModule {
         }
 
         if (Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
-            new Message(Mood.BAD, "TPR", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
+            new Message(Mood.BAD, "Back", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
             return;
         }
 
@@ -74,7 +74,7 @@ public class TeleportModule extends TrilliumModule {
         }
 
         if (Cooldown.hasCooldown(p, CooldownType.TELEPORTATION)) {
-            new Message(Mood.BAD, "TPR", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p, CooldownType.TELEPORTATION)).to(p);
+            new Message(Mood.BAD, "Spawn", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p, CooldownType.TELEPORTATION)).to(p);
             return;
         }
 
@@ -373,7 +373,7 @@ public class TeleportModule extends TrilliumModule {
         if (tpr.containsValue(p.getUniqueId())) {
 
             if (Cooldown.hasCooldown(p, CooldownType.TELEPORTATION)) {
-                new Message(Mood.BAD, "TPR", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p, CooldownType.TELEPORTATION)).to(p);
+                new Message(Mood.BAD, "TPRA", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p, CooldownType.TELEPORTATION)).to(p);
                 return;
             }
 
@@ -390,7 +390,7 @@ public class TeleportModule extends TrilliumModule {
         } else if (tprh.containsValue(p.getUniqueId())) {
 
             if (Cooldown.hasCooldown(p, CooldownType.TELEPORTATION)) {
-                new Message(Mood.BAD, "TPR", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p, CooldownType.TELEPORTATION)).to(p);
+                new Message(Mood.BAD, "TPRA", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p, CooldownType.TELEPORTATION)).to(p);
                 return;
             }
 
@@ -555,7 +555,9 @@ public class TeleportModule extends TrilliumModule {
     @EventHandler
     public void onTP(PlayerTeleportEvent event) {
         TrilliumPlayer p = player(event.getPlayer());
-        if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND || event.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND
+                || event.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN
+                || event.getCause() == PlayerTeleportEvent.TeleportCause.UNKNOWN) {
             p.setLastLocation(event.getFrom());
         }
     }
@@ -563,7 +565,7 @@ public class TeleportModule extends TrilliumModule {
     @Command(command = "warp",
             description = "Create, delete, list, and tp to warps.",
             usage = "/warp <set/del/list/tp> [warp]",
-            permissions = {Permission.Teleport.WARP_CREATE, Permission.Teleport.WARP_LIST, Permission.Teleport.WARP_TP})
+            permissions = {Permission.Teleport.WARP_CREATE, Permission.Teleport.WARP_LIST, Permission.Teleport.WARP_TP, Permission.Teleport.COOLDOWN_EXEMPT})
     public void warp(CommandSender cs, String[] args) {
         if (!(cs instanceof Player)) {
             new Message("Warp", Error.CONSOLE_NOT_ALLOWED).to(cs);
@@ -640,6 +642,14 @@ public class TeleportModule extends TrilliumModule {
                 return;
             }
 
+            if (Cooldown.hasCooldown(p, CooldownType.TELEPORTATION)) {
+                new Message(Mood.BAD, "Warp", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p, CooldownType.TELEPORTATION)).to(p);
+                return;
+            }
+
+            if (!p.isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT))
+                Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
+
             if (!Warp.isNotNull(args[1])) {
                 new Message(Mood.BAD, "Warp", "Warp " + args[1] + " does not exist.").to(p);
                 return;
@@ -650,182 +660,134 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-
-
-    @Command(command = "homes",
-            description = "View a list of all your homes.",
-            usage = "/homes",
-            permissions = {Permission.Teleport.VIEWHOME})
-    public void homes(CommandSender cs, String[] args) {
-        if (getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
-            if (cs instanceof Player) {
-                TrilliumPlayer p = player((Player) cs);
-
-                if (p.hasPermission(Permission.Teleport.VIEWHOME)) {
-
-                    p.getProxy().sendMessage(ChatColor.GREEN + "Homes:");
-                    for (Message homes : p.getHomeList()) {
-                        homes.to(p);
-                    }
-
-                } else {
-                    new Message("Homes", Error.NO_PERMISSION).to(p);
-                }
-            } else {
-                new Message("Homes", Error.CONSOLE_NOT_ALLOWED).to(cs);
-            }
-        } else {
-            new Message(Mood.BAD, "Homes", "This feature is disabled.").to(cs);
-        }
-    }
-
     @Command(command = "home",
-            description = "Teleport to your home or view your home.",
-            usage = "/home [home name]",
-            permissions = {Permission.Teleport.TPHOME, Permission.Teleport.COOLDOWN_EXEMPT})
+            description = "View a list of all your homes.",
+            usage = "/home <set/del/list/tp> [home]",
+            permissions = {Permission.Teleport.HOME_CREATE, Permission.Teleport.HOME_LIST, Permission.Teleport.HOME_TP, Permission.Teleport.COOLDOWN_EXEMPT})
     public void home(CommandSender cs, String[] args) {
-        if (getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
-            if (cs instanceof Player) {
-                TrilliumPlayer p = player((Player) cs);
-
-                if (p.hasPermission(Permission.Teleport.TPHOME)) {
-                    if (args.length == 0) {
-                        if (p.getHomeList().size() == 0) {
-                            new Message(Mood.BAD, "Home", "You don't have any homes set.").to(p);
-
-                        } else if (p.getHomeList().size() == 1) {
-                            if (!Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
-                                if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
-                                    Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
-                                }
-
-                                if (p.homeIsNotNull("default")) {
-                                    PlayerHomeEvent event = new PlayerHomeEvent("default", p.getProxy(), p.getProxy().getLocation(), p.getHomeLocation("default"));
-                                    Bukkit.getPluginManager().callEvent(event);
-                                    if (!event.isCancelled()) {
-                                        p.getProxy().teleport(p.getHomeLocation("default"));
-                                        new Message(Mood.GOOD, "Home", "You were teleported home.").to(p);
-                                    }
-                                }
-                            } else {
-                                new Message(Mood.BAD, "Home", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
-                            }
-                        } else {
-                            p.getProxy().sendMessage(ChatColor.GREEN + "Homes:");
-                            for (Message homes : p.getHomeList()) {
-                                homes.to(p);
-                            }
-                        }
-                    } else {
-                        if (p.homeIsNotNull(args[0])) {
-                            if (!Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
-                                if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT)) {
-                                    Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
-                                }
-                                p.getProxy().teleport(p.getHomeLocation(args[0]));
-                                new Message(Mood.GOOD, "Home", "You teleported to home: " + args[0]).to(p);
-
-                            } else {
-                                new Message(Mood.BAD, "Home", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
-                            }
-                        } else {
-                            new Message(Mood.BAD, "Home", "You don't have a home with that name.").to(p);
-                        }
-                    }
-                } else {
-                    new Message("Home", Error.NO_PERMISSION).to(p);
-                }
-            } else {
-                new Message("Home", Error.CONSOLE_NOT_ALLOWED).to(cs);
-            }
-        } else {
-            new Message(Mood.BAD, "Home", "This feature is disabled.").to(cs);
+        if (!getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
+            new Message(Mood.BAD, "Homes", "This feature is disabled.").to(cs);
+            return;
         }
-    }
 
-    @Command(command = "sethome",
-            description = "Set a new home.",
-            usage = "/sethome [home name]",
-            permissions = {Permission.Teleport.SETHOME, Permission.Teleport.SETHOME + "<input>"})
-    public void sethome(CommandSender cs, String[] args) {
-        if (getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
-            if (cs instanceof Player) {
-                TrilliumPlayer p = player((Player) cs);
-
-                if (p.hasPermission(Permission.Teleport.SETHOME)) {
-                    if (args.length == 0) {
-                        if (p.getHomeList().size() <= 1) {
-                            p.setHome("default", p.getProxy().getLocation());
-                            new Message(Mood.GOOD, "Set Home", "New default home position set.").to(p);
-                        } else {
-                            p.getProxy().sendMessage(ChatColor.GREEN + "Homes:");
-                            for (Message homes : p.getHomeList()) {
-                                homes.to(p);
-                            }
-                        }
-                    } else {
-                        new Message(Mood.BAD, "Set Home", "You're not allowed to set more than one home.").to(p);
-                    }
-                } else {
-                    for (int i = 0; i < getConfig().getInt(Configuration.PlayerSettings.HOMES_MAX); i++) {
-                        if (p.hasPermission(Permission.Teleport.SETHOME + "." + i) || p.getProxy().isOp()) {
-                            if (args.length != 0) {
-                                if (p.getHomeList().size() < i) {
-                                    p.setHome(args[0], p.getProxy().getLocation());
-                                    new Message(Mood.GOOD, "Set Home", "New home set: " + args[0]).to(p);
-                                } else {
-                                    if (p.homeIsNotNull(args[0])) {
-                                        p.setHome(args[0], p.getProxy().getLocation());
-                                        new Message(Mood.GOOD, "Set Home", "Home " + args[0] + "'s position changed.").to(p);
-                                    } else {
-                                        new Message(Mood.BAD, "Set Home", "You reached the maximum amount of homes you're allowed to set: " + i).to(p);
-                                    }
-                                }
-                            } else {
-                                new Message("Set Home", Error.TOO_FEW_ARGUMENTS, "/sethome <home name>").to(p);
-                            }
-                        } else {
-                            new Message(Mood.BAD, "Set Home", "You have reached the maximum amount of homes you are allowed to have.").to(p);
-                        }
-                    }
-                }
-            } else {
-                new Message("Set Home", Error.CONSOLE_NOT_ALLOWED).to(cs);
-            }
-        } else {
-            new Message(Mood.BAD, "Set Home", "This feature is disabled.").to(cs);
+        if (!(cs instanceof Player)) {
+            new Message("Homes", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            return;
         }
-    }
 
-    @Command(command = "delhome",
-            description = "Delete a home.",
-            usage = "/delhome [home name]",
-            aliases = "deletehome",
-            permissions = {Permission.Teleport.DELHOME})
-    public void delhome(CommandSender cs, String[] args) {
-        if (getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
-            if (cs instanceof Player) {
-                TrilliumPlayer p = player((Player) cs);
+        TrilliumPlayer p = player((Player) cs);
 
-                if (p.hasPermission(Permission.Teleport.DELHOME)) {
-                    if (args.length != 0) {
-                        if (p.homeIsNotNull(args[0])) {
-                            p.delHome(args[0]);
-                            new Message(Mood.GOOD, "Del Home", "Home " + args[0] + " successfully deleted.").to(p);
-                        } else {
-                            new Message(Mood.BAD, "Del Home", "You don't have a home with that name.").to(p);
-                        }
-                    } else {
-                        new Message("Del Home", Error.TOO_FEW_ARGUMENTS).to(p);
-                    }
+        if (args[0].equalsIgnoreCase("set")) {
+
+            if (args.length < 1) {
+                new Message("Home", Error.TOO_FEW_ARGUMENTS).to(p);
+                return;
+            }
+
+            int max = -1;
+
+            for (int i = 1; i < getConfig().getInt(Configuration.PlayerSettings.HOMES_MAX); i++) {
+                if (p.hasPermission(Permission.Teleport.HOME_TP + "." + i)) {
+                    max = i;
+                }
+            }
+
+            if (max == -1) {
+                if (p.hasPermission(Permission.Teleport.HOME_TP)) {
+                    max = 1;
+                }
+            }
+
+            if (p.getHomeList().size() <= max) {
+                if (args.length >= 2) {
+                    p.setHome(args[1], p.getProxy().getLocation());
+                    new Message(Mood.GOOD, "Home", "New home " + args[1] + " set.").to(p);
                 } else {
-                    new Message("Del Home", Error.NO_PERMISSION).to(p);
+                    p.setHome("default", p.getProxy().getLocation());
+                    new Message(Mood.GOOD, "Home", "Default home set.").to(p);
                 }
             } else {
-                new Message("Del Home", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                new Message(Mood.BAD, "Home", "Home limit reached. You cannot set more than " + max + " homes.").to(p);
             }
-        } else {
-            new Message(Mood.BAD, "Del Home", "This feature is disabled.").to(cs);
+
+        } else if (args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del")) {
+            if (!p.hasPermission(Permission.Teleport.HOME_CREATE)) {
+                new Message("Home", Error.NO_PERMISSION).to(p);
+                return;
+            }
+
+            if (args.length < 2) {
+                new Message("Home", Error.TOO_FEW_ARGUMENTS).to(p);
+                return;
+            }
+
+            if (p.homeIsNotNull(args[1])) {
+                p.delHome(args[1]);
+                new Message(Mood.GOOD, "Home", "Home " + args[1] + " removed.").to(p);
+            } else {
+                new Message(Mood.BAD, "Home", "Home " + args[1] + " does not exist.").to(p);
+            }
+
+        } else if (args[0].equalsIgnoreCase("list")) {
+            if (!p.hasPermission(Permission.Teleport.HOME_LIST)) {
+                new Message("Home", Error.NO_PERMISSION).to(p);
+                return;
+            }
+
+            if (args.length < 1) {
+                new Message("Home", Error.TOO_FEW_ARGUMENTS).to(p);
+                return;
+            }
+
+            if (p.getHomeList().size() > 0) {
+                new Message(Mood.GOOD, "Home", "Homes:").to(p);
+                for (Message msg : p.getHomeList()) {
+                    msg.to(p);
+                }
+            } else {
+                new Message(Mood.BAD, "Home", "No homes available.").to(p);
+            }
+
+        } else if (args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("tp")) {
+            if (!p.hasPermission(Permission.Teleport.HOME_TP)) {
+                new Message("Home", Error.NO_PERMISSION).to(p);
+                return;
+            }
+
+            if (Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
+                new Message(Mood.BAD, "Home", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
+                return;
+            }
+
+            if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT))
+                Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
+
+            if (args.length <= 1) {
+                if (!p.homeIsNotNull("default")) {
+                    new Message(Mood.BAD, "Home", "You have no homes set.").to(p);
+                    return;
+                }
+
+                PlayerHomeEvent event = new PlayerHomeEvent("default", p.getProxy(), p.getProxy().getLocation(), p.getHomeLocation("default"));
+                Bukkit.getPluginManager().callEvent(event);
+                if (!event.isCancelled()) {
+                    p.getProxy().teleport(p.getHomeLocation("default"));
+                    new Message(Mood.GOOD, "Home", "You were teleported to your default home").to(p);
+                }
+
+            } else {
+                if (!p.homeIsNotNull(args[1])) {
+                    new Message(Mood.BAD, "Home", "Home " + args[1] + " does not exist.").to(p);
+                    return;
+                }
+
+                PlayerHomeEvent event = new PlayerHomeEvent(args[1], p.getProxy(), p.getProxy().getLocation(), p.getHomeLocation(args[1]));
+                Bukkit.getPluginManager().callEvent(event);
+                if (!event.isCancelled()) {
+                    p.getProxy().teleport(p.getHomeLocation(args[1]));
+                    new Message(Mood.GOOD, "Home", "You were teleported to home " + args[1]).to(p);
+                }
+            }
         }
     }
 }

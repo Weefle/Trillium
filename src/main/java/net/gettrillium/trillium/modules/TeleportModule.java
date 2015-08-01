@@ -82,7 +82,7 @@ public class TeleportModule extends TrilliumModule {
 
     @Command(command = "teleport",
             description = "Teleport to a person or a set of coordinates.",
-            usage = "/tp <player> [player/<x> <y> <z>]",
+            usage = "/tp <player/x y z] [player/x y z]",
             aliases = "tp",
             permissions = {Permission.Teleport.TP, Permission.Teleport.COOLDOWN_EXEMPT, Permission.Teleport.TP_OTHER, Permission.Teleport.TP_COORDS})
     public void tp(CommandSender cs, String[] args) {
@@ -91,7 +91,7 @@ public class TeleportModule extends TrilliumModule {
             return;
         }
 
-        if (args.length < 2) {
+        if (args.length == 0) {
             new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [player]/<x>, <y>, <z>]").to(cs);
             return;
         }
@@ -100,16 +100,29 @@ public class TeleportModule extends TrilliumModule {
         Player target2 = Bukkit.getPlayer(args[1]);
 
         if (target != null) {
-            if (target2 != null) {
-                target.teleport(target2);
-                if (!target.getName().equals(cs.getName())) {
-                    new Message(Mood.GOOD, "TP", target.getName() + " was teleported to " + target2.getName()).to(cs);
-                } else {
-                    new Message(Mood.GOOD, "TP", "You were teleported to " + target2.getName()).to(cs);
+            if (args.length < 1) {
+                if (!(cs instanceof Player)) {
+                    new Message("TP", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                    return;
                 }
 
+                Player p = (Player) cs;
+                p.teleport(target);
+
             } else {
-                if (args.length >= 4) {
+                if (target2 != null) {
+                    target.teleport(target2);
+                    if (!target.getName().equals(cs.getName())) {
+                        new Message(Mood.GOOD, "TP", target.getName() + " was teleported to " + target2.getName()).to(cs);
+                    } else {
+                        new Message(Mood.GOOD, "TP", "You were teleported to " + target2.getName()).to(cs);
+                    }
+
+                } else {
+                    if (args.length < 4) {
+                        new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [player]/<x>, <y>, <z>]").to(cs);
+                        return;
+                    }
 
                     double x;
                     double y;
@@ -120,7 +133,7 @@ public class TeleportModule extends TrilliumModule {
                     } else if (args[1].startsWith("~")) {
                         x = target.getLocation().getX() + Double.parseDouble(args[1]);
                     } else {
-                        new Message("TP", Error.WRONG_ARGUMENTS, args[1]).to(cs);
+                        new Message("TP", Error.INVALID_PLAYER, args[1]).to(cs);
                         return;
                     }
 
@@ -146,13 +159,55 @@ public class TeleportModule extends TrilliumModule {
                     target.teleport(loc);
                     new Message(Mood.GOOD, "TP", cs.getName() + " teleported you to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(target);
                     new Message(Mood.GOOD, "TP", "You teleported " + target.getName() + " to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(cs);
-
-                } else {
-                    new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [player]/<x>, <y>, <z>]").to(cs);
                 }
             }
         } else {
+            if (args.length < 3) {
+                new Message("TP", Error.TOO_FEW_ARGUMENTS, "/tp <player> [player]/<x>, <y>, <z>]").to(cs);
+                return;
+            }
 
+            if (!(cs instanceof Player)) {
+                new Message("TP", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                return;
+            }
+
+            Player p = (Player) cs;
+
+            double x;
+            double y;
+            double z;
+
+            if (StringUtils.isNumeric(args[0])) {
+                x = Double.parseDouble(args[0]);
+            } else if (args[0].startsWith("~")) {
+                x = p.getLocation().getX() + Double.parseDouble(args[0]);
+            } else {
+                new Message("TP", Error.INVALID_PLAYER, args[0]).to(cs);
+                return;
+            }
+
+            if (StringUtils.isNumeric(args[1])) {
+                y = Double.parseDouble(args[1]);
+            } else if (args[1].startsWith("~")) {
+                y = p.getLocation().getX() + Double.parseDouble(args[1]);
+            } else {
+                new Message("TP", Error.WRONG_ARGUMENTS, args[1]).to(cs);
+                return;
+            }
+
+            if (StringUtils.isNumeric(args[2])) {
+                z = Double.parseDouble(args[2]);
+            } else if (args[2].startsWith("~")) {
+                z = p.getLocation().getX() + Double.parseDouble(args[2]);
+            } else {
+                new Message("TP", Error.WRONG_ARGUMENTS, args[3]).to(cs);
+                return;
+            }
+
+            Location loc = new Location(p.getLocation().getWorld(), x, y, z);
+            p.teleport(loc);
+            new Message(Mood.GOOD, "TP", "You were teleported to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(p);
         }
     }
 

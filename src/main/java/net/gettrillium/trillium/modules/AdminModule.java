@@ -16,9 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class AdminModule extends TrilliumModule {
 
@@ -111,7 +109,8 @@ public class AdminModule extends TrilliumModule {
                         c.load();
 
                         for (BlockState bs : c.getTileEntities()) {
-                            if (bs.getType() == Material.CHEST || bs.getType() == Material.TRAPPED_CHEST) {
+                            Material type = bs.getType();
+                            if (type == Material.CHEST || type == Material.TRAPPED_CHEST) {
                                 Location chestLoc = bs.getLocation();
 
                                 if (loc.distanceSquared(chestLoc) < radiusSquared) {
@@ -127,6 +126,7 @@ public class AdminModule extends TrilliumModule {
                         new Message(Mood.GOOD, "Chest Finder", Utils.locationToString(block)).to(p);
                     }
 
+                    // create an array with the blocks in vector form so we don't need to do as much object creation in the loop
                     final List<Vector> blockVectors = new ArrayList<>();
 
                     for (Location chest : chests) {
@@ -147,24 +147,24 @@ public class AdminModule extends TrilliumModule {
                             Vector playerVector = loc.toVector();
 
                             for (Vector v : blockVectors) {
-                                // this is fine, since its just a stack alloc, and not creating a new object
                                 v.subtract(playerVector);
-
                                 double dist = v.length();
-                                double dx = (v.getX() / dist) * 0.5;
-                                double dy = (v.getY() / dist) * 0.5;
-                                double dz = (v.getZ() / dist) * 0.5;
+
+                                double dx = (v.getX() / dist) / 2;
+                                double dy = (v.getY() / dist) / 2;
+                                double dz = (v.getZ() / dist) / 2;
 
                                 // re-add the playerVector to this vector so we can reuse this vector next run
                                 v.add(playerVector);
 
                                 for (double d = 0; d <= dist; d += 0.5) {
-                                    ParticleEffect.FLAME.display(0, 0, 0, 0, 1, loc.clone().add(dx, dy, dz), p.getProxy());
+                                    loc.add(dx * d, dy * d, dz * d);
+                                    ParticleEffect.FLAME.display(0, 0, 0, 0, 1, loc, p.getProxy());
+                                    loc.subtract(dx, dy, dz);
                                 }
                             }
                         }
                     }.runTaskTimer(TrilliumAPI.getInstance(), 5, 5);
-
                 } else {
                     new Message(Mood.BAD, "Chest Finder", "No chests found.").to(p);
                 }

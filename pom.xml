@@ -53,6 +53,13 @@
             <version>1.8.6-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>me.clip.placeholderapi</groupId>
+            <artifactId>PlaceholderAPI</artifactId>
+            <scope>system</scope>
+            <version>1.7.1</version>
+            <systemPath>${basedir}/libs/PlaceholderAPI.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.5</version>

@@ -12,6 +12,7 @@ import java.util.List;
 
 public class AFKRunnable extends BukkitRunnable {
 
+    @Override
     public void run() {
         List<TrilliumPlayer> toKick = new ArrayList<>();
 

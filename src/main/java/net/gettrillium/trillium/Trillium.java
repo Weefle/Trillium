@@ -1,6 +1,7 @@
 package net.gettrillium.trillium;
 
 import net.gettrillium.trillium.api.Configuration;
+import net.gettrillium.trillium.api.Configuration.Server;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.Utils;
 import net.milkbowl.vault.chat.Chat;
@@ -19,11 +20,11 @@ import java.net.URL;
 
 public class Trillium extends JavaPlugin {
 
-    public static Economy economy = null;
-    public static Chat chat = null;
+    public static Economy economy;
+    public static Chat chat;
 
+    @Override
     public void onEnable() {
-
         saveDefaultConfig();
 
         TrilliumAPI.setInstance(this);
@@ -31,7 +32,7 @@ public class Trillium extends JavaPlugin {
         Utils.load();
         generateFiles();
 
-        if (getConfig().getBoolean(Configuration.Server.METRICS)) {
+        if (getConfig().getBoolean(Server.METRICS)) {
             try {
                 Metrics metrics = new Metrics(this);
                 metrics.start();
@@ -47,6 +48,7 @@ public class Trillium extends JavaPlugin {
             } else {
                 getLogger().warning("Could not hook into vault chat.");
             }
+
             if (getConfig().getBoolean(Configuration.Economy.ENABLED)) {
                 if (setupEconomy()) {
                     getLogger().info("Successfully hooked into vault economy.");
@@ -58,14 +60,10 @@ public class Trillium extends JavaPlugin {
 
         // Update check
         String version = null;
-        InputStream in = null;
-        try {
-            in = new URL("http://gettrillium.net/versionupdate/version.txt").openStream();
+        try (InputStream in = new URL("http://gettrillium.net/versionupdate/version.txt").openStream()) {
             version = StringEscapeUtils.escapeHtml(IOUtils.toString(in));
         } catch (IOException e) {
             getLogger().severe("Failed to check for updates!");
-        } finally {
-            IOUtils.closeQuietly(in);
         }
 
         getLogger().info("<<<---{[0]}--->>> Trillium <<<---{[0]}--->>>");
@@ -94,6 +92,7 @@ public class Trillium extends JavaPlugin {
         }
     }
 
+    @Override
     public void onDisable() {
         Utils.unload();
     }
@@ -104,10 +103,10 @@ public class Trillium extends JavaPlugin {
         URL book = getClass().getResource("/example-book.txt");
         URL tune = getClass().getResource("/example-tune.txt");
 
-        File bookDir = new File(getDataFolder() + "/Books/example-book.txt");
-        File lordSaadDir = new File(getDataFolder() + "/Trillium Group Manager/players/LordSaad.yml");
-        File worldDir = new File(getDataFolder() + "/Trillium Group Manager/worlds/world.yml");
-        File tuneDir = new File(getDataFolder() + "/Tunes/example-tune.txt");
+        File bookDir = new File(getDataFolder(), "Books/example-book.txt");
+        File lordSaadDir = new File(getDataFolder(), "Trillium Group Manager/players/LordSaad.yml");
+        File worldDir = new File(getDataFolder(), "Trillium Group Manager/worlds/world.yml");
+        File tuneDir = new File(getDataFolder(), "Tunes/example-tune.txt");
 
         try {
             FileUtils.copyURLToFile(book, bookDir);
@@ -120,13 +119,7 @@ public class Trillium extends JavaPlugin {
     }
 
     private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
         economy = rsp.getProvider();
         return economy != null;
     }

@@ -312,7 +312,7 @@ public class AdminModule extends TrilliumModule {
         List<Entity> entities = p.getProxy().getNearbyEntities(radius, radius, radius);
         int i = 0;
 
-        if (args[1].equalsIgnoreCase("mobs")) {
+        if (args[0].equalsIgnoreCase("mobs")) {
             for (Entity e : entities) {
                 if (e instanceof Monster || e instanceof Animals) {
                     i++;
@@ -340,7 +340,7 @@ public class AdminModule extends TrilliumModule {
                 new Message(Mood.BAD, "Kill all", "No monsters found in a radius of " + radius).to(p);
             }
 
-        } else if (args[1].equalsIgnoreCase("animals")) {
+        } else if (args[0].equalsIgnoreCase("animals")) {
             for (Entity e : entities) {
                 if (e instanceof Animals) {
                     i++;
@@ -354,7 +354,7 @@ public class AdminModule extends TrilliumModule {
                 new Message(Mood.BAD, "Kill all", "No animals found in a radius of " + radius).to(p);
             }
 
-        } else if (args[1].equalsIgnoreCase("items")) {
+        } else if (args[0].equalsIgnoreCase("items")) {
             for (Entity e : entities) {
                 if (e instanceof Item) {
                     i++;
@@ -368,7 +368,7 @@ public class AdminModule extends TrilliumModule {
                 new Message(Mood.BAD, "Kill all", "No items found in a radius of " + radius).to(p);
             }
 
-        } else if (args[1].equalsIgnoreCase("players")) {
+        } else if (args[0].equalsIgnoreCase("players")) {
             for (Entity e : entities) {
                 if (e instanceof Player) {
                     i++;
@@ -382,7 +382,7 @@ public class AdminModule extends TrilliumModule {
                 new Message(Mood.BAD, "Kill all", "No players found in a radius of " + radius).to(p);
             }
 
-        } else if (EntityType.valueOf(args[1]) != null) {
+        } else if (EntityType.valueOf(args[0]) != null) {
             for (Entity e : entities) {
                 if (e.getType() == EntityType.valueOf(args[1])) {
                     i++;
@@ -395,9 +395,9 @@ public class AdminModule extends TrilliumModule {
             }
 
             if (i != 0) {
-                new Message(Mood.GOOD, "Kill all", "Successfully murdered/destroyed " + i + "'" + args[1] + "' in a radius of " + radius).to(p);
+                new Message(Mood.GOOD, "Kill all", "Successfully murdered/destroyed " + i + "'" + args[0] + "' in a radius of " + radius).to(p);
             } else {
-                new Message(Mood.BAD, "Kill all", "No '" + args[1] + "' found in a radius of " + radius).to(p);
+                new Message(Mood.BAD, "Kill all", "No '" + args[0] + "' found in a radius of " + radius).to(p);
             }
         } else {
             new Message("Kill All", Error.WRONG_ARGUMENTS, "/killall <mobs/players/animals/monsters/items/everything/<entity name>> [radius]").to(p);

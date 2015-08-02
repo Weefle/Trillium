@@ -326,7 +326,7 @@ public class AdminModule extends TrilliumModule {
                 new Message(Mood.BAD, "Kill all", "No mobs found in a radius of " + radius).to(p);
             }
 
-        } else if (args[1].equalsIgnoreCase("monsters")) {
+        } else if (args[0].equalsIgnoreCase("monsters")) {
             for (Entity e : entities) {
                 if (e instanceof Monster) {
                     i++;

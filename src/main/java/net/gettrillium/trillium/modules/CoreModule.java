@@ -53,10 +53,6 @@ public class CoreModule extends TrilliumModule {
         }
 
         // motd
-        // world list?
-        // maybe a "current online staff" list?
-        // could define a trillium permission such as "trillium.staff.stafflist"
-        // loop through all players with that permission and list em.
         if (p.hasPermission(Permission.Chat.MOTD)) {
             List<String> motd = getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
             for (String s : motd) {

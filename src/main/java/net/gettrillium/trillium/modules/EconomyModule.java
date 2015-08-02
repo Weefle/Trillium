@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 
 public class EconomyModule extends TrilliumModule {
 
+    // TODO: Rubber ducks
+
     @Command(command = "balance",
             description = "Check how much money you have in your account.",
             usage = "/balance",

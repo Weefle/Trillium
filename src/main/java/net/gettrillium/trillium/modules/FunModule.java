@@ -23,36 +23,39 @@ public class FunModule extends TrilliumModule {
             aliases = "thor",
             permissions = {Permission.Fun.SMITE})
     public void smite(CommandSender cs, String[] args) {
-        if (cs instanceof Player) {
-            Player p = (Player) cs;
-            if (cs.hasPermission(Permission.Fun.SMITE)) {
-                if (args.length == 0) {
-
-                    Set<Material> set = new HashSet<>();
-                    set.add(Material.AIR);
-                    set.add(Material.WATER);
-                    set.add(Material.STATIONARY_WATER);
-                    set.add(Material.LAVA);
-                    set.add(Material.STATIONARY_LAVA);
-                    Location loc = p.getTargetBlock(set, 100).getLocation();
-                    p.getWorld().strikeLightning(loc);
-
-                } else {
-                    Player target = Bukkit.getPlayer(args[0]);
-                    if (target != null) {
-                        p.getWorld().strikeLightning(target.getLocation());
-                        new Message(Mood.GOOD, "Smite", p.getName() + " has struck lightning upon you!").to(target);
-                        new Message(Mood.GOOD, "Smite", "You struck lightning upon " + target.getName()).to(p);
-
-                    } else {
-                        new Message("Smite", Error.INVALID_PLAYER).to(p);
-                    }
-                }
-            } else {
-                new Message("Smite", Error.NO_PERMISSION).to(p);
-            }
-        } else {
+        if (!(cs instanceof Player)) {
             new Message("Smite", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            return;
+        }
+
+        Player p = (Player) cs;
+
+        if (!cs.hasPermission(Permission.Fun.SMITE)) {
+            new Message("Smite", Error.NO_PERMISSION).to(p);
+            return;
+        }
+
+        if (args.length == 0) {
+
+            Set<Material> set = new HashSet<>();
+            set.add(Material.AIR);
+            set.add(Material.WATER);
+            set.add(Material.STATIONARY_WATER);
+            set.add(Material.LAVA);
+            set.add(Material.STATIONARY_LAVA);
+            Location loc = p.getTargetBlock(set, 100).getLocation();
+            p.getWorld().strikeLightning(loc);
+
+        } else {
+            Player target = Bukkit.getPlayer(args[0]);
+            if (target != null) {
+                p.getWorld().strikeLightning(target.getLocation());
+                new Message(Mood.GOOD, "Smite", p.getName() + " has struck lightning upon you!").to(target);
+                new Message(Mood.GOOD, "Smite", "You struck lightning upon " + target.getName()).to(p);
+
+            } else {
+                new Message("Smite", Error.INVALID_PLAYER).to(p);
+            }
         }
     }
 

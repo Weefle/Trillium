@@ -52,6 +52,12 @@ public class CoreModule extends TrilliumModule {
             }
         }
 
+        // OP color
+        if (p.isOp()) {
+            String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getName();
+            p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
+        }
+
         // motd
         if (p.hasPermission(Permission.Chat.MOTD)) {
             List<String> motd = getConfig().getStringList(Configuration.Chat.INGAME_MOTD);

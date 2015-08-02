@@ -7,7 +7,6 @@ import net.gettrillium.trillium.api.report.Reports;
 import net.gettrillium.trillium.api.warp.Warp;
 import net.gettrillium.trillium.events.PlayerDeath;
 import net.gettrillium.trillium.events.ServerListPing;
-import net.gettrillium.trillium.particleeffect.ParticleEffect;
 import net.gettrillium.trillium.runnables.AFKRunnable;
 import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
 import net.gettrillium.trillium.runnables.TpsRunnable;
@@ -19,8 +18,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.io.IOException;

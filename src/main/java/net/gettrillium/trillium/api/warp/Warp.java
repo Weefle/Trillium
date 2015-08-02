@@ -18,7 +18,8 @@ public class Warp {
     private static Map<String, Location> warps = new HashMap<>();
     private static final List<Message> cachedWarpList = new ArrayList<>();
 
-    private Warp() {}
+    private Warp() {
+    }
 
     public static void setWarp(String name, Location loc) {
         warps.put(name, loc);

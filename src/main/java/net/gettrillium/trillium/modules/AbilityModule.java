@@ -3,7 +3,6 @@ package net.gettrillium.trillium.modules;
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.Configuration.Server;
 import net.gettrillium.trillium.api.Permission;
-import net.gettrillium.trillium.api.Permission.Ability;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.TrilliumPlayer;
 import net.gettrillium.trillium.api.command.Command;
@@ -24,7 +23,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
 public class AbilityModule extends TrilliumModule {

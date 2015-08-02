@@ -141,7 +141,7 @@ broadcast:
   regular-broadcasts:
     broadcast-format:
       - " "
-      - "&6&m----------------- &7Broadcast &6&m-----------------"
+      - "&6&m-----------------&7 Broadcast &6&m-----------------"
       - " "
       - "[msg]"
       - " "

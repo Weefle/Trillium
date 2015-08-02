@@ -697,6 +697,8 @@ public class TeleportModule extends TrilliumModule {
                 }
             }
 
+            if (p.getProxy().isOp()) { max = getConfig().getInt(Configuration.PlayerSettings.HOMES_MAX); }
+
             if (p.getHomeList().size() <= max) {
                 if (args.length >= 2) {
                     p.setHome(args[1], p.getProxy().getLocation());

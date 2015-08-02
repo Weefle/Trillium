@@ -117,18 +117,28 @@ public class Utils {
         }
     }
 
+    /**
+     * Compares two version numbers
+     * @param version1 first version
+     * @param version2 another version
+     * @return true, if version1 is newer than version2
+     */
     public static boolean compareVersion(String version1, String version2) {
-        if (version1 != null && version2 != null) {
-            String[] a = version1.split("\\.");
-            String[] b = version2.split("\\.");
-            for (int i = 0; i < a.length || i < b.length; ++i) {
-                if (i < a.length && i < b.length) {
-                    if (Integer.valueOf(a[i]) > Integer.valueOf(b[i])) return true;
-                }
+        if ((version1 == null) || (version2 == null)) {
+            return false;
+        }
+
+        String[] a = version1.split("\\.");
+        String[] b = version2.split("\\.");
+
+        // for the parts of the version number that both share,
+        for (int i = 0; (i < a.length) && (i < b.length); ++i) {
+            if (Integer.parseInt(a[i]) > Integer.parseInt(b[i])) {
+                return true;
             }
         }
 
-        return false;
+        return (a.length > b.length);
     }
 
     public static int timeToTickConverter(String time) {

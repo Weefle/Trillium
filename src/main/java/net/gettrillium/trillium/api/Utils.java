@@ -1,6 +1,8 @@
 package net.gettrillium.trillium.api;
 
-import net.gettrillium.trillium.api.commandbinder.CommandBinder;
+import net.gettrillium.trillium.api.Configuration.Afk;
+import net.gettrillium.trillium.api.Configuration.Broadcast;
+import net.gettrillium.trillium.api.commandbinder.CommandBinder.Blocks;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.report.Reports;
@@ -27,40 +29,54 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static net.gettrillium.trillium.api.commandbinder.CommandBinder.Items;
+
 public class Utils {
+
+    private static final Pattern COMMANDBLOCK_REGEX = Pattern.compile("@p", Pattern.LITERAL);
+    private static final Pattern COMMA_SPACE = Pattern.compile(", ");
 
     public static void printCurrentMemory(CommandSender sender) {
         int free = (int) Runtime.getRuntime().freeMemory() / 1000000;
         int max = (int) Runtime.getRuntime().maxMemory() / 1000000;
         int used = max - free;
-        int i = (int) (100L * used / max);
+        int i = (int) ((100L * (long) used) / (long) max);
 
         new Message(Mood.NEUTRAL, "Max Memory", max + "MB").to(sender);
         new Message(Mood.NEUTRAL, "Used Memory", used + "MB").to(sender);
         new Message(Mood.NEUTRAL, "Free Memory", free + "MB").to(sender);
         new Message(Mood.NEUTRAL, "Used Memory", asciibar(i)).to(sender);
-        new Message(Mood.NEUTRAL, "TPS", "" + TpsRunnable.getTPS()).to(sender);
-        new Message(Mood.NEUTRAL, "Lag Rate", asciibar((int) Math.round((1.0D - TpsRunnable.getTPS() / 20.0D)))).to(sender);
+        new Message(Mood.NEUTRAL, "TPS", String.valueOf(TpsRunnable.getTPS())).to(sender);
+        new Message(Mood.NEUTRAL, "Lag Rate", asciibar((int) Math.round((1.0D - (TpsRunnable.getTPS() / 20.0D))))).to(sender);
     }
 
     public static String asciibar(int percent) {
-        StringBuilder bar = new StringBuilder(ChatColor.GRAY + "[");
+        StringBuilder bar = new StringBuilder();
+        bar.append(ChatColor.GRAY);
+        bar.append('[');
 
         for (int i = 0; i < 25; i++) {
             if (i < (percent / 4)) {
-                bar.append(ChatColor.AQUA + "#");
+                bar.append(ChatColor.AQUA);
+                bar.append('#');
             } else {
-                bar.append(ChatColor.DARK_GRAY + "-");
+                bar.append(ChatColor.DARK_GRAY);
+                bar.append('-');
             }
         }
-        bar.append(ChatColor.GRAY + "]  " + ChatColor.AQUA + percent + "%");
+
+        bar.append(ChatColor.GRAY);
+        bar.append("]  ");
+        bar.append(ChatColor.AQUA);
+        bar.append(percent);
+        bar.append('%');
         return bar.toString();
     }
 
     public static List<String> centerText(String input) {
         String desturated = ChatColor.stripColor(input);
         String[] s = stringSplitter(desturated, 40);
-        ArrayList<String> centered = new ArrayList<>();
+        List<String> centered = new ArrayList<>(s.length);
         for (String slices : s) {
             centered.add(StringUtils.center(slices, 60));
         }
@@ -76,7 +92,7 @@ public class Utils {
     // http://stackoverflow.com/a/12297231/4327834
     // #efficiency
     public static String[] stringSplitter(String s, int interval) {
-        int arrayLength = (int) Math.ceil(((s.length() / (double) interval)));
+        int arrayLength = (int) Math.ceil((((double) s.length() / (double) interval)));
         String[] result = new String[arrayLength];
 
         int j = 0;
@@ -111,46 +127,43 @@ public class Utils {
                 }
             }
         }
+
         return false;
     }
 
     public static int timeToTickConverter(String time) {
         int seconds = 0;
-        int hours = 0;
-        int minutes = 0;
-        int days = 0;
 
         if (time.contains("s")) {
             seconds = endOfStringInt(time.split("s")[0]);
         }
         if (time.contains("m")) {
-            minutes = endOfStringInt(time.split("m")[0]);
+            seconds += endOfStringInt(time.split("m")[0]) * 60;
         }
         if (time.contains("h")) {
-            hours = endOfStringInt(time.split("h")[0]);
+            seconds += endOfStringInt(time.split("h")[0]) * 3600;
         }
         if (time.contains("d")) {
-            days = endOfStringInt(time.split("d")[0]);
+            seconds += endOfStringInt(time.split("d")[0]) * 86400;
         }
 
-        return (seconds * 20) + (hours * 3600 * 20) + (minutes * 60 * 20) + (days * 86400 * 20);
+        return seconds * 20;
     }
 
     public static String timeToString(int ticks) {
-        int millis = ticks / 20 * 1000;
+        int millis = (ticks / 20) * 1000;
 
         return String.format("%02d:%02d:%02d:%02d",
-                TimeUnit.MILLISECONDS.toDays(millis),
-                TimeUnit.MILLISECONDS.toHours(millis) % TimeUnit.DAYS.toHours(1),
-                TimeUnit.MILLISECONDS.toMinutes(millis) % TimeUnit.HOURS.toMinutes(1),
-                TimeUnit.MILLISECONDS.toSeconds(millis) % TimeUnit.MINUTES.toSeconds(1));
+                TimeUnit.MILLISECONDS.toDays((long) millis),
+                TimeUnit.MILLISECONDS.toHours((long) millis) % TimeUnit.DAYS.toHours(1L),
+                TimeUnit.MILLISECONDS.toMinutes((long) millis) % TimeUnit.HOURS.toMinutes(1L),
+                TimeUnit.MILLISECONDS.toSeconds((long) millis) % TimeUnit.MINUTES.toSeconds(1L));
     }
 
     public static void broadcastImportantMessage() {
-        List<String> list = TrilliumAPI.getInstance().getConfig().getStringList(Configuration.Broadcast.IMP_BROADCAST2);
+        List<String> list = TrilliumAPI.getInstance().getConfig().getStringList(Broadcast.IMP_BROADCAST2);
         for (String s : list) {
-            s = ChatColor.translateAlternateColorCodes('&', s);
-            Bukkit.broadcastMessage(s);
+            Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', s));
         }
     }
 
@@ -159,31 +172,28 @@ public class Utils {
         p.getInventory().setArmorContents(null);
     }
 
-    public static ArrayList<String> convertFileToBookPages(File book) {
-        ArrayList<String> lines = new ArrayList<>();
-        ArrayList<String> pages = new ArrayList<>();
+    public static List<String> convertFileToBookPages(File book) {
+        List<String> pages = new ArrayList<>();
+
+        StringBuilder sb = new StringBuilder();
+
         try {
-            for (Object line : FileUtils.readLines(book)) {
-                String s = line + "";
-                s = ChatColor.translateAlternateColorCodes('&', s);
-                lines.add(s);
+            for (Object o : FileUtils.readLines(book)) {
+                String line = o.toString();
+                line = ChatColor.translateAlternateColorCodes('&', line);
+
+                if (line.equals("<-NEXT->")) {
+                    pages.add(sb.toString());
+                    sb = new StringBuilder();
+                } else {
+                    sb.append(line);
+                    sb.append('\n');
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String s = "<-NEXT->";
-        for (String line : lines) {
-            if (!line.equals("<-NEXT->")) {
-                if (!s.equals("<-NEXT->")) {
-                    s = s + "\n" + line;
-                } else {
-                    s = line;
-                }
-            } else {
-                pages.add(s);
-                s = "<-NEXT->";
-            }
-        }
+
         return pages;
     }
 
@@ -201,14 +211,14 @@ public class Utils {
         }
 
         World world = Bukkit.getWorld(s.split(", ")[0]);
-        int x = Integer.parseInt(s.split(", ")[1]);
+        int x = Integer.parseInt(COMMA_SPACE.split(s)[1]);
         int y = Integer.parseInt(s.split(", ")[2]);
         int z = Integer.parseInt(s.split(", ")[3]);
-        return new Location(world, x, y, z);
+        return new Location(world, (double) x, (double) y, (double) z);
     }
 
     public static String locationSerializer(Location loc) {
-        return loc.getWorld() + "%" + loc.getX() + "%" + loc.getY() + "%" + loc.getZ() + "%" + loc.getPitch() + "%" + loc.getYaw();
+        return loc.getWorld() + "%" + loc.getX() + '%' + loc.getY() + '%' + loc.getZ() + '%' + loc.getPitch() + '%' + loc.getYaw();
     }
 
     public static Location locationDeserializer(String loc) {
@@ -223,7 +233,7 @@ public class Utils {
     }
 
     public static String commandBlockify(String command, Player p) {
-        return command.replace("@p", p.getName());
+        return COMMANDBLOCK_REGEX.matcher(command).replaceAll(p.getName());
     }
 
     public static void load() {
@@ -232,17 +242,17 @@ public class Utils {
         TrilliumAPI.registerModules();
         TrilliumAPI.loadPlayers();
 
-        CommandBinder.Blocks.setTable();
-        CommandBinder.Items.setTable();
+        Blocks.setTable();
+        Items.setTable();
         Warp.setWarps();
         Reports.setReports();
 
-        new TpsRunnable().runTaskTimer(TrilliumAPI.getInstance(), 100, 1);
-        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_ENABLED)) {
-            new AutoBroadcastRunnable().runTaskTimer(TrilliumAPI.getInstance(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Broadcast.FREQUENCY)));
+        new TpsRunnable().runTaskTimer(TrilliumAPI.getInstance(), 100L, 1L);
+        if (TrilliumAPI.getInstance().getConfig().getBoolean(Broadcast.AUTO_ENABLED)) {
+            new AutoBroadcastRunnable().runTaskTimer(TrilliumAPI.getInstance(), 1L, (long) timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Broadcast.FREQUENCY)));
         }
-        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Afk.AUTO_AFK_ENABLED)) {
-            new AFKRunnable().runTaskTimer(TrilliumAPI.getInstance(), 1, Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Afk.AUTO_AFK_TIME)));
+        if (TrilliumAPI.getInstance().getConfig().getBoolean(Afk.AUTO_AFK_ENABLED)) {
+            new AFKRunnable().runTaskTimer(TrilliumAPI.getInstance(), 1L, (long) timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Afk.AUTO_AFK_TIME)));
         }
 
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeath(), TrilliumAPI.getInstance());

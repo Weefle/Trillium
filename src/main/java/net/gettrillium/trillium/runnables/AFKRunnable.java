@@ -33,6 +33,10 @@ public class AFKRunnable extends BukkitRunnable {
                 continue;
             }
 
+            if (player.isShadowBanned() || player.isShadowMuted()) {
+                continue;
+            }
+
             if (player.getLastActive() >= System.currentTimeMillis()) {
                 continue;
             }

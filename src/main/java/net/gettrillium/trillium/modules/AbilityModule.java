@@ -362,7 +362,7 @@ public class AbilityModule extends TrilliumModule {
     public void onDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             TrilliumPlayer player = player((Player) event.getEntity());
-            if (player.isGod()) {
+            if (player.isGod() || player.isShadowBanned()) {
                 event.setCancelled(true);
             }
             if (player.isVanished() && getConfig().getBoolean(Configuration.Ability.GOD)) {
@@ -419,7 +419,7 @@ public class AbilityModule extends TrilliumModule {
     @EventHandler
     public void onHunger(FoodLevelChangeEvent event) {
         TrilliumPlayer player = player((Player) event.getEntity());
-        if (player.isGod()) {
+        if (player.isGod() || player.isShadowBanned()) {
             event.setCancelled(true);
         }
     }
@@ -431,7 +431,7 @@ public class AbilityModule extends TrilliumModule {
         }
 
         TrilliumPlayer player = player(event.getTarget().getName());
-        if (player.isGod() || player.isVanished()) {
+        if (player.isGod() || player.isVanished() || player.isShadowBanned()) {
             event.setCancelled(true);
         }
     }

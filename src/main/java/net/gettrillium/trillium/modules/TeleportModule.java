@@ -580,7 +580,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
             if (args.length < 2) {
-                new Message("Warp", Error.TOO_FEW_ARGUMENTS).to(p);
+                new Message("Warp", Error.TOO_FEW_ARGUMENTS, "/warp <set/del/list/tp> [warp]").to(p);
                 return;
             }
 
@@ -599,7 +599,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
             if (args.length < 2) {
-                new Message("Warp", Error.TOO_FEW_ARGUMENTS).to(p);
+                new Message("Warp", Error.TOO_FEW_ARGUMENTS, "/warp <set/del/list/tp> [warp]").to(p);
                 return;
             }
 
@@ -617,7 +617,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
             if (args.length < 1) {
-                new Message("Warp", Error.TOO_FEW_ARGUMENTS).to(p);
+                new Message("Warp", Error.TOO_FEW_ARGUMENTS, "/warp <set/del/list/tp> [warp]").to(p);
                 return;
             }
 
@@ -637,7 +637,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
             if (args.length < 2) {
-                new Message("Warp", Error.TOO_FEW_ARGUMENTS).to(p);
+                new Message("Warp", Error.TOO_FEW_ARGUMENTS, "/warp <set/del/list/tp> [warp]").to(p);
                 return;
             }
 
@@ -679,7 +679,7 @@ public class TeleportModule extends TrilliumModule {
         if (args[0].equalsIgnoreCase("set")) {
 
             if (args.length < 1) {
-                new Message("Home", Error.TOO_FEW_ARGUMENTS).to(p);
+                new Message("Home", Error.TOO_FEW_ARGUMENTS, "/home <set/del/list/tp> [home]").to(p);
                 return;
             }
 
@@ -718,7 +718,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
             if (args.length < 2) {
-                new Message("Home", Error.TOO_FEW_ARGUMENTS).to(p);
+                new Message("Home", Error.TOO_FEW_ARGUMENTS, "/home <set/del/list/tp> [home]").to(p);
                 return;
             }
 
@@ -736,7 +736,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
             if (args.length < 1) {
-                new Message("Home", Error.TOO_FEW_ARGUMENTS).to(p);
+                new Message("Home", Error.TOO_FEW_ARGUMENTS, "/home <set/del/list/tp> [home]").to(p);
                 return;
             }
 

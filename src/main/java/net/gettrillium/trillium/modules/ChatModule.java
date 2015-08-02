@@ -473,6 +473,7 @@ public class ChatModule extends TrilliumModule {
         if (event.getPlayer().hasPermission(Permission.Chat.COLOR)) {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
         }
+
         if (Cooldown.hasCooldown(event.getPlayer(), CooldownType.CHAT)) {
             new Message(Mood.BAD, "Chat", "Your spamming! You can resume chatting in: " + ChatColor.AQUA + Cooldown.getTime(event.getPlayer(), CooldownType.CHAT)).to(event.getPlayer());
             event.setCancelled(true);
@@ -492,7 +493,6 @@ public class ChatModule extends TrilliumModule {
                     if (!event.getPlayer().isOp()) {
                         if (event.getPlayer().hasPermission(Permission.Chat.PERM_FORMAT + perm)) {
                             global = false;
-                            Bukkit.broadcastMessage(getConfig().getString(Configuration.Chat.PERM_SPECIFIC_FORMATS + "." + perm));
                             String format = getConfig().getString(Configuration.Chat.PERM_SPECIFIC_FORMATS + "." + perm);
                             format = format.replace("%USERNAME%", event.getPlayer().getName());
                             format = format.replace("%NICKNAME%", event.getPlayer().getDisplayName());

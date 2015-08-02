@@ -7,3 +7,8 @@ jdk:
 
 notifications:
   slack: teamtrillium:P5f5xEQfrZbhn0NeFiValIEA
+
+cache:
+  directories:
+  - .autoconf
+  - $HOME/.m2

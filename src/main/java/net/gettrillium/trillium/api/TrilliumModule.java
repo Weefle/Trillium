@@ -16,7 +16,7 @@ public abstract class TrilliumModule implements Listener {
     }
 
     protected TrilliumPlayer player(Player player) {
-        return player(player.getName());
+        return TrilliumAPI.getPlayer(player);
     }
 
     protected TrilliumPlayer player(String name) {

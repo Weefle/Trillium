@@ -280,70 +280,127 @@ public class AdminModule extends TrilliumModule {
 
     @Command(command = "killall",
             description = "Kill everything in a radius.",
-            usage = "/killall <radius> <mobs/players/animals/monsters/items/everything>",
+            usage = "/killall <mobs/players/animals/monsters/items/everything/<entity name>> [radius]",
             permissions = {Permission.Admin.KILLALL})
     public void killall(CommandSender cs, String[] args) {
-        if (cs instanceof Player) {
-            TrilliumPlayer p = player((Player) cs);
-            if (p.hasPermission(Permission.Admin.KILLALL)) {
-                if (args.length <= 1) {
-                    new Message("Kill All", Error.TOO_FEW_ARGUMENTS, "/killall <radius> <mobs/players/animals/monsters/items/everything>").to(p);
-                } else {
-                    if (StringUtils.isNumeric(args[0])) {
-                        List<Entity> entities = p.getProxy().getNearbyEntities(Double.parseDouble(args[0]), Double.parseDouble(args[0]), Double.parseDouble(args[0]));
+        if (!(cs instanceof Player)) {
+            new Message("Kill All", Error.CONSOLE_NOT_ALLOWED);
+            return;
+        }
 
-                        if (args[1].equalsIgnoreCase("mobs")
-                                || args[1].equalsIgnoreCase("animals")
-                                || args[1].equalsIgnoreCase("players")
-                                || args[1].equalsIgnoreCase("monsters")) {
-                            new Message(Mood.GOOD, "Kill All", "Successfully murdered all " + args[1] + " in a radius of " + args[0]).to(p);
-                        } else if (args[1].equalsIgnoreCase("items")) {
-                            new Message(Mood.GOOD, "Kill All", "Successfully destroyed all items in a radius of " + args[0]).to(p);
-                        } else if (args[1].equalsIgnoreCase("everything")) {
-                            new Message(Mood.GOOD, "Kill All", "Successfully destroyed and murdered everything... you monster...").to(p);
-                        } else {
-                            p.getProxy().sendMessage("");
-                        }
-                        for (Entity e : entities) {
-                            if (args[1].equalsIgnoreCase("mobs")) {
-                                if (e instanceof Monster || e instanceof Animals) {
-                                    ((LivingEntity) e).setHealth(0D);
-                                }
-                            } else if (args[1].equalsIgnoreCase("monsters")) {
-                                if (e instanceof Monster) {
-                                    ((LivingEntity) e).setHealth(0D);
-                                }
-                            } else if (args[1].equalsIgnoreCase("animals")) {
-                                if (e instanceof Animals) {
-                                    ((LivingEntity) e).setHealth(0D);
-                                }
-                            } else if (args[1].equalsIgnoreCase("players")) {
-                                if (e instanceof Player) {
-                                    ((LivingEntity) e).setHealth(0D);
-                                }
-                            } else if (args[1].equalsIgnoreCase("items")) {
-                                if (e instanceof Item) {
-                                    e.remove();
-                                }
-                            } else if (args[1].equalsIgnoreCase("everything")) {
-                                if (e instanceof Damageable) {
-                                    ((Damageable) e).setHealth(0D);
-                                } else {
-                                    e.remove();
-                                }
-                            } else {
-                                new Message("Kill All", Error.WRONG_ARGUMENTS, "/killall <radius> <mobs/players/animals/monsters/items/everything>").to(p);
-                            }
-                        }
+        TrilliumPlayer p = player((Player) cs);
+
+        if (!p.hasPermission(Permission.Admin.KILLALL)) {
+            new Message("Kill All", Error.NO_PERMISSION);
+            return;
+        }
+
+        if (args.length < 1) {
+            new Message("Kill All", Error.TOO_FEW_ARGUMENTS, "/killall <mobs/players/animals/monsters/items/everything/<entity name>> [radius]").to(p);
+            return;
+        }
+
+        int radius = 50;
+        if (args.length > 1) {
+            if (StringUtils.isNumeric(args[1])) {
+                radius = Integer.parseInt(args[1]);
+            } else {
+                new Message(Mood.BAD, "Kill All", "Radius is not a number. Setting to 50");
+            }
+        }
+
+        List<Entity> entities = p.getProxy().getNearbyEntities(radius, radius, radius);
+        int i = 0;
+
+        if (args[1].equalsIgnoreCase("mobs")) {
+            for (Entity e : entities) {
+                if (e instanceof Monster || e instanceof Animals) {
+                    i++;
+                    ((LivingEntity) e).setHealth(0D);
+                }
+            }
+
+            if (i != 0) {
+                new Message(Mood.GOOD, "Kill all", "Successfully murdered " + i + " mobs in a radius of " + radius).to(p);
+            } else {
+                new Message(Mood.BAD, "Kill all", "No mobs found in a radius of " + radius).to(p);
+            }
+
+        } else if (args[1].equalsIgnoreCase("monsters")) {
+            for (Entity e : entities) {
+                if (e instanceof Monster) {
+                    i++;
+                    ((LivingEntity) e).setHealth(0D);
+                }
+            }
+
+            if (i != 0) {
+                new Message(Mood.GOOD, "Kill all", "Successfully murdered " + i + " monsters in a radius of " + radius).to(p);
+            } else {
+                new Message(Mood.BAD, "Kill all", "No monsters found in a radius of " + radius).to(p);
+            }
+
+        } else if (args[1].equalsIgnoreCase("animals")) {
+            for (Entity e : entities) {
+                if (e instanceof Animals) {
+                    i++;
+                    ((LivingEntity) e).setHealth(0D);
+                }
+            }
+
+            if (i != 0) {
+                new Message(Mood.GOOD, "Kill all", "Successfully murdered " + i + " animals in a radius of " + radius).to(p);
+            } else {
+                new Message(Mood.BAD, "Kill all", "No animals found in a radius of " + radius).to(p);
+            }
+
+        } else if (args[1].equalsIgnoreCase("items")) {
+            for (Entity e : entities) {
+                if (e instanceof Item) {
+                    i++;
+                    e.remove();
+                }
+            }
+
+            if (i != 0) {
+                new Message(Mood.GOOD, "Kill all", "Successfully destroyed " + i + " items in a radius of " + radius).to(p);
+            } else {
+                new Message(Mood.BAD, "Kill all", "No items found in a radius of " + radius).to(p);
+            }
+
+        } else if (args[1].equalsIgnoreCase("players")) {
+            for (Entity e : entities) {
+                if (e instanceof Player) {
+                    i++;
+                    ((LivingEntity) e).setHealth(0D);
+                }
+            }
+
+            if (i != 0) {
+                new Message(Mood.GOOD, "Kill all", "Successfully murdered " + i + " players in a radius of " + radius).to(p);
+            } else {
+                new Message(Mood.BAD, "Kill all", "No players found in a radius of " + radius).to(p);
+            }
+
+        } else if (EntityType.valueOf(args[1]) != null) {
+            for (Entity e : entities) {
+                if (e.getType() == EntityType.valueOf(args[1])) {
+                    i++;
+                    if (e instanceof LivingEntity) {
+                        ((LivingEntity) e).setHealth(0D);
                     } else {
-                        new Message(Mood.BAD, "Kill All", args[0] + " is not a number.").to(p);
+                        e.remove();
                     }
                 }
+            }
+
+            if (i != 0) {
+                new Message(Mood.GOOD, "Kill all", "Successfully murdered/destroyed " + i + "'" + args[1] + "' in a radius of " + radius).to(p);
             } else {
-                new Message("Kill All", Error.NO_PERMISSION);
+                new Message(Mood.BAD, "Kill all", "No '" + args[1] + "' found in a radius of " + radius).to(p);
             }
         } else {
-            new Message("Kill All", Error.CONSOLE_NOT_ALLOWED);
+            new Message("Kill All", Error.WRONG_ARGUMENTS, "/killall <mobs/players/animals/monsters/items/everything/<entity name>> [radius]").to(p);
         }
     }
 

@@ -2,6 +2,7 @@ package net.gettrillium.trillium.modules;
 
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.Configuration.Server;
+import net.gettrillium.trillium.api.Permission.Ability;
 import net.gettrillium.trillium.api.Permission;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.TrilliumPlayer;
@@ -23,9 +24,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.projectiles.ProjectileSource;
 
 public class AbilityModule extends TrilliumModule {
@@ -33,37 +32,38 @@ public class AbilityModule extends TrilliumModule {
     @Command(command = "fly",
             description = "SOAR THROUGH THE AIR LIKE A MAJESTIC BUTTERFLY!",
             usage = "/fly",
-            permissions = {Permission.Ability.FLY, Permission.Ability.FLY_OTHER})
+            permissions = {Ability.FLY, Ability.FLY_OTHER})
     public void fly(CommandSender cs, String[] args) {
-        if (!(cs instanceof Player)) {
-            new Message("Fly", Error.CONSOLE_NOT_ALLOWED).to(cs);
-            return;
-        }
-
-        TrilliumPlayer player = player(cs.getName());
         if (args.length == 0) {
-            if (player.hasPermission(Permission.Ability.FLY) || player.hasPermission(Permission.Ability.FLY_OTHER)) {
-                if (!player.isFlying()) {
-                    new Message(Mood.GOOD, "Fly", "You are now in fly mode.").to(player);
-                } else {
+            if (!(cs instanceof Player)) {
+                new Message("Fly", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                return;
+            }
+
+            TrilliumPlayer player = player(cs.getName());
+
+            if (player.hasPermission(Ability.FLY) || player.hasPermission(Ability.FLY_OTHER)) {
+                if (player.isFlying()) {
                     new Message(Mood.BAD, "Fly", "You are no longer in fly mode.").to(player);
+                } else {
+                    new Message(Mood.GOOD, "Fly", "You are now in fly mode.").to(player);
                 }
                 player.setFlying(!player.isFlying());
             } else {
                 new Message("Fly", Error.NO_PERMISSION).to(player);
             }
         } else {
-            if (player.hasPermission(Permission.Ability.FLY_OTHER)) {
+            if (cs.hasPermission(Ability.FLY_OTHER)) {
                 TrilliumPlayer target = player(args[0]);
                 if (target != null) {
                     if (target.isFlying()) {
-                        new Message(Mood.BAD, "Fly", target.getName() + " is no longer in fly mode.").to(player);
-                        new Message(Mood.BAD, "Fly", player.getName() + " removed you from fly mode.").to(target);
+                        new Message(Mood.BAD, "Fly", target.getName() + " is no longer in fly mode.").to(cs);
+                        new Message(Mood.BAD, "Fly", cs.getName() + " removed you from fly mode.").to(target);
 
                         target.setFlying(false);
                     } else {
-                        new Message(Mood.GOOD, "Fly", target.getName() + " is now in fly mode.").to(player);
-                        new Message(Mood.GOOD, "Fly", player.getName() + " put you in fly mode.").to(target);
+                        new Message(Mood.GOOD, "Fly", target.getName() + " is now in fly mode.").to(cs);
+                        new Message(Mood.GOOD, "Fly", cs.getName() + " put you in fly mode.").to(target);
 
                         target.setFlying(true);
                     }
@@ -71,7 +71,7 @@ public class AbilityModule extends TrilliumModule {
                     new Message("Fly", Error.INVALID_PLAYER, args[0]).to(cs);
                 }
             } else {
-                new Message("Fly", Error.TOO_FEW_ARGUMENTS, "/fly [player]");
+                new Message("Fly", Error.TOO_FEW_ARGUMENTS, "/fly [player]").to(cs);
             }
         }
     }
@@ -79,25 +79,24 @@ public class AbilityModule extends TrilliumModule {
     @Command(command = "god",
             description = "Become invincible to anything.",
             usage = "/god",
-            permissions = {Permission.Ability.GOD, Permission.Ability.GOD_OTHER})
+            permissions = {Ability.GOD, Ability.GOD_OTHER})
     public void god(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer player = player(cs.getName());
             if (args.length == 0) {
-                if (player.hasPermission(Permission.Ability.GOD)) {
-                    if (!player.isGod()) {
-                        player.setGod(true);
-                        new Message(Mood.GOOD, "God", "You are now in god mode.").to(player);
-                    } else {
+                if (player.hasPermission(Ability.GOD)) {
+                    if (player.isGod()) {
                         player.setGod(false);
                         new Message(Mood.BAD, "God", "You are no longer in god mode.").to(player);
+                    } else {
+                        player.setGod(true);
+                        new Message(Mood.GOOD, "God", "You are now in god mode.").to(player);
                     }
                 } else {
-                    new Message("God", Error.NO_PERMISSION);
+                    new Message("God", Error.NO_PERMISSION).to(cs);
                 }
-
             } else {
-                if (player.hasPermission(Permission.Ability.GOD_OTHER)) {
+                if (player.hasPermission(Ability.GOD_OTHER)) {
                     TrilliumPlayer target = player(args[0]);
                     if (target != null) {
                         if (target.isGod()) {
@@ -117,7 +116,7 @@ public class AbilityModule extends TrilliumModule {
                 }
             }
         } else {
-            new Message("God", Error.CONSOLE_NOT_ALLOWED);
+            new Message("God", Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -125,30 +124,30 @@ public class AbilityModule extends TrilliumModule {
             description = "Turn completely invisible and roam the world undetected.!",
             usage = "/vanish [player]",
             aliases = "v",
-            permissions = {Permission.Ability.VANISH, Permission.Ability.VANISH_OTHER})
+            permissions = {Ability.VANISH, Ability.VANISH_OTHER})
     public void vanish(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer player = player(cs.getName());
             if (args.length == 0) {
-                if (player.hasPermission(Permission.Ability.VANISH)) {
-                    if (!player.isVanished()) {
-                        player.setVanished(true);
-                        new Message(Mood.GOOD, "Vanish", "You are now in vanish mode.").to(player);
-                        if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
-                            player.getProxy().setGameMode(GameMode.SPECTATOR);
-                        }
-                    } else {
+                if (player.hasPermission(Ability.VANISH)) {
+                    if (player.isVanished()) {
                         player.setVanished(false);
                         new Message(Mood.BAD, "Vanish", "You are no longer in vanish mode.").to(player);
                         if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
                             player.getProxy().setGameMode(GameMode.SURVIVAL);
+                        }
+                    } else {
+                        player.setVanished(true);
+                        new Message(Mood.GOOD, "Vanish", "You are now in vanish mode.").to(player);
+                        if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
+                            player.getProxy().setGameMode(GameMode.SPECTATOR);
                         }
                     }
                 } else {
                     new Message("Vanish", Error.NO_PERMISSION).to(player);
                 }
             } else {
-                if (player.hasPermission(Permission.Ability.VANISH_OTHER)) {
+                if (player.hasPermission(Ability.VANISH_OTHER)) {
                     TrilliumPlayer target = player(args[0]);
                     if (target != null) {
                         if (target.isVanished()) {
@@ -181,12 +180,14 @@ public class AbilityModule extends TrilliumModule {
     @Command(command = "speed",
             description = "Change your speed without potion effects",
             usage = "/speed <fly/walk> <speed>",
-            permissions = {Permission.Ability.SPEED})
+            permissions = {Ability.SPEED})
     public void speed(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
-            if (p.hasPermission(Permission.Ability.SPEED)) {
-                if (args.length != 0) {
+            if (p.hasPermission(Ability.SPEED)) {
+                if (args.length == 0) {
+                    new Message("Speed", Error.WRONG_ARGUMENTS, "/speed <fly/walk> <speed>").to(p);
+                } else {
                     if (args[0].equalsIgnoreCase("fly")) {
                         double i;
                         if (args.length > 1) {
@@ -203,8 +204,8 @@ public class AbilityModule extends TrilliumModule {
                                 new Message(Mood.BAD, "Speed", args[1] + " is not a number.").to(p);
                             }
                         } else {
-                            new Message(Mood.GOOD, "Speed", "Fly speed set to default: " + ChatColor.AQUA + "1").to(p);
-                            p.getProxy().setFlySpeed((float) 0.1);
+                            new Message(Mood.GOOD, "Speed", "Fly speed set to default: " + ChatColor.AQUA + '1').to(p);
+                            p.getProxy().setFlySpeed(0.1f);
                         }
                     } else if (args[0].equalsIgnoreCase("walk")) {
                         double i;
@@ -212,7 +213,7 @@ public class AbilityModule extends TrilliumModule {
                             if (StringUtils.isNumeric(args[1])) {
                                 i = Double.parseDouble(args[1]);
                                 if (i <= 10 && i >= -10) {
-                                    i = i * 0.1;
+                                    i *= 0.1;
                                     p.getProxy().setWalkSpeed((float) i);
                                     new Message(Mood.GOOD, "Speed", "Walk speed set to " + ChatColor.AQUA + args[1]).to(p);
                                 } else {
@@ -222,14 +223,12 @@ public class AbilityModule extends TrilliumModule {
                                 new Message(Mood.BAD, "Speed", args[1] + " is not a number.").to(p);
                             }
                         } else {
-                            new Message(Mood.GOOD, "Speed", "Walk speed set to default: " + ChatColor.AQUA + "2").to(p);
-                            p.getProxy().setFlySpeed((float) 0.2);
+                            new Message(Mood.GOOD, "Speed", "Walk speed set to default: " + ChatColor.AQUA + '2').to(p);
+                            p.getProxy().setFlySpeed(0.2f);
                         }
                     } else {
                         new Message("Speed", Error.TOO_FEW_ARGUMENTS, "/speed <fly/walk> <speed>").to(p);
                     }
-                } else {
-                    new Message("Speed", Error.WRONG_ARGUMENTS, "/speed <fly/walk> <speed>").to(p);
                 }
             } else {
                 new Message("Speed", Error.NO_PERMISSION).to(p);
@@ -243,12 +242,12 @@ public class AbilityModule extends TrilliumModule {
             description = "Change your gamemode.",
             usage = "/gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp] [player]",
             aliases = "gm",
-            permissions = {Permission.Ability.GAMEMODE, Permission.Ability.GAMEMODE_OTHER})
+            permissions = {Ability.GAMEMODE, Ability.GAMEMODE_OTHER})
     public void gamemode(CommandSender cs, String[] args) {
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
             if (args.length == 1) {
-                if (p.hasPermission(Permission.Ability.GAMEMODE)) {
+                if (p.hasPermission(Ability.GAMEMODE)) {
 
                     if (args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c")) {
                         new Message(Mood.GOOD, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "creative").to(p);
@@ -276,7 +275,7 @@ public class AbilityModule extends TrilliumModule {
 
             } else if (args.length > 1) {
 
-                if (p.hasPermission(Permission.Ability.GAMEMODE_OTHER)) {
+                if (p.hasPermission(Ability.GAMEMODE_OTHER)) {
                     TrilliumPlayer pl = player(args[1]);
                     if (pl != null) {
 
@@ -312,7 +311,7 @@ public class AbilityModule extends TrilliumModule {
                 }
 
             } else {
-                if (p.hasPermission(Permission.Ability.GAMEMODE)) {
+                if (p.hasPermission(Ability.GAMEMODE)) {
                     if (p.getProxy().getGameMode() == GameMode.CREATIVE) {
                         p.getProxy().setGameMode(GameMode.SURVIVAL);
                         new Message(Mood.GOOD, "Gamemode", "Gamemode set to " + ChatColor.AQUA + "survival").to(p);
@@ -332,17 +331,17 @@ public class AbilityModule extends TrilliumModule {
     @Command(command = "pvp",
             description = "Toggle your pvp status whether you want to disable/enable pvp for yourself.",
             usage = "/pvp",
-            permissions = {Permission.Ability.PVP})
+            permissions = {Ability.PVP})
     public void pvp(CommandSender cs, String[] args) {
-        if (getConfig().getBoolean(Configuration.Server.PVPENABLE)) {
-            if (getConfig().getBoolean(Configuration.Server.TOGGLEPVP)) {
+        if (getConfig().getBoolean(Server.PVPENABLE)) {
+            if (getConfig().getBoolean(Server.TOGGLEPVP)) {
                 if (cs instanceof Player) {
                     TrilliumPlayer p = player((Player) cs);
-                    if (p.hasPermission(Permission.Ability.PVP)) {
-                        if (!p.canPvp()) {
-                            new Message(Mood.GOOD, "PVP", "Pvp has been enabled for you.").to(p);
-                        } else {
+                    if (p.hasPermission(Ability.PVP)) {
+                        if (p.canPvp()) {
                             new Message(Mood.BAD, "PVP", "Pvp has been disabled for you.").to(p);
+                        } else {
+                            new Message(Mood.GOOD, "PVP", "Pvp has been enabled for you.").to(p);
                         }
                         p.setPvp(!p.canPvp());
                     } else {

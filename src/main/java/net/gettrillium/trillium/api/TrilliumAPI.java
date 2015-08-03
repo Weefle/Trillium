@@ -136,8 +136,44 @@ public class TrilliumAPI {
         return players.values();
     }
 
-    public static Map<String, String[]> getCommands() {
-        return commands;
+    public static String getName(String command) {
+        if (commands.containsKey(command)) {
+            return commands.get(command)[0];
+        } else {
+            return null;
+        }
+    }
+
+    public static String getDescription(String command) {
+        if (commands.containsKey(command)) {
+            return commands.get(command)[1];
+        } else {
+            return null;
+        }
+    }
+
+    public static String[] getPermission(String command) {
+        if (commands.containsKey(command)) {
+            return new String[]{commands.get(command)[2]};
+        } else {
+            return null;
+        }
+    }
+
+    public static String getUsage(String command) {
+        if (commands.containsKey(command)) {
+            return commands.get(command)[3];
+        } else {
+            return null;
+        }
+    }
+
+    public static String[] getAliases(String command) {
+        if (commands.containsKey(command)) {
+            return new String[]{commands.get(command)[4]};
+        } else {
+            return null;
+        }
     }
 
     public static void registerCommands(TrilliumModule module) {
@@ -157,7 +193,8 @@ public class TrilliumAPI {
                     commandMap.register("trillium", c);
 
                     commands.put(command.command(),
-                            new String[]{command.description()
+                            new String[]{command.name()
+                                    , command.description()
                                     , Arrays.toString(command.permissions())
                                     , command.usage()
                                     , Arrays.toString(command.aliases())});

@@ -188,6 +188,10 @@ public class Utils {
     }
 
     public static String[] arrayFromString(String fromString) {
+        if (fromString == null) {
+            return null;
+        }
+
         return fromString.split(";");
     }
 

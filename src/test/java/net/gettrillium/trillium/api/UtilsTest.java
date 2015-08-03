@@ -35,13 +35,14 @@ public class UtilsTest {
     @Test
     public void arrayToStringTest() {
         Assert.assertEquals("null returns blank string", "", Utils.arrayToString(null));
-        Assert.assertEquals("blank array returns blank string", "", Utils.arrayToString(new String[] {}));
-        Assert.assertEquals("{a, b, c, d} returns a;b;c;d", "a;b;c;d", Utils.arrayToString(new String[] {"a", "b", "c", "d"}));
+        Assert.assertEquals("blank array returns blank string", "", Utils.arrayToString(new String[]{}));
+        Assert.assertEquals("{a, b, c, d} returns a;b;c;d", "a;b;c;d", Utils.arrayToString(new String[]{"a", "b", "c", "d"}));
     }
 
     @Test
     public void arrayFromStringTest() {
-
+        Assert.assertArrayEquals("null returns null", null, Utils.arrayFromString(null));
+        Assert.assertArrayEquals("a;b;c;d returns {a, b, c, d}", new String[] {"a", "b", "c", "d"}, Utils.arrayFromString("a;b;c;d"));
     }
 
     @Test

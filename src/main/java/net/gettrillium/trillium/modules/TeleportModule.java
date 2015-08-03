@@ -1,6 +1,8 @@
 package net.gettrillium.trillium.modules;
 
 import net.gettrillium.trillium.api.*;
+import net.gettrillium.trillium.api.Configuration.PlayerSettings;
+import net.gettrillium.trillium.api.Permission.Teleport;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.cooldown.Cooldown;
 import net.gettrillium.trillium.api.cooldown.CooldownType;
@@ -17,6 +19,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -30,7 +33,7 @@ public class TeleportModule extends TrilliumModule {
             command = "back",
             description = "Teleport to your last active position",
             usage = "/back",
-            permissions = {Permission.Teleport.BACK, Permission.Teleport.COOLDOWN_EXEMPT})
+            permissions = {Teleport.BACK, Teleport.COOLDOWN_EXEMPT})
     public void back(CommandSender cs, String[] args) {
         String cmd = "back";
         if (!(cs instanceof Player)) {
@@ -40,7 +43,7 @@ public class TeleportModule extends TrilliumModule {
 
         TrilliumPlayer p = player(cs.getName());
 
-        if (p.getProxy().hasPermission(Permission.Teleport.BACK)) {
+        if (p.getProxy().hasPermission(Teleport.BACK)) {
             new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
             return;
         }
@@ -50,8 +53,9 @@ public class TeleportModule extends TrilliumModule {
             return;
         }
 
-        if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT))
+        if (!p.getProxy().isOp() && !p.hasPermission(Teleport.COOLDOWN_EXEMPT)) {
             Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
+        }
 
         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You have been sent back to your last location.").to(p);
         p.getProxy().teleport(p.getLastLocation());
@@ -61,7 +65,7 @@ public class TeleportModule extends TrilliumModule {
             command = "spawn",
             description = "Teleport to the server's spawn.",
             usage = "/spawn",
-            permissions = {Permission.Teleport.SPAWN, Permission.Teleport.COOLDOWN_EXEMPT})
+            permissions = {Teleport.SPAWN, Teleport.COOLDOWN_EXEMPT})
     public void spawn(CommandSender cs, String[] args) {
         String cmd = "spawn";
         if (!(cs instanceof Player)) {
@@ -71,7 +75,7 @@ public class TeleportModule extends TrilliumModule {
 
         Player p = (Player) cs;
 
-        if (!p.hasPermission(Permission.Teleport.SPAWN)) {
+        if (!p.hasPermission(Teleport.SPAWN)) {
             new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
             return;
         }
@@ -81,8 +85,9 @@ public class TeleportModule extends TrilliumModule {
             return;
         }
 
-        if (!p.isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT))
+        if (!p.isOp() && !p.hasPermission(Teleport.COOLDOWN_EXEMPT)) {
             Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
+        }
 
         p.teleport(p.getWorld().getSpawnLocation());
         new Message(Mood.GOOD, "Spawn", "You were successfully teleported to the spawn point.").to(p);
@@ -93,10 +98,10 @@ public class TeleportModule extends TrilliumModule {
             description = "Teleport to a person or a set of coordinates.",
             usage = "/tp <player/x y z] [player/x y z]",
             aliases = "tp",
-            permissions = {Permission.Teleport.TP, Permission.Teleport.COOLDOWN_EXEMPT, Permission.Teleport.TP_OTHER, Permission.Teleport.TP_COORDS})
+            permissions = {Teleport.TP, Teleport.COOLDOWN_EXEMPT, Teleport.TP_OTHER, Teleport.TP_COORDS})
     public void tp(CommandSender cs, String[] args) {
         String cmd = "teleport";
-        if (!cs.hasPermission(Permission.Teleport.TP_COORDS)) {
+        if (!cs.hasPermission(Teleport.TP_COORDS)) {
             new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
             return;
         }
@@ -133,39 +138,21 @@ public class TeleportModule extends TrilliumModule {
                         new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
                         return;
                     }
-
-                    double x;
-                    double y;
-                    double z;
-
-                    if (StringUtils.isNumeric(args[1])) {
-                        x = Double.parseDouble(args[1]);
-                    } else if (args[1].startsWith("~")) {
-                        x = target.getLocation().getX() + Double.parseDouble(args[1]);
-                    } else {
-                        new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[1]).to(cs);
-                        return;
+                    
+                    double[] coords = new double[3];
+                    
+                    for (int i = 0; i < 3; i++) {
+                        if (StringUtils.isNumeric(args[i])) {
+                            coords[i] = Double.parseDouble(args[i]);
+                        } else if (args[i].startsWith("~")) {
+                            coords[i] = target.getLocation().getX() + Double.parseDouble(args[i]);
+                        } else {
+                            new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[i]).to(cs);
+                            return;
+                        }
                     }
 
-                    if (StringUtils.isNumeric(args[2])) {
-                        y = Double.parseDouble(args[2]);
-                    } else if (args[2].startsWith("~")) {
-                        y = target.getLocation().getX() + Double.parseDouble(args[2]);
-                    } else {
-                        new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
-                        return;
-                    }
-
-                    if (StringUtils.isNumeric(args[3])) {
-                        z = Double.parseDouble(args[3]);
-                    } else if (args[3].startsWith("~")) {
-                        z = target.getLocation().getX() + Double.parseDouble(args[3]);
-                    } else {
-                        new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
-                        return;
-                    }
-
-                    Location loc = new Location(target.getLocation().getWorld(), x, y, z);
+                    Location loc = new Location(target.getLocation().getWorld(), coords[0], coords[1], coords[2]);
                     target.teleport(loc);
                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), cs.getName() + " teleported you to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(target);
                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + target.getName() + " to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(cs);
@@ -184,38 +171,20 @@ public class TeleportModule extends TrilliumModule {
 
             Player p = (Player) cs;
 
-            double x;
-            double y;
-            double z;
-
-            if (StringUtils.isNumeric(args[0])) {
-                x = Double.parseDouble(args[0]);
-            } else if (args[0].startsWith("~")) {
-                x = p.getLocation().getX() + Double.parseDouble(args[0]);
-            } else {
-                new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
-                return;
+            double[] coords = new double[3];
+            
+            for (int i = 0; i < 3; i++) {
+                if (StringUtils.isNumeric(args[i])) {
+                    coords[i] = Double.parseDouble(args[i]);
+                } else if (args[i].startsWith("~")) {
+                    coords[i] = p.getLocation().getX() + Double.parseDouble(args[i]);
+                } else {
+                    new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[i]).to(cs);
+                    return;
+                }
             }
 
-            if (StringUtils.isNumeric(args[1])) {
-                y = Double.parseDouble(args[1]);
-            } else if (args[1].startsWith("~")) {
-                y = p.getLocation().getX() + Double.parseDouble(args[1]);
-            } else {
-                new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, args[1]).to(cs);
-                return;
-            }
-
-            if (StringUtils.isNumeric(args[2])) {
-                z = Double.parseDouble(args[2]);
-            } else if (args[2].startsWith("~")) {
-                z = p.getLocation().getX() + Double.parseDouble(args[2]);
-            } else {
-                new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, args[3]).to(cs);
-                return;
-            }
-
-            Location loc = new Location(p.getLocation().getWorld(), x, y, z);
+            Location loc = new Location(p.getLocation().getWorld(), coords[0], coords[1], coords[2]);
             p.teleport(loc);
             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You were teleported to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(p);
         }
@@ -226,7 +195,7 @@ public class TeleportModule extends TrilliumModule {
             description = "Teleport a player to you.",
             usage = "/tph <player>",
             aliases = "tph",
-            permissions = {Permission.Teleport.TPHERE, Permission.Teleport.COOLDOWN_EXEMPT})
+            permissions = {Teleport.TPHERE, Teleport.COOLDOWN_EXEMPT})
     public void teleporthere(CommandSender cs, String[] args) {
         String cmd = "teleporthere";
         if (!(cs instanceof Player)) {
@@ -236,7 +205,7 @@ public class TeleportModule extends TrilliumModule {
 
         Player p = (Player) cs;
 
-        if (!p.hasPermission(Permission.Teleport.TPHERE)) {
+        if (!p.hasPermission(Teleport.TPHERE)) {
             new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
             return;
         }
@@ -258,8 +227,9 @@ public class TeleportModule extends TrilliumModule {
             return;
         }
 
-        if (!p.isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT))
+        if (!p.isOp() && !p.hasPermission(Teleport.COOLDOWN_EXEMPT)) {
             Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
+        }
 
         target.getProxy().teleport(p);
         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + target.getProxy().getName() + " to you.").to(p);
@@ -271,7 +241,7 @@ public class TeleportModule extends TrilliumModule {
             description = "Request permission to teleport to a player.",
             usage = "/tpr <player>",
             aliases = "tpr",
-            permissions = {Permission.Teleport.TPREQEST, Permission.Teleport.COOLDOWN_EXEMPT})
+            permissions = {Teleport.TPREQEST, Teleport.COOLDOWN_EXEMPT})
     public void teleportrequest(CommandSender cs, String[] args) {
         String cmd = "teleportrequest";
         if (!(cs instanceof Player)) {
@@ -281,7 +251,7 @@ public class TeleportModule extends TrilliumModule {
 
         Player p = (Player) cs;
 
-        if (!p.hasPermission(Permission.Teleport.TPREQEST)) {
+        if (!p.hasPermission(Teleport.TPREQEST)) {
             new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
             return;
         }
@@ -303,8 +273,9 @@ public class TeleportModule extends TrilliumModule {
             return;
         }
 
-        if (!p.isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT))
+        if (!p.isOp() && !p.hasPermission(Teleport.COOLDOWN_EXEMPT)) {
             Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
+        }
 
         new Message(Mood.NEUTRAL, "TPR", target.getName() + " is now pending. Please stand by.").to(p);
 
@@ -320,7 +291,7 @@ public class TeleportModule extends TrilliumModule {
             description = "Request permission to teleport a player to you.",
             usage = "/tprh <player>",
             aliases = "tprh",
-            permissions = {Permission.Teleport.TPREQESTHERE, Permission.Teleport.COOLDOWN_EXEMPT})
+            permissions = {Teleport.TPREQESTHERE, Teleport.COOLDOWN_EXEMPT})
     public void teleportrequesthere(CommandSender cs, String[] args) {
         String cmd = "teleportrequesthere";
         if (!(cs instanceof Player)) {
@@ -330,7 +301,7 @@ public class TeleportModule extends TrilliumModule {
 
         Player p = (Player) cs;
 
-        if (!p.hasPermission(Permission.Teleport.TPREQESTHERE)) {
+        if (!p.hasPermission(Teleport.TPREQESTHERE)) {
             new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
             return;
         }
@@ -352,8 +323,9 @@ public class TeleportModule extends TrilliumModule {
             return;
         }
 
-        if (!p.isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT))
+        if (!p.isOp() && !p.hasPermission(Teleport.COOLDOWN_EXEMPT)) {
             Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
+        }
 
         new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "Teleport request for " + target.getName() + " to here is now pending. Please stand by.").to(p);
 
@@ -368,7 +340,7 @@ public class TeleportModule extends TrilliumModule {
             description = "Accept a teleport request.",
             usage = "/tpra",
             aliases = "tpra",
-            permissions = {Permission.Teleport.TPRRESPOND, Permission.Teleport.COOLDOWN_EXEMPT})
+            permissions = {Teleport.TPRRESPOND, Teleport.COOLDOWN_EXEMPT})
     public void teleportrequestaccept(CommandSender cs, String[] args) {
         String cmd = "teleportrequestaccept";
         if (!(cs instanceof Player)) {
@@ -378,7 +350,7 @@ public class TeleportModule extends TrilliumModule {
 
         Player p = (Player) cs;
 
-        if (!p.hasPermission(Permission.Teleport.TPRRESPOND)) {
+        if (!p.hasPermission(Teleport.TPRRESPOND)) {
             new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
             return;
         }
@@ -390,8 +362,9 @@ public class TeleportModule extends TrilliumModule {
                 return;
             }
 
-            if (!p.isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT))
+            if (!p.isOp() && !p.hasPermission(Teleport.COOLDOWN_EXEMPT)) {
                 Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
+            }
 
             TrilliumPlayer requester = player(Bukkit.getPlayer(tpr.get(p.getUniqueId())));
             requester.getProxy().teleport(p);
@@ -407,8 +380,9 @@ public class TeleportModule extends TrilliumModule {
                 return;
             }
 
-            if (!p.isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT))
+            if (!p.isOp() && !p.hasPermission(Teleport.COOLDOWN_EXEMPT)) {
                 Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
+            }
 
             TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getUniqueId())));
 
@@ -428,7 +402,7 @@ public class TeleportModule extends TrilliumModule {
             description = "Deny a teleport request.",
             usage = "/tprd",
             aliases = "tprd",
-            permissions = {Permission.Teleport.TPRRESPOND})
+            permissions = {Teleport.TPRRESPOND})
     public void teleportrequestdeny(CommandSender cs, String[] args) {
         String cmd = "teleportrequestdeny";
         if (!(cs instanceof Player)) {
@@ -438,7 +412,7 @@ public class TeleportModule extends TrilliumModule {
 
         Player p = (Player) cs;
 
-        if (!p.hasPermission(Permission.Teleport.TPRRESPOND)) {
+        if (!p.hasPermission(Teleport.TPRRESPOND)) {
             new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
             return;
         }
@@ -449,14 +423,12 @@ public class TeleportModule extends TrilliumModule {
             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You denied " + ChatColor.AQUA + requester.getName() + "'s teleport request.").to(p);
             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " denied your teleport request.").to(requester);
             tpr.remove(p.getUniqueId());
-
         } else if (tprh.containsValue(p.getUniqueId())) {
             Player requester = Bukkit.getPlayer(tprh.get(p.getUniqueId()));
 
             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You denied " + ChatColor.AQUA + requester.getName() + "'s teleport request.").to(p);
             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " denied your teleport request.").to(requester);
             tprh.remove(p.getUniqueId());
-
         } else {
             new Message(Mood.BAD, TrilliumAPI.getName(cmd), "No pending teleport requests to deny.").to(p);
         }
@@ -467,10 +439,10 @@ public class TeleportModule extends TrilliumModule {
             description = "Teleport to a set of coordinates.",
             usage = "/tpc [player] <x> <y> <z>",
             aliases = "tpc",
-            permissions = {Permission.Teleport.TP_COORDS, Permission.Teleport.COOLDOWN_EXEMPT})
+            permissions = {Teleport.TP_COORDS, Teleport.COOLDOWN_EXEMPT})
     public void teleportcoordinates(CommandSender cs, String[] args) {
         String cmd = "teleportcoordinates";
-        if (!cs.hasPermission(Permission.Teleport.TP_COORDS)) {
+        if (!cs.hasPermission(Teleport.TP_COORDS)) {
             new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
             return;
         }
@@ -484,39 +456,20 @@ public class TeleportModule extends TrilliumModule {
 
         if (target != null) {
             if (args.length >= 4) {
+                double[] coords = new double[3];
 
-                double x;
-                double y;
-                double z;
-
-                if (StringUtils.isNumeric(args[1])) {
-                    x = Double.parseDouble(args[1]);
-                } else if (args[1].startsWith("~")) {
-                    x = target.getLocation().getX() + Double.parseDouble(args[1]);
-                } else {
-                    new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, args[1]).to(cs);
-                    return;
+                for (int i = 1; i < 4; i++) {
+                    if (StringUtils.isNumeric(args[i])) {
+                        coords[i - 1] = Double.parseDouble(args[i]);
+                    } else if (args[i].startsWith("~")) {
+                        coords[i - 1] = target.getLocation().getX() + Double.parseDouble(args[i]);
+                    } else {
+                        new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, args[i]).to(cs);
+                        return;
+                    }
                 }
 
-                if (StringUtils.isNumeric(args[2])) {
-                    y = Double.parseDouble(args[2]);
-                } else if (args[2].startsWith("~")) {
-                    y = target.getLocation().getX() + Double.parseDouble(args[2]);
-                } else {
-                    new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
-                    return;
-                }
-
-                if (StringUtils.isNumeric(args[3])) {
-                    z = Double.parseDouble(args[3]);
-                } else if (args[3].startsWith("~")) {
-                    z = target.getLocation().getX() + Double.parseDouble(args[3]);
-                } else {
-                    new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
-                    return;
-                }
-
-                Location loc = new Location(target.getLocation().getWorld(), x, y, z);
+                Location loc = new Location(target.getLocation().getWorld(), coords[0], coords[1], coords[2]);
                 target.teleport(loc);
                 new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "The console teleported you to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(target);
                 new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + target.getName() + " to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(cs);
@@ -531,38 +484,21 @@ public class TeleportModule extends TrilliumModule {
             }
 
             Player p = (Player) cs;
-            double x;
-            double y;
-            double z;
-
-            if (StringUtils.isNumeric(args[0])) {
-                x = Double.parseDouble(args[0]);
-            } else if (args[0].startsWith("~")) {
-                x = p.getLocation().getX() + Double.parseDouble(args[0]);
-            } else {
-                new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, args[0]).to(cs);
-                return;
+            
+            double[] coords = new double[3];
+            
+            for (int i = 0; i < 3; i++) {
+                if (StringUtils.isNumeric(args[i])) {
+                    coords[i] = Double.parseDouble(args[i]);
+                } else if (args[i].startsWith("~")) {
+                    coords[i] = p.getLocation().getX() + Double.parseDouble(args[i]);
+                } else {
+                    new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, args[i]).to(cs);
+                    return;
+                }
             }
 
-            if (StringUtils.isNumeric(args[1])) {
-                y = Double.parseDouble(args[1]);
-            } else if (args[1].startsWith("~")) {
-                y = p.getLocation().getX() + Double.parseDouble(args[1]);
-            } else {
-                new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
-                return;
-            }
-
-            if (StringUtils.isNumeric(args[2])) {
-                z = Double.parseDouble(args[2]);
-            } else if (args[2].startsWith("~")) {
-                z = p.getLocation().getX() + Double.parseDouble(args[2]);
-            } else {
-                new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
-                return;
-            }
-
-            Location loc = new Location(p.getLocation().getWorld(), x, y, z);
+            Location loc = new Location(p.getLocation().getWorld(), coords[0], coords[1], coords[2]);
             p.teleport(loc);
             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You were teleported to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(p);
         }
@@ -571,8 +507,7 @@ public class TeleportModule extends TrilliumModule {
     @EventHandler
     public void onTP(PlayerTeleportEvent event) {
         TrilliumPlayer p = player(event.getPlayer());
-        if (event.getCause() == PlayerTeleportEvent.TeleportCause.COMMAND
-                || event.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN) {
+        if ((event.getCause() == TeleportCause.COMMAND) || (event.getCause() == TeleportCause.PLUGIN)) {
             p.setLastLocation(event.getFrom());
         }
     }
@@ -581,7 +516,7 @@ public class TeleportModule extends TrilliumModule {
             command = "warp",
             description = "Create, delete, list, and tp to warps.",
             usage = "/warp <set/del/list/tp> [warp]",
-            permissions = {Permission.Teleport.WARP_CREATE, Permission.Teleport.WARP_LIST, Permission.Teleport.WARP_TP, Permission.Teleport.COOLDOWN_EXEMPT})
+            permissions = {Teleport.WARP_CREATE, Teleport.WARP_LIST, Teleport.WARP_TP, Teleport.COOLDOWN_EXEMPT})
     public void warp(CommandSender cs, String[] args) {
         String cmd = "warp";
         if (!(cs instanceof Player)) {
@@ -592,7 +527,7 @@ public class TeleportModule extends TrilliumModule {
         Player p = (Player) cs;
 
         if (args[0].equalsIgnoreCase("set")) {
-            if (!p.hasPermission(Permission.Teleport.WARP_CREATE)) {
+            if (!p.hasPermission(Teleport.WARP_CREATE)) {
                 new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
                 return;
             }
@@ -611,7 +546,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
         } else if (args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del")) {
-            if (!p.hasPermission(Permission.Teleport.WARP_CREATE)) {
+            if (!p.hasPermission(Teleport.WARP_CREATE)) {
                 new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION).to(p);
                 return;
             }
@@ -629,7 +564,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
         } else if (args[0].equalsIgnoreCase("list")) {
-            if (!p.hasPermission(Permission.Teleport.WARP_LIST)) {
+            if (!p.hasPermission(Teleport.WARP_LIST)) {
                 new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[1]).to(p);
                 return;
             }
@@ -649,7 +584,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
         } else if (args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("tp")) {
-            if (!p.hasPermission(Permission.Teleport.WARP_TP)) {
+            if (!p.hasPermission(Teleport.WARP_TP)) {
                 new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[2]).to(p);
                 return;
             }
@@ -664,8 +599,9 @@ public class TeleportModule extends TrilliumModule {
                 return;
             }
 
-            if (!p.isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT))
+            if (!p.isOp() && !p.hasPermission(Teleport.COOLDOWN_EXEMPT)) {
                 Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
+            }
 
             if (!Warp.isNotNull(args[1])) {
                 new Message(Mood.BAD, TrilliumAPI.getName(cmd), "Warp " + args[1] + " does not exist.").to(p);
@@ -681,10 +617,10 @@ public class TeleportModule extends TrilliumModule {
             command = "home",
             description = "Create, delete, list, and tp to your home waypoints.",
             usage = "/home <set/del/list/tp> [home]",
-            permissions = {Permission.Teleport.HOME_CREATE, Permission.Teleport.HOME_LIST, Permission.Teleport.HOME_TP, Permission.Teleport.COOLDOWN_EXEMPT})
+            permissions = {Teleport.HOME_CREATE, Teleport.HOME_LIST, Teleport.HOME_TP, Teleport.COOLDOWN_EXEMPT})
     public void home(CommandSender cs, String[] args) {
         String cmd = "home";
-        if (!getConfig().getBoolean(Configuration.PlayerSettings.HOMES_ENABLED)) {
+        if (!getConfig().getBoolean(PlayerSettings.HOMES_ENABLED)) {
             new Message(Mood.BAD, TrilliumAPI.getName(cmd), "This feature is disabled.").to(cs);
             return;
         }
@@ -705,20 +641,20 @@ public class TeleportModule extends TrilliumModule {
 
             int max = -1;
 
-            for (int i = 1; i < getConfig().getInt(Configuration.PlayerSettings.HOMES_MAX); i++) {
-                if (p.hasPermission(Permission.Teleport.HOME_TP + "." + i)) {
+            for (int i = 1; i < getConfig().getInt(PlayerSettings.HOMES_MAX); i++) {
+                if (p.hasPermission(Teleport.HOME_TP + '.' + i)) {
                     max = i;
                 }
             }
 
             if (max == -1) {
-                if (p.hasPermission(Permission.Teleport.HOME_TP)) {
+                if (p.hasPermission(Teleport.HOME_TP)) {
                     max = 1;
                 }
             }
 
             if (p.getProxy().isOp()) {
-                max = getConfig().getInt(Configuration.PlayerSettings.HOMES_MAX);
+                max = getConfig().getInt(PlayerSettings.HOMES_MAX);
             }
 
             if (p.getHomeList().size() <= max) {
@@ -734,7 +670,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
         } else if (args[0].equalsIgnoreCase("delete") || args[0].equalsIgnoreCase("del")) {
-            if (!p.hasPermission(Permission.Teleport.HOME_CREATE)) {
+            if (!p.hasPermission(Teleport.HOME_CREATE)) {
                 new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
                 return;
             }
@@ -752,7 +688,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
         } else if (args[0].equalsIgnoreCase("list")) {
-            if (!p.hasPermission(Permission.Teleport.HOME_LIST)) {
+            if (!p.hasPermission(Teleport.HOME_LIST)) {
                 new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[1]).to(p);
                 return;
             }
@@ -762,7 +698,7 @@ public class TeleportModule extends TrilliumModule {
                 return;
             }
 
-            if (p.getHomeList().size() > 0) {
+            if (!p.getHomeList().isEmpty()) {
                 new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Homes:").to(p);
                 for (Message msg : p.getHomeList()) {
                     msg.to(p);
@@ -772,7 +708,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
         } else if (args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("tp")) {
-            if (!p.hasPermission(Permission.Teleport.HOME_TP)) {
+            if (!p.hasPermission(Teleport.HOME_TP)) {
                 new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[2]).to(p);
                 return;
             }
@@ -782,8 +718,9 @@ public class TeleportModule extends TrilliumModule {
                 return;
             }
 
-            if (!p.getProxy().isOp() && !p.hasPermission(Permission.Teleport.COOLDOWN_EXEMPT))
+            if (!p.getProxy().isOp() && !p.hasPermission(Teleport.COOLDOWN_EXEMPT)) {
                 Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
+            }
 
             if (args.length <= 1) {
                 if (!p.homeIsNotNull("default")) {

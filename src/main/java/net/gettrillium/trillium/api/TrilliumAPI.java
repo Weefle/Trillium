@@ -31,6 +31,7 @@ public class TrilliumAPI {
             TrilliumAPI.instance = instance;
             TrilliumAPI.players = new HashMap<>();
             TrilliumAPI.modules = new HashMap<>();
+            TrilliumAPI.commands = new HashMap<>();
 
             TrilliumAPI.instance.saveDefaultConfig();
             TrilliumAPI.playerFolder = new File(getInstance().getDataFolder(), "Player Database");

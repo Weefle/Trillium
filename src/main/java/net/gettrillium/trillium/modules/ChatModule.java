@@ -47,7 +47,8 @@ public class ChatModule extends TrilliumModule {
             usage = "/motd",
             permissions = {Permission.Chat.MOTD})
     public void motd(CommandSender cs, String[] args) {
-        if (cs.hasPermission(TrilliumAPI.getPermissions("motd")[0])) {
+        String cmd = "motd";
+        if (cs.hasPermission(TrilliumAPI.getPermissions(cmd)[0])) {
             List<String> motd = getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
             for (String s : motd) {
                 s = s.replace("%USERNAME%", cs.getName());
@@ -57,7 +58,7 @@ public class ChatModule extends TrilliumModule {
                 cs.sendMessage(s);
             }
         } else {
-            new Message(TrilliumAPI.getName("motd"), Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getName("motd"), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
         }
     }
 
@@ -67,6 +68,7 @@ public class ChatModule extends TrilliumModule {
             usage = "/clearchat",
             permissions = {Permission.Chat.CLEARCHAT})
     public void clearchat(CommandSender cs, String[] args) {
+        String cmd = "clearchat";
         if (cs instanceof Player) {
             if (cs.hasPermission(Permission.Chat.CLEARCHAT)) {
                 if (args.length != 0) {
@@ -74,9 +76,9 @@ public class ChatModule extends TrilliumModule {
 
                     if (target != null) {
                         Utils.clearChat(target);
-                        new Message(Mood.GOOD, "Clear Chat", target.getName() + "'s chat has been cleared!").to(cs);
+                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), target.getName() + "'s chat has been cleared!").to(cs);
                     } else {
-                        new Message("Clear Chat", Error.INVALID_PLAYER, args[0]).to(cs);
+                        new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
                     }
 
                 } else if (args[0].equalsIgnoreCase("global")) {
@@ -84,13 +86,13 @@ public class ChatModule extends TrilliumModule {
                         Utils.clearChat(pl);
                     }
                 } else {
-                    new Message("Clear Chat", Error.WRONG_ARGUMENTS).to(cs);
+                    new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
                 }
             } else {
-                new Message("Clear Chat", Error.NO_PERMISSION).to(cs);
+                new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
             }
         } else {
-            new Message("Clear Chat", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -101,14 +103,15 @@ public class ChatModule extends TrilliumModule {
             aliases = "info",
             permissions = {Permission.Chat.INFO})
     public void information(CommandSender cs, String[] args) {
+        String cmd = "info";
         if (cs.hasPermission(Permission.Chat.INFO)) {
             if (args.length == 0) {
-                new Message("Info", Error.TOO_FEW_ARGUMENTS, "/info <player>").to(cs);
+                new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             } else {
                 TrilliumPlayer p = player(args[0]);
                 if (p != null) {
                     p.getProxy().sendMessage(" ");
-                    new Message(Mood.NEUTRAL, "Info", "Displaying Information On: " + ChatColor.AQUA + p.getName()).to(cs);
+                    new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "Displaying Information On: " + ChatColor.AQUA + p.getName()).to(cs);
                     new Message(Mood.NEUTRAL, "Nickname", "" + ChatColor.AQUA + p.getDisplayName()).to(cs);
                     new Message(Mood.NEUTRAL, "Online", "" + ChatColor.AQUA + p.isVanished()).to(cs);
                     new Message(Mood.NEUTRAL, "Gamemode", "" + ChatColor.AQUA + p.getProxy().getGameMode()).to(cs);
@@ -128,11 +131,11 @@ public class ChatModule extends TrilliumModule {
                     new Message(Mood.NEUTRAL, "Time Played in Hours", "" + ChatColor.AQUA + (p.getProxy().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60).to(cs);
                     new Message(Mood.NEUTRAL, "Time Played in Days", "" + ChatColor.AQUA + ((p.getProxy().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60) / 24).to(cs);
                 } else {
-                    new Message("Info", Error.INVALID_PLAYER, args[0]);
+                    new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]);
                 }
             }
         } else {
-            new Message("Info", Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
         }
     }
 
@@ -142,6 +145,7 @@ public class ChatModule extends TrilliumModule {
             usage = "/me",
             permissions = {Permission.Chat.ME})
     public void me(CommandSender cs, String[] args) {
+        String cmd = "me";
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Chat.ME)) {
@@ -155,10 +159,10 @@ public class ChatModule extends TrilliumModule {
                 Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "** " + ChatColor.GRAY + p.getProxy().getName() + " " + message + ChatColor.DARK_GRAY + " **");
 
             } else {
-                new Message("Me", Error.NO_PERMISSION).to(p);
+                new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
             }
         } else {
-            new Message("Me", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -179,11 +183,12 @@ public class ChatModule extends TrilliumModule {
             aliases = {"msg", "m"},
             permissions = {Permission.Chat.MESSAGE})
     public void message(CommandSender cs, String[] args) {
+        String cmd = "message";
         if (cs instanceof Player) {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Permission.Chat.MESSAGE)) {
                 if (args.length < 2) {
-                    new Message("Message", Error.TOO_FEW_ARGUMENTS, "/msg <sender> <message>").to(p);
+                    new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
 
                 } else {
                     TrilliumPlayer target = player(args[0]);
@@ -210,14 +215,14 @@ public class ChatModule extends TrilliumModule {
                         target.getProxy().sendMessage(format2);
 
                     } else {
-                        new Message("Message", Error.INVALID_PLAYER, args[0]).to(p);
+                        new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(p);
                     }
                 }
             } else {
-                new Message("Message", Error.NO_PERMISSION).to(p);
+                new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
             }
         } else {
-            new Message("Message", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 
@@ -394,6 +399,7 @@ public class ChatModule extends TrilliumModule {
             aliases = {"cc"},
             permissions = {Permission.Chat.CHATCHANNEL + "<input>"})
     public void chatchannel(CommandSender cs, String[] args) {
+        String cmd = "chatchannel";
         if (getConfig().getBoolean(Configuration.Chat.CCENABLED)) {
             if (cs instanceof Player) {
                 TrilliumPlayer p = player((Player) cs);
@@ -423,16 +429,16 @@ public class ChatModule extends TrilliumModule {
                             }
                         }
                     } else {
-                        new Message("Chat Channel", Error.NO_PERMISSION).to(p);
+                        new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
                     }
                 } else {
-                    new Message("Chat Channel", Error.TOO_FEW_ARGUMENTS, "/cc <channel> <msg>");
+                    new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd));
                 }
             } else {
-                new Message("Chat Channel", Error.CONSOLE_NOT_ALLOWED).to(cs);
+                new Message(TrilliumAPI.getName(cmd), Error.CONSOLE_NOT_ALLOWED).to(cs);
             }
         } else {
-            new Message(Mood.BAD, "Chat Channel", "This feature has been disabled.");
+            new Message(Mood.BAD, TrilliumAPI.getName(cmd), "This feature is disabled.");
         }
     }
 
@@ -443,12 +449,13 @@ public class ChatModule extends TrilliumModule {
             aliases = {"bc"},
             permissions = {Permission.Chat.BROADCAST})
     public void broadcast(CommandSender cs, String[] args) {
+        String cmd = "broadcast";
         if (!cs.hasPermission(Permission.Chat.BROADCAST)) {
-            new Message("Broadcast", Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
             return;
         }
         if (args.length == 0) {
-            new Message("Broadcast", Error.TOO_FEW_ARGUMENTS, "/broadcast <message>").to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             return;
         }
 

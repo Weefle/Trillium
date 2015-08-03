@@ -34,9 +34,14 @@ public class UtilsTest {
 
     @Test
     public void arrayToStringTest() {
-        Assert.assertEquals("null returns null", null, Utils.arrayToString(null));
+        Assert.assertEquals("null returns blank string", "", Utils.arrayToString(null));
         Assert.assertEquals("blank array returns blank string", "", Utils.arrayToString(new String[] {}));
         Assert.assertEquals("{a, b, c, d} returns a;b;c;d", "a;b;c;d", Utils.arrayToString(new String[] {"a", "b", "c", "d"}));
+    }
+
+    @Test
+    public void arrayFromStringTest() {
+
     }
 
     @Test

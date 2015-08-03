@@ -1,6 +1,7 @@
 package net.gettrillium.trillium.modules;
 
 import net.gettrillium.trillium.api.Permission;
+import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
@@ -24,15 +25,16 @@ public class FunModule extends TrilliumModule {
             aliases = "thor",
             permissions = {Permission.Fun.SMITE})
     public void smite(CommandSender cs, String[] args) {
+        String cmd = "smite";
         if (!(cs instanceof Player)) {
-            new Message("Smite", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            new Message(TrilliumAPI.getUsage(cmd), Error.CONSOLE_NOT_ALLOWED).to(cs);
             return;
         }
 
         Player p = (Player) cs;
 
         if (!cs.hasPermission(Permission.Fun.SMITE)) {
-            new Message("Smite", Error.NO_PERMISSION).to(p);
+            new Message(TrilliumAPI.getUsage(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
             return;
         }
 
@@ -51,11 +53,11 @@ public class FunModule extends TrilliumModule {
             Player target = Bukkit.getPlayer(args[0]);
             if (target != null) {
                 p.getWorld().strikeLightning(target.getLocation());
-                new Message(Mood.GOOD, "Smite", p.getName() + " has struck lightning upon you!").to(target);
-                new Message(Mood.GOOD, "Smite", "You struck lightning upon " + target.getName()).to(p);
+                new Message(Mood.GOOD, TrilliumAPI.getUsage(cmd), p.getName() + " has struck lightning upon you!").to(target);
+                new Message(Mood.GOOD, TrilliumAPI.getUsage(cmd), "You struck lightning upon " + target.getName()).to(p);
 
             } else {
-                new Message("Smite", Error.INVALID_PLAYER).to(p);
+                new Message(TrilliumAPI.getUsage(cmd), Error.INVALID_PLAYER, args[0]).to(p);
             }
         }
     }
@@ -67,6 +69,7 @@ public class FunModule extends TrilliumModule {
             aliases = {"pseudo"},
             permissions = {Permission.Fun.SUDO})
     public void sudo(CommandSender cs, String[] args) {
+        String cmd = "sudo";
         if (cs.hasPermission(Permission.Fun.SUDO)) {
             if (args.length >= 2) {
                 Player target = Bukkit.getPlayer(args[0]);
@@ -78,15 +81,15 @@ public class FunModule extends TrilliumModule {
                     String command = sb.toString().trim();
 
                     Bukkit.dispatchCommand(target, command);
-                    new Message(Mood.GOOD, "Sudo", "Successfully ran '" + command + "' on " + target.getName()).to(cs);
+                    new Message(Mood.GOOD, TrilliumAPI.getUsage(cmd), "Successfully ran '" + command + "' on " + target.getName()).to(cs);
                 } else {
-                    new Message("Sudo", Error.INVALID_PLAYER, args[0]).to(cs);
+                    new Message(TrilliumAPI.getUsage(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
                 }
             } else {
-                new Message("Sudo", Error.TOO_FEW_ARGUMENTS, "/sudo <player> <command>").to(cs);
+                new Message(TrilliumAPI.getUsage(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             }
         } else {
-            new Message("Sudo", Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getUsage(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
         }
     }
 }

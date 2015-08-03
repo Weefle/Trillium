@@ -23,15 +23,16 @@ public class AFKModule extends TrilliumModule {
             usage = "/afk",
             permissions = {Permission.Afk.USE})
     public void afk(CommandSender cs, String[] args) {
+        String cmd = "afk";
         if (cs instanceof Player) {
             TrilliumPlayer player = player((Player) cs);
             if (player.hasPermission(Permission.Afk.USE)) {
                 player.toggleAfk();
             } else {
-                new Message("AFK", Error.NO_PERMISSION).to(player);
+                new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(player);
             }
         } else {
-            new Message("AFK", Error.CONSOLE_NOT_ALLOWED).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 

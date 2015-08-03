@@ -1,9 +1,11 @@
 package net.gettrillium.trillium.modules;
 
-import net.gettrillium.trillium.Trillium;
-import net.gettrillium.trillium.api.*;
+import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.Configuration.Server;
 import net.gettrillium.trillium.api.Permission.Ability;
+import net.gettrillium.trillium.api.TrilliumAPI;
+import net.gettrillium.trillium.api.TrilliumModule;
+import net.gettrillium.trillium.api.TrilliumPlayer;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
@@ -22,7 +24,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
 public class AbilityModule extends TrilliumModule {
@@ -199,8 +203,8 @@ public class AbilityModule extends TrilliumModule {
                         if (args.length > 1) {
                             if (StringUtils.isNumeric(args[1])) {
                                 i = Double.parseDouble(args[1]);
-                                if (i <= 10 && i >= -10) {
-                                    i = i * 0.1;
+                                if ((i <= 10) && (i >= -10)) {
+                                    i *= 0.1;
                                     p.getProxy().setFlySpeed((float) i);
                                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Fly speed set to " + args[1]).to(p);
                                 } else {
@@ -218,7 +222,7 @@ public class AbilityModule extends TrilliumModule {
                         if (args.length > 1) {
                             if (StringUtils.isNumeric(args[1])) {
                                 i = Double.parseDouble(args[1]);
-                                if (i <= 10 && i >= -10) {
+                                if ((i <= 10) && (i >= -10)) {
                                     i *= 0.1;
                                     p.getProxy().setWalkSpeed((float) i);
                                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Walk speed set to " + args[1]).to(p);

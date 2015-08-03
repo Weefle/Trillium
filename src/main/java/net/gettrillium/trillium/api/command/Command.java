@@ -17,5 +17,5 @@ public @interface Command {
 
     String[] permissions() default {};
 
-    String name();
+    String name() default "null";
 }

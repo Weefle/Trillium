@@ -148,11 +148,11 @@ public class TrilliumAPI {
         if (commands.containsKey(command)) {
             return commands.get(command)[1];
         } else {
-            return null;
+            return "null";
         }
     }
 
-    public static String[] getPermission(String command) {
+    public static String[] getPermissions(String command) {
         if (commands.containsKey(command)) {
             return new String[]{commands.get(command)[2]};
         } else {

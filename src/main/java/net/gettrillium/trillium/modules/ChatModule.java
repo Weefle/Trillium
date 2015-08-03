@@ -21,7 +21,8 @@ import java.util.List;
 
 public class ChatModule extends TrilliumModule {
 
-    @Command(command = "say",
+    @Command(name = "Say",
+            command = "say",
             description = "Talk from the console",
             usage = "/say")
     public void say(CommandSender cs, String[] args) {
@@ -36,16 +37,17 @@ public class ChatModule extends TrilliumModule {
             new Message(Mood.NEUTRAL, ChatColor.LIGHT_PURPLE + "Console", message).broadcast();
 
         } else {
-            new Message(Mood.BAD, "Say", "Say is for the console only. Not you.").to(cs);
+            new Message(Mood.BAD, TrilliumAPI.getName("say"), "Say is for the console only. Not you.").to(cs);
         }
     }
 
-    @Command(command = "motd",
+    @Command(name = "Motd",
+            command = "motd",
             description = "View the server's motd",
             usage = "/motd",
             permissions = {Permission.Chat.MOTD})
     public void motd(CommandSender cs, String[] args) {
-        if (cs.hasPermission(Permission.Chat.MOTD)) {
+        if (cs.hasPermission(TrilliumAPI.getPermissions("motd")[0])) {
             List<String> motd = getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
             for (String s : motd) {
                 s = s.replace("%USERNAME%", cs.getName());
@@ -55,7 +57,7 @@ public class ChatModule extends TrilliumModule {
                 cs.sendMessage(s);
             }
         } else {
-            new Message("Motd", Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getName("motd"), Error.NO_PERMISSION).to(cs);
         }
     }
 
@@ -160,6 +162,7 @@ public class ChatModule extends TrilliumModule {
     @Command(command = "global",
             description = "Disable or enable the global chat.",
             usage = "/global <disable/enable>",
+            aliases = {"silencio"},
             permissions = {Permission.Chat.GLOBAL})
     public void global(CommandSender cs, String[] args) {
 

@@ -639,13 +639,13 @@ public class TeleportModule extends TrilliumModule {
                 return;
             }
 
-            if (Warp.getWarpList().size() > 0) {
+            if (Warp.getWarpList().isEmpty()) {
+                new Message(Mood.BAD, TrilliumAPI.getName(cmd), "No warps available.").to(p);
+            } else {
                 new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Warps:").to(p);
                 for (Message msg : Warp.getWarpList()) {
                     msg.to(p);
                 }
-            } else {
-                new Message(Mood.BAD, TrilliumAPI.getName(cmd), "No warps available.").to(p);
             }
 
         } else if (args[0].equalsIgnoreCase("teleport") || args[0].equalsIgnoreCase("tp")) {

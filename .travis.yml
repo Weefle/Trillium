@@ -14,4 +14,4 @@ cache:
   - $HOME/.m2
 
 after_success:
-  - mvn clean test saga:coverage coveralls:report
+  - mvn clean test jacoco:report coveralls:report

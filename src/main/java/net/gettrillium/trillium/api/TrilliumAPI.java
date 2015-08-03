@@ -136,6 +136,10 @@ public class TrilliumAPI {
         return players.values();
     }
 
+    public static Map<String, String[]> getCommands() {
+        return commands;
+    }
+
     public static void registerCommands(TrilliumModule module) {
         try {
             Field field = SimplePluginManager.class.getDeclaredField("commandMap");

@@ -162,6 +162,7 @@ public class ChatModule extends TrilliumModule {
             usage = "/global <disable/enable>",
             permissions = {Permission.Chat.GLOBAL})
     public void global(CommandSender cs, String[] args) {
+
     }
 
     @Command(command = "message",

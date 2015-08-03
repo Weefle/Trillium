@@ -128,7 +128,6 @@ public class Utils {
         }
     }
 
-    // TODO - unit test this
     /**
      * Compares two version numbers
      * @param version1 first version

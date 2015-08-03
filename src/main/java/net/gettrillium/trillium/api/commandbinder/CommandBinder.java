@@ -101,7 +101,7 @@ public class CommandBinder {
             save(p);
         }
 
-        public static String serializer(String command, Material mat, Boolean player) {
+        public static String serializer(String command, Material mat, boolean player) {
             return command + ";" + mat.name() + ";" + player;
         }
 

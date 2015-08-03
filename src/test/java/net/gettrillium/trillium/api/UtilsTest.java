@@ -32,8 +32,8 @@ public class UtilsTest {
         Assert.assertEquals("20 seconds goes to 400 ticks", 400, Utils.timeToTickConverter("20s"));
         Assert.assertEquals("10 minutes goes to 12000 ticks", 12000, Utils.timeToTickConverter("10m"));
         Assert.assertEquals("1m2s to 1240 ticks", 1240, Utils.timeToTickConverter("2s1m"));
-        Assert.assertEquals("1h1s to 3601 ticks", 3601, Utils.timeToTickConverter("1h1s"));
-        Assert.assertEquals("1d1s to 86401 ticks", 86401, Utils.timeToTickConverter("1d1s"));
+        Assert.assertEquals("1h1s to 3601 ticks", 72020, Utils.timeToTickConverter("1h1s"));
+        Assert.assertEquals("1d1s to 86401 ticks", 1728020, Utils.timeToTickConverter("1d1s"));
     }
 
     @Test

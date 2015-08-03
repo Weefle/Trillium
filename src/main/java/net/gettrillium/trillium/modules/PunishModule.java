@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.Iterator;
+
 public class PunishModule extends TrilliumModule {
 
     @Command(name = "Mute",
@@ -30,14 +32,14 @@ public class PunishModule extends TrilliumModule {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null) {
                     TrilliumPlayer player = player(target);
-                    if (!player.isMuted()) {
-                        player.setMuted(true);
-                        new Message(Mood.GOOD, "Mute", "You muted " + target.getName()).to(cs);
-                        new Message(Mood.BAD, "Mute", cs.getName() + " muted you.").to(cs);
-                    } else {
+                    if (player.isMuted()) {
                         player.setMuted(false);
                         new Message(Mood.GOOD, "Mute", "You unmuted " + target.getName()).to(cs);
                         new Message(Mood.GOOD, "Mute", cs.getName() + " unmuted you.").to(cs);
+                    } else {
+                        player.setMuted(true);
+                        new Message(Mood.GOOD, "Mute", "You muted " + target.getName()).to(cs);
+                        new Message(Mood.BAD, "Mute", cs.getName() + " muted you.").to(cs);
                     }
                 } else {
                     new Message("Mute", Error.INVALID_PLAYER, args[0]).to(cs);
@@ -90,11 +92,11 @@ public class PunishModule extends TrilliumModule {
                 if (target != null) {
                     StringBuilder sb = new StringBuilder();
                     for (int i = 1; i < args.length; i++) {
-                        sb.append(args[i]).append(" ");
+                        sb.append(args[i]).append(' ');
                     }
                     String reason = sb.toString().trim();
                     new Message(Mood.BAD, "Kick", target.getName() + " got kicked for: ").broadcast();
-                    new Message(Mood.BAD, "Kick", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
+                    new Message(Mood.BAD, "Kick", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + '\'').broadcast();
                     target.kickPlayer(reason);
                 } else {
                     new Message("Kick", Error.INVALID_PLAYER, args[0]).to(cs);
@@ -120,7 +122,7 @@ public class PunishModule extends TrilliumModule {
                 if (args.length > 1) {
                     StringBuilder sb = new StringBuilder();
                     for (int i = 1; i < args.length; i++) {
-                        sb.append(args[i]).append(" ");
+                        sb.append(args[i]).append(' ');
                     }
                     reason = sb.toString().trim();
                 } else {
@@ -131,11 +133,11 @@ public class PunishModule extends TrilliumModule {
                     Bukkit.getBanList(BanList.Type.NAME).addBan(target.getName(), reason, null, cs.getName());
                     target.kickPlayer(ChatColor.DARK_RED + "You got banned with reason: \n" + reason);
                     new Message(Mood.BAD, "Ban", target.getName() + " got banned with reason:").broadcast();
-                    new Message(Mood.BAD, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
+                    new Message(Mood.BAD, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + '\'').broadcast();
                 } else {
                     Bukkit.getBanList(BanList.Type.NAME).addBan(args[0], reason, null, cs.getName());
                     new Message(Mood.BAD, "Ban", args[0] + " got banned with reason:").broadcast();
-                    new Message(Mood.BAD, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
+                    new Message(Mood.BAD, "Ban", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + '\'').broadcast();
                 }
             }
         } else {
@@ -225,7 +227,7 @@ public class PunishModule extends TrilliumModule {
                 if (args.length > 1) {
                     StringBuilder sb = new StringBuilder();
                     for (int i = 1; i < args.length; i++) {
-                        sb.append(args[i]).append(" ");
+                        sb.append(args[i]).append(' ');
                     }
                     reason = sb.toString().trim();
                 } else {
@@ -236,11 +238,11 @@ public class PunishModule extends TrilliumModule {
                     Bukkit.getBanList(BanList.Type.IP).addBan(String.valueOf(target.getAddress()), reason, null, cs.getName());
                     target.kickPlayer(ChatColor.DARK_RED + "You got banned with reason: \n" + reason);
                     new Message(Mood.BAD, "Ban IP", target.getName() + " got banned with reason:").broadcast();
-                    new Message(Mood.BAD, "Ban IP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
+                    new Message(Mood.BAD, "Ban IP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + '\'').broadcast();
                 } else {
                     Bukkit.getBanList(BanList.Type.NAME).addBan(args[0], reason, null, cs.getName());
                     new Message(Mood.BAD, "Ban IP", args[0] + " got banned with reason:").broadcast();
-                    new Message(Mood.BAD, "Ban IP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
+                    new Message(Mood.BAD, "Ban IP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + '\'').broadcast();
                 }
             }
         } else {
@@ -271,11 +273,15 @@ public class PunishModule extends TrilliumModule {
     public void onChat(AsyncPlayerChatEvent e) {
         TrilliumPlayer p = player(e.getPlayer());
 
-        if (p.isMuted() && !p.isShadowBanned()) {
+        if (p.isShadowBanned()) {
+            Iterator<Player> iter = e.getRecipients().iterator();
+            while (iter.hasNext()) {
+                if (!iter.next().equals(e.getPlayer())) {
+                    iter.remove();
+                }
+            }
+        } else if (p.isMuted()) {
             new Message(Mood.BAD, "Mute", "Your voice has been silenced.").to(p);
-        }
-
-        if (p.isMuted() || p.isShadowBanned()) {
             e.setCancelled(true);
         }
     }

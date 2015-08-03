@@ -17,7 +17,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class AFKModule extends TrilliumModule {
 
-    @Command(command = "afk",
+    @Command(name = "AFK",
+            command = "afk",
             description = "Indicate that you are away from your keyboard.",
             usage = "/afk",
             permissions = {Permission.Afk.USE})

@@ -26,7 +26,8 @@ public class TeleportModule extends TrilliumModule {
     private HashMap<UUID, UUID> tpr = new HashMap<>();
     private HashMap<UUID, UUID> tprh = new HashMap<>();
 
-    @Command(command = "back",
+    @Command(name = "Back",
+            command = "back",
             description = "Teleport to your last active position",
             usage = "/back",
             permissions = {Permission.Teleport.BACK, Permission.Teleport.COOLDOWN_EXEMPT})
@@ -55,7 +56,8 @@ public class TeleportModule extends TrilliumModule {
         p.getProxy().teleport(p.getLastLocation());
     }
 
-    @Command(command = "spawn",
+    @Command(name = "Spawn",
+            command = "spawn",
             description = "Teleport to the server's spawn.",
             usage = "/spawn",
             permissions = {Permission.Teleport.SPAWN, Permission.Teleport.COOLDOWN_EXEMPT})
@@ -84,7 +86,8 @@ public class TeleportModule extends TrilliumModule {
         new Message(Mood.GOOD, "Spawn", "You were successfully teleported to the spawn point.").to(p);
     }
 
-    @Command(command = "teleport",
+    @Command(name = "TP",
+            command = "teleport",
             description = "Teleport to a person or a set of coordinates.",
             usage = "/tp <player/x y z] [player/x y z]",
             aliases = "tp",
@@ -215,7 +218,8 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "teleporthere",
+    @Command(name = "TPH",
+            command = "teleporthere",
             description = "Teleport a player to you.",
             usage = "/tph <player>",
             aliases = "tph",
@@ -258,7 +262,8 @@ public class TeleportModule extends TrilliumModule {
         new Message(Mood.GOOD, "TPH", p.getName() + " teleported you to them.").to(target);
     }
 
-    @Command(command = "teleportrequest",
+    @Command(name = "TPR",
+            command = "teleportrequest",
             description = "Request permission to teleport to a player.",
             usage = "/tpr <player>",
             aliases = "tpr",
@@ -305,7 +310,8 @@ public class TeleportModule extends TrilliumModule {
         tpr.put(p.getUniqueId(), target.getUniqueId());
     }
 
-    @Command(command = "teleportrequesthere",
+    @Command(name = "TPRH",
+            command = "teleportrequesthere",
             description = "Request permission to teleport a player to you.",
             usage = "/tprh <player>",
             aliases = "tprh",
@@ -351,7 +357,8 @@ public class TeleportModule extends TrilliumModule {
         tprh.put(p.getUniqueId(), target.getUniqueId());
     }
 
-    @Command(command = "teleportrequestaccept",
+    @Command(name = "TPRA",
+            command = "teleportrequestaccept",
             description = "Accept a teleport request.",
             usage = "/tpra",
             aliases = "tpra",
@@ -409,7 +416,8 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "teleportrequestdeny",
+    @Command(name = "TPRD",
+            command = "teleportrequestdeny",
             description = "Deny a teleport request.",
             usage = "/tprd",
             aliases = "tprd",
@@ -446,7 +454,8 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "teleportcoordinates",
+    @Command(name = "TPRC",
+            command = "teleportcoordinates",
             description = "Teleport to a set of coordinates.",
             usage = "/tpc [player] <x> <y> <z>",
             aliases = "tpc",
@@ -561,7 +570,8 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "warp",
+    @Command(name = "Warp",
+            command = "warp",
             description = "Create, delete, list, and tp to warps.",
             usage = "/warp <set/del/list/tp> [warp]",
             permissions = {Permission.Teleport.WARP_CREATE, Permission.Teleport.WARP_LIST, Permission.Teleport.WARP_TP, Permission.Teleport.COOLDOWN_EXEMPT})
@@ -659,7 +669,8 @@ public class TeleportModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "home",
+    @Command(name = "Home",
+            command = "home",
             description = "Create, delete, list, and tp to your home waypoints.",
             usage = "/home <set/del/list/tp> [home]",
             permissions = {Permission.Teleport.HOME_CREATE, Permission.Teleport.HOME_LIST, Permission.Teleport.HOME_TP, Permission.Teleport.COOLDOWN_EXEMPT})

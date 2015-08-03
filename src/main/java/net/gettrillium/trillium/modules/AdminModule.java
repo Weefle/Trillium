@@ -23,7 +23,8 @@ public class AdminModule extends TrilliumModule {
     private ArrayList<String> lagPrompt = new ArrayList<>();
     private ArrayList<String> reloadPrompt = new ArrayList<>();
 
-    @Command(command = "trillium",
+    @Command(name = "Trillium",
+            command = "trillium",
             description = "The main command of the plugin.",
             usage = "/tr",
             aliases = "tr",
@@ -65,7 +66,8 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "chestfinder",
+    @Command(name = "Chest Finder",
+            command = "chestfinder",
             description = "Track down any hidden chests.",
             usage = "/chestfinder [radius]",
             aliases = "cf",
@@ -176,7 +178,8 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "setspawn",
+    @Command(name = "Set Spawn",
+            command = "setspawn",
             description = "Set the spawn of the server.",
             usage = "/setspawn",
             permissions = {Permission.Admin.SETSPAWN})
@@ -196,7 +199,8 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "clearinventory",
+    @Command(name = "Clear Inv",
+            command = "clearinventory",
             description = "Clear your own or someone else's inventory.",
             usage = "/clearinventory",
             aliases = {"clear", "clearinv", "ci"},
@@ -226,7 +230,8 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "lag",
+    @Command(name = "Lag",
+            command = "lag",
             description = "Statistics on server lag and also clears lag through gc.",
             usage = "/lag [clear]",
             permissions = {Permission.Admin.LAG})
@@ -278,7 +283,8 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "killall",
+    @Command(name = "Kill All",
+            command = "killall",
             description = "Kill everything in a radius.",
             usage = "/killall <mobs/players/animals/monsters/items/everything/<entity name>> [radius]",
             permissions = {Permission.Admin.KILLALL})
@@ -404,7 +410,8 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "inventory",
+    @Command(name = "Inventory",
+            command = "inventory",
             description = "Open a crafting table GUI, or someone else's inventory or enderchest.",
             usage = "/inv <player [enderchest]/crafting>",
             aliases = "inv",
@@ -461,7 +468,8 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "report",
+    @Command(name = "Report",
+            command = "report",
             description = "Send a report to the staff.",
             usage = "/report <msg>",
             permissions = {Permission.Admin.REPORT, Permission.Admin.REPORT_RECEIVER})
@@ -501,7 +509,8 @@ public class AdminModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "reports",
+    @Command(name = "Reports",
+            command = "reports",
             description = "View the list of submitted reports. Clear reports & remove a report.",
             usage = "/reports [clear/remove <index>]",
             permissions = {Permission.Admin.REPORT_RECEIVER})

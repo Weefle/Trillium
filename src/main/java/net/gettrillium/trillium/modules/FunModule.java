@@ -17,7 +17,8 @@ import java.util.Set;
 
 public class FunModule extends TrilliumModule {
 
-    @Command(command = "smite",
+    @Command(name = "Smite",
+            command = "smite",
             description = "Strike lightning somewhere or upon someone.",
             usage = "/smite [player]",
             aliases = "thor",
@@ -59,7 +60,8 @@ public class FunModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "sudo",
+    @Command(name = "Sudo",
+            command = "sudo",
             description = "Make a player forcefully run a certain command.",
             usage = "/sudo <player> <command>",
             aliases = {"pseudo"},

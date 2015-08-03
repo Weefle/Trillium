@@ -14,7 +14,8 @@ import org.bukkit.entity.Player;
 
 public class KitModule extends TrilliumModule {
 
-    @Command(command = "kit",
+    @Command(name = "Kit",
+            command = "kit",
             description = "Get a certain kit.",
             usage = "/kit [kit name]",
             permissions = {Permission.Kit.USE, Permission.Kit.COOLDOWN_EXEMPT, Permission.Kit.GIVE})

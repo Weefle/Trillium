@@ -31,7 +31,8 @@ public class CommandBinderModule extends TrilliumModule {
     private ArrayList<UUID> removeMode = new ArrayList<>();
     private Table<UUID, String, Boolean> table = HashBasedTable.create();
 
-    @Command(command = "commandbinder",
+    @Command(name = "CMD Binder",
+            command = "commandbinder",
             description = "Bind a command to a block, an air block, or an item.",
             usage = "/cb <set <item/block> <console/player> <command>/remove <item/block>>",
             aliases = {"cmdbinder", "cmdb", "cb", "cbinder", "cbind"},

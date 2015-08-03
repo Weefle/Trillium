@@ -17,7 +17,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class PunishModule extends TrilliumModule {
 
-    @Command(command = "mute",
+    @Command(name = "Mute",
+            command = "mute",
             description = "Silence/unsilence someone's voice.",
             usage = "/mute <player>",
             permissions = {Permission.Punish.MUTE})
@@ -47,7 +48,8 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "shadowmute",
+    @Command(name = "Shadow Mute",
+            command = "shadowmute",
             description = "Silently Silence/unsilence someone's voice.",
             usage = "/smute <player>",
             permissions = {Permission.Punish.SHADOW_MUTE})
@@ -66,15 +68,16 @@ public class PunishModule extends TrilliumModule {
                         new Message(Mood.GOOD, "Shadow Mute", target.getName() + " has been silently muted.").to(cs);
                     }
                 } else {
-                    new Message("Mute", Error.INVALID_PLAYER, args[0]).to(cs);
+                    new Message("Shadow Mute", Error.INVALID_PLAYER, args[0]).to(cs);
                 }
             }
         } else {
-            new Message("Mute", Error.NO_PERMISSION).to(cs);
+            new Message("Shadow Mute", Error.NO_PERMISSION).to(cs);
         }
     }
 
-    @Command(command = "kick",
+    @Command(name = "Kick",
+            command = "kick",
             description = "Kick a player from the server.",
             usage = "/kick <player> [reason]",
             permissions = {Permission.Punish.KICK})
@@ -102,7 +105,8 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "ban",
+    @Command(name = "Ban",
+            command = "ban",
             description = "Ban a player from the server.",
             usage = "/ban <player> [reason]",
             permissions = {Permission.Punish.BAN})
@@ -139,7 +143,8 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "shadowban",
+    @Command(name = "Shadow Ban",
+            command = "shadowban",
             description = "Silently ban a player by making them 100% invisible to other players.",
             usage = "/sban <player>", aliases = {"sban"}, permissions = {Permission.Punish.SHADOW_BAN})
     public void shadowban(CommandSender cs, String[] args) {
@@ -162,7 +167,8 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "shadowunban",
+    @Command(name = "Shadow ban",
+            command = "shadowunban",
             description = "unshadow ban a shadow banned player.",
             usage = "/sunban <player>", aliases = {"sunban"}, permissions = {Permission.Punish.SHADOW_BAN})
     public void shadowunban(CommandSender cs, String[] args) {
@@ -185,7 +191,8 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "unban",
+    @Command(name = "Unban",
+            command = "unban",
             description = "Unban a player.",
             usage = "/unban <player>",
             aliases = "pardon",
@@ -203,14 +210,15 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "banip",
+    @Command(name = "Ban IP",
+            command = "banip",
             description = "Ban the ip of a player from the server.",
             usage = "/banip <player> [reason]",
             permissions = {Permission.Punish.BANIP})
     public void banip(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.BANIP)) {
             if (args.length == 0) {
-                new Message("BanIP", Error.TOO_FEW_ARGUMENTS, "/banip <player> [reason]").to(cs);
+                new Message("Ban IP", Error.TOO_FEW_ARGUMENTS, "/banip <player> [reason]").to(cs);
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
                 String reason;
@@ -227,20 +235,21 @@ public class PunishModule extends TrilliumModule {
                 if (target != null) {
                     Bukkit.getBanList(BanList.Type.IP).addBan(String.valueOf(target.getAddress()), reason, null, cs.getName());
                     target.kickPlayer(ChatColor.DARK_RED + "You got banned with reason: \n" + reason);
-                    new Message(Mood.BAD, "BanIP", target.getName() + " got banned with reason:").broadcast();
-                    new Message(Mood.BAD, "BanIP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
+                    new Message(Mood.BAD, "Ban IP", target.getName() + " got banned with reason:").broadcast();
+                    new Message(Mood.BAD, "Ban IP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
                 } else {
                     Bukkit.getBanList(BanList.Type.NAME).addBan(args[0], reason, null, cs.getName());
-                    new Message(Mood.BAD, "BanIP", args[0] + " got banned with reason:").broadcast();
-                    new Message(Mood.BAD, "BanIP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
+                    new Message(Mood.BAD, "Ban IP", args[0] + " got banned with reason:").broadcast();
+                    new Message(Mood.BAD, "Ban IP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
                 }
             }
         } else {
-            new Message("BanIP", Error.NO_PERMISSION).to(cs);
+            new Message("Ban IP", Error.NO_PERMISSION).to(cs);
         }
     }
 
-    @Command(command = "unbanip",
+    @Command(name = "Unban IP",
+            command = "unbanip",
             description = "Unban the IP of a player.",
             usage = "/unbanip <IP>",
             aliases = "pardonip",
@@ -248,13 +257,13 @@ public class PunishModule extends TrilliumModule {
     public void unbanip(CommandSender cs, String[] args) {
         if (cs.hasPermission(Permission.Punish.UNBANIP)) {
             if (args.length == 0) {
-                new Message("Unban", Error.TOO_FEW_ARGUMENTS, "/unbanip <IP>").to(cs);
+                new Message("Unban IP", Error.TOO_FEW_ARGUMENTS, "/unbanip <IP>").to(cs);
             } else {
                 Bukkit.getBanList(BanList.Type.IP).pardon(args[0]);
-                new Message(Mood.GOOD, "Unban", args[0] + " got unbanned.").to(cs);
+                new Message(Mood.GOOD, "Unban IP", args[0] + " got unbanned.").to(cs);
             }
         } else {
-            new Message("Unban", Error.NO_PERMISSION).to(cs);
+            new Message("Unban IP", Error.NO_PERMISSION).to(cs);
         }
     }
 

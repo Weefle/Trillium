@@ -29,7 +29,8 @@ import org.bukkit.projectiles.ProjectileSource;
 
 public class AbilityModule extends TrilliumModule {
 
-    @Command(command = "fly",
+    @Command(name = "Fly",
+            command = "fly",
             description = "SOAR THROUGH THE AIR LIKE A MAJESTIC BUTTERFLY!",
             usage = "/fly",
             permissions = {Ability.FLY, Ability.FLY_OTHER})
@@ -76,7 +77,8 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "god",
+    @Command(name = "God",
+            command = "god",
             description = "Become invincible to anything.",
             usage = "/god",
             permissions = {Ability.GOD, Ability.GOD_OTHER})
@@ -120,7 +122,8 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "vanish",
+    @Command(name = "Vanish",
+            command = "vanish",
             description = "Turn completely invisible and roam the world undetected.!",
             usage = "/vanish [player]",
             aliases = "v",
@@ -177,7 +180,8 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "speed",
+    @Command(name = "Speed",
+            command = "speed",
             description = "Change your speed without potion effects",
             usage = "/speed <fly/walk> <speed>",
             permissions = {Ability.SPEED})
@@ -238,7 +242,8 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "gamemode",
+    @Command(name = "Gamemode",
+            command = "gamemode",
             description = "Change your gamemode.",
             usage = "/gm [1/2/3/4/survival/creative/adventure/spectator/s/c/a/sp] [player]",
             aliases = "gm",
@@ -328,7 +333,8 @@ public class AbilityModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "pvp",
+    @Command(name = "PVP",
+            command = "pvp",
             description = "Toggle your pvp status whether you want to disable/enable pvp for yourself.",
             usage = "/pvp",
             permissions = {Ability.PVP})

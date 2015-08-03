@@ -140,7 +140,7 @@ public class TrilliumAPI {
         if (commands.containsKey(command)) {
             return commands.get(command)[0];
         } else {
-            return null;
+            return "null";
         }
     }
 
@@ -156,7 +156,7 @@ public class TrilliumAPI {
         if (commands.containsKey(command)) {
             return new String[]{commands.get(command)[2]};
         } else {
-            return null;
+            return new String[]{"null"};
         }
     }
 
@@ -164,7 +164,7 @@ public class TrilliumAPI {
         if (commands.containsKey(command)) {
             return commands.get(command)[3];
         } else {
-            return null;
+            return "null";
         }
     }
 
@@ -172,7 +172,7 @@ public class TrilliumAPI {
         if (commands.containsKey(command)) {
             return new String[]{commands.get(command)[4]};
         } else {
-            return null;
+            return new String[]{"null"};
         }
     }
 

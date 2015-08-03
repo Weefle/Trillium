@@ -61,7 +61,8 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "clearchat",
+    @Command(name = "Clear Chat",
+            command = "clearchat",
             description = "Clear global chat or a single player's chat",
             usage = "/clearchat",
             permissions = {Permission.Chat.CLEARCHAT})
@@ -93,7 +94,8 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "information",
+    @Command(name = "Info",
+            command = "information",
             description = "View information about a certain player.",
             usage = "/info",
             aliases = "info",
@@ -134,7 +136,8 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "me",
+    @Command(name = "Me",
+            command = "me",
             description = "Share your feelings/thoughts to everyone in the third person.",
             usage = "/me",
             permissions = {Permission.Chat.ME})
@@ -159,7 +162,8 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "global",
+    @Command(name = "Global",
+            command = "global",
             description = "Disable or enable the global chat.",
             usage = "/global <disable/enable>",
             aliases = {"silencio"},
@@ -168,7 +172,8 @@ public class ChatModule extends TrilliumModule {
 
     }
 
-    @Command(command = "message",
+    @Command(name = "Message",
+            command = "message",
             description = "Send a private message to a player.",
             usage = "/msg <player> <msg>",
             aliases = {"msg", "m"},
@@ -217,7 +222,8 @@ public class ChatModule extends TrilliumModule {
     }
 
     // TODO - Rewrite
-    @Command(command = "nickname",
+    @Command(name = "Nick",
+            command = "nickname",
             description = "Change your nickname to anything you want.",
             usage = "/nick <nickname> [player]",
             aliases = {"nick"},
@@ -381,7 +387,8 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "chatchannel",
+    @Command(name = "Chat Channel",
+            command = "chatchannel",
             description = "Talk to a group of people in private.",
             usage = "/cc <channel> <msg>",
             aliases = {"cc"},
@@ -429,7 +436,8 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "broadcast",
+    @Command(name = "Broadcast",
+            command = "broadcast",
             description = "Broadcast a message to the world.",
             usage = "/broadcast <message>",
             aliases = {"bc"},

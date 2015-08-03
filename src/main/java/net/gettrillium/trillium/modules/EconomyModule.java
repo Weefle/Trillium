@@ -17,7 +17,8 @@ public class EconomyModule extends TrilliumModule {
 
     // TODO: Rubber ducks
 
-    @Command(command = "balance",
+    @Command(name = "Balance",
+            command = "balance",
             description = "Check how much money you have in your account.",
             usage = "/balance",
             aliases = {"money", "wallet"},
@@ -38,7 +39,8 @@ public class EconomyModule extends TrilliumModule {
         }
     }
 
-    @Command(command = "pay",
+    @Command(name = "Pay",
+            command = "pay",
             description = "Send money to a certain player.",
             usage = "/pay <player> <amount>",
             permissions = {Permission.Economy.PAY, Permission.Economy.ADMIN})

@@ -94,11 +94,11 @@ public class Utils {
     // #efficiency
     public static String[] stringSplitter(String s, int interval) {
         if ((s == null) || (s.length() == 0)) {
-            return new String[] {};
+            return new String[]{};
         }
 
         if (interval == 0) {
-            return new String[] {s};
+            return new String[]{s};
         }
 
         int arrayLength = (int) Math.ceil((((double) s.length() / (double) interval)));
@@ -130,6 +130,7 @@ public class Utils {
 
     /**
      * Compares two version numbers
+     *
      * @param version1 first version
      * @param version2 another version
      * @return true iff version1 is newer than version2

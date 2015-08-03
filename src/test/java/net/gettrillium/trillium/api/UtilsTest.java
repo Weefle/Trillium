@@ -7,12 +7,12 @@ public class UtilsTest {
 
     @Test
     public void stringSplitterTest() {
-        Assert.assertArrayEquals("null input string returns empty array", new String[] {}, Utils.stringSplitter(null, 1));
-        Assert.assertArrayEquals("blank input string returns empty array", new String[] {}, Utils.stringSplitter("", 1));
-        Assert.assertArrayEquals("interval of 0 returns an array with only the input string", new String[] {"abcde"}, Utils.stringSplitter("abcde", 0));
-        Assert.assertArrayEquals("interval of 1 vs 1 length string", new String[] {"a"}, Utils.stringSplitter("a", 1));
-        Assert.assertArrayEquals("interval of 1 vs 2 length string", new String[] {"a", "b"}, Utils.stringSplitter("ab", 1));
-        Assert.assertArrayEquals("interval of 2 vs 4 length string", new String[] {"ab", "cd"}, Utils.stringSplitter("abcd", 2));
+        Assert.assertArrayEquals("null input string returns empty array", new String[]{}, Utils.stringSplitter(null, 1));
+        Assert.assertArrayEquals("blank input string returns empty array", new String[]{}, Utils.stringSplitter("", 1));
+        Assert.assertArrayEquals("interval of 0 returns an array with only the input string", new String[]{"abcde"}, Utils.stringSplitter("abcde", 0));
+        Assert.assertArrayEquals("interval of 1 vs 1 length string", new String[]{"a"}, Utils.stringSplitter("a", 1));
+        Assert.assertArrayEquals("interval of 1 vs 2 length string", new String[]{"a", "b"}, Utils.stringSplitter("ab", 1));
+        Assert.assertArrayEquals("interval of 2 vs 4 length string", new String[]{"ab", "cd"}, Utils.stringSplitter("abcd", 2));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class UtilsTest {
     @Test
     public void arrayFromStringTest() {
         Assert.assertArrayEquals("null returns null", null, Utils.arrayFromString(null));
-        Assert.assertArrayEquals("a;b;c;d returns {a, b, c, d}", new String[] {"a", "b", "c", "d"}, Utils.arrayFromString("a;b;c;d"));
+        Assert.assertArrayEquals("a;b;c;d returns {a, b, c, d}", new String[]{"a", "b", "c", "d"}, Utils.arrayFromString("a;b;c;d"));
     }
 
     @Test

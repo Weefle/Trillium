@@ -1,6 +1,5 @@
 package net.gettrillium.trillium.modules;
 
-import net.gettrillium.trillium.Trillium;
 import net.gettrillium.trillium.api.*;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;

@@ -73,6 +73,7 @@ public class Utils {
         return bar.toString();
     }
 
+    // TODO - unit test this
     public static List<String> centerText(String input) {
         String desturated = ChatColor.stripColor(input);
         String[] s = stringSplitter(desturated, 40);
@@ -89,6 +90,7 @@ public class Utils {
         }
     }
 
+    // TODO - unit test this, make more efficient
     // http://stackoverflow.com/a/12297231/4327834
     // #efficiency
     public static String[] stringSplitter(String s, int interval) {
@@ -101,11 +103,13 @@ public class Utils {
             result[i] = s.substring(j, j + interval);
             j += interval;
         }
+
         result[lastIndex] = s.substring(j);
 
         return result;
     }
 
+    // TODO - unit test this
     // http://stackoverflow.com/a/3083197/4327834
     public static int endOfStringInt(String input) {
         Pattern p = Pattern.compile("[0-9]+$");
@@ -117,11 +121,12 @@ public class Utils {
         }
     }
 
+    // TODO - unit test this
     /**
      * Compares two version numbers
      * @param version1 first version
      * @param version2 another version
-     * @return true, if version1 is newer than version2
+     * @return true iff version1 is newer than version2
      */
     public static boolean compareVersion(String version1, String version2) {
         if ((version1 == null) || (version2 == null)) {
@@ -138,6 +143,7 @@ public class Utils {
             }
         }
 
+        // return true if the version we're comparing to is longer
         return (a.length > b.length);
     }
 
@@ -207,6 +213,7 @@ public class Utils {
         return pages;
     }
 
+    // TODO - unit test this
     public static String locationToString(Location l) {
         if (l == null) {
             return null;
@@ -227,6 +234,7 @@ public class Utils {
         return new Location(world, (double) x, (double) y, (double) z);
     }
 
+    // TODO - unit test this
     public static String locationSerializer(Location loc) {
         return loc.getWorld() + "%" + loc.getX() + '%' + loc.getY() + '%' + loc.getZ() + '%' + loc.getPitch() + '%' + loc.getYaw();
     }
@@ -242,6 +250,7 @@ public class Utils {
         return new Location(world, x, y, z, yaw, pitch);
     }
 
+    // TODO - unit test this
     public static String commandBlockify(String command, Player p) {
         return COMMANDBLOCK_REGEX.matcher(command).replaceAll(p.getName());
     }

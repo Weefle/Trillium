@@ -166,6 +166,18 @@ public class Utils {
         return seconds * 20;
     }
 
+    public static String arrayToString(String[] array) {
+        String toString = null;
+        for (String content : array) {
+            toString += ";" + content;
+        }
+        return toString;
+    }
+
+    public static String[] arrayFromString(String fromString) {
+        return fromString.split(";");
+    }
+
     public static String timeToString(int ticks) {
         int millis = (ticks / 20) * 1000;
 

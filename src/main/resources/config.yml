@@ -131,10 +131,10 @@ plugin-messages:
   errors:
   # The common error messages. It uses the above format option."
     invalid-player: "&b%USERNAME% &7is either offline or does not exist."
-    no-permission: "You don't have permission to do that."
+    no-permission: "You don't have permission to do that. Perm: %EXTRA%"
     console-not-allowed: "You can't do that you silly console."
-    too-few-arguments: "Too few aguments. Usage: %USAGE%"
-    wrong-arguments: "Wrong arguments. Usage: %USAGE%"
+    too-few-arguments: "Too few aguments. Usage: %EXTRA%"
+    wrong-arguments: "Wrong arguments. Usage: %EXTRA%"
 
 #---------------[ Broadcast ]---------------#
 broadcast:

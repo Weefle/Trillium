@@ -32,7 +32,7 @@ public class Message {
         format = TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.FORMAT);
         format = format.replace("%MESSAGE%", error.getError());
         format = format.replace("%PREFIX%", prefix);
-        format = format.replace("%USAGE%", extra);
+        format = format.replace("%EXTRA%", extra);
         format = format.replace("%PLAYER%", extra);
         format = format.replace("%COLOR%", Mood.BAD.getColor());
         format = ChatColor.translateAlternateColorCodes('&', format);

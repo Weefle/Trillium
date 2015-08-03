@@ -155,7 +155,7 @@ public class TrilliumAPI {
 
     public static String[] getPermissions(String command) {
         if (commands.containsKey(command)) {
-            return new String[]{commands.get(command)[2]};
+            return Utils.arrayFromString(commands.get(command)[2]);
         } else {
             return new String[]{"null"};
         }
@@ -171,7 +171,7 @@ public class TrilliumAPI {
 
     public static String[] getAliases(String command) {
         if (commands.containsKey(command)) {
-            return new String[]{commands.get(command)[4]};
+            return Utils.arrayFromString(commands.get(command)[4]);
         } else {
             return new String[]{"null"};
         }
@@ -196,9 +196,9 @@ public class TrilliumAPI {
                     commands.put(command.command(),
                             new String[]{command.name()
                                     , command.description()
-                                    , Arrays.toString(command.permissions())
+                                    , Utils.arrayToString(command.permissions())
                                     , command.usage()
-                                    , Arrays.toString(command.aliases())});
+                                    , Utils.arrayToString(command.aliases())});
                 }
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {

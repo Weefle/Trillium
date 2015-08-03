@@ -19,6 +19,7 @@ public class TrilliumAPI {
     private static File playerFolder;
     private static Map<UUID, TrilliumPlayer> players;
     private static Map<Class<? extends TrilliumModule>, TrilliumModule> modules;
+    private static Map<String, String[]> commands;
 
     public static Trillium getInstance() {
         return instance;
@@ -143,8 +144,19 @@ public class TrilliumAPI {
             for (Method m : module.getClass().getDeclaredMethods()) {
                 Command command = m.getAnnotation(Command.class);
                 if (command != null) {
-                    TrilliumCommand c = new TrilliumCommand(command.command(), command.description(), command.usage(), command.aliases(), m, module);
+                    TrilliumCommand c = new TrilliumCommand(command.command()
+                            , command.description()
+                            , command.usage()
+                            , command.aliases()
+                            , m
+                            , module);
                     commandMap.register("trillium", c);
+
+                    commands.put(command.command(),
+                            new String[]{command.description()
+                                    , Arrays.toString(command.permissions())
+                                    , command.usage()
+                                    , Arrays.toString(command.aliases())});
                 }
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {

@@ -74,6 +74,7 @@ public class Permission {
     public static class Chat {
         private static final String PREFIX = "tr.chat.";
         public static final String BROADCAST = PREFIX + "broadcast";
+        public static final String GLOBAL = PREFIX + "global";
         public static final String MOTD = PREFIX + "motd";
         public static final String INFO = PREFIX + "information";
         public static final String ME = PREFIX + "me";

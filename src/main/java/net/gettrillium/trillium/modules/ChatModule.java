@@ -157,6 +157,13 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
+    @Command(command = "global",
+            description = "Disable or enable the global chat.",
+            usage = "/global <disable/enable>",
+            permissions = {Permission.Chat.GLOBAL})
+    public void global(CommandSender cs, String[] args) {
+    }
+
     @Command(command = "message",
             description = "Send a private message to a player.",
             usage = "/msg <player> <msg>",
@@ -205,6 +212,7 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
+    // TODO - Rewrite
     @Command(command = "nickname",
             description = "Change your nickname to anything you want.",
             usage = "/nick <nickname> [player]",

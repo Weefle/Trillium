@@ -33,6 +33,18 @@ public class UtilsTest {
     }
 
     @Test
+    public void arrayToStringTest() {
+        Assert.assertEquals("null returns blank string", "", Utils.arrayToString(null));
+        Assert.assertEquals("blank array returns blank string", "", Utils.arrayToString(new String[] {}));
+        Assert.assertEquals("{a, b, c, d} returns a;b;c;d", "a;b;c;d", Utils.arrayToString(new String[] {"a", "b", "c", "d"}));
+    }
+
+    @Test
+    public void arrayFromStringTest() {
+
+    }
+
+    @Test
     public void timeToStringTest() {
         Assert.assertEquals("60 seconds", "00:00:01:00", Utils.timeToString(60 * 20));
         Assert.assertEquals("65 seconds", "00:00:01:05", Utils.timeToString(65 * 20));

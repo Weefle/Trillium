@@ -173,11 +173,18 @@ public class Utils {
     }
 
     public static String arrayToString(String[] array) {
-        String toString = null;
-        for (String content : array) {
-            toString += ";" + content;
+        if (array == null || array.length == 0) {
+            return "";
         }
-        return toString;
+
+        StringBuilder sb = new StringBuilder();
+
+        for (String s : array) {
+            sb.append(';');
+            sb.append(s);
+        }
+
+        return sb.substring(1);
     }
 
     public static String[] arrayFromString(String fromString) {

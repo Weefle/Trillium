@@ -271,8 +271,11 @@ public class PunishModule extends TrilliumModule {
     public void onChat(AsyncPlayerChatEvent e) {
         TrilliumPlayer p = player(e.getPlayer());
 
-        if (p.isMuted() || p.isShadowBanned()) {
+        if (p.isMuted() && !p.isShadowBanned()) {
             new Message(Mood.BAD, "Mute", "Your voice has been silenced.").to(p);
+        }
+
+        if (p.isMuted() || p.isShadowBanned()) {
             e.setCancelled(true);
         }
     }

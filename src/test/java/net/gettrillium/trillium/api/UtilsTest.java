@@ -17,6 +17,8 @@ public class UtilsTest {
 
     @Test
     public void compareVersionTest() {
+        Assert.assertFalse("return false if our version is null", Utils.compareVersion("0.1", null));
+        Assert.assertFalse("return false if new version is null", Utils.compareVersion(null, "0.1"));
         Assert.assertTrue("0.2 is newer than 0.1", Utils.compareVersion("0.2", "0.1"));
         Assert.assertFalse("0.1 is older than 0.2", Utils.compareVersion("0.1", "0.2"));
         Assert.assertTrue("0.2.1 is newer than 0.2", Utils.compareVersion("0.2.1", "0.2"));

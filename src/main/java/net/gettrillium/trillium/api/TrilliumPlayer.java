@@ -1,5 +1,6 @@
 package net.gettrillium.trillium.api;
 
+import net.gettrillium.trillium.Trillium;
 import net.gettrillium.trillium.api.events.PlayerAFKEvent;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
@@ -10,6 +11,8 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -212,21 +215,39 @@ public class TrilliumPlayer {
     }
 
     public void dispose() {
-        yml.set(Configuration.Player.NICKNAME, this.nickname);
-        yml.set(Configuration.Player.LOCATION, Utils.locationSerializer(proxy.getLocation()));
-        yml.set(Configuration.Player.MUTED, this.isMuted);
-        yml.set(Configuration.Player.GOD, this.isGod);
-        yml.set(Configuration.Player.VANISH, this.isVanished);
+        if (Trillium.connection == null) {
+            yml.set(Configuration.Player.NICKNAME, this.nickname);
+            yml.set(Configuration.Player.LOCATION, Utils.locationSerializer(proxy.getLocation()));
+            yml.set(Configuration.Player.MUTED, this.isMuted);
+            yml.set(Configuration.Player.GOD, this.isGod);
+            yml.set(Configuration.Player.VANISH, this.isVanished);
 
-        ArrayList<String> serialized = new ArrayList<>();
-        for (Map.Entry<String, Location> row : homes.entrySet()) {
-            serialized.add(row.getKey() + ";" + Utils.locationToString(row.getValue()));
+            ArrayList<String> serialized = new ArrayList<>();
+            for (Map.Entry<String, Location> row : homes.entrySet()) {
+                serialized.add(row.getKey() + ";" + Utils.locationToString(row.getValue()));
+            }
+            yml.set(Configuration.Player.HOMES, serialized);
+
+            save();
+
+            proxy = null;
+        } else {
+            try {
+
+                Statement statement = Trillium.connection.createStatement();
+                statement.executeUpdate("INSERT INTO players (uuid, nick, loc, muted, god, vanish)" +
+                        " VALUES (" + proxy.getUniqueId() + ", "
+                        + this.nickname + ", "
+                        + Utils.locationSerializer(proxy.getLocation()) + ", "
+                        + this.isMuted() + ", "
+                        + this.isGod + ", "
+                        + this.isVanished + ")");
+                statement.closeOnCompletion();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        yml.set(Configuration.Player.HOMES, serialized);
-
-        save();
-
-        proxy = null;
     }
 
     public void load() {

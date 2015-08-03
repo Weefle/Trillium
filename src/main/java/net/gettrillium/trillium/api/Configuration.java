@@ -59,6 +59,13 @@ public class Configuration {
         public static final String INSTRUMENT = PREFIX + "tune-instrument";
         public static final String NOTE = PREFIX + "tune-note";
         public static final String TONE = PREFIX + "tune-tone";
+        private static final String SQL = PREFIX + "sql.";
+        public static final String SQL_ENABLED = SQL + "enabled";
+        public static final String SQL_HOST = SQL + "host-name";
+        public static final String SQL_PORT = SQL + "port";
+        public static final String SQL_DATABASE = SQL + "database";
+        public static final String SQL_USER = SQL + "user";
+        public static final String SQL_PASS = SQL + "pass";
     }
 
     public static class PlayerSettings {

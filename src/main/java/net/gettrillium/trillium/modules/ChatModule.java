@@ -166,16 +166,6 @@ public class ChatModule extends TrilliumModule {
         }
     }
 
-    @Command(name = "Global",
-            command = "global",
-            description = "Disable or enable the global chat.",
-            usage = "/global <disable/enable>",
-            aliases = {"silencio"},
-            permissions = {Permission.Chat.GLOBAL})
-    public void global(CommandSender cs, String[] args) {
-
-    }
-
     @Command(name = "Message",
             command = "message",
             description = "Send a private message to a player.",

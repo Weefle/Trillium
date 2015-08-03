@@ -21,28 +21,37 @@ public class PunishModule extends TrilliumModule {
     @Command(name = "Mute",
             command = "mute",
             description = "Silence/unsilence someone's voice.",
-            usage = "/mute <player>",
+            usage = "/mute <player/all> [player]",
             permissions = {Permission.Punish.MUTE})
     public void mute(CommandSender cs, String[] args) {
         String cmd = "mute";
         if (cs.hasPermission(Permission.Punish.MUTE)) {
-            if (args.length == 0) {
+            if (args.length < 2) {
                 new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             } else {
-                Player target = Bukkit.getPlayer(args[0]);
-                if (target != null) {
-                    TrilliumPlayer player = player(target);
-                    if (!player.isMuted()) {
-                        player.setMuted(true);
-                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You muted " + target.getName()).to(cs);
-                        new Message(Mood.BAD, TrilliumAPI.getName(cmd), cs.getName() + " muted you.").to(cs);
+                if (args[0].equalsIgnoreCase("player") || args[0].equalsIgnoreCase("p")) {
+                    Player target = Bukkit.getPlayer(args[0]);
+                    if (target != null) {
+                        TrilliumPlayer player = player(target);
+                        if (!player.isMuted()) {
+                            player.setMuted(true);
+                            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You muted " + target.getName()).to(cs);
+                            new Message(Mood.BAD, TrilliumAPI.getName(cmd), cs.getName() + " muted you.").to(cs);
+                        } else {
+                            player.setMuted(false);
+                            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You unmuted " + target.getName()).to(cs);
+                            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), cs.getName() + " unmuted you.").to(cs);
+                        }
                     } else {
-                        player.setMuted(false);
-                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You unmuted " + target.getName()).to(cs);
-                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), cs.getName() + " unmuted you.").to(cs);
+                        new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
                     }
-                } else {
-                    new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
+                } else if (args[0].equalsIgnoreCase("all") || args[0].equalsIgnoreCase("a")) {
+                    for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
+                        if (!p.getProxy().getName().equals(cs.getName()))
+                            p.setMuted(true);
+
+                        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), p.getName() + " has silenced the chat!").broadcast();
+                    }
                 }
             }
         } else {

@@ -2,6 +2,7 @@ package net.gettrillium.trillium;
 
 import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.Configuration.Server;
+import net.gettrillium.trillium.api.SQL.MySQL;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.Utils;
 import net.milkbowl.vault.chat.Chat;
@@ -17,11 +18,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class Trillium extends JavaPlugin {
 
     public static Economy economy;
     public static Chat chat;
+    public static  Connection connection;
 
     @Override
     public void onEnable() {
@@ -55,6 +59,20 @@ public class Trillium extends JavaPlugin {
                 } else {
                     getLogger().warning("Could not hook into vault economy.");
                 }
+            }
+        }
+
+        if (getConfig().getBoolean(Server.SQL_ENABLED)) {
+            MySQL mySQL = new MySQL(this,
+                    getConfig().getString(Server.SQL_HOST),
+                    getConfig().getString(Server.SQL_PORT),
+                    getConfig().getString(Server.SQL_DATABASE),
+                    getConfig().getString(Server.SQL_USER),
+                    getConfig().getString(Server.SQL_PASS));
+            try {
+                connection = mySQL.openConnection();
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
             }
         }
 
@@ -94,6 +112,11 @@ public class Trillium extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         Utils.unload();
     }
 

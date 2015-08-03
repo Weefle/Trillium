@@ -36,6 +36,13 @@ server:
   # They will be zipped with the backup date as a name.
   automatic-backup-frequency: 2h
   # The time-interval between each backup.
+  sql:
+    enabled: false
+    host-name: "localhost"
+    port: "25565"
+    database: "example-database"
+    user: "example-user"
+    pass: "example-pass"
   spawn:
     spawn-per-group: false
     perm-for-each-spawn:

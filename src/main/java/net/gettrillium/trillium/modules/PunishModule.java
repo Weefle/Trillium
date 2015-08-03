@@ -1,6 +1,7 @@
 package net.gettrillium.trillium.modules;
 
 import net.gettrillium.trillium.api.Permission;
+import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.TrilliumPlayer;
 import net.gettrillium.trillium.api.command.Command;
@@ -23,28 +24,29 @@ public class PunishModule extends TrilliumModule {
             usage = "/mute <player>",
             permissions = {Permission.Punish.MUTE})
     public void mute(CommandSender cs, String[] args) {
+        String cmd = "mute";
         if (cs.hasPermission(Permission.Punish.MUTE)) {
             if (args.length == 0) {
-                new Message("Mute", Error.TOO_FEW_ARGUMENTS, "/mute <player>").to(cs);
+                new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null) {
                     TrilliumPlayer player = player(target);
                     if (!player.isMuted()) {
                         player.setMuted(true);
-                        new Message(Mood.GOOD, "Mute", "You muted " + target.getName()).to(cs);
-                        new Message(Mood.BAD, "Mute", cs.getName() + " muted you.").to(cs);
+                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You muted " + target.getName()).to(cs);
+                        new Message(Mood.BAD, TrilliumAPI.getName(cmd), cs.getName() + " muted you.").to(cs);
                     } else {
                         player.setMuted(false);
-                        new Message(Mood.GOOD, "Mute", "You unmuted " + target.getName()).to(cs);
-                        new Message(Mood.GOOD, "Mute", cs.getName() + " unmuted you.").to(cs);
+                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You unmuted " + target.getName()).to(cs);
+                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), cs.getName() + " unmuted you.").to(cs);
                     }
                 } else {
-                    new Message("Mute", Error.INVALID_PLAYER, args[0]).to(cs);
+                    new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
                 }
             }
         } else {
-            new Message("Mute", Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
         }
     }
 
@@ -54,25 +56,26 @@ public class PunishModule extends TrilliumModule {
             usage = "/smute <player>",
             permissions = {Permission.Punish.SHADOW_MUTE})
     public void shadowmute(CommandSender cs, String[] args) {
+        String cmd = "shadowmute";
         if (cs.hasPermission(Permission.Punish.MUTE)) {
             if (args.length == 0) {
-                new Message("Shadow Mute", Error.TOO_FEW_ARGUMENTS, "/smute <player>").to(cs);
+                new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             } else {
                 TrilliumPlayer target = player(args[0]);
                 if (target != null) {
                     if (target.isShadowMuted()) {
                         target.setShadowMuted(false);
-                        new Message(Mood.GOOD, "Shadow Mute", target.getName() + " has been silently unmuted.").to(cs);
+                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), target.getName() + " has been silently unmuted.").to(cs);
                     } else {
                         target.setShadowBanned(true);
-                        new Message(Mood.GOOD, "Shadow Mute", target.getName() + " has been silently muted.").to(cs);
+                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), target.getName() + " has been silently muted.").to(cs);
                     }
                 } else {
-                    new Message("Shadow Mute", Error.INVALID_PLAYER, args[0]).to(cs);
+                    new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
                 }
             }
         } else {
-            new Message("Shadow Mute", Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
         }
     }
 
@@ -82,9 +85,10 @@ public class PunishModule extends TrilliumModule {
             usage = "/kick <player> [reason]",
             permissions = {Permission.Punish.KICK})
     public void kick(CommandSender cs, String[] args) {
+        String cmd = "kick";
         if (cs.hasPermission(Permission.Punish.KICK)) {
             if (args.length < 2) {
-                new Message("Kick", Error.TOO_FEW_ARGUMENTS, "/kick <player> [reason]").to(cs);
+                new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
                 if (target != null) {
@@ -93,15 +97,15 @@ public class PunishModule extends TrilliumModule {
                         sb.append(args[i]).append(" ");
                     }
                     String reason = sb.toString().trim();
-                    new Message(Mood.BAD, "Kick", target.getName() + " got kicked for: ").broadcast();
-                    new Message(Mood.BAD, "Kick", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
+                    new Message(Mood.BAD, TrilliumAPI.getName(cmd), target.getName() + " got kicked for: ").broadcast();
+                    new Message(Mood.BAD, TrilliumAPI.getName(cmd), ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
                     target.kickPlayer(reason);
                 } else {
-                    new Message("Kick", Error.INVALID_PLAYER, args[0]).to(cs);
+                    new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
                 }
             }
         } else {
-            new Message("Kick", Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
         }
     }
 
@@ -111,9 +115,10 @@ public class PunishModule extends TrilliumModule {
             usage = "/ban <player> [reason]",
             permissions = {Permission.Punish.BAN})
     public void ban(CommandSender cs, String[] args) {
+        String cmd = "ban";
         if (cs.hasPermission(Permission.Punish.BAN)) {
             if (args.length == 0) {
-                new Message("Ban", Error.TOO_FEW_ARGUMENTS, "/ban <player> [reason]").to(cs);
+                new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
                 String reason;
@@ -139,55 +144,61 @@ public class PunishModule extends TrilliumModule {
                 }
             }
         } else {
-            new Message("Ban", Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
         }
     }
 
     @Command(name = "Shadow Ban",
             command = "shadowban",
             description = "Silently ban a player by making them 100% invisible to other players.",
-            usage = "/sban <player>", aliases = {"sban"}, permissions = {Permission.Punish.SHADOW_BAN})
+            usage = "/sban <player>",
+            aliases = {"sban"},
+            permissions = {Permission.Punish.SHADOW_BAN})
     public void shadowban(CommandSender cs, String[] args) {
+        String cmd = "shadowban";
         if (cs.hasPermission(Permission.Punish.SHADOW_BAN)) {
             if (args.length != 0) {
                 TrilliumPlayer target = player(args[0]);
                 if (target != null) {
 
                     target.setShadowBanned(true);
-                    new Message(Mood.GOOD, "Shadow Ban", target.getName() + " has been silently banned.").to(cs);
+                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), target.getName() + " has been silently banned.").to(cs);
 
                 } else {
-                    new Message("Shadow Ban", Error.INVALID_PLAYER, args[0]).to(cs);
+                    new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
                 }
             } else {
-                new Message("Shadow Ban", Error.TOO_FEW_ARGUMENTS, "/sban <player>").to(cs);
+                new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             }
         } else {
-            new Message("Shadow Ban", Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
         }
     }
 
     @Command(name = "Shadow ban",
             command = "shadowunban",
             description = "unshadow ban a shadow banned player.",
-            usage = "/sunban <player>", aliases = {"sunban"}, permissions = {Permission.Punish.SHADOW_BAN})
+            usage = "/sunban <player>",
+            aliases = {"sunban"},
+            permissions = {Permission.Punish.SHADOW_BAN})
     public void shadowunban(CommandSender cs, String[] args) {
+        String cmd = "shadowunban";
         if (cs.hasPermission(Permission.Punish.SHADOW_BAN)) {
             if (args.length != 0) {
                 TrilliumPlayer target = player(args[0]);
                 if (target != null) {
 
                     target.setShadowBanned(false);
-                    new Message(Mood.GOOD, "Shadow Ban", target.getName() + " has been silently unbanned.").to(cs);
+                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), target.getName() + " has been silently unbanned.").to(cs);
 
                 } else {
-                    new Message("Shadow Ban", Error.INVALID_PLAYER, args[0]).to(cs);
+                    new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
                 }
             } else {
-                new Message("Shadow Ban", Error.TOO_FEW_ARGUMENTS, "/sunban <player>").to(cs);
+                new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             }
         } else {
-            new Message("Shadow Ban", Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
         }
     }
 
@@ -198,15 +209,16 @@ public class PunishModule extends TrilliumModule {
             aliases = "pardon",
             permissions = {Permission.Punish.UNBAN})
     public void unban(CommandSender cs, String[] args) {
+        String cmd = "unban";
         if (cs.hasPermission(Permission.Punish.UNBAN)) {
             if (args.length == 0) {
-                new Message("Unban", Error.TOO_FEW_ARGUMENTS, "/unban <player>").to(cs);
+                new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             } else {
                 Bukkit.getBanList(BanList.Type.NAME).pardon(args[0]);
-                new Message(Mood.GOOD, "Unban", args[0] + " got unbanned.").broadcast();
+                new Message(Mood.GOOD, TrilliumAPI.getName(cmd), args[0] + " got unbanned.").broadcast();
             }
         } else {
-            new Message("Unban", Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
         }
     }
 
@@ -216,9 +228,10 @@ public class PunishModule extends TrilliumModule {
             usage = "/banip <player> [reason]",
             permissions = {Permission.Punish.BANIP})
     public void banip(CommandSender cs, String[] args) {
+        String cmd = "banip";
         if (cs.hasPermission(Permission.Punish.BANIP)) {
             if (args.length == 0) {
-                new Message("Ban IP", Error.TOO_FEW_ARGUMENTS, "/banip <player> [reason]").to(cs);
+                new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
                 String reason;
@@ -235,16 +248,16 @@ public class PunishModule extends TrilliumModule {
                 if (target != null) {
                     Bukkit.getBanList(BanList.Type.IP).addBan(String.valueOf(target.getAddress()), reason, null, cs.getName());
                     target.kickPlayer(ChatColor.DARK_RED + "You got banned with reason: \n" + reason);
-                    new Message(Mood.BAD, "Ban IP", target.getName() + " got banned with reason:").broadcast();
-                    new Message(Mood.BAD, "Ban IP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
+                    new Message(Mood.BAD, TrilliumAPI.getName(cmd), target.getName() + " got banned with reason:").broadcast();
+                    new Message(Mood.BAD, TrilliumAPI.getName(cmd), ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
                 } else {
                     Bukkit.getBanList(BanList.Type.NAME).addBan(args[0], reason, null, cs.getName());
-                    new Message(Mood.BAD, "Ban IP", args[0] + " got banned with reason:").broadcast();
-                    new Message(Mood.BAD, "Ban IP", ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
+                    new Message(Mood.BAD, TrilliumAPI.getName(cmd), args[0] + " got banned with reason:").broadcast();
+                    new Message(Mood.BAD, TrilliumAPI.getName(cmd), ChatColor.YELLOW + "'" + ChatColor.AQUA + reason + ChatColor.YELLOW + "'").broadcast();
                 }
             }
         } else {
-            new Message("Ban IP", Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
         }
     }
 
@@ -255,15 +268,16 @@ public class PunishModule extends TrilliumModule {
             aliases = "pardonip",
             permissions = {Permission.Punish.UNBANIP})
     public void unbanip(CommandSender cs, String[] args) {
+        String cmd = "unbanip";
         if (cs.hasPermission(Permission.Punish.UNBANIP)) {
             if (args.length == 0) {
-                new Message("Unban IP", Error.TOO_FEW_ARGUMENTS, "/unbanip <IP>").to(cs);
+                new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             } else {
                 Bukkit.getBanList(BanList.Type.IP).pardon(args[0]);
-                new Message(Mood.GOOD, "Unban IP", args[0] + " got unbanned.").to(cs);
+                new Message(Mood.GOOD, TrilliumAPI.getName(cmd), args[0] + " got unbanned.").to(cs);
             }
         } else {
-            new Message("Unban IP", Error.NO_PERMISSION).to(cs);
+            new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
         }
     }
 

@@ -1,6 +1,6 @@
 package net.gettrillium.trillium.api.messageutils;
 
-import net.gettrillium.trillium.api.Configuration;
+import net.gettrillium.trillium.api.Configuration.PluginMessages;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumPlayer;
 import org.bukkit.Bukkit;
@@ -12,7 +12,7 @@ public class Message {
     private String format;
 
     public Message(Mood mood, String prefix, String message) {
-        format = TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.FORMAT);
+        format = TrilliumAPI.getInstance().getConfig().getString(PluginMessages.FORMAT);
         format = ChatColor.translateAlternateColorCodes('&', format);
         format = format.replace("%PREFIX%", prefix);
         format = format.replace("%MESSAGE%", message);
@@ -21,20 +21,14 @@ public class Message {
     }
 
     public Message(String prefix, Error error) {
-        format = TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.FORMAT);
-        format = format.replace("%MESSAGE%", error.getError());
-        format = format.replace("%PREFIX%", prefix);
-        format = format.replace("%COLOR%", Mood.BAD.getColor());
+        this(Mood.BAD, prefix, error.getError());
         format = ChatColor.translateAlternateColorCodes('&', format);
     }
 
     public Message(String prefix, Error error, String extra) {
-        format = TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.FORMAT);
-        format = format.replace("%MESSAGE%", error.getError());
-        format = format.replace("%PREFIX%", prefix);
+        this( Mood.BAD, prefix, error.getError());
         format = format.replace("%EXTRA%", extra);
         format = format.replace("%PLAYER%", extra);
-        format = format.replace("%COLOR%", Mood.BAD.getColor());
         format = ChatColor.translateAlternateColorCodes('&', format);
     }
 

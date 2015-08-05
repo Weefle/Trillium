@@ -1,13 +1,20 @@
 package net.gettrillium.trillium.api;
 
-import com.google.common.collect.SortedSetMultimap;
-import javafx.collections.transformation.SortedList;
 import net.gettrillium.trillium.Trillium;
+import net.gettrillium.trillium.api.Configuration.Economy;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.command.TrilliumCommand;
-import net.gettrillium.trillium.api.messageutils.Message;
-import net.gettrillium.trillium.api.messageutils.Mood;
-import net.gettrillium.trillium.modules.*;
+import net.gettrillium.trillium.modules.AFKModule;
+import net.gettrillium.trillium.modules.AbilityModule;
+import net.gettrillium.trillium.modules.AdminModule;
+import net.gettrillium.trillium.modules.ChatModule;
+import net.gettrillium.trillium.modules.CommandBinderModule;
+import net.gettrillium.trillium.modules.CoreModule;
+import net.gettrillium.trillium.modules.EconomyModule;
+import net.gettrillium.trillium.modules.FunModule;
+import net.gettrillium.trillium.modules.KitModule;
+import net.gettrillium.trillium.modules.PunishModule;
+import net.gettrillium.trillium.modules.TeleportModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
@@ -16,7 +23,13 @@ import org.bukkit.plugin.SimplePluginManager;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
+import java.util.UUID;
 
 public class TrilliumAPI {
     private static Trillium instance;
@@ -32,12 +45,12 @@ public class TrilliumAPI {
         String className = new Throwable().getStackTrace()[1].getClassName();
         if (className.equalsIgnoreCase(Trillium.class.getCanonicalName())) {
             TrilliumAPI.instance = instance;
-            TrilliumAPI.players = new HashMap<>();
-            TrilliumAPI.modules = new HashMap<>();
-            TrilliumAPI.commands = new TreeMap<>();
+            players = new HashMap<>();
+            modules = new HashMap<>();
+            commands = new TreeMap<>();
 
             TrilliumAPI.instance.saveDefaultConfig();
-            TrilliumAPI.playerFolder = new File(getInstance().getDataFolder(), "Player Database");
+            playerFolder = new File(getInstance().getDataFolder(), "Player Database");
             playerFolder.mkdirs();
         } else {
             throw new IllegalStateException("Cannot set instance of TrilliumAPI");
@@ -46,18 +59,22 @@ public class TrilliumAPI {
 
     public static TrilliumPlayer getPlayer(String name) {
         Player p = Bukkit.getPlayer(name);
-        if (p != null) {
-            return players.get(p.getUniqueId());
-        } else {
-            return null;
-        }
+        return getPlayer(p);
     }
 
     public static TrilliumPlayer getPlayer(Player player) {
-        return players.get(player.getUniqueId());
+        if (player == null) {
+            return null;
+        }
+
+        return getPlayer(player.getUniqueId());
     }
 
     public static TrilliumPlayer getPlayer(UUID uuid) {
+        if (uuid == null) {
+            return null;
+        }
+
         return players.get(uuid);
     }
 
@@ -112,28 +129,28 @@ public class TrilliumAPI {
 
     public static void unregisterModules() {
         unregisterCommands();
-        Iterator it = modules.entrySet().iterator();
+        Iterator<Entry<Class<? extends TrilliumModule>, TrilliumModule>> it = modules.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry item = (Map.Entry) it.next();
-            ((TrilliumModule) item.getValue()).unregister();
+            Entry<Class<? extends TrilliumModule>, TrilliumModule> item = it.next();
+            item.getValue().unregister();
             it.remove();
         }
     }
 
     public static void registerModules() {
-        TrilliumAPI.registerModule(new AFKModule());
-        TrilliumAPI.registerModule(new PunishModule());
-        TrilliumAPI.registerModule(new AbilityModule());
-        TrilliumAPI.registerModule(new AdminModule());
-        TrilliumAPI.registerModule(new CoreModule());
-        TrilliumAPI.registerModule(new TeleportModule());
-        TrilliumAPI.registerModule(new ChatModule());
-        TrilliumAPI.registerModule(new FunModule());
-        TrilliumAPI.registerModule(new CommandBinderModule());
+        registerModule(new AFKModule());
+        registerModule(new PunishModule());
+        registerModule(new AbilityModule());
+        registerModule(new AdminModule());
+        registerModule(new CoreModule());
+        registerModule(new TeleportModule());
+        registerModule(new ChatModule());
+        registerModule(new FunModule());
+        registerModule(new CommandBinderModule());
         if (getInstance().getConfig().getBoolean(Configuration.Kit.ENABLED))
-            TrilliumAPI.registerModule(new KitModule());
-        if (getInstance().getConfig().getBoolean(Configuration.Economy.ENABLED))
-            TrilliumAPI.registerModule(new EconomyModule());
+            registerModule(new KitModule());
+        if (getInstance().getConfig().getBoolean(Economy.ENABLED))
+            registerModule(new EconomyModule());
     }
 
     public static Collection<? extends TrilliumPlayer> getOnlinePlayers() {

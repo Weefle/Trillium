@@ -242,8 +242,8 @@ public class TrilliumPlayer {
                         "god BOOLEAN," +
                         "vanish BOOLEAN);");
                 statement.executeUpdate("INSERT INTO players (uuid, nick, muted, god, vanish)" +
-                        " VALUES (" + proxy.getUniqueId() + ", "
-                        + this.nickname + ", "
+                        " VALUES ('" + proxy.getUniqueId() + "', '"
+                        + this.nickname + "', "
                         + this.isMuted() + ", "
                         + this.isGod + ", "
                         + this.isVanished + ");");

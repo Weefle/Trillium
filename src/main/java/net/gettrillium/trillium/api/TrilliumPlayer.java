@@ -1,6 +1,7 @@
 package net.gettrillium.trillium.api;
 
 import net.gettrillium.trillium.Trillium;
+import net.gettrillium.trillium.api.Configuration.GM;
 import net.gettrillium.trillium.api.events.PlayerAFKEvent;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class TrilliumPlayer {
 
@@ -33,7 +35,7 @@ public class TrilliumPlayer {
     private boolean pvp;
     private File file;
     private YamlConfiguration yml;
-    private HashMap<String, Location> homes = new HashMap<>();
+    private Map<String, Location> homes = new HashMap<>();
     private boolean newUser;
     private boolean shadowBanned;
     private boolean shadowMuted;
@@ -46,15 +48,15 @@ public class TrilliumPlayer {
             this.proxy = proxy;
             nickname = proxy.getName();
             file = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
-            if (!file.exists()) {
+            if (file.exists()) {
+                newUser = false;
+            } else {
                 try {
                     file.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 newUser = true;
-            } else {
-                newUser = false;
             }
             yml = YamlConfiguration.loadConfiguration(file);
             load();
@@ -78,11 +80,11 @@ public class TrilliumPlayer {
     }
 
     public void toggleAfk() {
-        PlayerAFKEvent event = new PlayerAFKEvent(this.proxy, !this.afk);
+        PlayerAFKEvent event = new PlayerAFKEvent(proxy, !afk);
         Bukkit.getServer().getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
-            this.afk = !this.afk;
-            if (this.afk) {
+            afk = !afk;
+            if (afk) {
                 new Message(Mood.NEUTRAL, "AFK", getName() + " is now AFK.").broadcast();
             } else {
                 new Message(Mood.NEUTRAL, "AFK", getName() + " is no longer AFK.").broadcast();
@@ -91,7 +93,7 @@ public class TrilliumPlayer {
     }
 
     public void active() {
-        if (isAfk() && !isVanished()) {
+        if (afk && !isVanished) {
             toggleAfk();
         }
 
@@ -111,7 +113,7 @@ public class TrilliumPlayer {
     }
 
     public boolean isFlying() {
-        return proxy.getAllowFlight() || getProxy().isFlying();
+        return proxy.getAllowFlight() || proxy.isFlying();
     }
 
     public void setFlying(boolean enabled) {
@@ -119,7 +121,7 @@ public class TrilliumPlayer {
     }
 
     public boolean isGod() {
-        return this.isGod;
+        return isGod;
     }
 
     public void setGod(boolean enabled) {
@@ -137,32 +139,32 @@ public class TrilliumPlayer {
 
     public void setDisplayName(String nickname) {
         this.nickname = nickname;
-        this.hasNickname = !nickname.equalsIgnoreCase(proxy.getName());
-        getProxy().setDisplayName(nickname);
+        hasNickname = !nickname.equalsIgnoreCase(proxy.getName());
+        proxy.setDisplayName(nickname);
     }
 
     public boolean hasNickname() {
-        return this.hasNickname;
+        return hasNickname;
     }
 
     public boolean hasPermission(String permission) {
-        return this.getProxy().hasPermission(permission);
+        return proxy.hasPermission(permission);
     }
 
     public boolean isVanished() {
-        return this.isVanished;
+        return isVanished;
     }
 
     public void setVanished(boolean enabled) {
         if (enabled) {
-            this.isVanished = true;
+            isVanished = true;
             for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
-                p.getProxy().hidePlayer(getProxy());
+                p.proxy.hidePlayer(proxy);
             }
         } else {
-            this.isVanished = false;
+            isVanished = false;
             for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
-                p.getProxy().showPlayer(getProxy());
+                p.proxy.showPlayer(proxy);
             }
         }
     }
@@ -187,7 +189,7 @@ public class TrilliumPlayer {
     }
 
     public boolean isShadowMuted() {
-        return this.shadowMuted;
+        return shadowMuted;
     }
 
     public void setCanBreakBlocks(boolean canBreakBlocks) {
@@ -203,7 +205,7 @@ public class TrilliumPlayer {
     }
 
     public boolean getCanPlaceBlocks() {
-        return this.canPlaceBlocks;
+        return canPlaceBlocks;
     }
 
     public void setCanInteract(boolean canInteract) {
@@ -211,7 +213,7 @@ public class TrilliumPlayer {
     }
 
     public boolean getCanInteract() {
-        return this.canInteract;
+        return canInteract;
     }
 
     public void dispose() {
@@ -222,7 +224,7 @@ public class TrilliumPlayer {
             yml.set(Configuration.Player.VANISH, this.isVanished);
 
             ArrayList<String> serialized = new ArrayList<>();
-            for (Map.Entry<String, Location> row : homes.entrySet()) {
+            for (Entry<String, Location> row : homes.entrySet()) {
                 serialized.add(row.getKey() + ";" + Utils.locationToString(row.getValue()));
             }
             yml.set(Configuration.Player.HOMES, serialized);
@@ -258,15 +260,15 @@ public class TrilliumPlayer {
     public void load() {
 
         if (newUser) {
-            yml.set(Configuration.Player.NICKNAME, getDisplayName());
+            yml.set(Configuration.Player.NICKNAME, nickname);
             yml.set(Configuration.Player.LOCATION, Utils.locationSerializer(proxy.getLocation()));
-            yml.set(Configuration.Player.MUTED, isMuted());
-            yml.set(Configuration.Player.GOD, isGod());
+            yml.set(Configuration.Player.MUTED, isMuted);
+            yml.set(Configuration.Player.GOD, isGod);
             yml.set(Configuration.Player.PVP, canPvp());
-            yml.set(Configuration.Player.VANISH, isVanished());
+            yml.set(Configuration.Player.VANISH, isVanished);
             yml.set(Configuration.Player.BAN_REASON, "");
             yml.set(Configuration.Player.HOMES, "");
-            if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
+            if (TrilliumAPI.getInstance().getConfig().getBoolean(GM.ENABLED)) {
                 yml.set(Configuration.Player.GROUP, "default");
             }
             save();
@@ -277,8 +279,8 @@ public class TrilliumPlayer {
             setGod(yml.getBoolean(Configuration.Player.GOD));
             setPvp(yml.getBoolean(Configuration.Player.PVP));
             setVanished(yml.getBoolean(Configuration.Player.VANISH));
-            if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.GM.ENABLED)) {
-                new GroupManager(getProxy()).setGroup(yml.getString(Configuration.Player.GROUP));
+            if (TrilliumAPI.getInstance().getConfig().getBoolean(GM.ENABLED)) {
+                new GroupManager(proxy).setGroup(yml.getString(Configuration.Player.GROUP));
             }
 
             List<String> serialized = yml.getStringList(Configuration.Player.HOMES);
@@ -309,7 +311,7 @@ public class TrilliumPlayer {
     }
 
     public String getName() {
-        return getProxy().getName();
+        return proxy.getName();
     }
 
     public boolean homeIsNotNull(String name) {
@@ -330,10 +332,10 @@ public class TrilliumPlayer {
         return homes.get(name);
     }
 
-    public ArrayList<Message> getHomeList() {
-        ArrayList<Message> format = new ArrayList<>();
+    public List<Message> getHomeList() {
+        ArrayList<Message> format = new ArrayList<>(homes.size());
 
-        for (Map.Entry<String, Location> row : homes.entrySet()) {
+        for (Entry<String, Location> row : homes.entrySet()) {
             format.add(new Message(Mood.NEUTRAL, row.getKey(), Utils.locationToString(row.getValue())));
         }
         return format;
@@ -367,4 +369,3 @@ public class TrilliumPlayer {
         return file;
     }
 }
-

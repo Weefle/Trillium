@@ -59,6 +59,7 @@ public class Configuration {
         public static final String INSTRUMENT = PREFIX + "tune-instrument";
         public static final String NOTE = PREFIX + "tune-note";
         public static final String TONE = PREFIX + "tune-tone";
+        public static final String PERM_BASED_HELP_MENU = PREFIX + "permission-based-help-menu";
         private static final String SQL = PREFIX + "sql.";
         public static final String SQL_ENABLED = SQL + "enabled";
         public static final String SQL_HOST = SQL + "host-name";

@@ -59,6 +59,8 @@ server:
     enable-toggle-pvp: true
     # Toggle pvp allows players to run the /togglepvp command in which they can choose to disable
     # pvp for themselves only. Other players can't damage them and they can't damage others.
+  permission-based-help-menu: false
+    # Will only show commands the player has permission to use.
   tune-instrument: "PIANO"
   # Can be: PIANO, BASS_DRUM, BASS_GUITAR, SNAPE_DRUM, STICKS
   # To make a new tune, simple make a new text file in the Tunes folder with the name of your tune.

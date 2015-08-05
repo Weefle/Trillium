@@ -32,16 +32,19 @@ public class AdminModule extends TrilliumModule {
     public void trillium(CommandSender cs, String[] args) {
         String cmd = "trillium";
         if (args.length == 0) {
-            cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
+            cs.sendMessage(" ");
+            cs.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "----------------"
+                    + ChatColor.GOLD + " Trillium "
+                    + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "----------------");
             cs.sendMessage(ChatColor.GRAY + "Plugin made with love by:");
             cs.sendMessage(ChatColor.GRAY + "LordSaad, VortexSeven, Turbotailz,");
-            cs.sendMessage(ChatColor.GRAY + "samczsun");
+            cs.sendMessage(ChatColor.GRAY + "samczsun, and hintss.");
             cs.sendMessage(ChatColor.DARK_RED + "<3");
-            cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
-            cs.sendMessage(ChatColor.GRAY + "Version: " + ChatColor.YELLOW + TrilliumAPI.getInstance().getDescription().getVersion());
-            cs.sendMessage(ChatColor.GRAY + "Support email: " + ChatColor.YELLOW + "support@gettrillium.net");
-            cs.sendMessage(ChatColor.GRAY + "Website: " + ChatColor.YELLOW + "http://www.gettrillium.net/");
-            cs.sendMessage(ChatColor.GRAY + "Resource page: " + ChatColor.YELLOW + "http://www.spigotmc.org/resources/trillium.3882/");
+            cs.sendMessage(ChatColor.GOLD + "Type /tr help for a lit of commands from Trillium.");
+            new Message(Mood.NEUTRAL, "Version", TrilliumAPI.getInstance().getDescription().getVersion()).to(cs);
+            new Message(Mood.NEUTRAL, "Support Email", "support@gettrillium.net");
+            new Message(Mood.NEUTRAL, "Website", "http://www.gettrillium.net/").to(cs);
+            new Message(Mood.NEUTRAL, "Resource Page", "http://goo.gl/t45LYr").to(cs);
         } else {
             if (args[0].equalsIgnoreCase("reload")) {
                 if (cs.hasPermission(Permission.Admin.TRILLIUM)) {
@@ -49,9 +52,9 @@ public class AdminModule extends TrilliumModule {
                         reloadPrompt.remove(cs.getName());
                         Utils.unload();
                         Utils.load();
-                        cs.sendMessage(ChatColor.DARK_GRAY + "<<<---{[O]}--->>> " + ChatColor.BLUE + "Trillium" + ChatColor.DARK_GRAY + " <<<---{[O]}--->>>");
-                        cs.sendMessage(ChatColor.GRAY + "Plugin successfully reloaded");
-                        cs.sendMessage(ChatColor.DARK_GRAY + "<<<-------------------------------->>>");
+                        cs.sendMessage(" ");
+                        new Message(Mood.GOOD, "Trillium", "Plugin successfully reloaded.").to(cs);
+                        cs.sendMessage(" ");
                     } else {
                         reloadPrompt.add(cs.getName());
                         new Message(Mood.BAD, TrilliumAPI.getName(cmd), "Wow there tiger!").to(cs);
@@ -63,6 +66,39 @@ public class AdminModule extends TrilliumModule {
                 } else {
                     new Message("Trillium", Error.NO_PERMISSION).to(cs);
                 }
+            } else {
+                ArrayList<Message> commands = new ArrayList<>();
+                if (getConfig().getBoolean(Configuration.Server.PERM_BASED_HELP_MENU)) {
+                    for (String command : TrilliumAPI.getCommands().keySet()) {
+                        if (cs.hasPermission(TrilliumAPI.getPermissions(command)[0]))
+                            commands.add(new Message(Mood.NEUTRAL, command, TrilliumAPI.getDescription(command)));
+                    }
+                } else {
+                    for (String command : TrilliumAPI.getCommands().keySet())
+                        commands.add(new Message(Mood.NEUTRAL, command, TrilliumAPI.getDescription(command)));
+                }
+
+                List<List<Message>> pages = Utils.getPages(commands, 10);
+                int page;
+
+                if (args.length <= 1) {
+                    page = 1;
+                } else {
+                    if (StringUtils.isNumeric(args[1])) {
+                        if (Integer.parseInt(args[1]) <= (pages.size() - 1)) {
+                            page = Integer.parseInt(args[1]);
+                        } else {
+                            page = 1;
+                        }
+                    } else {
+                        page = 1;
+                    }
+                }
+
+                cs.sendMessage(" ");
+                new Message(Mood.GOOD, "Help", "Viewing page: " + page + "/" + pages.size()).to(cs);
+                for (Message msg : pages.get(page - 1))
+                    msg.to(cs);
             }
         }
     }

@@ -1,8 +1,12 @@
 package net.gettrillium.trillium.api;
 
+import com.google.common.collect.SortedSetMultimap;
+import javafx.collections.transformation.SortedList;
 import net.gettrillium.trillium.Trillium;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.command.TrilliumCommand;
+import net.gettrillium.trillium.api.messageutils.Message;
+import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.modules.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
@@ -20,7 +24,6 @@ public class TrilliumAPI {
     private static Map<UUID, TrilliumPlayer> players;
     private static Map<Class<? extends TrilliumModule>, TrilliumModule> modules;
     private static Map<String, String[]> commands;
-
     public static Trillium getInstance() {
         return instance;
     }
@@ -31,7 +34,7 @@ public class TrilliumAPI {
             TrilliumAPI.instance = instance;
             TrilliumAPI.players = new HashMap<>();
             TrilliumAPI.modules = new HashMap<>();
-            TrilliumAPI.commands = new HashMap<>();
+            TrilliumAPI.commands = new TreeMap<>();
 
             TrilliumAPI.instance.saveDefaultConfig();
             TrilliumAPI.playerFolder = new File(getInstance().getDataFolder(), "Player Database");
@@ -135,6 +138,10 @@ public class TrilliumAPI {
 
     public static Collection<? extends TrilliumPlayer> getOnlinePlayers() {
         return players.values();
+    }
+
+    public static Map<String, String[]> getCommands() {
+        return commands;
     }
 
     public static String getName(String command) {

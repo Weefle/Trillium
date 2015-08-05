@@ -300,6 +300,27 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
+    // TODO: make
+
+    @Command(name = "Freeze",
+            command = "freeze",
+            description = "Disable/Enable the ability to move for anyone online or a certain player.",
+            usage = "/freeze <player/all> [player]",
+            permissions = {Permission.Punish.UNBANIP})
+    public void freeze(CommandSender cs, String[] args) {
+        String cmd = "unbanip";
+        if (cs.hasPermission(Permission.Punish.UNBANIP)) {
+            if (args.length == 0) {
+                new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
+            } else {
+                Bukkit.getBanList(BanList.Type.IP).pardon(args[0]);
+                new Message(Mood.GOOD, TrilliumAPI.getName(cmd), args[0] + " got unbanned.").to(cs);
+            }
+        } else {
+            new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
+        }
+    }
+
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
         TrilliumPlayer p = player(e.getPlayer());

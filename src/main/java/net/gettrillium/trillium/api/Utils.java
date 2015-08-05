@@ -24,6 +24,8 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -133,7 +135,7 @@ public class Utils {
      *
      * @param version1 first version
      * @param version2 another version
-     * @return true iff version1 is newer than version2
+     * @return true if version1 is newer than version2
      */
     public static boolean compareVersion(String version1, String version2) {
         if ((version1 == null) || (version2 == null)) {
@@ -283,6 +285,26 @@ public class Utils {
     // TODO - unit test this
     public static String commandBlockify(String command, Player p) {
         return COMMANDBLOCK_REGEX.matcher(command).replaceAll(p.getName());
+    }
+
+    // http://stackoverflow.com/a/22947052
+    public static <T> List<List<T>> getPages(Collection<T> c, Integer pageSize) {
+        if (c == null)
+            return Collections.emptyList();
+
+        List<T> list = new ArrayList<>(c);
+
+        if (pageSize == null || pageSize <= 0 || pageSize > list.size())
+            pageSize = list.size();
+
+        int numPages = (int) Math.ceil((double) list.size() / (double) pageSize);
+
+        List<List<T>> pages = new ArrayList<>(numPages);
+
+        for (int pageNum = 0; pageNum < numPages; )
+            pages.add(list.subList(pageNum * pageSize, Math.min(++pageNum * pageSize, list.size())));
+
+        return pages;
     }
 
     public static void load() {

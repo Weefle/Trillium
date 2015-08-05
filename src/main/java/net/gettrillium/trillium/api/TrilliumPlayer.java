@@ -215,7 +215,6 @@ public class TrilliumPlayer {
     }
 
     public void dispose() {
-        if (Trillium.connection == null) {
             yml.set(Configuration.Player.NICKNAME, this.nickname);
             yml.set(Configuration.Player.LOCATION, Utils.locationSerializer(proxy.getLocation()));
             yml.set(Configuration.Player.MUTED, this.isMuted);
@@ -231,17 +230,23 @@ public class TrilliumPlayer {
             save();
 
             proxy = null;
-        } else {
+
+        if (Trillium.connection != null) {
             try {
 
                 Statement statement = Trillium.connection.createStatement();
-                statement.executeUpdate("INSERT INTO players (uuid, nick, loc, muted, god, vanish)" +
+                statement.executeUpdate("CREATE TABLE IF NOT EXISTS players (" +
+                        "uuid VARCHAR(36)," +
+                        "nick TEXT," +
+                        "muted BOOLEAN," +
+                        "god BOOLEAN," +
+                        "vanish BOOLEAN);");
+                statement.executeUpdate("INSERT INTO players (uuid, nick, muted, god, vanish)" +
                         " VALUES (" + proxy.getUniqueId() + ", "
                         + this.nickname + ", "
-                        + Utils.locationSerializer(proxy.getLocation()) + ", "
                         + this.isMuted() + ", "
                         + this.isGod + ", "
-                        + this.isVanished + ")");
+                        + this.isVanished + ");");
                 statement.closeOnCompletion();
 
             } catch (SQLException e) {

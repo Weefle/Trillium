@@ -18,6 +18,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class PunishModule extends TrilliumModule {
 
+    private boolean chatIsSilenced;
+
     @Command(name = "Mute",
             command = "mute",
             description = "Silence/unsilence someone's voice.",
@@ -26,10 +28,14 @@ public class PunishModule extends TrilliumModule {
     public void mute(CommandSender cs, String[] args) {
         String cmd = "mute";
         if (cs.hasPermission(Permission.Punish.MUTE)) {
-            if (args.length < 2) {
+            if (args.length < 1) {
                 new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             } else {
                 if (args[0].equalsIgnoreCase("player") || args[0].equalsIgnoreCase("p")) {
+                    if (args.length < 2) {
+                        new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
+                        return;
+                    }
                     Player target = Bukkit.getPlayer(args[0]);
                     if (target != null) {
                         TrilliumPlayer player = player(target);
@@ -46,12 +52,16 @@ public class PunishModule extends TrilliumModule {
                         new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
                     }
                 } else if (args[0].equalsIgnoreCase("all") || args[0].equalsIgnoreCase("a")) {
-                    for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
-                        if (!p.getProxy().getName().equals(cs.getName()))
-                            p.setMuted(true);
 
-                        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), p.getName() + " has silenced the chat!").broadcast();
+                    if (chatIsSilenced) {
+                        chatIsSilenced = false;
+                        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), cs.getName() + " has unsilenced the chat!").broadcast();
+                    } else {
+                        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), cs.getName() + " has silenced the chat!").broadcast();
+                        chatIsSilenced = true;
                     }
+                } else {
+                    new Message("Mute", Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
                 }
             }
         } else {
@@ -296,9 +306,11 @@ public class PunishModule extends TrilliumModule {
 
         if (p.isMuted() && !p.isShadowBanned()) {
             new Message(Mood.BAD, "Mute", "Your voice has been silenced.").to(p);
+            e.setCancelled(true);
         }
 
-        if (p.isMuted() || p.isShadowBanned()) {
+        if (p.isShadowBanned() && !p.isMuted()) {
+            p.getProxy().sendMessage("Unknown command. Try /help for a list of commands.");
             e.setCancelled(true);
         }
     }

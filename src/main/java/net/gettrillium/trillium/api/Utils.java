@@ -75,8 +75,8 @@ public class Utils {
 
     // TODO - unit test this
     public static List<String> centerText(String input) {
-        String desturated = ChatColor.stripColor(input);
-        String[] s = stringSplitter(desturated, 40);
+        String desaturated = ChatColor.stripColor(input);
+        String[] s = stringSplitter(desaturated, 40);
         List<String> centered = new ArrayList<>(s.length);
         for (String slices : s) {
             centered.add(StringUtils.center(slices, 60));

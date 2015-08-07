@@ -26,14 +26,17 @@ public class PlayerAFKEvent extends Event implements Cancellable {
         return this.player;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }
 
-    public void setCancelled(boolean cancel) {
-        this.cancelled = cancel;
+    @Override
+    public void setCancelled(boolean b) {
+        this.cancelled = b;
     }
 
+    @Override
     public boolean isCancelled() {
         return this.cancelled;
     }

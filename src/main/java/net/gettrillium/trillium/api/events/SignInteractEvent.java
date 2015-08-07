@@ -15,7 +15,7 @@ public class SignInteractEvent extends Event implements Cancellable {
     private Player player;
     private Sign sign;
     private String command;
-    private boolean cancelled;
+    private boolean cancelled = false;
     private CommandSender sender;
 
     public SignInteractEvent(Player player, Sign sign, String command, CommandSender sender) {
@@ -26,35 +26,38 @@ public class SignInteractEvent extends Event implements Cancellable {
     }
 
     public CommandSender getSender() {
-        return this.sender;
+        return sender;
     }
 
     public String getBaseCommand() {
-        return this.command;
+        return command;
     }
 
     public String getCommand() {
-        return this.command + " " + Utils.commandBlockify(sign.getLine(1), player);
+        return command + ' ' + Utils.commandBlockify(sign.getLine(1), player);
     }
 
     public Sign getSign() {
-        return this.sign;
+        return sign;
     }
 
     public Player getPlayer() {
-        return this.player;
+        return player;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }
 
-    public void setCancelled(boolean cancel) {
-        this.cancelled = cancel;
+    @Override
+    public void setCancelled(boolean b) {
+        cancelled = b;
     }
 
+    @Override
     public boolean isCancelled() {
-        return this.cancelled;
+        return cancelled;
     }
 
     public static HandlerList getHandlerList() {

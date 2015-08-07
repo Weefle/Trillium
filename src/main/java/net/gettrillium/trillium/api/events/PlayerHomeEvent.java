@@ -14,10 +14,10 @@ public class PlayerHomeEvent extends Event implements Cancellable {
     private Player player;
     private Location from;
     private Location to;
-    private boolean cancelled;
+    private boolean cancelled = false;
 
     public PlayerHomeEvent(String homeName, Player player, Location from, Location to) {
-        this.name = homeName;
+        name = homeName;
         this.player = player;
         this.from = from;
         this.to = to;
@@ -39,14 +39,17 @@ public class PlayerHomeEvent extends Event implements Cancellable {
         return this.player;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }
 
+    @Override
     public void setCancelled(boolean cancel) {
         this.cancelled = cancel;
     }
 
+    @Override
     public boolean isCancelled() {
         return this.cancelled;
     }

@@ -17,38 +17,41 @@ public class PlayerWarpEvent extends Event implements Cancellable {
     private boolean cancelled;
 
     public PlayerWarpEvent(String warpName, Player player, Location from, Location to) {
-        this.name = warpName;
+        name = warpName;
         this.player = player;
         this.from = from;
         this.to = to;
     }
 
     public String getWarpName() {
-        return this.name;
+        return name;
     }
 
     public Location getFrom() {
-        return this.from;
+        return from;
     }
 
     public Location getTo() {
-        return this.to;
+        return to;
     }
 
     public Player getPlayer() {
-        return this.player;
+        return player;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }
 
-    public void setCancelled(boolean cancel) {
-        this.cancelled = cancel;
+    @Override
+    public void setCancelled(boolean b) {
+        cancelled = b;
     }
 
+    @Override
     public boolean isCancelled() {
-        return this.cancelled;
+        return cancelled;
     }
 
     public static HandlerList getHandlerList() {

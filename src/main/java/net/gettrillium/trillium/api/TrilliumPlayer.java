@@ -14,6 +14,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -244,12 +245,11 @@ public class TrilliumPlayer {
 
     public void dispose() {
         if (Trillium.connection == null) {
-
-            yml.set(Configuration.Player.NICKNAME, this.nickname);
+            yml.set(Configuration.Player.NICKNAME, nickname);
             yml.set(Configuration.Player.LOCATION, Utils.locationSerializer(proxy.getLocation()));
-            yml.set(Configuration.Player.MUTED, this.isMuted);
-            yml.set(Configuration.Player.GOD, this.isGod);
-            yml.set(Configuration.Player.VANISH, this.isVanished);
+            yml.set(Configuration.Player.MUTED, isMuted);
+            yml.set(Configuration.Player.GOD, isGod);
+            yml.set(Configuration.Player.VANISH, isVanished);
 
             ArrayList<String> serialized = new ArrayList<>();
             for (Entry<String, Location> row : homes.entrySet()) {
@@ -260,10 +260,9 @@ public class TrilliumPlayer {
             save();
 
             proxy = null;
-
         } else {
+            // TODO - proper try-with-resources here
             try {
-
                 Statement statement = Trillium.connection.createStatement();
                 statement.executeUpdate("CREATE TABLE IF NOT EXISTS players (" +
                         "uuid VARCHAR(36)," +
@@ -271,14 +270,16 @@ public class TrilliumPlayer {
                         "muted BOOLEAN," +
                         "god BOOLEAN," +
                         "vanish BOOLEAN);");
-                statement.executeUpdate("INSERT INTO players (uuid, nick, muted, god, vanish)" +
-                        " VALUES ('" + proxy.getUniqueId() + "', '"
-                        + this.nickname + "', "
-                        + this.isMuted() + ", "
-                        + this.isGod + ", "
-                        + this.isVanished + ");");
                 statement.closeOnCompletion();
 
+                PreparedStatement ps = Trillium.connection.prepareStatement("INSERT INTO players (uuid, nick, muted, god, vanish) VALUES (?, ?, ?, ?, ?);");
+                ps.setString(1, proxy.getUniqueId().toString());
+                ps.setString(2, nickname);
+                ps.setBoolean(3, isMuted());
+                ps.setBoolean(4, isGod());
+                ps.setBoolean(5, isVanished());
+                ps.executeUpdate();
+                ps.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

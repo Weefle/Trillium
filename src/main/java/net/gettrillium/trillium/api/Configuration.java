@@ -128,6 +128,10 @@ public class Configuration {
         public static final String WRONG_ARGUMENTS = ERRORS + "wrong-arguments";
         public static final String FROM_TO_TO_MESSAGE = PREFIX + "from-to-to-message";
         public static final String TO_FROM_FROM_MESSAGE = PREFIX + "to-from-from-message";
+        private static final String PALLETE = PREFIX + "color-pallete.";
+        public static final String PALLETE_MINOR = PALLETE + "minor-color";
+        public static final String PALLETE_MAJOR = PALLETE + "major-color";
+        public static final String PALLETE_HIGHLIGHT = PALLETE + "highlight-color";
     }
 
     public static class Economy {

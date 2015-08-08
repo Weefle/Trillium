@@ -123,13 +123,18 @@ chat:
 
 #---------------[ Plugin Messages ]---------------#
 plugin-messages:
+  color-pallete:
+  # Use %MINOR%, %MAJOR% and %HIGHLIGHT% for message colors.
+    minor-color: "&6"
+    major-color: "&7"
+    highlight-color: "&b"
   # Format plugin messages.
-  format: "%COLOR%%PREFIX% &7- %MESSAGE%"
+  format: "%MOOD_COLOR%%PREFIX% %MINOR%- %MESSAGE%"
   # The general format of messages the plugin sends to the player/server.
-  from-to-to-message: "&7%TO% <- &b%MESSAGE%"
+  from-to-to-message: "%MINOR%%TO% %MAJOR%<- %HIGHLIGHT%%MESSAGE%"
   # The format of you sending a private message to someone.
   # You can use %FROM% and %TO%
-  to-from-from-message: "&7%FROM% -> &b%MESSAGE%"
+  to-from-from-message: "%MINOR%%FROM% %MAJOR%-> %HIGHLIGHT%%MESSAGE%"
   # The format of you receiving a private message from someone.
   # You can use %FROM% and %TO%
   colors:
@@ -139,11 +144,11 @@ plugin-messages:
     good-message: "&a"
   errors:
   # The common error messages. It uses the above format option."
-    invalid-player: "&b%USERNAME% &7is either offline or does not exist."
-    no-permission: "You don't have permission to do that. Perm: %EXTRA%"
-    console-not-allowed: "You can't do that you silly console."
-    too-few-arguments: "Too few aguments. Usage: %EXTRA%"
-    wrong-arguments: "Wrong arguments. Usage: %EXTRA%"
+    invalid-player: "%HIGHLIGHT%%USERNAME% %MAJOR%is either offline or does not exist."
+    no-permission: "%MAJOR%You don't have permission to do that. Perm: %HIGHLIGHT%%EXTRA%"
+    console-not-allowed: "%MAJOR%You can't do that you silly console."
+    too-few-arguments: "%MAJOR%Too few aguments. Usage: %HIGHLIGHT%%EXTRA%"
+    wrong-arguments: "%MAJOR%Wrong arguments. Usage: %HIGHLIGHT%%EXTRA%"
 
 #---------------[ Broadcast ]---------------#
 broadcast:

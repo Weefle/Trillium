@@ -16,7 +16,10 @@ public class Message {
         format = ChatColor.translateAlternateColorCodes('&', format);
         format = format.replace("%PREFIX%", prefix);
         format = format.replace("%MESSAGE%", message);
-        format = format.replace("%COLOR%", mood.getColor());
+        format = format.replace("%MOOD_COLOR%", mood.getColor());
+        format = format.replace("%MAJOR%", Pallete.getMajor() + "");
+        format = format.replace("%MINOR%", Pallete.getMinor() + "");
+        format = format.replace("%HIGHLIGHT%", Pallete.getHighlight() + "");
         format = ChatColor.translateAlternateColorCodes('&', format);
     }
 
@@ -26,9 +29,9 @@ public class Message {
     }
 
     public Message(String prefix, Error error, String extra) {
-        this( Mood.BAD, prefix, error.getError());
+        this(Mood.BAD, prefix, error.getError());
         format = format.replace("%EXTRA%", extra);
-        format = format.replace("%PLAYER%", extra);
+        format = format.replace("%USERNAME%", extra);
         format = ChatColor.translateAlternateColorCodes('&', format);
     }
 

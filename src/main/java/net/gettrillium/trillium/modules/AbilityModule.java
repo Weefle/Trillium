@@ -10,6 +10,7 @@ import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
+import net.gettrillium.trillium.api.messageutils.Pallete;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -61,13 +62,25 @@ public class AbilityModule extends TrilliumModule {
                 TrilliumPlayer target = player(args[0]);
                 if (target != null) {
                     if (target.isFlying()) {
-                        new Message(Mood.BAD, TrilliumAPI.getName(cmd), target.getName() + " is no longer in fly mode.").to(cs);
-                        new Message(Mood.BAD, TrilliumAPI.getName(cmd), cs.getName() + " removed you from fly mode.").to(target);
+                        new Message(Mood.BAD, TrilliumAPI.getName(cmd), Pallete.getHighlight()
+                                + target.getName()
+                                + Pallete.getMajor()
+                                + " is no longer in fly mode.").to(cs);
+                        new Message(Mood.BAD, TrilliumAPI.getName(cmd), Pallete.getHighlight()
+                                + cs.getName()
+                                + Pallete.getMajor()
+                                + " removed you from fly mode.").to(target);
 
                         target.setFlying(false);
                     } else {
-                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), target.getName() + " is now in fly mode.").to(cs);
-                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), cs.getName() + " put you in fly mode.").to(target);
+                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), Pallete.getHighlight()
+                                + target.getName()
+                                + Pallete.getMajor()
+                                + " is now in fly mode.").to(cs);
+                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), Pallete.getHighlight()
+                                + cs.getName()
+                                + Pallete.getMajor()
+                                + " put you in fly mode.").to(target);
 
                         target.setFlying(true);
                     }

@@ -11,6 +11,7 @@ public class Permission {
         public static final String UNBANIP = PREFIX + "unbanip";
         public static final String SHADOW_BAN = PREFIX + "shadow-ban";
         public static final String SHADOW_MUTE = PREFIX + "shadow-mute";
+        public static final String FREEZE = PREFIX + "freeze";
     }
 
     public static class Ability {

@@ -306,15 +306,28 @@ public class PunishModule extends TrilliumModule {
             command = "freeze",
             description = "Disable/Enable the ability to move for anyone online or a certain player.",
             usage = "/freeze <player/all> [player]",
-            permissions = {Permission.Punish.UNBANIP})
+            permissions = {Permission.Punish.FREEZE})
     public void freeze(CommandSender cs, String[] args) {
-        String cmd = "unbanip";
-        if (cs.hasPermission(Permission.Punish.UNBANIP)) {
+        String cmd = "freeze";
+        if (cs.hasPermission(Permission.Punish.FREEZE)) {
             if (args.length == 0) {
                 new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             } else {
-                Bukkit.getBanList(BanList.Type.IP).pardon(args[0]);
-                new Message(Mood.GOOD, TrilliumAPI.getName(cmd), args[0] + " got unbanned.").to(cs);
+                TrilliumPlayer p = player(args[0]);
+                if (p == null) {
+                    new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
+                    return;
+                }
+
+                if (p.isFrozen()) {
+                    p.setFrozen(false);
+                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You unfroze " + p.getName() + ".").to(cs);
+                    new Message(Mood.BAD, TrilliumAPI.getName(cmd), cs.getName() + " unfroze you.").to(p);
+                } else {
+                    p.setFrozen(true);
+                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You froze " + p.getName() + ".").to(cs);
+                    new Message(Mood.BAD, TrilliumAPI.getName(cmd), cs.getName() + " froze you.").to(p);
+                }
             }
         } else {
             new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);

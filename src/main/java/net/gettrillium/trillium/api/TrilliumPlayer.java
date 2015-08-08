@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,11 +39,12 @@ public class TrilliumPlayer {
     private YamlConfiguration yml;
     private Map<String, Location> homes = new HashMap<>();
     private boolean newUser;
-    private boolean shadowBanned;
-    private boolean shadowMuted;
-    private boolean canBreakBlocks;
-    private boolean canPlaceBlocks;
-    private boolean canInteract;
+    private boolean shadowBanned = false;
+    private boolean shadowMuted = false;
+    private boolean canBreakBlocks = true;
+    private boolean canPlaceBlocks = true;
+    private boolean canInteract = true;
+    private boolean isFrozen = false;
 
     public TrilliumPlayer(Player proxy) {
         if (proxy != null) {
@@ -214,6 +217,29 @@ public class TrilliumPlayer {
 
     public boolean getCanInteract() {
         return canInteract;
+    }
+
+    public boolean isFrozen() {
+        return isFrozen;
+    }
+
+    public void setFrozen(boolean frozen) {
+        isFrozen = frozen;
+        if (frozen) {
+            PotionEffect slow = new PotionEffect(PotionEffectType.SLOW, 9999, 9999, true, false);
+            PotionEffect slow_break = new PotionEffect(PotionEffectType.SLOW_DIGGING, 9999, 9999, true, false);
+            PotionEffect no_jump = new PotionEffect(PotionEffectType.JUMP, 9999, 9999, true, false);
+            PotionEffect blind = new PotionEffect(PotionEffectType.BLINDNESS, 9999, 9999, true, false);
+            proxy.addPotionEffect(slow);
+            proxy.addPotionEffect(slow_break);
+            proxy.addPotionEffect(no_jump);
+            proxy.addPotionEffect(blind);
+        } else {
+            proxy.removePotionEffect(PotionEffectType.BLINDNESS);
+            proxy.removePotionEffect(PotionEffectType.SLOW_DIGGING);
+            proxy.removePotionEffect(PotionEffectType.SLOW);
+            proxy.removePotionEffect(PotionEffectType.JUMP);
+        }
     }
 
     public void dispose() {

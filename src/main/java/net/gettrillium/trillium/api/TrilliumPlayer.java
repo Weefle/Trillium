@@ -1,5 +1,6 @@
 package net.gettrillium.trillium.api;
 
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import net.gettrillium.trillium.Trillium;
 import net.gettrillium.trillium.api.Configuration.GM;
 import net.gettrillium.trillium.api.events.PlayerAFKEvent;
@@ -11,6 +12,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jooq.DSLContext;
+import org.jooq.SQL;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
+import org.jooq.tools.JooqLogger;
 
 import java.io.File;
 import java.io.IOException;
@@ -270,6 +277,12 @@ public class TrilliumPlayer {
                         "muted BOOLEAN," +
                         "god BOOLEAN," +
                         "vanish BOOLEAN);");
+                statement.executeUpdate("INSERT INTO players (uuid, nick, muted, god, vanish)" +
+                        " VALUES ('" + proxy.getUniqueId() + "', '"
+                        + this.nickname + "', "
+                        + this.isMuted() + ", "
+                        + this.isGod + ", "
+                        + this.isVanished + ");");
                 statement.closeOnCompletion();
 
                 PreparedStatement ps = Trillium.connection.prepareStatement("INSERT INTO players (uuid, nick, muted, god, vanish) VALUES (?, ?, ?, ?, ?);");

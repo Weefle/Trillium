@@ -190,6 +190,21 @@ public class Utils {
         return sb.substring(1);
     }
 
+    public static String arrayToReadableString(String[] array) {
+        if (array == null || array.length == 0) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (String s : array) {
+            sb.append(", ");
+            sb.append(s);
+        }
+
+        return sb.substring(1);
+    }
+
     public static String[] arrayFromString(String fromString) {
         if (fromString == null) {
             return null;

@@ -243,6 +243,8 @@ public class TrilliumPlayer {
     }
 
     public void dispose() {
+        if (Trillium.connection == null) {
+
             yml.set(Configuration.Player.NICKNAME, this.nickname);
             yml.set(Configuration.Player.LOCATION, Utils.locationSerializer(proxy.getLocation()));
             yml.set(Configuration.Player.MUTED, this.isMuted);
@@ -259,7 +261,7 @@ public class TrilliumPlayer {
 
             proxy = null;
 
-        if (Trillium.connection != null) {
+        } else {
             try {
 
                 Statement statement = Trillium.connection.createStatement();

@@ -23,6 +23,7 @@ public class AdminModule extends TrilliumModule {
     private ArrayList<String> lagPrompt = new ArrayList<>();
     private ArrayList<String> reloadPrompt = new ArrayList<>();
 
+    // TODO - Compress
     @Command(name = "Trillium",
             command = "trillium",
             description = "The main command of the plugin.",
@@ -40,7 +41,7 @@ public class AdminModule extends TrilliumModule {
             cs.sendMessage(ChatColor.GRAY + "LordSaad, VortexSeven, Turbotailz,");
             cs.sendMessage(ChatColor.GRAY + "samczsun, and hintss.");
             cs.sendMessage(ChatColor.DARK_RED + "<3");
-            cs.sendMessage(ChatColor.GOLD + "Type /tr help for a lit of commands from Trillium.");
+            cs.sendMessage(ChatColor.GOLD + "Type /tr help for a list of commands from Trillium.");
             new Message(Mood.NEUTRAL, "Version", TrilliumAPI.getInstance().getDescription().getVersion()).to(cs);
             new Message(Mood.NEUTRAL, "Support Email", "support@gettrillium.net");
             new Message(Mood.NEUTRAL, "Website", "http://www.gettrillium.net/").to(cs);
@@ -67,38 +68,59 @@ public class AdminModule extends TrilliumModule {
                     new Message("Trillium", Error.NO_PERMISSION).to(cs);
                 }
             } else {
-                ArrayList<Message> commands = new ArrayList<>();
-                if (getConfig().getBoolean(Configuration.Server.PERM_BASED_HELP_MENU)) {
-                    for (String command : TrilliumAPI.getCommands().keySet()) {
-                        if (cs.hasPermission(TrilliumAPI.getPermissions(command)[0]))
-                            commands.add(new Message(Mood.NEUTRAL, command, TrilliumAPI.getDescription(command)));
-                    }
-                } else {
-                    for (String command : TrilliumAPI.getCommands().keySet())
-                        commands.add(new Message(Mood.NEUTRAL, command, TrilliumAPI.getDescription(command)));
-                }
-
-                List<List<Message>> pages = Utils.getPages(commands, 10);
-                int page;
-
-                if (args.length <= 1) {
-                    page = 1;
-                } else {
-                    if (StringUtils.isNumeric(args[1])) {
-                        if (Integer.parseInt(args[1]) <= (pages.size() - 1)) {
-                            page = Integer.parseInt(args[1]);
+                if (args[0].startsWith("h")) {
+                    if (args.length == 1 || (args.length >= 2 && StringUtils.isNumeric(args[1]))) {
+                        ArrayList<Message> commands = new ArrayList<>();
+                        if (getConfig().getBoolean(Configuration.Server.PERM_BASED_HELP_MENU)) {
+                            for (String command : TrilliumAPI.getCommands().keySet()) {
+                                if (cs.hasPermission(TrilliumAPI.getPermissions(command)[0]))
+                                    commands.add(new Message(Mood.NEUTRAL, command, TrilliumAPI.getDescription(command)));
+                            }
                         } else {
+                            for (String command : TrilliumAPI.getCommands().keySet())
+                                commands.add(new Message(Mood.NEUTRAL, command, TrilliumAPI.getDescription(command)));
+                        }
+
+                        List<List<Message>> pages = Utils.getPages(commands, 10);
+                        int page;
+
+                        if (args.length <= 1) {
                             page = 1;
+                        } else {
+                            if (StringUtils.isNumeric(args[1])) {
+                                if (Integer.parseInt(args[1]) <= (pages.size() - 1)) {
+                                    page = Integer.parseInt(args[1]);
+                                } else {
+                                    page = 1;
+                                }
+                            } else {
+                                page = 1;
+                            }
+                        }
+
+                        cs.sendMessage(" ");
+                        new Message(Mood.GOOD, "Help", "Viewing page: " + page + "/" + pages.size()).to(cs);
+                        cs.sendMessage(ChatColor.GRAY + "" + ChatColor.GOLD + "---------------------------------------");
+                        for (Message msg : pages.get(page - 1))
+                            msg.to(cs);
+                    } else if (args.length >= 2) {
+                        if (TrilliumAPI.getCommands().keySet().contains(args[1])) {
+                            cs.sendMessage(" ");
+                            new Message(Mood.GOOD, "Help", "Viewing command: " + args[1]).to(cs);
+                            cs.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "---------------------------------------");
+                            new Message(Mood.NEUTRAL, "Description", TrilliumAPI.getDescription(args[1])).to(cs);
+                            new Message(Mood.NEUTRAL, "Usage", TrilliumAPI.getUsage(args[1])).to(cs);
+                            new Message(Mood.NEUTRAL, "Permissions", Utils.arrayToReadableString(TrilliumAPI.getPermissions(args[1]))).to(cs);
+                            new Message(Mood.NEUTRAL, "Aliases", Utils.arrayToReadableString(TrilliumAPI.getAliases(args[1]))).to(cs);
+                        } else {
+                            new Message(Mood.BAD, "Help", "Command '" + args[1] + "' does not exist.").to(cs);
                         }
                     } else {
-                        page = 1;
+                        new Message("Help", Error.WRONG_ARGUMENTS).to(cs);
                     }
+                } else {
+                    new Message("Help", Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
                 }
-
-                cs.sendMessage(" ");
-                new Message(Mood.GOOD, "Help", "Viewing page: " + page + "/" + pages.size()).to(cs);
-                for (Message msg : pages.get(page - 1))
-                    msg.to(cs);
             }
         }
     }

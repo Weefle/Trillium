@@ -300,8 +300,6 @@ public class PunishModule extends TrilliumModule {
         }
     }
 
-    // TODO: make
-
     @Command(name = "Freeze",
             command = "freeze",
             description = "Disable/Enable the ability to move for anyone online or a certain player.",

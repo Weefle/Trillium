@@ -1,6 +1,6 @@
 package net.gettrillium.trillium.modules;
 
-import net.gettrillium.trillium.api.Permission;
+import net.gettrillium.trillium.api.Permission.Afk;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumModule;
 import net.gettrillium.trillium.api.TrilliumPlayer;
@@ -10,7 +10,6 @@ import net.gettrillium.trillium.api.messageutils.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -21,15 +20,15 @@ public class AFKModule extends TrilliumModule {
             command = "afk",
             description = "Indicate that you are away from your keyboard.",
             usage = "/afk",
-            permissions = {Permission.Afk.USE})
+            permissions = {Afk.USE})
     public void afk(CommandSender cs, String[] args) {
         String cmd = "afk";
         if (cs instanceof Player) {
             TrilliumPlayer player = player((Player) cs);
-            if (player.hasPermission(Permission.Afk.USE)) {
+            if (player.hasPermission(Afk.USE)) {
                 player.toggleAfk();
             } else {
-                new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(player);
+                new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
             }
         } else {
             new Message(TrilliumAPI.getName(cmd), Error.CONSOLE_NOT_ALLOWED).to(cs);
@@ -43,18 +42,6 @@ public class AFKModule extends TrilliumModule {
             player.active();
         } else {
             TrilliumAPI.loadPlayers();
-        }
-    }
-
-    @EventHandler
-    public void onDamage(EntityDamageEvent event) {
-        if (event.getEntity() instanceof Player) {
-            if (TrilliumAPI.isLoaded((Player) event.getEntity())) {
-                TrilliumPlayer player = player((Player) event.getEntity());
-                player.active();
-            } else {
-                TrilliumAPI.loadPlayers();
-            }
         }
     }
 

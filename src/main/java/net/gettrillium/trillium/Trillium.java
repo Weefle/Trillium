@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Trillium extends JavaPlugin {
 
@@ -71,6 +72,18 @@ public class Trillium extends JavaPlugin {
                     getConfig().getString(Server.SQL_PASS));
             try {
                 connection = mySQL.openConnection();
+                Statement statement = connection.createStatement();
+                statement.executeUpdate("CREATE TABLE IF NOT EXISTS players (" +
+                        "uuid VARCHAR(36)," +
+                        "nick VARCHAR(" + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT) + ")," +
+                        "loc-x INT" +
+                        "loc-y INT" +
+                        "loc-z INT" +
+                        "loc-world VARCHAR(50)" +
+                        "muted BOOLEAN," +
+                        "god BOOLEAN," +
+                        "vanish BOOLEAN);");
+                statement.closeOnCompletion();
             } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

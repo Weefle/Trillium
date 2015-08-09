@@ -95,7 +95,7 @@ public class Utils {
     // http://stackoverflow.com/a/12297231/4327834
     // #efficiency
     public static String[] stringSplitter(String s, int interval) {
-        if ((s == null) || (s.length() == 0)) {
+        if ((s == null) || (s.isEmpty())) {
             return new String[]{};
         }
 
@@ -176,7 +176,7 @@ public class Utils {
     }
 
     public static String arrayToString(String[] array) {
-        if (array == null || array.length == 0) {
+        if ((array == null) || (array.length == 0)) {
             return "";
         }
 
@@ -191,7 +191,7 @@ public class Utils {
     }
 
     public static String arrayToReadableString(String[] array) {
-        if (array == null || array.length == 0) {
+        if ((array == null) || (array.length == 0)) {
             return "";
         }
 
@@ -202,7 +202,7 @@ public class Utils {
             sb.append(s);
         }
 
-        return sb.substring(1);
+        return sb.substring(2);
     }
 
     public static String[] arrayFromString(String fromString) {

@@ -37,28 +37,22 @@ public class AFKModule extends TrilliumModule {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-        if (TrilliumAPI.isLoaded(event.getPlayer())) {
-            TrilliumPlayer player = player(event.getPlayer());
-            player.active();
-        } else {
-            TrilliumAPI.loadPlayers();
-        }
+        active(event.getPlayer());
     }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        if (TrilliumAPI.isLoaded(event.getPlayer())) {
-            TrilliumPlayer player = player(event.getPlayer());
-            player.active();
-        } else {
-            TrilliumAPI.loadPlayers();
-        }
+        active(event.getPlayer());
     }
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
-        if (TrilliumAPI.isLoaded(event.getPlayer())) {
-            TrilliumPlayer player = player(event.getPlayer());
+        active(event.getPlayer());
+    }
+
+    private void active(Player p) {
+        if (TrilliumAPI.isLoaded(p)) {
+            TrilliumPlayer player = player(p);
             player.active();
         } else {
             TrilliumAPI.loadPlayers();

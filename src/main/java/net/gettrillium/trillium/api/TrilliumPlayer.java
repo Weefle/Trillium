@@ -15,8 +15,8 @@ import org.bukkit.potion.PotionEffectType;
 import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -264,18 +264,17 @@ public class TrilliumPlayer {
             // TODO - proper try-with-resources here
             try {
                 PreparedStatement ps = Trillium.connection.prepareStatement("UPDATE players " +
-                        "(uuid, nick, loc-x, loc-y, loc-z, loc-world, muted, god, vanish)" +
-                        " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE uuid=?;");
-                ps.setString(1, proxy.getUniqueId().toString());
-                ps.setString(2, nickname);
-                ps.setInt(3, proxy.getLocation().getBlockX());
-                ps.setInt(4, proxy.getLocation().getBlockY());
-                ps.setInt(5, proxy.getLocation().getBlockZ());
-                ps.setString(6, proxy.getLocation().getWorld().getName());
-                ps.setBoolean(7, isMuted());
-                ps.setBoolean(8, isGod());
-                ps.setBoolean(9, isVanished());
-                ps.setString(10, proxy.getUniqueId().toString());
+                        "(nick, loc-x, loc-y, loc-z, loc-world, muted, god, vanish)" +
+                        " VALUES (?, ?, ?, ?, ?, ?, ?, ?) WHERE uuid=?;");
+                ps.setString(1, nickname);
+                ps.setInt(2, proxy.getLocation().getBlockX());
+                ps.setInt(3, proxy.getLocation().getBlockY());
+                ps.setInt(4, proxy.getLocation().getBlockZ());
+                ps.setString(5, proxy.getLocation().getWorld().getName());
+                ps.setBoolean(6, isMuted());
+                ps.setBoolean(7, isGod());
+                ps.setBoolean(8, isVanished());
+                ps.setString(9, proxy.getUniqueId().toString());
                 ps.executeUpdate();
                 ps.close();
             } catch (SQLException e) {
@@ -323,31 +322,55 @@ public class TrilliumPlayer {
             if (newUser) {
                 try {
                     PreparedStatement ps = Trillium.connection.prepareStatement("INSERT INTO players " +
-                            "(uuid, nick, loc-x, loc-y, loc-z, loc-world, muted, god, vanish)" +
-                            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
-                    ps.setString(1, proxy.getUniqueId().toString());
-                    ps.setString(2, nickname);
-                    ps.setInt(3, proxy.getLocation().getBlockX());
-                    ps.setInt(4, proxy.getLocation().getBlockY());
-                    ps.setInt(5, proxy.getLocation().getBlockZ());
-                    ps.setString(6, proxy.getLocation().getWorld().getName());
-                    ps.setBoolean(7, isMuted());
-                    ps.setBoolean(8, isGod());
-                    ps.setBoolean(9, isVanished());
+                            "(nick, loc-x, loc-y, loc-z, loc-world, muted, god, vanish)" +
+                            " VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+                    ps.setString(1, nickname);
+                    ps.setInt(2, proxy.getLocation().getBlockX());
+                    ps.setInt(3, proxy.getLocation().getBlockY());
+                    ps.setInt(4, proxy.getLocation().getBlockZ());
+                    ps.setString(5, proxy.getLocation().getWorld().getName());
+                    ps.setBoolean(6, isMuted());
+                    ps.setBoolean(7, isGod());
+                    ps.setBoolean(8, isVanished());
+                    ps.setString(9, proxy.getUniqueId().toString());
                     ps.executeUpdate();
                     ps.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                List<String> serialized = yml.getStringList(Configuration.Player.HOMES);
+                if (serialized != null) {
+                    for (String deserialize : serialized) {
+                        if (deserialize != null) {
+                            homes.put(deserialize.split(";")[0], Utils.locationFromString(deserialize.split(";")[1]));
+                        }
+                    }
+                }
             } else {
-                setDisplayName(yml.getString(Configuration.Player.NICKNAME));
-                setLastLocation(Utils.locationDeserializer(yml.getString(Configuration.Player.LOCATION)));
-                setMuted(yml.getBoolean(Configuration.Player.MUTED));
-                setGod(yml.getBoolean(Configuration.Player.GOD));
-                setPvp(yml.getBoolean(Configuration.Player.PVP));
-                setVanished(yml.getBoolean(Configuration.Player.VANISH));
-                if (TrilliumAPI.getInstance().getConfig().getBoolean(GM.ENABLED)) {
-                    new GroupManager(proxy).setGroup(yml.getString(Configuration.Player.GROUP));
+                try {
+                    ResultSet result = Trillium.connection.createStatement().executeQuery("SELECT * " +
+                            "FROM players WHERE uuid=" + proxy.getUniqueId());
+                    Location loc = new Location(Bukkit.getWorld(result.getString("loc-world")),
+                            result.getInt("loc-x"), result.getInt("loc-y"), result.getInt("loc-z"));
+                    setDisplayName(result.getString("nick"));
+                    setLastLocation(loc);
+                    setMuted(result.getBoolean("muted"));
+                    setGod(result.getBoolean("god"));
+                    setVanished(result.getBoolean("vanish"));
+                    if (TrilliumAPI.getInstance().getConfig().getBoolean(GM.ENABLED)) {
+                        new GroupManager(proxy).setGroup(yml.getString(Configuration.Player.GROUP));
+                    }
+
+                    List<String> serialized = yml.getStringList(Configuration.Player.HOMES);
+                    if (serialized != null) {
+                        for (String deserialize : serialized) {
+                            if (deserialize != null) {
+                                homes.put(deserialize.split(";")[0], Utils.locationFromString(deserialize.split(";")[1]));
+                            }
+                        }
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
 
                 List<String> serialized = yml.getStringList(Configuration.Player.HOMES);

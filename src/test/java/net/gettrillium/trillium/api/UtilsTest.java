@@ -1,14 +1,20 @@
 package net.gettrillium.trillium.api;
 
+import org.bukkit.entity.Player;
 import org.junit.Assert;
 import org.junit.Test;
+import org.powermock.api.mockito.PowerMockito;
+
+import static org.junit.Assert.assertNull;
 
 public class UtilsTest {
 
+    private static final String[] EMPTY_STRING_ARRAY = new String[]{};
+
     @Test
     public void stringSplitterTest() {
-        Assert.assertArrayEquals("null input string returns empty array", new String[]{}, Utils.stringSplitter(null, 1));
-        Assert.assertArrayEquals("blank input string returns empty array", new String[]{}, Utils.stringSplitter("", 1));
+        Assert.assertArrayEquals("null input string returns empty array", EMPTY_STRING_ARRAY, Utils.stringSplitter(null, 1));
+        Assert.assertArrayEquals("blank input string returns empty array", EMPTY_STRING_ARRAY, Utils.stringSplitter("", 1));
         Assert.assertArrayEquals("interval of 0 returns an array with only the input string", new String[]{"abcde"}, Utils.stringSplitter("abcde", 0));
         Assert.assertArrayEquals("interval of 1 vs 1 length string", new String[]{"a"}, Utils.stringSplitter("a", 1));
         Assert.assertArrayEquals("interval of 1 vs 2 length string", new String[]{"a", "b"}, Utils.stringSplitter("ab", 1));
@@ -39,15 +45,15 @@ public class UtilsTest {
     @Test
     public void arrayToStringTest() {
         Assert.assertEquals("null returns blank string", "", Utils.arrayToString(null));
-        Assert.assertEquals("blank array returns blank string", "", Utils.arrayToString(new String[]{}));
+        Assert.assertEquals("blank array returns blank string", "", Utils.arrayToString(EMPTY_STRING_ARRAY));
         Assert.assertEquals("{a, b, c, d} returns a;b;c;d", "a;b;c;d", Utils.arrayToString(new String[]{"a", "b", "c", "d"}));
     }
 
     @Test
     public void arrayToReadableStringTest() {
         Assert.assertEquals("Return blank string on null array", "", Utils.arrayToReadableString(null));
-        Assert.assertEquals("Return blank string on empty array", "", Utils.arrayToReadableString(new String[] {}));
-        Assert.assertEquals("[a, b, c, d] -> \"a, b, c, d\"", "a, b, c, d", Utils.arrayToReadableString(new String[] {"a", "b", "c", "d"}));
+        Assert.assertEquals("Return blank string on empty array", "", Utils.arrayToReadableString(EMPTY_STRING_ARRAY));
+        Assert.assertEquals("[a, b, c, d] -> \"a, b, c, d\"", "a, b, c, d", Utils.arrayToReadableString(new String[]{"a", "b", "c", "d"}));
     }
 
     @Test
@@ -61,5 +67,15 @@ public class UtilsTest {
         Assert.assertEquals("60 seconds", "00:00:01:00", Utils.timeToString(60 * 20));
         Assert.assertEquals("65 seconds", "00:00:01:05", Utils.timeToString(65 * 20));
         Assert.assertEquals("200 seconds", "00:00:03:20", Utils.timeToString(200 * 20));
+    }
+
+    @Test
+    public void commandBlockifyTest() {
+        Player p = PowerMockito.mock(Player.class);
+        PowerMockito.when(p.getName()).thenReturn("lolname");
+
+        assertNull("null input string returns null output string", Utils.commandBlockify(null, p));
+        Assert.assertEquals("null plaeyr returns original input string", "asdflol @p", Utils.commandBlockify("asdflol @p", null));
+        Assert.assertEquals("Replacing @p with player name works", "asdf lolname asdf", Utils.commandBlockify("asdf @p asdf", p));
     }
 }

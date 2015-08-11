@@ -299,25 +299,34 @@ public class Utils {
 
     // TODO - unit test this
     public static String commandBlockify(String command, Player p) {
+        if (command == null) {
+            return null;
+        } else if (p == null) {
+            return command;
+        }
+
         return COMMANDBLOCK_REGEX.matcher(command).replaceAll(p.getName());
     }
 
     // http://stackoverflow.com/a/22947052
-    public static <T> List<List<T>> getPages(Collection<T> c, Integer pageSize) {
-        if (c == null)
+    public static <T> List<List<T>> getPages(Collection<T> c, int pageSize) {
+        if (c == null) {
             return Collections.emptyList();
+        }
 
         List<T> list = new ArrayList<>(c);
 
-        if (pageSize == null || pageSize <= 0 || pageSize > list.size())
+        if ((pageSize <= 0) || (pageSize > list.size())) {
             pageSize = list.size();
+        }
 
         int numPages = (int) Math.ceil((double) list.size() / (double) pageSize);
 
         List<List<T>> pages = new ArrayList<>(numPages);
 
-        for (int pageNum = 0; pageNum < numPages; )
+        for (int pageNum = 0; pageNum < numPages; ) {
             pages.add(list.subList(pageNum * pageSize, Math.min(++pageNum * pageSize, list.size())));
+        }
 
         return pages;
     }

@@ -263,7 +263,7 @@ public class TrilliumPlayer {
         } else {
             // TODO - proper try-with-resources here
             try {
-                PreparedStatement ps = Trillium.connection.prepareStatement("UPDATE players " +
+                PreparedStatement ps = Trillium.connection.prepareStatement("UPDATE players SET " +
                         "(nick, loc-x, loc-y, loc-z, loc-world, muted, god, vanish)" +
                         " VALUES (?, ?, ?, ?, ?, ?, ?, ?) WHERE uuid=?;");
                 ps.setString(1, nickname);
@@ -338,6 +338,7 @@ public class TrilliumPlayer {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+
                 List<String> serialized = yml.getStringList(Configuration.Player.HOMES);
                 if (serialized != null) {
                     for (String deserialize : serialized) {
@@ -361,14 +362,7 @@ public class TrilliumPlayer {
                         new GroupManager(proxy).setGroup(yml.getString(Configuration.Player.GROUP));
                     }
 
-                    List<String> serialized = yml.getStringList(Configuration.Player.HOMES);
-                    if (serialized != null) {
-                        for (String deserialize : serialized) {
-                            if (deserialize != null) {
-                                homes.put(deserialize.split(";")[0], Utils.locationFromString(deserialize.split(";")[1]));
-                            }
-                        }
-                    }
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

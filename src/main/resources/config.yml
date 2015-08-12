@@ -129,7 +129,7 @@ plugin-messages:
     major-color: "&7"
     highlight-color: "&b"
   # Format plugin messages.
-  format: "%MOOD_COLOR%%PREFIX% %MINOR%- %MESSAGE%"
+  format: "%MOOD_COLOR%%PREFIX% %HIGHLIGHT%- %MINOR%%MESSAGE%"
   # The general format of messages the plugin sends to the player/server.
   from-to-to-message: "%MINOR%%TO% %MAJOR%<- %HIGHLIGHT%%MESSAGE%"
   # The format of you sending a private message to someone.

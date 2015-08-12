@@ -27,9 +27,9 @@ public class Message {
         format = PREFIX.matcher(format).replaceAll(prefix);
         format = MESSAGE.matcher(format).replaceAll(message);
         format = MOOD_COLOR.matcher(format).replaceAll(mood.getColor());
-        format = MAJOR.matcher(format).replaceAll(Pallete.getMajor() + "");
-        format = MINOR.matcher(format).replaceAll(Pallete.getMinor() + "");
-        format = HILIGHT.matcher(format).replaceAll(Pallete.getHighlight() + "");
+        format = MAJOR.matcher(format).replaceAll(Pallete.MAJOR.getColor());
+        format = MINOR.matcher(format).replaceAll(Pallete.MINOR.getColor());
+        format = HILIGHT.matcher(format).replaceAll(Pallete.HIGHLIGHT.getColor());
         format = ChatColor.translateAlternateColorCodes('&', format);
     }
 

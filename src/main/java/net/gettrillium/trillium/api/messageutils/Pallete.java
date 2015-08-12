@@ -4,17 +4,20 @@ import net.gettrillium.trillium.api.Configuration;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import org.bukkit.ChatColor;
 
-public class Pallete {
+public enum Pallete {
 
-    public static ChatColor getMinor() {
-        return ChatColor.getByChar(TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.PALLETE_MINOR));
+    MAJOR(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.PALLETE_MAJOR))),
+    MINOR(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.PALLETE_MINOR))),
+    HIGHLIGHT(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.PALLETE_HIGHLIGHT)));
+
+    private String color;
+
+    Pallete(String color) {
+        this.color = color;
     }
 
-    public static ChatColor getMajor() {
-        return ChatColor.getByChar(TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.PALLETE_MAJOR));
+    public String getColor() {
+        return color;
     }
 
-    public static ChatColor getHighlight() {
-        return ChatColor.getByChar(TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.PALLETE_HIGHLIGHT));
-    }
 }

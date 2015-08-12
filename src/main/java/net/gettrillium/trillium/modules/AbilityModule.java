@@ -62,24 +62,24 @@ public class AbilityModule extends TrilliumModule {
                 TrilliumPlayer target = player(args[0]);
                 if (target != null) {
                     if (target.isFlying()) {
-                        new Message(Mood.BAD, TrilliumAPI.getName(cmd), Pallete.getHighlight()
+                        new Message(Mood.BAD, TrilliumAPI.getName(cmd), Pallete.HIGHLIGHT.getColor()
                                 + target.getName()
-                                + Pallete.getMajor()
+                                + Pallete.MAJOR.getColor()
                                 + " is no longer in fly mode.").to(cs);
-                        new Message(Mood.BAD, TrilliumAPI.getName(cmd), Pallete.getHighlight()
+                        new Message(Mood.BAD, TrilliumAPI.getName(cmd), Pallete.HIGHLIGHT.getColor()
                                 + cs.getName()
-                                + Pallete.getMajor()
+                                + Pallete.MAJOR.getColor()
                                 + " removed you from fly mode.").to(target);
 
                         target.setFlying(false);
                     } else {
-                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), Pallete.getHighlight()
+                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), Pallete.HIGHLIGHT.getColor()
                                 + target.getName()
-                                + Pallete.getMajor()
+                                + Pallete.MAJOR.getColor()
                                 + " is now in fly mode.").to(cs);
-                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), Pallete.getHighlight()
+                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), Pallete.HIGHLIGHT.getColor()
                                 + cs.getName()
-                                + Pallete.getMajor()
+                                + Pallete.MAJOR.getColor()
                                 + " put you in fly mode.").to(target);
 
                         target.setFlying(true);

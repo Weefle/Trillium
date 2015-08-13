@@ -4,7 +4,7 @@ public class CommandException extends Exception {
     private static final long serialVersionUID = 1L;
 
     @Override
-    public Throwable fillInStackTrace() {
+    public synchronized Throwable fillInStackTrace() {
         return this;
     }
 }

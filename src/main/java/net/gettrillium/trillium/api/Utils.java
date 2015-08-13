@@ -274,25 +274,37 @@ public class Utils {
             return null;
         }
 
-        World world = Bukkit.getWorld(s.split(", ")[0]);
-        int x = Integer.parseInt(COMMA_SPACE.split(s)[1]);
-        int y = Integer.parseInt(s.split(", ")[2]);
-        int z = Integer.parseInt(s.split(", ")[3]);
+        String[] split = COMMA_SPACE.split(s);
+
+        World world = Bukkit.getWorld(split[0]);
+        int x = Integer.parseInt(split[1]);
+        int y = Integer.parseInt(split[2]);
+        int z = Integer.parseInt(split[3]);
         return new Location(world, (double) x, (double) y, (double) z);
     }
 
     // TODO - unit test this
     public static String locationSerializer(Location loc) {
-        return loc.getWorld() + "%" + loc.getX() + '%' + loc.getY() + '%' + loc.getZ() + '%' + loc.getPitch() + '%' + loc.getYaw();
+        if (loc == null) {
+            return null;
+        }
+
+        return loc.getWorld().getName() + '%' + loc.getX() + '%' + loc.getY() + '%' + loc.getZ() + '%' + loc.getPitch() + '%' + loc.getYaw();
     }
 
     public static Location locationDeserializer(String loc) {
-        World world = Bukkit.getWorld(loc.split("%")[0]);
-        double x = Double.parseDouble(loc.split("%")[1]);
-        double y = Double.parseDouble(loc.split("%")[2]);
-        double z = Double.parseDouble(loc.split("%")[3]);
-        float pitch = Float.parseFloat(loc.split("%")[4]);
-        float yaw = Float.parseFloat(loc.split("%")[5]);
+        if (loc == null) {
+            return null;
+        }
+
+        String[] split = loc.split("%");
+
+        World world = Bukkit.getWorld(split[0]);
+        double x = Double.parseDouble(split[1]);
+        double y = Double.parseDouble(split[2]);
+        double z = Double.parseDouble(split[3]);
+        float pitch = Float.parseFloat(split[4]);
+        float yaw = Float.parseFloat(split[5]);
 
         return new Location(world, x, y, z, yaw, pitch);
     }

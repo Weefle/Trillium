@@ -1,5 +1,7 @@
 package net.gettrillium.trillium.api;
 
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.junit.Assert;
 import org.junit.Test;
@@ -67,6 +69,22 @@ public class UtilsTest {
         Assert.assertEquals("60 seconds", "00:00:01:00", Utils.timeToString(60 * 20));
         Assert.assertEquals("65 seconds", "00:00:01:05", Utils.timeToString(65 * 20));
         Assert.assertEquals("200 seconds", "00:00:03:20", Utils.timeToString(200 * 20));
+    }
+
+    @Test
+    public void locationSerializerTest() {
+        World w = PowerMockito.mock(World.class);
+        PowerMockito.when(w.getName()).thenReturn("worldname");
+
+        Location loc = PowerMockito.mock(Location.class);
+        PowerMockito.when(loc.getWorld()).thenReturn(w);
+        PowerMockito.when(loc.getX()).thenReturn(0.0D);
+        PowerMockito.when(loc.getY()).thenReturn(1.0D);
+        PowerMockito.when(loc.getZ()).thenReturn(2.0D);
+        PowerMockito.when(loc.getPitch()).thenReturn(3F);
+        PowerMockito.when(loc.getYaw()).thenReturn(4F);
+
+        Assert.assertEquals("location serializes properly", "worldname%0.0%1.0%2.0%3.0%4.0", Utils.locationSerializer(loc));
     }
 
     @Test

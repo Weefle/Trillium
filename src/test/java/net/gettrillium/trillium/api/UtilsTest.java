@@ -7,11 +7,29 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.powermock.api.mockito.PowerMockito;
 
-import static org.junit.Assert.assertNull;
-
 public class UtilsTest {
 
     private static final String[] EMPTY_STRING_ARRAY = new String[]{};
+
+    private static Player p = PowerMockito.mock(Player.class);
+    private static final World w = PowerMockito.mock(World.class);
+    private static final Location loc = PowerMockito.mock(Location.class);
+
+    static {
+        PowerMockito.when(p.getName()).thenReturn("lolname");
+
+        PowerMockito.when(w.getName()).thenReturn("worldname");
+
+        PowerMockito.when(loc.getWorld()).thenReturn(w);
+        PowerMockito.when(loc.getX()).thenReturn(0.0D);
+        PowerMockito.when(loc.getY()).thenReturn(1.0D);
+        PowerMockito.when(loc.getZ()).thenReturn(2.0D);
+        PowerMockito.when(loc.getPitch()).thenReturn(3F);
+        PowerMockito.when(loc.getYaw()).thenReturn(4F);
+        PowerMockito.when(loc.getBlockX()).thenReturn(0);
+        PowerMockito.when(loc.getBlockY()).thenReturn(1);
+        PowerMockito.when(loc.getBlockZ()).thenReturn(2);
+    }
 
     @Test
     public void stringSplitterTest() {
@@ -72,27 +90,34 @@ public class UtilsTest {
     }
 
     @Test
+    public void locationToStringTest() {
+        Assert.assertNull("null input returns null", Utils.locationToString(null));
+        Assert.assertEquals("location serializes properly", "worldname, 0, 1, 2", Utils.locationToString(loc));
+    }
+
+    @Test
+    public void locationFromStringTest() {
+        Assert.assertNull("null input returns null", Utils.locationFromString(null));
+
+        // TODO - mocking bukkit class
+    }
+
+    @Test
     public void locationSerializerTest() {
-        World w = PowerMockito.mock(World.class);
-        PowerMockito.when(w.getName()).thenReturn("worldname");
-
-        Location loc = PowerMockito.mock(Location.class);
-        PowerMockito.when(loc.getWorld()).thenReturn(w);
-        PowerMockito.when(loc.getX()).thenReturn(0.0D);
-        PowerMockito.when(loc.getY()).thenReturn(1.0D);
-        PowerMockito.when(loc.getZ()).thenReturn(2.0D);
-        PowerMockito.when(loc.getPitch()).thenReturn(3F);
-        PowerMockito.when(loc.getYaw()).thenReturn(4F);
-
+        Assert.assertNull("null input returns null", Utils.locationSerializer(null));
         Assert.assertEquals("location serializes properly", "worldname%0.0%1.0%2.0%3.0%4.0", Utils.locationSerializer(loc));
     }
 
     @Test
-    public void commandBlockifyTest() {
-        Player p = PowerMockito.mock(Player.class);
-        PowerMockito.when(p.getName()).thenReturn("lolname");
+    public void locationDeserializerTest() {
+        Assert.assertNull("null input returns null", Utils.locationDeserializer(null));
 
-        assertNull("null input string returns null output string", Utils.commandBlockify(null, p));
+        // TODO - mocking bukkit class
+    }
+
+    @Test
+    public void commandBlockifyTest() {
+        Assert.assertNull("null input string returns null output string", Utils.commandBlockify(null, p));
         Assert.assertEquals("null plaeyr returns original input string", "asdflol @p", Utils.commandBlockify("asdflol @p", null));
         Assert.assertEquals("Replacing @p with player name works", "asdf lolname asdf", Utils.commandBlockify("asdf @p asdf", p));
     }

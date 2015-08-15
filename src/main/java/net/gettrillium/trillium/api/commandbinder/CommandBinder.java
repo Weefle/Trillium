@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.Map.Entry;
 
 public class CommandBinder {
 
@@ -38,16 +39,16 @@ public class CommandBinder {
             int y = loc.getBlockY();
             int z = loc.getBlockZ();
             String world = loc.getWorld().getName();
-            return command + ";" + player + ";" + x + ";" + y + ";" + z + ";" + world;
+            return command + ';' + player + ';' + x + ';' + y + ';' + z + ';' + world;
         }
 
         private static void save() {
             YamlConfiguration yml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
-            ArrayList<String> serialized = new ArrayList<>();
+            List<String> serialized = new ArrayList<>(table.size());
             Map<String, Map<Location, Boolean>> rows = table.rowMap();
 
-            for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
-                for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
+            for (Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
+                for (Entry<Location, Boolean> column : row.getValue().entrySet()) {
                     serialized.add(serializer(row.getKey(), column.getKey(), column.getValue()));
                 }
             }
@@ -91,9 +92,9 @@ public class CommandBinder {
             Map<UUID, Map<String, HashMap<Material, Boolean>>> rows = new HashMap<>();
             rows.putAll(table.rowMap());
 
-            for (Map.Entry<UUID, Map<String, HashMap<Material, Boolean>>> row : rows.entrySet()) {
+            for (Entry<UUID, Map<String, HashMap<Material, Boolean>>> row : rows.entrySet()) {
                 if (row.getKey().equals(p.getUniqueId())) {
-                    for (Map.Entry<String, HashMap<Material, Boolean>> column : row.getValue().entrySet()) {
+                    for (Entry<String, HashMap<Material, Boolean>> column : row.getValue().entrySet()) {
                         table.remove(row.getKey(), column.getKey());
                     }
                 }
@@ -102,7 +103,7 @@ public class CommandBinder {
         }
 
         public static String serializer(String command, Material mat, boolean player) {
-            return command + ";" + mat.name() + ";" + player;
+            return command + ';' + mat.name() + ';' + player;
         }
 
         public static void setTable() {
@@ -120,10 +121,10 @@ public class CommandBinder {
             TrilliumPlayer p = TrilliumAPI.getPlayer(player);
             Map<UUID, Map<String, HashMap<Material, Boolean>>> rows = table.rowMap();
 
-            for (Map.Entry<UUID, Map<String, HashMap<Material, Boolean>>> row : rows.entrySet()) {
+            for (Entry<UUID, Map<String, HashMap<Material, Boolean>>> row : rows.entrySet()) {
                 if (row.getKey().equals(player.getUniqueId())) {
-                    for (Map.Entry<String, HashMap<Material, Boolean>> column : row.getValue().entrySet()) {
-                        for (Map.Entry<Material, Boolean> secondColumn : column.getValue().entrySet()) {
+                    for (Entry<String, HashMap<Material, Boolean>> column : row.getValue().entrySet()) {
+                        for (Entry<Material, Boolean> secondColumn : column.getValue().entrySet()) {
                             List<String> bindings = p.getConfig().getStringList("command-binder-items");
                             bindings.add(serializer(column.getKey(), secondColumn.getKey(), secondColumn.getValue()));
                             p.getConfig().set("command-binder-items", bindings);
@@ -138,8 +139,8 @@ public class CommandBinder {
             }
         }
 
-        public static ArrayList<String> getCommands(Player p, Material mat) {
-            ArrayList<String> commands = new ArrayList<>();
+        public static List<String> getCommands(Player p, Material mat) {
+            List<String> commands = new ArrayList<>();
             for (String deserialize : TrilliumAPI.getPlayer(p).getConfig().getStringList("command-binder-items")) {
                 if (deserialize.split(";")[1].equals(mat.name())) {
                     commands.add(deserialize.split(";")[0]);

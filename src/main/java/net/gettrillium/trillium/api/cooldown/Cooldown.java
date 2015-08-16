@@ -29,14 +29,14 @@ public class Cooldown {
     public static boolean hasCooldown(CommandSender cs, CooldownType type) {
         if (cs instanceof Player) {
             Player p = (Player) cs;
-            long cooldownSecs = type.getTimeInTicks() / 20;
+            long cooldownSecs = (long) (type.getTimeInTicks() / 20);
 
             if (isSavedToConfig(p, type)) {
                 TrilliumPlayer player = TrilliumAPI.getPlayer(p);
                 if (player.hasCooldown(type.name())) {
                     long startMillis = player.getCooldown(type.name());
-                    double elapsedSecs = (System.currentTimeMillis() - startMillis) / 1000.0;
-                    if (elapsedSecs < cooldownSecs) {
+                    double elapsedSecs = (double) (System.currentTimeMillis() - startMillis) / 1000.0;
+                    if (elapsedSecs < (double) cooldownSecs) {
                         return true;
                     } else {
                         player.removeCooldown(type.name());
@@ -48,8 +48,8 @@ public class Cooldown {
             } else {
                 if (cooldown.contains(p.getUniqueId(), type)) {
                     long startMillis = cooldown.get(p.getUniqueId(), type);
-                    double elapsedSecs = (System.currentTimeMillis() - startMillis) / 1000.0;
-                    if (elapsedSecs < cooldownSecs) {
+                    double elapsedSecs = (double) (System.currentTimeMillis() - startMillis) / 1000.0;
+                    if (elapsedSecs < (double) cooldownSecs) {
                         return true;
                     } else {
                         cooldown.remove(p.getUniqueId(), type);
@@ -83,9 +83,9 @@ public class Cooldown {
             TrilliumPlayer player = TrilliumAPI.getPlayer(p);
             double d;
             if (player.hasCooldown(type.name())) {
-                d = (type.getTimeInTicks() / 20) - ((System.currentTimeMillis() - player.getCooldown(type.name())) / 1000.0);
+                d = (double) (type.getTimeInTicks() / 20) - ((double) (System.currentTimeMillis() - player.getCooldown(type.name())) / 1000.0);
             } else {
-                d = (type.getTimeInTicks() / 20) - ((System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)) / 1000.0);
+                d = (double) (type.getTimeInTicks() / 20) - ((double) (System.currentTimeMillis() - cooldown.get(p.getUniqueId(), type)) / 1000.0);
             }
             return Utils.timeToString((int) d * 20);
         } else {

@@ -14,6 +14,7 @@ import net.gettrillium.trillium.api.messageutils.Mood;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -69,28 +70,29 @@ public class CommandBinderModule extends TrilliumModule {
                 return;
             }
 
+            if (!args[2].equalsIgnoreCase("console")
+                    || !args[2].equalsIgnoreCase("c")
+                    || !args[2].equalsIgnoreCase("player")
+                    || !args[2].equalsIgnoreCase("p")) {
+                new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
+                return;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 3; i < args.length; i++) {
+                sb.append(args[i]).append(" ");
+            }
+            String command = sb.toString().trim();
+
+            if (command.equalsIgnoreCase("") && command.equalsIgnoreCase(" ")) {
+                new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
+                return;
+            }
+
+            boolean player = !(args[2].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c"));
+
             if (args[1].equalsIgnoreCase("block") || args[1].equalsIgnoreCase("b")) {
 
-                if (!args[2].equalsIgnoreCase("console")
-                        || !args[2].equalsIgnoreCase("c")
-                        || !args[2].equalsIgnoreCase("player")
-                        || !args[2].equalsIgnoreCase("p")) {
-                    new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
-                    return;
-                }
-
-                StringBuilder sb = new StringBuilder();
-                for (int i = 3; i < args.length; i++) {
-                    sb.append(args[i]).append(" ");
-                }
-                String command = sb.toString().trim();
-
-                if (command.equalsIgnoreCase("") && command.equalsIgnoreCase(" ")) {
-                    new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
-                    return;
-                }
-
-                boolean player = !(args[2].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c"));
                 setMode.add(p.getUniqueId());
                 table.put(p.getUniqueId(), command, player);
                 new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "You are now in command binder's edit mode.").to(p);
@@ -100,31 +102,11 @@ public class CommandBinderModule extends TrilliumModule {
 
             } else if (args[1].equalsIgnoreCase("item") || args[1].equalsIgnoreCase("i")) {
 
-                if (!args[2].equalsIgnoreCase("console")
-                        || !args[2].equalsIgnoreCase("c")
-                        || !args[2].equalsIgnoreCase("player")
-                        || !args[2].equalsIgnoreCase("p")) {
-                    new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
-                    return;
-                }
-
-                if (p.getItemInHand() == null) {
+                if (p.getItemInHand() == null || p.getItemInHand().getType() == Material.AIR) {
                     new Message(Mood.BAD, TrilliumAPI.getName(cmd), "You aren't holding an item to bind.").to(p);
                     return;
                 }
 
-                StringBuilder sb = new StringBuilder();
-                for (int i = 3; i < args.length; i++) {
-                    sb.append(args[i]).append(" ");
-                }
-                String command = sb.toString().trim();
-
-                if (command.equalsIgnoreCase("") && command.equalsIgnoreCase(" ")) {
-                    new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
-                    return;
-                }
-
-                boolean player = !(args[2].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c"));
                 CommandBinder.Items.add(p, command, p.getItemInHand().getType(), player);
 
                 new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Command bound to item.").to(p);

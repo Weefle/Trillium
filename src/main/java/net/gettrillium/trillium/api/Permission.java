@@ -69,7 +69,7 @@ public class Permission {
         public static final String HOME_CREATE = HOME + "create";
         public static final String HOME_TP = HOME + "tp";
         public static final String HOME_LIST = HOME + "view";
-        public static final String COOLDOWN_EXEMPT = "cooldown-exempt";
+        public static final String COOLDOWN_EXEMPT = PREFIX + "cooldown-exempt";
     }
 
     public static class Chat {

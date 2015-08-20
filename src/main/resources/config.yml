@@ -125,21 +125,22 @@ chat:
 plugin-messages:
   color-pallete:
   # Use %MINOR%, %MAJOR% and %HIGHLIGHT% for message colors.
-    minor-color: "&6"
+    minor-color: "&a"
     major-color: "&7"
     highlight-color: "&b"
   # Format plugin messages.
-  format: "%MOOD_COLOR%%PREFIX% %HIGHLIGHT%- %MINOR%%MESSAGE%"
+  format: "%MINOR%%PREFIX% %MAJOR%- %MESSAGE%"
+  # You can use %MOOD_COLOR% for the respective mood of the command (if error, turns red, etc...)
   # The general format of messages the plugin sends to the player/server.
-  from-to-to-message: "%MINOR%%TO% %MAJOR%<- %HIGHLIGHT%%MESSAGE%"
+  from-to-to-message: "%MAJOR%%TO% <- %HIGHLIGHT%%MESSAGE%"
   # The format of you sending a private message to someone.
   # You can use %FROM% and %TO%
-  to-from-from-message: "%MINOR%%FROM% %MAJOR%-> %HIGHLIGHT%%MESSAGE%"
+  to-from-from-message: "%MAJOR%%FROM% -> %HIGHLIGHT%%MESSAGE%"
   # The format of you receiving a private message from someone.
   # You can use %FROM% and %TO%
   colors:
   # The color a neutral, error, or good message will be.
-    neutral-message: "&6"
+    neutral-message: "&7"
     bad-message: "&c"
     good-message: "&a"
   errors:

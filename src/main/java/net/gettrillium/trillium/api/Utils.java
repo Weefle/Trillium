@@ -5,6 +5,7 @@ import net.gettrillium.trillium.api.Configuration.Broadcast;
 import net.gettrillium.trillium.api.commandbinder.CommandBinder.Blocks;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
+import net.gettrillium.trillium.api.messageutils.Pallete;
 import net.gettrillium.trillium.api.report.Reports;
 import net.gettrillium.trillium.api.warp.Warp;
 import net.gettrillium.trillium.events.PlayerDeath;
@@ -343,8 +344,13 @@ public class Utils {
         return pages;
     }
 
+    public static String aestheticSlash() {
+        return Pallete.MAJOR.getColor() + "" + ChatColor.STRIKETHROUGH + "--------------" + ChatColor.RESET;
+    }
+
     public static void load() {
         TrilliumAPI.getInstance().saveDefaultConfig();
+        TrilliumAPI.getInstance().reloadConfig();
 
         TrilliumAPI.registerModules();
         TrilliumAPI.loadPlayers();
@@ -368,6 +374,8 @@ public class Utils {
 
     public static void unload() {
         Bukkit.getScheduler().cancelAllTasks();
+        if (TrilliumAPI.getInstance().getConfig() != null)
+            TrilliumAPI.getInstance().saveDefaultConfig();
         TrilliumAPI.disposePlayers();
         TrilliumAPI.unregisterModules();
     }

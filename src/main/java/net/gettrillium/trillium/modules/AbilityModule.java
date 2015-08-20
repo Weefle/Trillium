@@ -146,8 +146,8 @@ public class AbilityModule extends TrilliumModule {
             aliases = "v",
             permissions = {Ability.VANISH, Ability.VANISH_OTHER})
     public void vanish(CommandSender cs, String[] args) {
-        String cmd = "vanish";
         if (cs instanceof Player) {
+            String cmd = "vanish";
             TrilliumPlayer player = player(cs.getName());
             if (args.length == 0) {
                 if (player.hasPermission(Ability.VANISH)) {
@@ -212,11 +212,10 @@ public class AbilityModule extends TrilliumModule {
                     new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
                 } else {
                     if (args[0].equalsIgnoreCase("fly")) {
-                        double i;
                         if (args.length > 1) {
                             if (StringUtils.isNumeric(args[1])) {
-                                i = Double.parseDouble(args[1]);
-                                if ((i <= 10) && (i >= -10)) {
+                                double i = Double.parseDouble(args[1]);
+                                if ((i <= 10.0D) && (i >= -10.0D)) {
                                     i *= 0.1;
                                     p.getProxy().setFlySpeed((float) i);
                                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Fly speed set to " + args[1]).to(p);
@@ -231,11 +230,10 @@ public class AbilityModule extends TrilliumModule {
                             p.getProxy().setFlySpeed(0.1f);
                         }
                     } else if (args[0].equalsIgnoreCase("walk")) {
-                        double i;
                         if (args.length > 1) {
                             if (StringUtils.isNumeric(args[1])) {
-                                i = Double.parseDouble(args[1]);
-                                if ((i <= 10) && (i >= -10)) {
+                                double i = Double.parseDouble(args[1]);
+                                if ((i <= 10.0D) && (i >= -10.0D)) {
                                     i *= 0.1;
                                     p.getProxy().setWalkSpeed((float) i);
                                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Walk speed set to " + args[1]).to(p);
@@ -273,7 +271,6 @@ public class AbilityModule extends TrilliumModule {
             TrilliumPlayer p = player((Player) cs);
             if (args.length == 1) {
                 if (p.hasPermission(Ability.GAMEMODE)) {
-
                     if (args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c")) {
                         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Gamemode set to " + ChatColor.AQUA + "creative").to(p);
                         p.getProxy().setGameMode(GameMode.CREATIVE);

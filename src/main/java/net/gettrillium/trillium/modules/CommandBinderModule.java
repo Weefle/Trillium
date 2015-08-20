@@ -14,6 +14,7 @@ import net.gettrillium.trillium.api.messageutils.Mood;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -101,14 +102,14 @@ public class CommandBinderModule extends TrilliumModule {
             } else if (args[1].equalsIgnoreCase("item") || args[1].equalsIgnoreCase("i")) {
 
                 if (!args[2].equalsIgnoreCase("console")
-                        || !args[2].equalsIgnoreCase("c")
-                        || !args[2].equalsIgnoreCase("player")
-                        || !args[2].equalsIgnoreCase("p")) {
+                        && !args[2].equalsIgnoreCase("c")
+                        && !args[2].equalsIgnoreCase("player")
+                        && !args[2].equalsIgnoreCase("p")) {
                     new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
                     return;
                 }
 
-                if (p.getItemInHand() == null) {
+                if (p.getItemInHand() == null || p.getItemInHand().getType() == Material.AIR) {
                     new Message(Mood.BAD, TrilliumAPI.getName(cmd), "You aren't holding an item to bind.").to(p);
                     return;
                 }

@@ -1,5 +1,6 @@
 package net.gettrillium.trillium.modules;
 
+import com.darkblade12.particleeffect.ParticleEffect;
 import net.gettrillium.trillium.api.Configuration.Server;
 import net.gettrillium.trillium.api.Permission.Admin;
 import net.gettrillium.trillium.api.TrilliumAPI;
@@ -10,25 +11,13 @@ import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
+import net.gettrillium.trillium.api.messageutils.Pallete;
 import net.gettrillium.trillium.api.report.Reports;
-import net.gettrillium.trillium.particleeffect.ParticleEffect;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Animals;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -51,16 +40,16 @@ public class AdminModule extends TrilliumModule {
     public void trillium(CommandSender cs, String[] args) {
         if (args.length == 0) {
             cs.sendMessage(" ");
-            cs.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "----------------"
-                    + ChatColor.GOLD + " Trillium "
-                    + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "----------------");
-            cs.sendMessage(ChatColor.GRAY + "Plugin made with love by:");
-            cs.sendMessage(ChatColor.GRAY + "LordSaad, VortexSeven, Turbotailz,");
-            cs.sendMessage(ChatColor.GRAY + "samczsun, and hintss.");
+            cs.sendMessage(Utils.aestheticSlash()
+                    + Pallete.MINOR.getColor() + " Trillium "
+                    + Utils.aestheticSlash());
+            cs.sendMessage(Pallete.MAJOR.getColor() + "Plugin made with love by:");
+            cs.sendMessage(Pallete.MINOR.getColor() + "LordSaad, VortexSeven, Turbotailz,");
+            cs.sendMessage(Pallete.MINOR.getColor() + "samczsun, and hintss.");
             cs.sendMessage(ChatColor.DARK_RED + "<3");
-            cs.sendMessage(ChatColor.GOLD + "Type /tr help for a list of commands from Trillium.");
+            cs.sendMessage(Pallete.MAJOR.getColor() + "Type /tr help for a list of commands from Trillium.");
             new Message(Mood.NEUTRAL, "Version", TrilliumAPI.getInstance().getDescription().getVersion()).to(cs);
-            // new Message(Mood.NEUTRAL, "Support Email", "support@gettrillium.net");
+            new Message(Mood.NEUTRAL, "Support Email", "support@gettrillium.net").to(cs);
             new Message(Mood.NEUTRAL, "Website", "http://www.gettrillium.net/").to(cs);
             new Message(Mood.NEUTRAL, "Resource Page", "http://goo.gl/t45LYr").to(cs);
         } else {
@@ -120,7 +109,7 @@ public class AdminModule extends TrilliumModule {
 
                         cs.sendMessage(" ");
                         new Message(Mood.GOOD, "Help", "Viewing page: " + page + '/' + pages.size()).to(cs);
-                        cs.sendMessage(ChatColor.GRAY + "" + ChatColor.GOLD + "---------------------------------------");
+                        cs.sendMessage(Utils.aestheticSlash());
                         for (Message msg : pages.get(page - 1)) {
                             msg.to(cs);
                         }
@@ -128,7 +117,7 @@ public class AdminModule extends TrilliumModule {
                         if (TrilliumAPI.getCommands().keySet().contains(args[1])) {
                             cs.sendMessage(" ");
                             new Message(Mood.GOOD, "Help", "Viewing command: " + args[1]).to(cs);
-                            cs.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "---------------------------------------");
+                            cs.sendMessage(Utils.aestheticSlash());
                             new Message(Mood.NEUTRAL, "Description", TrilliumAPI.getDescription(args[1])).to(cs);
                             new Message(Mood.NEUTRAL, "Usage", TrilliumAPI.getUsage(args[1])).to(cs);
                             new Message(Mood.NEUTRAL, "Permissions", Utils.arrayToReadableString(TrilliumAPI.getPermissions(args[1]))).to(cs);

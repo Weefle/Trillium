@@ -71,12 +71,15 @@ public class CommandBinderModule extends TrilliumModule {
             }
 
             if (!args[2].equalsIgnoreCase("console")
-                    || !args[2].equalsIgnoreCase("c")
-                    || !args[2].equalsIgnoreCase("player")
-                    || !args[2].equalsIgnoreCase("p")) {
+                    && !args[2].equalsIgnoreCase("c")
+                    && !args[2].equalsIgnoreCase("player")
+                    && !args[2].equalsIgnoreCase("p")) {
                 new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
                 return;
             }
+
+            boolean player = !args[2].equalsIgnoreCase("console") || !args[1].equalsIgnoreCase("c");
+            Bukkit.broadcastMessage(player + "");
 
             StringBuilder sb = new StringBuilder();
             for (int i = 3; i < args.length; i++) {
@@ -88,8 +91,6 @@ public class CommandBinderModule extends TrilliumModule {
                 new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
                 return;
             }
-
-            boolean player = !(args[2].equalsIgnoreCase("console") || args[1].equalsIgnoreCase("c"));
 
             if (args[1].equalsIgnoreCase("block") || args[1].equalsIgnoreCase("b")) {
 

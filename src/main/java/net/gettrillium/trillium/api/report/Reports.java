@@ -63,7 +63,7 @@ public class Reports {
         for (Map.Entry<Integer, Map<String, HashMap<String, Location>>> row : reports.rowMap().entrySet()) {
             for (Map.Entry<String, HashMap<String, Location>> value : row.getValue().entrySet()) {
                 for (Map.Entry<String, Location> value2 : value.getValue().entrySet()) {
-                    format.add(new Message(Mood.NEUTRAL, row.getKey() + "",
+                    format.add(new Message(Mood.NEUTRAL, String.valueOf(row.getKey()),
                             value.getKey() + " - '" + value2.getKey() + '\'' + ChatColor.DARK_GRAY + " - "
                                     + Utils.locationToString(value2.getValue())));
                 }
@@ -90,7 +90,7 @@ public class Reports {
     }
 
     private static void save() {
-        ArrayList<String> serialized = new ArrayList<>();
+        List<String> serialized = new ArrayList<>();
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(ReportDatabase.report());
 
         for (Map.Entry<Integer, Map<String, HashMap<String, Location>>> row : reports.rowMap().entrySet()) {

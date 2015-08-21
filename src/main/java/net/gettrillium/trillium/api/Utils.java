@@ -374,8 +374,7 @@ public class Utils {
 
     public static void unload() {
         Bukkit.getScheduler().cancelAllTasks();
-        if (TrilliumAPI.getInstance().getConfig() != null)
-            TrilliumAPI.getInstance().saveDefaultConfig();
+        TrilliumAPI.getInstance().saveDefaultConfig();
         TrilliumAPI.disposePlayers();
         TrilliumAPI.unregisterModules();
     }

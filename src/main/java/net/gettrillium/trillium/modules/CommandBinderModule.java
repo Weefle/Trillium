@@ -70,16 +70,12 @@ public class CommandBinderModule extends TrilliumModule {
                 return;
             }
 
-            if (!args[2].equalsIgnoreCase("console")
-                    && !args[2].equalsIgnoreCase("c")
-                    && !args[2].equalsIgnoreCase("player")
-                    && !args[2].equalsIgnoreCase("p")) {
+            if (!args[2].startsWith("c") && !args[2].startsWith("p")) {
                 new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
                 return;
             }
 
-            boolean player = !args[2].equalsIgnoreCase("console") || !args[1].equalsIgnoreCase("c");
-            Bukkit.broadcastMessage(player + "");
+            boolean player = !args[2].startsWith("c");
 
             StringBuilder sb = new StringBuilder();
             for (int i = 3; i < args.length; i++) {
@@ -172,17 +168,14 @@ public class CommandBinderModule extends TrilliumModule {
                             } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                                 CommandBinder.Blocks.add(column.getKey(), event.getClickedBlock().getRelative(BlockFace.UP).getLocation(), column.getValue());
 
-                                loc = new Location(p.getWorld(), event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockX(),
-                                        event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockY(),
-                                        event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockZ());
+                                loc = event.getClickedBlock().getRelative(BlockFace.UP).getLocation();
                             }
 
                             String sender;
-                            if (column.getValue()) {
+                            if (column.getValue())
                                 sender = "player";
-                            } else {
+                            else
                                 sender = "console";
-                            }
 
                             setMode.remove(p.getUniqueId());
                             table.remove(row.getKey(), column.getKey());

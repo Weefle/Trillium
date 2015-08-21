@@ -22,16 +22,16 @@ Trillium has no unnecessary code that degrades server performance. The original 
 ## API
 
 ```
-    <repository>
-   	    <id>jitpack.io</id>
-   	    <url>https://jitpack.io</url>
-   	</repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
 
-	<dependency>
-   	    <groupId>com.github.TeamTrillium</groupId>
-   	    <artifactId>Trillium</artifactId>
-   	    <version>5385c1a680</version>
-   	</dependency>
+        <dependency>
+            <groupId>net.gettrillium.</groupId>
+            <artifactId>Trillium</artifactId>
+            <version>0.4.0</version>
+        </dependency>
 ```
 
 You can use the Utils class for *a lot* of neat utilities used throughout the plugin.

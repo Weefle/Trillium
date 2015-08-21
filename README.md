@@ -27,16 +27,16 @@ Trillium has no unnecessary code that degrades server performance. The original 
 
 ## API
 
-```	<repository>
+`	<repository>
    	    <id>jitpack.io</id>
    	    <url>https://jitpack.io</url>
-   	</repository>```
+   	</repository>
 
-```	<dependency>
+	<dependency>
    	    <groupId>com.github.TeamTrillium</groupId>
    	    <artifactId>Trillium</artifactId>
    	    <version>5385c1a680</version>
-   	</dependency>```
+   	</dependency>`
 
 You can use the Utils class for *a lot* of neat utilities used throughout the plugin.
 `https://github.com/TeamTrillium/Trillium/blob/master/src/main/java/net/gettrillium/trillium/api/Utils.java`
@@ -53,7 +53,7 @@ This all works if you use Trillium's module system.
 
 Example of a class with a command and an event:
 
-```package net.gettrillium.trillium.modules;
+`package net.gettrillium.trillium.modules;
    
    *import net.gettrillium.trillium.api.TrilliumAPI;
    import net.gettrillium.trillium.api.TrilliumModule;*
@@ -156,7 +156,7 @@ Example of a class with a command and an event:
            }
        }
    }
-```
+`
 
 Once you finish writing your module class, register it onEnable by doing the following:
 

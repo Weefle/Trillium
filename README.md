@@ -1,7 +1,5 @@
 # *Trillium*
 
-======
-
 [![Build Status](https://travis-ci.org/TeamTrillium/Trillium.svg)](https://travis-ci.org/TeamTrillium/Trillium)
 
 ![logo](http://i.imgur.com/4UePdLH.png)
@@ -9,8 +7,6 @@
 http://gettrillium.net/
 
 http://www.spigotmc.org/resources/trillium.3882/
-
-======
 
 ## DESCRIPTION
 
@@ -23,11 +19,10 @@ Trillium boasts to be the best "essentials" type plugin out there; it aspires to
 
 Trillium has no unnecessary code that degrades server performance. The original Essentials plugin is fairly over-bloated with useless features that negate the original idea of having only essential features. Trillium, on the other hand, keeps its word by having more features than essentials but only essential ones with more features than essentials ever provided. And on a finishing note, are you not bored of that generic yellow-ish color scheme found on nearly every single server that runs Essentials?
 
-======
-
 ## API
 
-`	<repository>
+```
+    <repository>
    	    <id>jitpack.io</id>
    	    <url>https://jitpack.io</url>
    	</repository>
@@ -36,7 +31,8 @@ Trillium has no unnecessary code that degrades server performance. The original 
    	    <groupId>com.github.TeamTrillium</groupId>
    	    <artifactId>Trillium</artifactId>
    	    <version>5385c1a680</version>
-   	</dependency>`
+   	</dependency>
+```
 
 You can use the Utils class for *a lot* of neat utilities used throughout the plugin.
 `https://github.com/TeamTrillium/Trillium/blob/master/src/main/java/net/gettrillium/trillium/api/Utils.java`
@@ -53,7 +49,8 @@ This all works if you use Trillium's module system.
 
 Example of a class with a command and an event:
 
-`package net.gettrillium.trillium.modules;
+```java
+package net.gettrillium.trillium.modules;
    
    *import net.gettrillium.trillium.api.TrilliumAPI;
    import net.gettrillium.trillium.api.TrilliumModule;*
@@ -156,7 +153,7 @@ Example of a class with a command and an event:
            }
        }
    }
-`
+```
 
 Once you finish writing your module class, register it onEnable by doing the following:
 
@@ -164,7 +161,6 @@ Once you finish writing your module class, register it onEnable by doing the fol
 
 now leave the rest to Trillium. Literally.
 
-======
 
 ## LICENSE
 

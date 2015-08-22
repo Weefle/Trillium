@@ -52,7 +52,7 @@
         <dependency>
             <groupId>net.gettrillium.</groupId>
             <artifactId>Trillium</artifactId>
-            <version>5385c1a680</version>
+            <version>0.4.0</version>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>

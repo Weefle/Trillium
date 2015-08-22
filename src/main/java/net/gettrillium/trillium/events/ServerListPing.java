@@ -1,6 +1,6 @@
 package net.gettrillium.trillium.events;
 
-import net.gettrillium.trillium.api.Configuration;
+import net.gettrillium.trillium.api.Configuration.Chat;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -16,7 +16,7 @@ public class ServerListPing implements Listener {
 
     @EventHandler
     public void onPing(ServerListPingEvent event) {
-        String motd = TrilliumAPI.getInstance().getConfig().getString(Configuration.Chat.SERVER_LIST_MOTD);
+        String motd = TrilliumAPI.getInstance().getConfig().getString(Chat.SERVER_LIST_MOTD);
         motd = ChatColor.translateAlternateColorCodes('&', motd);
         motd = ONLINE.matcher(motd).replaceAll(String.valueOf(event.getNumPlayers()));
         motd = MAX.matcher(motd).replaceAll(String.valueOf(event.getMaxPlayers()));

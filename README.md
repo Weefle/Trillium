@@ -21,7 +21,7 @@ Trillium has no unnecessary code that degrades server performance. The original 
 
 ## API
 
-```
+```xml
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>

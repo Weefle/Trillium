@@ -37,10 +37,6 @@
             <id>sinndev-repo</id>
             <url>http://repo.sinndev.com/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -48,11 +44,6 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.8.6-R0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>net.gettrillium.</groupId>
-            <artifactId>Trillium</artifactId>
-            <version>0.4.0</version>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>

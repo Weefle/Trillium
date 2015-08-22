@@ -1,5 +1,6 @@
 package net.gettrillium.trillium.api.warp;
 
+import net.gettrillium.trillium.Trillium;
 import net.gettrillium.trillium.api.Utils;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
@@ -7,6 +8,9 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,23 +63,46 @@ public class Warp {
     }
 
     private static void save() {
-        List<String> serialized = new ArrayList<>(warps.size());
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(WarpDatabase.wd());
+        if (Trillium.connection != null) {
+            List<String> serialized = new ArrayList<>(warps.size());
+            YamlConfiguration yml = YamlConfiguration.loadConfiguration(WarpDatabase.wd());
 
-        for (Entry<String, Location> row : warps.entrySet()) {
-            serialized.add(row.getKey() + ';' + Utils.locationToString(row.getValue()));
-        }
+            for (Entry<String, Location> row : warps.entrySet()) {
+                serialized.add(row.getKey() + ';' + Utils.locationToString(row.getValue()));
+            }
 
-        yml.set("rows", serialized);
+            yml.set("rows", serialized);
 
-        try {
-            yml.save(WarpDatabase.wd());
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                yml.save(WarpDatabase.wd());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            for (Entry<String, Location> row : warps.entrySet()) {
+                try {
+                    Statement statement = Trillium.connection.createStatement();
+                    statement.executeUpdate("DELETE FROM warps");
+                    statement.closeOnCompletion();
+
+                    PreparedStatement ps = Trillium.connection.prepareStatement("INSERT INTO warps " +
+                            "(name, loc-x, loc-y, loc-z, loc-world)" +
+                            " VALUES (?, ?, ?, ?, ?);");
+                    ps.setString(1, row.getKey());
+                    ps.setInt(2, row.getValue().getBlockX());
+                    ps.setInt(3, row.getValue().getBlockY());
+                    ps.setInt(4, row.getValue().getBlockZ());
+                    ps.setString(5, row.getValue().getWorld().getName());
+                    ps.executeUpdate();
+                    ps.closeOnCompletion();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
-    public static void setWarps() {
+    public static void loadWarps() {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(WarpDatabase.wd());
         List<String> serialized = yml.getStringList("rows");
         for (String deserialize : serialized) {

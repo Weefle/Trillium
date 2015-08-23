@@ -130,7 +130,8 @@ public class CommandBinderModule extends TrilliumModule {
                         "and any block you RIGHT CLICK will unbind any command bound to the block above it (air)").to(p);
 
             } else if (args[1].equalsIgnoreCase("item")) {
-                if (p.getItemInHand().getType() != null) {
+
+                if (p.getItemInHand().getType() == null || p.getItemInHand().getType() == Material.AIR) {
                     new Message(Mood.BAD, TrilliumAPI.getName(cmd), "You aren't holding an item to unbind.").to(p);
                     return;
                 }

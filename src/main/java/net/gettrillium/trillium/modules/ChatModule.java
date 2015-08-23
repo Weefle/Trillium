@@ -190,6 +190,8 @@ public class ChatModule extends TrilliumModule {
                         }
                         String msg = sb.toString().trim();
 
+                        // TODO: rewrite
+
                         String format1 = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PluginMessages.TO_FROM_FROM_MESSAGE));
                         String format2 = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PluginMessages.FROM_TO_TO_MESSAGE));
 

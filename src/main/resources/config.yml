@@ -29,7 +29,7 @@ server:
   automatic-backups: true
   # The plugin will make automatic backups to the player database into the backup file in the trillium folder
   # They will be zipped with the backup date as a name.
-  automatic-backup-frequency: 2h
+  automatic-backup-frequency: "2h"
   # The time-interval between each backup.
   sql:
   # EXPERIMENTAL FEATURE. USE AT OWN RISK.

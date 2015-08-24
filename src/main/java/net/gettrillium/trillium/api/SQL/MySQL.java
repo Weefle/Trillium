@@ -36,7 +36,7 @@ public class MySQL extends Database {
         this.hostname = hostname;
         this.port = port;
         this.database = database;
-        this.user = username;
+        user = username;
         this.password = password;
     }
 
@@ -48,8 +48,8 @@ public class MySQL extends Database {
         }
         Class.forName("com.mysql.jdbc.Driver");
         connection = DriverManager.getConnection("jdbc:mysql://"
-                        + this.hostname + ":" + this.port + "/" + this.database,
-                this.user, this.password);
+                        + hostname + ':' + port + '/' + database,
+                user, password);
         return connection;
     }
 }

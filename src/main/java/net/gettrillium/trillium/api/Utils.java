@@ -357,7 +357,7 @@ public class Utils {
 
         Blocks.setTable();
         Items.setTable();
-        Warp.setWarps();
+        Warp.loadWarps();
         Reports.setReports();
 
         new TpsRunnable().runTaskTimer(TrilliumAPI.getInstance(), 100L, 1L);

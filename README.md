@@ -35,10 +35,10 @@ Trillium has no unnecessary code that degrades server performance. The original 
 ```
 
 You can use the Utils class for *a lot* of neat utilities used throughout the plugin.
-`https://github.com/TeamTrillium/Trillium/blob/master/src/main/java/net/gettrillium/trillium/api/Utils.java`
+https://github.com/TeamTrillium/Trillium/blob/master/src/main/java/net/gettrillium/trillium/api/Utils.java
 
 Trillium's API package is located here:
-`https://github.com/TeamTrillium/Trillium/tree/master/src/main/java/net/gettrillium/trillium/api`
+https://github.com/TeamTrillium/Trillium/tree/master/src/main/java/net/gettrillium/trillium/api
 You can control most of every aspect in that package and it'll control the plugin as you please.
 
 The way Trillium's commands and events are handled are with "Modules". Each module is pretty much a category.
@@ -46,6 +46,9 @@ You can use both events and commands in the same class and you do not have to re
 Furthermore, You don't have to have a commands section in your plugin.yml because Trillium handles that as well.
 
 This all works if you use Trillium's module system.
+
+WARNING: *MAKING A COMMAND WITH THIS MODULE SYSTEM WILL REGISTER THE COMMAND AS A TRILLIUM COMMAND ONLY.*
+*THIS MAY CHANGE IN THE FUTURE*
 
 Example of a class with a command and an event:
 

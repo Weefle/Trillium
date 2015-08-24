@@ -83,6 +83,13 @@ public class Trillium extends JavaPlugin {
                         "muted BOOLEAN," +
                         "god BOOLEAN," +
                         "vanish BOOLEAN);");
+
+                statement.executeUpdate("CREATE TABLE IF NOT EXISTS warps (" +
+                        "name VARCHAR(50)," +
+                        "loc-x INT" +
+                        "loc-y INT" +
+                        "loc-z INT" +
+                        "loc-world VARCHAR(50));");
                 statement.closeOnCompletion();
             } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();

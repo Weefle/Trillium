@@ -88,18 +88,25 @@ public class CommandBinder {
             save(p);
         }
 
-        public static void remove(Player p) {
+        public static void remove(Player player) {
+            TrilliumPlayer p = TrilliumAPI.getPlayer(player);
             Map<UUID, Map<String, HashMap<Material, Boolean>>> rows = new HashMap<>();
             rows.putAll(table.rowMap());
 
             for (Entry<UUID, Map<String, HashMap<Material, Boolean>>> row : rows.entrySet()) {
-                if (row.getKey().equals(p.getUniqueId())) {
+                if (row.getKey().equals(p.getProxy().getUniqueId())) {
                     for (Entry<String, HashMap<Material, Boolean>> column : row.getValue().entrySet()) {
                         table.remove(row.getKey(), column.getKey());
                     }
                 }
             }
-            save(p);
+
+            p.getConfig().set("command-binder-items", null);
+            try {
+                p.getConfig().save(p.getFile());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         public static String serializer(String command, Material mat, boolean player) {
@@ -120,18 +127,19 @@ public class CommandBinder {
         public static void save(Player player) {
             TrilliumPlayer p = TrilliumAPI.getPlayer(player);
             Map<UUID, Map<String, HashMap<Material, Boolean>>> rows = table.rowMap();
+            List<String> bindings = p.getConfig().getStringList("command-binder-items");
 
             for (Entry<UUID, Map<String, HashMap<Material, Boolean>>> row : rows.entrySet()) {
                 if (row.getKey().equals(player.getUniqueId())) {
                     for (Entry<String, HashMap<Material, Boolean>> column : row.getValue().entrySet()) {
                         for (Entry<Material, Boolean> secondColumn : column.getValue().entrySet()) {
-                            List<String> bindings = p.getConfig().getStringList("command-binder-items");
                             bindings.add(serializer(column.getKey(), secondColumn.getKey(), secondColumn.getValue()));
-                            p.getConfig().set("command-binder-items", bindings);
                         }
                     }
                 }
             }
+            remove(player);
+            p.getConfig().set("command-binder-items", bindings);
             try {
                 p.getConfig().save(p.getFile());
             } catch (IOException e) {

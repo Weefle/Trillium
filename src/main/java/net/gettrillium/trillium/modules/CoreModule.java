@@ -110,14 +110,16 @@ public class CoreModule extends TrilliumModule {
         Player p = e.getPlayer();
         TrilliumPlayer player = player(e.getPlayer());
 
-        String quitMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.LEAVEMESSAGE));
-        quitMessage = quitMessage.replace("%USERNAME%", p.getName());
-        if (!player.isVanished()) {
-            e.setQuitMessage(quitMessage);
-        } else {
-            e.setQuitMessage(null);
-        }
+        if (player != null) {
+            String quitMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.LEAVEMESSAGE));
+            quitMessage = quitMessage.replace("%USERNAME%", p.getName());
+            if (!player.isVanished()) {
+                e.setQuitMessage(quitMessage);
+            } else {
+                e.setQuitMessage(null);
+            }
 
-        TrilliumAPI.disposePlayer(p);
+            TrilliumAPI.disposePlayer(p);
+        }
     }
 }

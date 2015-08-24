@@ -86,7 +86,7 @@ chat:
     - "&7There are currently &6%ONLINE%&7/&6%SLOTS%&7 players."
     - "&7Have fun! &4<3"
     - " "
-    #The ingame motd. When a player logs on, they will see this message.
+    # The ingame motd. When a player logs on, they will see this message.
   chat-channels:
       enabled: true
       # Chat channels are basically private chat groups. Anyone in channel x will see any messages sent to channel x.

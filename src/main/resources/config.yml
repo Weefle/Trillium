@@ -37,6 +37,7 @@ server:
   automatic-backup-frequency: 2h
   # The time-interval between each backup.
   sql:
+  # EXPERIMENTAL FEATURE. USE AT OWN RISK.
     enabled: false
     host-name: "localhost"
     port: "25565"

@@ -6,9 +6,9 @@ import org.bukkit.ChatColor;
 
 public enum Pallete {
 
-    MAJOR(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.PALLETE_MAJOR))),
-    MINOR(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.PALLETE_MINOR))),
-    HIGHLIGHT(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.PALLETE_HIGHLIGHT)));
+    MAJOR(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.COLOR_PALLETE_MAJOR_COLOR))),
+    MINOR(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.COLOR_PALLETE_MINOR_COLOR))),
+    HIGHLIGHT(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(Configuration.PluginMessages.COLOR_PALLETE_HIGHLIGHT_COLOR)));
 
     private String color;
 

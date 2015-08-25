@@ -620,7 +620,7 @@ public class TeleportModule extends TrilliumModule {
             permissions = {Teleport.HOME_CREATE, Teleport.HOME_LIST, Teleport.HOME_TP, Teleport.COOLDOWN_EXEMPT})
     public void home(CommandSender cs, String[] args) {
         String cmd = "home";
-        if (!getConfig().getBoolean(PlayerSettings.HOMES_ENABLED)) {
+        if (!getConfig().getBoolean(PlayerSettings.ENABLE_HOMES)) {
             new Message(Mood.BAD, TrilliumAPI.getName(cmd), "This feature is disabled.").to(cs);
             return;
         }
@@ -641,7 +641,7 @@ public class TeleportModule extends TrilliumModule {
 
             int max = -1;
 
-            for (int i = 1; i < getConfig().getInt(PlayerSettings.HOMES_MAX); i++) {
+            for (int i = 1; i < getConfig().getInt(PlayerSettings.MAX_NUMBER_OF_HOMES); i++) {
                 if (p.hasPermission(Teleport.HOME_TP + '.' + i)) {
                     max = i;
                 }
@@ -654,7 +654,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
             if (p.getProxy().isOp()) {
-                max = getConfig().getInt(PlayerSettings.HOMES_MAX);
+                max = getConfig().getInt(PlayerSettings.MAX_NUMBER_OF_HOMES);
             }
 
             if (p.getHomeList().size() <= max) {

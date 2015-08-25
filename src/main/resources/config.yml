@@ -5,12 +5,7 @@
 #   |_||_|  |_|_|_|_|\__,_|_| |_| |_|
 
 #---------------[ Notes ]---------------#
-# If you have any problems with your configuration,
-# please consider downloading our configuration software from
-# http://www.gettrillium.net/
-# It's a GUI with shiny buttons to configure everything.
-
-# If you have any questions or refuse to download the software or are experiencing problems with it,
+# If you have any questions or have any problems configuring this config file,
 # then please consider contacting us on our support email for any questions or problems or really anything related to trillium
 # including any problems you are experiencing configuring this plugin
 # support@gettrillium.net
@@ -34,9 +29,10 @@ server:
   automatic-backups: true
   # The plugin will make automatic backups to the player database into the backup file in the trillium folder
   # They will be zipped with the backup date as a name.
-  automatic-backup-frequency: 2h
+  automatic-backup-frequency: "2h"
   # The time-interval between each backup.
   sql:
+  # EXPERIMENTAL FEATURE. USE AT OWN RISK.
     enabled: false
     host-name: "localhost"
     port: "25565"
@@ -90,7 +86,7 @@ chat:
     - "&7There are currently &6%ONLINE%&7/&6%SLOTS%&7 players."
     - "&7Have fun! &4<3"
     - " "
-    #The ingame motd. When a player logs on, they will see this message.
+    # The ingame motd. When a player logs on, they will see this message.
   chat-channels:
       enabled: true
       # Chat channels are basically private chat groups. Anyone in channel x will see any messages sent to channel x.

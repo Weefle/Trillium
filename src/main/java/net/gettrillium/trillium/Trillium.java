@@ -37,7 +37,7 @@ public class Trillium extends JavaPlugin {
         Utils.load();
         generateFiles();
 
-        if (getConfig().getBoolean(Server.METRICS)) {
+        if (getConfig().getBoolean(Server.ALLOW_METRICS)) {
             try {
                 Metrics metrics = new Metrics(this);
                 metrics.start();
@@ -65,7 +65,7 @@ public class Trillium extends JavaPlugin {
 
         if (getConfig().getBoolean(Server.SQL_ENABLED)) {
             MySQL mySQL = new MySQL(this,
-                    getConfig().getString(Server.SQL_HOST),
+                    getConfig().getString(Server.SQL_HOST_NAME),
                     getConfig().getString(Server.SQL_PORT),
                     getConfig().getString(Server.SQL_DATABASE),
                     getConfig().getString(Server.SQL_USER),
@@ -75,7 +75,7 @@ public class Trillium extends JavaPlugin {
                 Statement statement = connection.createStatement();
                 statement.executeUpdate("CREATE TABLE IF NOT EXISTS players (" +
                         "uuid VARCHAR(36)," +
-                        "nick VARCHAR(" + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT) + ")," +
+                        "nick VARCHAR(" + getConfig().getInt(Configuration.PlayerSettings.NICKNAMES_CHARACTER_LIMIT) + ")," +
                         "loc-x INT" +
                         "loc-y INT" +
                         "loc-z INT" +

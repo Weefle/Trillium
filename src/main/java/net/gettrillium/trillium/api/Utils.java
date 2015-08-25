@@ -225,7 +225,7 @@ public class Utils {
     }
 
     public static void broadcastImportantMessage() {
-        List<String> list = TrilliumAPI.getInstance().getConfig().getStringList(Broadcast.IMP_BROADCAST2);
+        List<String> list = TrilliumAPI.getInstance().getConfig().getStringList(Broadcast.IMPORTANT_BROADCAST_BROADCAST);
         for (String s : list) {
             Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', s));
         }
@@ -361,11 +361,11 @@ public class Utils {
         Reports.setReports();
 
         new TpsRunnable().runTaskTimer(TrilliumAPI.getInstance(), 100L, 1L);
-        if (TrilliumAPI.getInstance().getConfig().getBoolean(Broadcast.AUTO_ENABLED)) {
-            new AutoBroadcastRunnable().runTaskTimer(TrilliumAPI.getInstance(), 1L, (long) timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Broadcast.FREQUENCY)));
+        if (TrilliumAPI.getInstance().getConfig().getBoolean(Broadcast.AUTO_BROADCAST_ENABLED)) {
+            new AutoBroadcastRunnable().runTaskTimer(TrilliumAPI.getInstance(), 1L, (long) timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Broadcast.AUTO_BROADCAST_FREQUENCY)));
         }
         if (TrilliumAPI.getInstance().getConfig().getBoolean(Afk.AUTO_AFK_ENABLED)) {
-            new AFKRunnable().runTaskTimer(TrilliumAPI.getInstance(), 1L, (long) timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Afk.AUTO_AFK_TIME)));
+            new AFKRunnable().runTaskTimer(TrilliumAPI.getInstance(), 1L, (long) timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Afk.AUTO_AFK_TIME_UNTIL_IDLE)));
         }
 
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeath(), TrilliumAPI.getInstance());

@@ -78,7 +78,7 @@ public class AdminModule extends TrilliumModule {
                 if (args[0].startsWith("h")) {
                     if ((args.length == 1) || ((args.length >= 2) && StringUtils.isNumeric(args[1]))) {
                         List<Message> commands = new ArrayList<>();
-                        if (getConfig().getBoolean(Server.PERM_BASED_HELP_MENU)) {
+                        if (getConfig().getBoolean(Server.PERMISSION_BASED_HELP_MENU)) {
                             for (String command : TrilliumAPI.getCommands().keySet()) {
                                 if (cs.hasPermission(TrilliumAPI.getPermissions(command)[0])) {
                                     commands.add(new Message(Mood.NEUTRAL, command, TrilliumAPI.getDescription(command)));

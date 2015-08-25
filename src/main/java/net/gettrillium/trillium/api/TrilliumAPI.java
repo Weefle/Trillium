@@ -33,6 +33,7 @@ import java.util.UUID;
 
 public class TrilliumAPI {
     private static Trillium instance;
+    private static final String pluginName = "Trillium";
     private static File playerFolder;
     private static Map<UUID, TrilliumPlayer> players;
     private static Map<Class<? extends TrilliumModule>, TrilliumModule> modules;
@@ -120,9 +121,9 @@ public class TrilliumAPI {
         return players.containsKey(p.getUniqueId());
     }
 
-    public static void registerModule(TrilliumModule module) {
+    public static void registerModule(TrilliumModule module, String pluginName) {
         instance.getServer().getPluginManager().registerEvents(module, instance);
-        registerCommands(module);
+        registerCommands(module, pluginName);
         module.register();
         modules.put(module.getClass(), module);
     }
@@ -138,19 +139,19 @@ public class TrilliumAPI {
     }
 
     public static void registerModules() {
-        registerModule(new AFKModule());
-        registerModule(new PunishModule());
-        registerModule(new AbilityModule());
-        registerModule(new AdminModule());
-        registerModule(new CoreModule());
-        registerModule(new TeleportModule());
-        registerModule(new ChatModule());
-        registerModule(new FunModule());
-        registerModule(new CommandBinderModule());
-        if (getInstance().getConfig().getBoolean(Configuration.Kit.ENABLED))
-            registerModule(new KitModule());
+        registerModule(new AFKModule(), pluginName);
+        registerModule(new PunishModule(), pluginName);
+        registerModule(new AbilityModule(), pluginName);
+        registerModule(new AdminModule(), pluginName);
+        registerModule(new CoreModule(), pluginName);
+        registerModule(new TeleportModule(), pluginName);
+        registerModule(new ChatModule(), pluginName);
+        registerModule(new FunModule(), pluginName);
+        registerModule(new CommandBinderModule(), pluginName);
+        if (getInstance().getConfig().getBoolean(Configuration.Kits.ENABLED))
+            registerModule(new KitModule(), pluginName);
         if (getInstance().getConfig().getBoolean(Economy.ENABLED))
-            registerModule(new EconomyModule());
+            registerModule(new EconomyModule(), pluginName);
     }
 
     public static Collection<? extends TrilliumPlayer> getOnlinePlayers() {
@@ -201,7 +202,7 @@ public class TrilliumAPI {
         }
     }
 
-    public static void registerCommands(TrilliumModule module) {
+    public static void registerCommands(TrilliumModule module, String pluginName) {
         try {
             Field field = SimplePluginManager.class.getDeclaredField("commandMap");
             field.setAccessible(true);
@@ -215,7 +216,7 @@ public class TrilliumAPI {
                             , command.aliases()
                             , m
                             , module);
-                    commandMap.register("trillium", c);
+                    commandMap.register(pluginName, c);
 
                     commands.put(command.command(),
                             new String[]{command.name()

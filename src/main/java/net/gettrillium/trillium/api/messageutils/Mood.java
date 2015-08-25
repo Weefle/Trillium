@@ -5,9 +5,9 @@ import net.gettrillium.trillium.api.TrilliumAPI;
 import org.bukkit.ChatColor;
 
 public enum Mood {
-    BAD(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(PluginMessages.BAD_COLOR))),
-    GOOD(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(PluginMessages.GOOD_COLOR))),
-    NEUTRAL(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(PluginMessages.NEUTRAL_COLOR)));
+    BAD(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(PluginMessages.COLORS_BAD_MESSAGE))),
+    GOOD(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(PluginMessages.COLORS_GOOD_MESSAGE))),
+    NEUTRAL(ChatColor.translateAlternateColorCodes('&', TrilliumAPI.getInstance().getConfig().getString(PluginMessages.COLORS_NEUTRAL_MESSAGE)));
 
     private final String color;
 

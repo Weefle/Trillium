@@ -49,7 +49,7 @@ public class ChatModule extends TrilliumModule {
     public void motd(CommandSender cs, String[] args) {
         String cmd = "motd";
         if (cs.hasPermission(TrilliumAPI.getPermissions(cmd)[0])) {
-            List<String> motd = getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
+            List<String> motd = getConfig().getStringList(Configuration.Chat.MOTD);
             for (String s : motd) {
                 s = s.replace("%USERNAME%", cs.getName());
                 s = s.replace("%SLOTS%", "" + Bukkit.getMaxPlayers());
@@ -219,6 +219,7 @@ public class ChatModule extends TrilliumModule {
     }
 
     // TODO - Rewrite
+    // TODO - Make next priority..
     @Command(name = "Nick",
             command = "nickname",
             description = "Change your nickname to anything you want.",
@@ -236,8 +237,8 @@ public class ChatModule extends TrilliumModule {
                     if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("off")) {
                         if (p.hasNickname()) {
                             if (p.getProxy().isOp()) {
-                                if (!getConfig().getString(Configuration.PlayerSettings.OPCOLOR).equals("") || !getConfig().getString(Configuration.PlayerSettings.OPCOLOR).equals(" ")) {
-                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getProxy().getName();
+                                if (!getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE).equals("") || !getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE).equals(" ")) {
+                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE) + p.getProxy().getName();
                                     p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
                                 } else {
                                     p.setDisplayName(p.getProxy().getName());
@@ -250,14 +251,14 @@ public class ChatModule extends TrilliumModule {
                         }
                     } else {
 
-                        if (ChatColor.stripColor(args[0]).length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
+                        if (ChatColor.stripColor(args[0]).length() <= getConfig().getInt(Configuration.PlayerSettings.NICKNAMES_CHARACTER_LIMIT)) {
 
                             new Message(Mood.GOOD, "Nickname", "New nickname set: " + args[0]).to(p);
-                            p.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + args[0] + "&f");
+                            p.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.NICKNAMES_PREFIX)) + args[0] + "&f");
 
                         } else {
                             new Message(Mood.BAD, "Nickname", "Too many characters. "
-                                    + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
+                                    + getConfig().getInt(Configuration.PlayerSettings.NICKNAMES_CHARACTER_LIMIT)
                                     + " is the limit.").to(p);
                         }
                     }
@@ -267,8 +268,8 @@ public class ChatModule extends TrilliumModule {
                     if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("off")) {
                         if (p.hasNickname()) {
                             if (p.getProxy().isOp()) {
-                                if (!getConfig().getString(Configuration.PlayerSettings.OPCOLOR).isEmpty()) {
-                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getProxy().getName();
+                                if (!getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE).isEmpty()) {
+                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE) + p.getProxy().getName();
                                     p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
                                 } else {
                                     p.setDisplayName(p.getProxy().getName());
@@ -281,15 +282,15 @@ public class ChatModule extends TrilliumModule {
                         }
                     } else {
 
-                        if (ChatColor.stripColor(args[0]).length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
+                        if (ChatColor.stripColor(args[0]).length() <= getConfig().getInt(Configuration.PlayerSettings.NICKNAMES_CHARACTER_LIMIT)) {
 
                             String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
                             new Message(Mood.GOOD, "Nickname", "New nickname set: " + nick).to(p);
-                            p.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + nick + "&f");
+                            p.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.NICKNAMES_PREFIX)) + nick + "&f");
 
                         } else {
                             new Message(Mood.GOOD, "Nickname", "Too many characters. "
-                                    + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
+                                    + getConfig().getInt(Configuration.PlayerSettings.NICKNAMES_CHARACTER_LIMIT)
                                     + " is the limit.").to(p);
                         }
                     }
@@ -304,8 +305,8 @@ public class ChatModule extends TrilliumModule {
                     if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("off")) {
                         if (p.hasNickname()) {
                             if (p.getProxy().isOp()) {
-                                if (!getConfig().getString(Configuration.PlayerSettings.OPCOLOR).isEmpty()) {
-                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getProxy().getName();
+                                if (!getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE).isEmpty()) {
+                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE) + p.getProxy().getName();
                                     p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
                                 } else {
                                     p.setDisplayName(p.getProxy().getName());
@@ -318,11 +319,11 @@ public class ChatModule extends TrilliumModule {
                         }
                     } else {
 
-                        if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
+                        if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.NICKNAMES_CHARACTER_LIMIT)) {
 
                             TrilliumPlayer target = player(args[1]);
                             if (target != null) {
-                                target.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + args[0] + "&f");
+                                target.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.NICKNAMES_PREFIX)) + args[0] + "&f");
                                 new Message(Mood.GOOD, "Nickname", ChatColor.AQUA + p.getName() + ChatColor.BLUE + " set your nickname to: " + args[0]).to(target);
                                 new Message(Mood.GOOD, "Nickname", "You set " + ChatColor.AQUA + target.getName() + ChatColor.BLUE + " to: " + args[0]).to(p);
 
@@ -331,7 +332,7 @@ public class ChatModule extends TrilliumModule {
                             }
                         } else {
                             new Message(Mood.GOOD, "Nickname", "Too many characters. "
-                                    + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
+                                    + getConfig().getInt(Configuration.PlayerSettings.NICKNAMES_CHARACTER_LIMIT)
                                     + " is the limit.").to(p);
                         }
                     }
@@ -341,8 +342,8 @@ public class ChatModule extends TrilliumModule {
                     if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("off")) {
                         if (p.hasNickname()) {
                             if (p.getProxy().isOp()) {
-                                if (!getConfig().getString(Configuration.PlayerSettings.OPCOLOR).isEmpty()) {
-                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getProxy().getName();
+                                if (!getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE).isEmpty()) {
+                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE) + p.getProxy().getName();
                                     p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
                                 } else {
                                     p.setDisplayName(p.getProxy().getName());
@@ -355,12 +356,12 @@ public class ChatModule extends TrilliumModule {
                         }
                     } else {
 
-                        if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)) {
+                        if (args[0].length() <= getConfig().getInt(Configuration.PlayerSettings.NICKNAMES_CHARACTER_LIMIT)) {
 
                             TrilliumPlayer target = player(args[1]);
                             if (target != null) {
                                 String nick = ChatColor.translateAlternateColorCodes('&', args[0]);
-                                target.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.PREF)) + nick + "&f");
+                                target.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.NICKNAMES_PREFIX)) + nick + "&f");
                                 new Message(Mood.GOOD, "Nickname", ChatColor.AQUA + p.getName() + ChatColor.BLUE + " set your nickname to: " + nick).to(target);
                                 new Message(Mood.GOOD, "Nickname", "You set " + ChatColor.AQUA + target.getName() + ChatColor.BLUE + " to: " + nick).to(p);
 
@@ -369,7 +370,7 @@ public class ChatModule extends TrilliumModule {
                             }
                         } else {
                             new Message(Mood.GOOD, "Nickname", "Too many characters. "
-                                    + getConfig().getInt(Configuration.PlayerSettings.CHARLIMIT)
+                                    + getConfig().getInt(Configuration.PlayerSettings.NICKNAMES_CHARACTER_LIMIT)
                                     + " is the limit.").to(p);
                         }
                     }
@@ -392,7 +393,7 @@ public class ChatModule extends TrilliumModule {
             permissions = {Permission.Chat.CHATCHANNEL + "<input>"})
     public void chatchannel(CommandSender cs, String[] args) {
         String cmd = "chatchannel";
-        if (getConfig().getBoolean(Configuration.Chat.CCENABLED)) {
+        if (getConfig().getBoolean(Configuration.Chat.CHAT_CHANNELS_ENABLED)) {
             if (cs instanceof Player) {
                 TrilliumPlayer p = player((Player) cs);
                 if (args.length >= 2) {
@@ -408,12 +409,12 @@ public class ChatModule extends TrilliumModule {
 
                                 String msg = sb.toString().trim();
 
-                                String f = getConfig().getString(Configuration.Chat.CCFORMAT);
+                                String f = getConfig().getString(Configuration.Chat.CHAT_CHANNELS_FORMAT);
 
                                 f = f.replace("%CHANNELNAME%", args[0]);
                                 f = f.replace("%NICKNAME%", p.getProxy().getName());
                                 f = f.replace("%MESSAGE%", msg);
-                                if (getConfig().getBoolean(Configuration.Chat.CCCOLOR)) {
+                                if (getConfig().getBoolean(Configuration.Chat.CHAT_CHANNELS_ALLOW_COLOR_CODES)) {
                                     f = ChatColor.translateAlternateColorCodes('&', f);
                                 }
 
@@ -452,7 +453,7 @@ public class ChatModule extends TrilliumModule {
         }
 
         String defaultcolor = ChatColor.translateAlternateColorCodes('&',
-                getConfig().getString(Configuration.Broadcast.COLOR_TO_USE).trim());
+                getConfig().getString(Configuration.Broadcast.REGULAR_BROADCASTS_COLOR_TO_USE).trim());
 
         StringBuilder sb = new StringBuilder();
         for (String arg : args) {
@@ -460,10 +461,10 @@ public class ChatModule extends TrilliumModule {
         }
         String message = sb.toString().trim();
 
-        if (getConfig().getBoolean(Configuration.Broadcast.CENTRALIZE)) {
+        if (getConfig().getBoolean(Configuration.Broadcast.REGULAR_BROADCASTS_CENTRALIZE_BROADCASTS)) {
 
             List<String> centered = Utils.centerText(message);
-            List<String> format = getConfig().getStringList(Configuration.Broadcast.FORMAT);
+            List<String> format = getConfig().getStringList(Configuration.Broadcast.REGULAR_BROADCASTS_BROADCAST_FORMAT);
             for (String s : format) {
                 s = ChatColor.translateAlternateColorCodes('&', s);
                 if (s.contains("[msg]")) {
@@ -477,10 +478,10 @@ public class ChatModule extends TrilliumModule {
             }
         } else {
 
-            List<String> format = getConfig().getStringList(Configuration.Broadcast.FORMAT);
+            List<String> format = getConfig().getStringList(Configuration.Broadcast.REGULAR_BROADCASTS_BROADCAST_FORMAT);
             for (String s : format) {
                 s = s.replace("[msg]", ChatColor.translateAlternateColorCodes('&',
-                        getConfig().getString(Configuration.Broadcast.COLOR_TO_USE) + message));
+                        getConfig().getString(Configuration.Broadcast.REGULAR_BROADCASTS_COLOR_TO_USE) + message));
                 s = ChatColor.translateAlternateColorCodes('&', s);
                 Bukkit.broadcastMessage(s);
             }
@@ -505,14 +506,14 @@ public class ChatModule extends TrilliumModule {
         if (getConfig().getBoolean(Configuration.Chat.CHAT_FORMAT_ENABLED)) {
 
 
-            for (String perm : getConfig().getConfigurationSection(Configuration.Chat.PERM_SPECIFIC_FORMATS).getKeys(false)) {
-                for (String group : getConfig().getConfigurationSection(Configuration.Chat.GROUP_SPECIFIC_FORMATS).getKeys(false)) {
+            for (String perm : getConfig().getConfigurationSection(Configuration.Chat.CHAT_FORMAT_PERMISSION_SPECIFIC_FORMATS).getKeys(false)) {
+                for (String group : getConfig().getConfigurationSection(Configuration.Chat.CHAT_FORMAT_GROUP_SPECIFIC_FORMATS).getKeys(false)) {
 
                     boolean global = true;
                     if (!event.getPlayer().isOp()) {
                         if (event.getPlayer().hasPermission(Permission.Chat.PERM_FORMAT + perm)) {
                             global = false;
-                            String format = getConfig().getString(Configuration.Chat.PERM_SPECIFIC_FORMATS + "." + perm);
+                            String format = getConfig().getString(Configuration.Chat.CHAT_FORMAT_PERMISSION_SPECIFIC_FORMATS + "." + perm);
                             format = format.replace("%USERNAME%", event.getPlayer().getName());
                             format = format.replace("%NICKNAME%", event.getPlayer().getDisplayName());
                             if (Trillium.chat != null) {
@@ -525,7 +526,7 @@ public class ChatModule extends TrilliumModule {
                         } else if (Trillium.chat != null) {
                             if (Trillium.chat.playerInGroup(event.getPlayer(), group)) {
                                 global = false;
-                                String format = getConfig().getString(Configuration.Chat.GROUP_SPECIFIC_FORMATS + "." + group);
+                                String format = getConfig().getString(Configuration.Chat.CHAT_FORMAT_GROUP_SPECIFIC_FORMATS + "." + group);
                                 format = format.replace("%USERNAME%", event.getPlayer().getName());
                                 format = format.replace("%NICKNAME%", event.getPlayer().getDisplayName());
                                 format = format.replace("%GROUPNAME%", Trillium.chat.getPrimaryGroup(event.getPlayer()));
@@ -539,7 +540,7 @@ public class ChatModule extends TrilliumModule {
                     }
 
                     if (global) {
-                        String format = getConfig().getString(Configuration.Chat.GLOBAL_FORMAT);
+                        String format = getConfig().getString(Configuration.Chat.CHAT_FORMAT_GLOBAL_FORMAT);
                         format = format.replace("%USERNAME%", event.getPlayer().getName());
                         format = format.replace("%NICKNAME%", event.getPlayer().getDisplayName());
                         if (Trillium.chat != null) {

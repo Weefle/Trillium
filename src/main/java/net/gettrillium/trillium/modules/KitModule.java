@@ -30,11 +30,11 @@ public class KitModule extends TrilliumModule {
             TrilliumPlayer p = player((Player) cs);
             if (args.length == 0) {
                 new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "Available kits:").to(p);
-                for (String s : getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER).getKeys(false)) {
+                for (String s : getConfig().getConfigurationSection(Configuration.Kits.KIT_MAKER).getKeys(false)) {
                     new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), s).to(p);
                 }
             } else if (args.length == 1) {
-                if (getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER).contains(args[0])) {
+                if (getConfig().getConfigurationSection(Configuration.Kits.KIT_MAKER).contains(args[0])) {
                     if (p.getProxy().hasPermission(Permission.Kit.USE + args[0])) {
                         if (Cooldown.hasCooldown(p.getProxy(), CooldownType.KIT)) {
                             new Message(Mood.BAD, "Kit", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.KIT)).to(p);

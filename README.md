@@ -47,9 +47,6 @@ Furthermore, You don't have to have a commands section in your plugin.yml becaus
 
 This all works if you use Trillium's module system.
 
-WARNING: *MAKING A COMMAND WITH THIS MODULE SYSTEM WILL REGISTER THE COMMAND AS A TRILLIUM COMMAND ONLY.*
-*THIS MAY CHANGE IN THE FUTURE*
-
 Example of a class with a command and an event:
 
 ```java
@@ -160,7 +157,9 @@ package net.gettrillium.trillium.modules;
 
 Once you finish writing your module class, register it onEnable by doing the following:
 
-`TrilliumAPI.registerModule(new ExampleClass());`
+`TrilliumAPI.registerModule(new ExampleClass(), "your-plugin-name");`
+
+"your-plugin-name" is the name of your plugin (obviously) which will appear in the help menu.
 
 now leave the rest to Trillium. Literally.
 

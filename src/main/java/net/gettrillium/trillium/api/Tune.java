@@ -46,7 +46,7 @@ public class Tune {
                 for (String note : tune) {
                     int dots = note.length();
                     if ((dots <= 5) && (dots > 0)) {
-                        String tone = TrilliumAPI.getInstance().getConfig().getString(Server.TONE);
+                        String tone = TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_TONE);
                         if (StringUtils.isAlpha(tone) && (tone.length() == 1)) {
                             if (tone.equalsIgnoreCase("A")
                                     || tone.equalsIgnoreCase("B")
@@ -55,10 +55,10 @@ public class Tune {
                                     || tone.equalsIgnoreCase("E")
                                     || tone.equalsIgnoreCase("F")
                                     || tone.equalsIgnoreCase("G")) {
-                                if (TrilliumAPI.getInstance().getConfig().getString(Server.NOTE).equalsIgnoreCase("NATURAL")) {
+                                if (TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_NOTE).equalsIgnoreCase("NATURAL")) {
                                     for (Player p : Bukkit.getOnlinePlayers()) {
                                         p.playNote(p.getLocation(),
-                                                Instrument.valueOf(TrilliumAPI.getInstance().getConfig().getString(Server.INSTRUMENT).toUpperCase()),
+                                                Instrument.valueOf(TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_INSTRUMENT).toUpperCase()),
                                                 Note.natural(dots, Tone.valueOf(tone)));
                                     }
                                 }
@@ -87,7 +87,7 @@ public class Tune {
                     for (String note : tune) {
                         int dots = note.length() - note.replace(".", "").length();
                         if ((dots <= 8) && (dots > 0)) {
-                            String tone = TrilliumAPI.getInstance().getConfig().getString(Server.TONE);
+                            String tone = TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_TONE);
                             if (tone.equalsIgnoreCase("A")
                                     || tone.equalsIgnoreCase("B")
                                     || tone.equalsIgnoreCase("C")
@@ -95,21 +95,21 @@ public class Tune {
                                     || tone.equalsIgnoreCase("E")
                                     || tone.equalsIgnoreCase("F")
                                     || tone.equalsIgnoreCase("G")) {
-                                if (TrilliumAPI.getInstance().getConfig().getString(Server.NOTE).equalsIgnoreCase("NATURAL")) {
+                                if (TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_NOTE).equalsIgnoreCase("NATURAL")) {
                                     p.playNote(p.getLocation(),
-                                            Instrument.valueOf(TrilliumAPI.getInstance().getConfig().getString(Server.INSTRUMENT).toUpperCase()),
+                                            Instrument.valueOf(TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_INSTRUMENT).toUpperCase()),
                                             Note.natural(dots / 5, Tone.valueOf(tone)));
-                                } else if (TrilliumAPI.getInstance().getConfig().getString(Server.NOTE).equalsIgnoreCase("FLAT")) {
+                                } else if (TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_NOTE).equalsIgnoreCase("FLAT")) {
                                     p.playNote(p.getLocation(),
-                                            Instrument.valueOf(TrilliumAPI.getInstance().getConfig().getString(Server.INSTRUMENT).toUpperCase()),
+                                            Instrument.valueOf(TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_INSTRUMENT).toUpperCase()),
                                             Note.flat(dots / 5, Tone.valueOf(tone)));
-                                } else if (TrilliumAPI.getInstance().getConfig().getString(Server.NOTE).equalsIgnoreCase("SHARP")) {
+                                } else if (TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_NOTE).equalsIgnoreCase("SHARP")) {
                                     p.playNote(p.getLocation(),
-                                            Instrument.valueOf(TrilliumAPI.getInstance().getConfig().getString(Server.INSTRUMENT).toUpperCase()),
+                                            Instrument.valueOf(TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_INSTRUMENT).toUpperCase()),
                                             Note.sharp(dots / 5, Tone.valueOf(tone)));
                                 } else {
                                     p.playNote(p.getLocation(),
-                                            Instrument.valueOf(TrilliumAPI.getInstance().getConfig().getString(Server.INSTRUMENT).toUpperCase()),
+                                            Instrument.valueOf(TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_INSTRUMENT).toUpperCase()),
                                             Note.natural(dots / 5, Tone.valueOf(tone)));
                                 }
                             }
@@ -132,7 +132,7 @@ public class Tune {
                     for (String note : tune) {
                         int dots = note.length() - note.replace(".", "").length();
                         if ((dots <= 5) && (dots > 0)) {
-                            String tone = TrilliumAPI.getInstance().getConfig().getString(Server.TONE);
+                            String tone = TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_TONE);
                             if (StringUtils.isAlpha(tone) && (tone.length() == 1)) {
                                 if (tone.equalsIgnoreCase("A")
                                         || tone.equalsIgnoreCase("B")
@@ -141,9 +141,9 @@ public class Tune {
                                         || tone.equalsIgnoreCase("E")
                                         || tone.equalsIgnoreCase("F")
                                         || tone.equalsIgnoreCase("G")) {
-                                    if (TrilliumAPI.getInstance().getConfig().getString(Server.NOTE).equalsIgnoreCase("NATURAL")) {
+                                    if (TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_NOTE).equalsIgnoreCase("NATURAL")) {
                                         p.getProxy().playNote(p.getProxy().getLocation(),
-                                                Instrument.valueOf(TrilliumAPI.getInstance().getConfig().getString(Server.INSTRUMENT).toUpperCase()),
+                                                Instrument.valueOf(TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_INSTRUMENT).toUpperCase()),
                                                 Note.natural(dots, Tone.valueOf(tone)));
                                     }
                                 }

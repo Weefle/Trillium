@@ -32,37 +32,37 @@ public class Kit {
         ArrayList<ItemStack> stacks = new ArrayList<>();
         Trillium tr = TrilliumAPI.getInstance();
 
-        for (String items : tr.getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER + this.name + ".items").getKeys(false)) {
+        for (String items : tr.getConfig().getConfigurationSection(Configuration.Kits.KIT_MAKER + this.name + ".items").getKeys(false)) {
 
             if (items.equalsIgnoreCase("written_book")) {
 
                 ItemStack stack = new ItemStack(Material.WRITTEN_BOOK);
                 BookMeta meta = (BookMeta) stack.getItemMeta();
 
-                for (String data : tr.getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER + this.name + ".items." + items).getKeys(false)) {
+                for (String data : tr.getConfig().getConfigurationSection(Configuration.Kits.KIT_MAKER + this.name + ".items." + items).getKeys(false)) {
 
                     if (data.equalsIgnoreCase("book-file")) {
 
-                        File book = new File(tr.getDataFolder() + "/Books/" + tr.getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".book-file") + ".txt");
+                        File book = new File(tr.getDataFolder() + "/Books/" + tr.getConfig().getString(Configuration.Kits.KIT_MAKER + this.name + ".items." + items + ".book-file") + ".txt");
                         if (book.exists()) {
                             meta.setPages(Utils.convertFileToBookPages(book));
                         } else {
-                            tr.getLogger().severe("Kits: Found 'written_book' but could not find book directory of '" + book.getName() + "' directory. Ignoring...");
+                            tr.getLogger().severe("Kitss: Found 'written_book' but could not find book directory of '" + book.getName() + "' directory. Ignoring...");
                         }
                     }
 
                     if (data.equalsIgnoreCase("title")) {
-                        meta.setTitle(ChatColor.translateAlternateColorCodes('&', tr.getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".title")));
+                        meta.setTitle(ChatColor.translateAlternateColorCodes('&', tr.getConfig().getString(Configuration.Kits.KIT_MAKER + this.name + ".items." + items + ".title")));
                     }
 
                     if (data.equalsIgnoreCase("author")) {
-                        meta.setAuthor(ChatColor.translateAlternateColorCodes('%', tr.getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".author")));
+                        meta.setAuthor(ChatColor.translateAlternateColorCodes('%', tr.getConfig().getString(Configuration.Kits.KIT_MAKER + this.name + ".items." + items + ".author")));
                     }
 
                     if (data.equalsIgnoreCase("lore")) {
                         if (data.equalsIgnoreCase("lore")) {
                             List<String> lore = new ArrayList<>();
-                            for (String lores : tr.getConfig().getStringList(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".lore")) {
+                            for (String lores : tr.getConfig().getStringList(Configuration.Kits.KIT_MAKER + this.name + ".items." + items + ".lore")) {
                                 lore.add(ChatColor.translateAlternateColorCodes('&', lores));
                             }
                             meta.setLore(lore);
@@ -75,30 +75,30 @@ public class Kit {
                 ItemStack stack = new ItemStack(Material.valueOf(items.toUpperCase()));
                 ItemMeta meta = stack.getItemMeta();
 
-                for (String data : tr.getConfig().getConfigurationSection(Configuration.Kit.KIT_MAKER + this.name + ".items." + items).getKeys(false)) {
+                for (String data : tr.getConfig().getConfigurationSection(Configuration.Kits.KIT_MAKER + this.name + ".items." + items).getKeys(false)) {
 
                     if (data.equalsIgnoreCase("name")) {
-                        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', tr.getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".name")));
+                        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', tr.getConfig().getString(Configuration.Kits.KIT_MAKER + this.name + ".items." + items + ".name")));
                     }
 
                     if (data.equalsIgnoreCase("durability")) {
-                        if (StringUtils.isNumeric(tr.getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".durability"))) {
-                            stack.setDurability((short) Integer.parseInt(tr.getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".durability")));
+                        if (StringUtils.isNumeric(tr.getConfig().getString(Configuration.Kits.KIT_MAKER + this.name + ".items." + items + ".durability"))) {
+                            stack.setDurability((short) Integer.parseInt(tr.getConfig().getString(Configuration.Kits.KIT_MAKER + this.name + ".items." + items + ".durability")));
                         } else {
-                            tr.getLogger().severe("Kits: Durability of item: '" + items + "' is not an integer! Ignoring...");
+                            tr.getLogger().severe("Kitss: Durability of item: '" + items + "' is not an integer! Ignoring...");
                         }
                     }
 
                     if (data.equalsIgnoreCase("lore")) {
                         List<String> lore = new ArrayList<>();
-                        for (String lores : tr.getConfig().getStringList(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".lore")) {
+                        for (String lores : tr.getConfig().getStringList(Configuration.Kits.KIT_MAKER + this.name + ".items." + items + ".lore")) {
                             lore.add(ChatColor.translateAlternateColorCodes('&', lores));
                         }
                         meta.setLore(lore);
                     }
 
                     if (data.equalsIgnoreCase("enchantments")) {
-                        List<String> enchs = tr.getConfig().getStringList(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".enchantments");
+                        List<String> enchs = tr.getConfig().getStringList(Configuration.Kits.KIT_MAKER + this.name + ".items." + items + ".enchantments");
                         for (String enchlevel : enchs) {
                             Enchantment enchantment = Enchantment.getByName(enchlevel.split(":")[0]);
                             int level = Integer.parseInt(enchlevel.split(":")[1]);
@@ -107,10 +107,10 @@ public class Kit {
                     }
 
                     if (data.equalsIgnoreCase("amount")) {
-                        if (StringUtils.isNumeric(tr.getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".amount"))) {
-                            stack.setAmount(Integer.parseInt(tr.getConfig().getString(Configuration.Kit.KIT_MAKER + this.name + ".items." + items + ".amount")));
+                        if (StringUtils.isNumeric(tr.getConfig().getString(Configuration.Kits.KIT_MAKER + this.name + ".items." + items + ".amount"))) {
+                            stack.setAmount(Integer.parseInt(tr.getConfig().getString(Configuration.Kits.KIT_MAKER + this.name + ".items." + items + ".amount")));
                         } else {
-                            tr.getLogger().severe("Kits: Amount of item: '" + items + "' is not an integer! Ignoring...");
+                            tr.getLogger().severe("Kitss: Amount of item: '" + items + "' is not an integer! Ignoring...");
                             stack.setAmount(1);
                         }
                     }

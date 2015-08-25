@@ -1,7 +1,6 @@
 package net.gettrillium.trillium.api;
 
 import net.gettrillium.trillium.Trillium;
-import net.gettrillium.trillium.api.Configuration.GM;
 import net.gettrillium.trillium.api.events.PlayerAFKEvent;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
@@ -294,9 +293,6 @@ public class TrilliumPlayer {
                 yml.set(Configuration.Player.VANISH, isVanished);
                 yml.set(Configuration.Player.BAN_REASON, "");
                 yml.set(Configuration.Player.HOMES, "");
-                if (TrilliumAPI.getInstance().getConfig().getBoolean(GM.ENABLED)) {
-                    yml.set(Configuration.Player.GROUP, "default");
-                }
                 save();
             } else {
                 setDisplayName(yml.getString(Configuration.Player.NICKNAME));
@@ -305,9 +301,6 @@ public class TrilliumPlayer {
                 setGod(yml.getBoolean(Configuration.Player.GOD));
                 setPvp(yml.getBoolean(Configuration.Player.PVP));
                 setVanished(yml.getBoolean(Configuration.Player.VANISH));
-                if (TrilliumAPI.getInstance().getConfig().getBoolean(GM.ENABLED)) {
-                    new GroupManager(proxy).setGroup(yml.getString(Configuration.Player.GROUP));
-                }
 
                 List<String> serialized = yml.getStringList(Configuration.Player.HOMES);
                 if (serialized != null) {
@@ -358,9 +351,6 @@ public class TrilliumPlayer {
                     setMuted(result.getBoolean("muted"));
                     setGod(result.getBoolean("god"));
                     setVanished(result.getBoolean("vanish"));
-                    if (TrilliumAPI.getInstance().getConfig().getBoolean(GM.ENABLED)) {
-                        new GroupManager(proxy).setGroup(yml.getString(Configuration.Player.GROUP));
-                    }
 
 
                 } catch (SQLException e) {

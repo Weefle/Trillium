@@ -26,15 +26,15 @@ public class CoreModule extends TrilliumModule {
         final TrilliumPlayer player = player(e.getPlayer());
 
         if (p.hasPlayedBefore()) {
-            String joinMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.JOINMESSAGE));
+            String joinMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.JOIN_MESSAGE));
             joinMessage = joinMessage.replace("%USERNAME%", p.getName());
             e.setJoinMessage(joinMessage);
         } else {
-            String joinMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.NEWJOINMESSAGE));
+            String joinMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.NEW_PLAYERS_NEW_PLAYER_MESSAGE));
             joinMessage = joinMessage.replace("%USERNAME%", p.getName());
             e.setJoinMessage(joinMessage);
 
-            List<String> commands = getConfig().getStringList(Configuration.PlayerSettings.COMMANDS_TO_RUN);
+            List<String> commands = getConfig().getStringList(Configuration.PlayerSettings.NEW_PLAYERS_COMMANDS_TO_RUN);
             for (String command : commands) {
                 command = command.replace("@p", p.getName());
                 command = ChatColor.translateAlternateColorCodes('&', command);
@@ -48,19 +48,20 @@ public class CoreModule extends TrilliumModule {
                     public void run() {
                         player.setGod(false);
                     }
-                }.runTaskLater(TrilliumAPI.getInstance(), Utils.timeToTickConverter(getConfig().getString(Configuration.PlayerSettings.TEMP_GOD_MODE_TIME)));
+                }.runTaskLater(TrilliumAPI.getInstance(),
+                        Utils.timeToTickConverter(getConfig().getString(Configuration.PlayerSettings.TEMP_GOD_MODE_TIME_UNTIL_TEMP_IS_OVER)));
             }
         }
 
         // OP color
         if (p.isOp()) {
-            String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.OPCOLOR) + p.getName();
+            String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE) + p.getName();
             p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
         }
 
         // motd
         if (p.hasPermission(Permission.Chat.MOTD)) {
-            List<String> motd = getConfig().getStringList(Configuration.Chat.INGAME_MOTD);
+            List<String> motd = getConfig().getStringList(Configuration.Chat.MOTD);
             for (String s : motd) {
                 s = s.replace("%USERNAME%", p.getName());
                 s = s.replace("%UUID%", p.getUniqueId().toString());
@@ -83,7 +84,7 @@ public class CoreModule extends TrilliumModule {
         }
 
         //Important broadcasts
-        if (getConfig().getBoolean(Configuration.Broadcast.IMP_ENABLED)) {
+        if (getConfig().getBoolean(Configuration.Broadcast.IMPORTANT_BROADCAST_ENABLED)) {
             Utils.broadcastImportantMessage();
         }
 
@@ -111,7 +112,7 @@ public class CoreModule extends TrilliumModule {
         TrilliumPlayer player = player(e.getPlayer());
 
         if (player != null) {
-            String quitMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.LEAVEMESSAGE));
+            String quitMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString(Configuration.PlayerSettings.LEAVE_MESSAGE));
             quitMessage = quitMessage.replace("%USERNAME%", p.getName());
             if (!player.isVanished()) {
                 e.setQuitMessage(quitMessage);

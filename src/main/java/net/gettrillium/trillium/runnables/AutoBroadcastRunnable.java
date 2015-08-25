@@ -15,7 +15,7 @@ public class AutoBroadcastRunnable extends BukkitRunnable {
     private int max = Integer.MIN_VALUE;
 
     public AutoBroadcastRunnable() {
-        for (String i : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Broadcast.AUTO_BROADCASTS).getKeys(false)) {
+        for (String i : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Broadcast.AUTO_BROADCAST_BROADCASTS).getKeys(false)) {
             if (!StringUtils.isNumeric(i)) {
                 continue;
             }
@@ -36,7 +36,7 @@ public class AutoBroadcastRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
-        List<String> list = TrilliumAPI.getInstance().getConfig().getStringList(Broadcast.AUTO_BROADCASTS + '.' + queue);
+        List<String> list = TrilliumAPI.getInstance().getConfig().getStringList(Broadcast.AUTO_BROADCAST_BROADCASTS + '.' + queue);
 
         for (String s : list) {
             s = ChatColor.translateAlternateColorCodes('&', s);

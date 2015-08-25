@@ -154,13 +154,13 @@ public class AbilityModule extends TrilliumModule {
                     if (player.isVanished()) {
                         player.setVanished(false);
                         new Message(Mood.BAD, TrilliumAPI.getName(cmd), "You are no longer in vanish mode.").to(player);
-                        if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
+                        if (getConfig().getBoolean(Configuration.Ability.VANISH_SPECTATOR_MODE)) {
                             player.getProxy().setGameMode(GameMode.SURVIVAL);
                         }
                     } else {
                         player.setVanished(true);
                         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You are now in vanish mode.").to(player);
-                        if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
+                        if (getConfig().getBoolean(Configuration.Ability.VANISH_SPECTATOR_MODE)) {
                             player.getProxy().setGameMode(GameMode.SPECTATOR);
                         }
                     }
@@ -175,14 +175,14 @@ public class AbilityModule extends TrilliumModule {
                             new Message(Mood.BAD, TrilliumAPI.getName(cmd), player.getName() + " removed you from vanish mode.").to(target);
                             new Message(Mood.BAD, TrilliumAPI.getName(cmd), target.getName() + " is no longer in vanish mode.").to(player);
                             target.setVanished(false);
-                            if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
+                            if (getConfig().getBoolean(Configuration.Ability.VANISH_SPECTATOR_MODE)) {
                                 target.getProxy().setGameMode(GameMode.SURVIVAL);
                             }
                         } else {
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), player.getName() + " put you in vanish mode.").to(target);
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), target.getName() + " is now in vanish mode.").to(player);
                             target.setVanished(true);
-                            if (getConfig().getBoolean(Configuration.Ability.SPECTATOR)) {
+                            if (getConfig().getBoolean(Configuration.Ability.VANISH_SPECTATOR_MODE)) {
                                 target.getProxy().setGameMode(GameMode.SPECTATOR);
                             }
                         }
@@ -357,8 +357,8 @@ public class AbilityModule extends TrilliumModule {
             permissions = {Ability.PVP})
     public void pvp(CommandSender cs, String[] args) {
         String cmd = "pvp";
-        if (getConfig().getBoolean(Server.PVPENABLE)) {
-            if (getConfig().getBoolean(Server.TOGGLEPVP)) {
+        if (getConfig().getBoolean(Server.PVP_ENABLED)) {
+            if (getConfig().getBoolean(Server.PVP_ENABLE_TOGGLE_PVP)) {
                 if (cs instanceof Player) {
                     TrilliumPlayer p = player((Player) cs);
                     if (p.hasPermission(Ability.PVP)) {
@@ -390,7 +390,7 @@ public class AbilityModule extends TrilliumModule {
             if (player.isGod() || player.isShadowBanned()) {
                 event.setCancelled(true);
             }
-            if (player.isVanished() && getConfig().getBoolean(Configuration.Ability.GOD)) {
+            if (player.isVanished() && getConfig().getBoolean(Configuration.Ability.VANISH_GOD_MODE)) {
                 event.setCancelled(true);
             }
         }
@@ -420,8 +420,8 @@ public class AbilityModule extends TrilliumModule {
             return;
         }
 
-        if (getConfig().getBoolean(Server.PVPENABLE)) {
-            if (!getConfig().getBoolean(Server.TOGGLEPVP)) {
+        if (getConfig().getBoolean(Server.PVP_ENABLED)) {
+            if (!getConfig().getBoolean(Server.PVP_ENABLE_TOGGLE_PVP)) {
                 return;
             }
 
@@ -464,7 +464,7 @@ public class AbilityModule extends TrilliumModule {
     @EventHandler
     public void onPickup(PlayerPickupItemEvent event) {
         TrilliumPlayer player = player(event.getPlayer());
-        if (player.isVanished() && !getConfig().getBoolean(Configuration.Ability.PICK_UP_ITEM)) {
+        if (player.isVanished() && !getConfig().getBoolean(Configuration.Ability.VANISH_PICK_UP_ITEMS)) {
             event.setCancelled(true);
         }
 
@@ -476,7 +476,7 @@ public class AbilityModule extends TrilliumModule {
     @EventHandler
     public void onDrop(PlayerDropItemEvent event) {
         TrilliumPlayer player = player(event.getPlayer());
-        if (player.isVanished() && !getConfig().getBoolean(Configuration.Ability.DROP_ITEM)) {
+        if (player.isVanished() && !getConfig().getBoolean(Configuration.Ability.VANISH_DROP_ITEMS)) {
             event.setCancelled(true);
         }
         if (player.isShadowBanned()) {

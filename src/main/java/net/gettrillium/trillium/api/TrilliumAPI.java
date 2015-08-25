@@ -148,7 +148,7 @@ public class TrilliumAPI {
         registerModule(new ChatModule(), pluginName);
         registerModule(new FunModule(), pluginName);
         registerModule(new CommandBinderModule(), pluginName);
-        if (getInstance().getConfig().getBoolean(Configuration.Kit.ENABLED))
+        if (getInstance().getConfig().getBoolean(Configuration.Kits.ENABLED))
             registerModule(new KitModule(), pluginName);
         if (getInstance().getConfig().getBoolean(Economy.ENABLED))
             registerModule(new EconomyModule(), pluginName);

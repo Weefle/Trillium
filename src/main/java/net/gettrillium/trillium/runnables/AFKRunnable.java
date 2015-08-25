@@ -16,7 +16,7 @@ public class AFKRunnable extends BukkitRunnable {
     public void run() {
         List<TrilliumPlayer> toKick = new ArrayList<>();
 
-        if (!TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Afk.AUTO_AFK_KICK)) {
+        if (!TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Afk.AUTO_AFK_KICK_ON_AFK)) {
             return;
         }
 

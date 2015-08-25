@@ -79,24 +79,24 @@ public class CommandBinder {
     }
 
     public static class Items {
-        private static Table<UUID, String, HashMap<Material, Boolean>> table = HashBasedTable.create();
+        private static Table<UUID, String, Map<Material, Boolean>> TABLE = HashBasedTable.create();
 
         public static void add(Player p, String command, Material mat, Boolean player) {
-            HashMap<Material, Boolean> map = new HashMap<>();
+            Map<Material, Boolean> map = new EnumMap<>(Material.class);
             map.put(mat, player);
-            table.put(p.getUniqueId(), command, map);
+            TABLE.put(p.getUniqueId(), command, map);
             save(p);
         }
 
         public static void remove(Player player) {
             TrilliumPlayer p = TrilliumAPI.getPlayer(player);
-            Map<UUID, Map<String, HashMap<Material, Boolean>>> rows = new HashMap<>();
-            rows.putAll(table.rowMap());
+            Map<UUID, Map<String, Map<Material, Boolean>>> rows = new HashMap<>();
+            rows.putAll(TABLE.rowMap());
 
-            for (Entry<UUID, Map<String, HashMap<Material, Boolean>>> row : rows.entrySet()) {
+            for (Entry<UUID, Map<String, Map<Material, Boolean>>> row : rows.entrySet()) {
                 if (row.getKey().equals(p.getProxy().getUniqueId())) {
-                    for (Entry<String, HashMap<Material, Boolean>> column : row.getValue().entrySet()) {
-                        table.remove(row.getKey(), column.getKey());
+                    for (Entry<String, Map<Material, Boolean>> column : row.getValue().entrySet()) {
+                        TABLE.remove(row.getKey(), column.getKey());
                     }
                 }
             }
@@ -117,21 +117,21 @@ public class CommandBinder {
             for (TrilliumPlayer p : TrilliumAPI.getOnlinePlayers()) {
                 List<String> serialized = p.getConfig().getStringList("command-binder-items");
                 for (String deserialized : serialized) {
-                    HashMap<Material, Boolean> map = new HashMap<>();
+                    Map<Material, Boolean> map = new HashMap<>(1);
                     map.put(Material.valueOf(deserialized.split(";")[1]), Boolean.parseBoolean(deserialized.split(";")[2]));
-                    table.put(p.getProxy().getUniqueId(), deserialized.split(";")[0], map);
+                    TABLE.put(p.getProxy().getUniqueId(), deserialized.split(";")[0], map);
                 }
             }
         }
 
         public static void save(Player player) {
             TrilliumPlayer p = TrilliumAPI.getPlayer(player);
-            Map<UUID, Map<String, HashMap<Material, Boolean>>> rows = table.rowMap();
+            Map<UUID, Map<String, Map<Material, Boolean>>> rows = TABLE.rowMap();
             List<String> bindings = p.getConfig().getStringList("command-binder-items");
 
-            for (Entry<UUID, Map<String, HashMap<Material, Boolean>>> row : rows.entrySet()) {
+            for (Entry<UUID, Map<String, Map<Material, Boolean>>> row : rows.entrySet()) {
                 if (row.getKey().equals(player.getUniqueId())) {
-                    for (Entry<String, HashMap<Material, Boolean>> column : row.getValue().entrySet()) {
+                    for (Entry<String, Map<Material, Boolean>> column : row.getValue().entrySet()) {
                         for (Entry<Material, Boolean> secondColumn : column.getValue().entrySet()) {
                             bindings.add(serializer(column.getKey(), secondColumn.getKey(), secondColumn.getValue()));
                         }

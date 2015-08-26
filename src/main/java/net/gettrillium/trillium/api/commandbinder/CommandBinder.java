@@ -90,15 +90,11 @@ public class CommandBinder {
 
         public static void remove(Player player) {
             TrilliumPlayer p = TrilliumAPI.getPlayer(player);
-            Map<UUID, Map<String, Map<Material, Boolean>>> rows = new HashMap<>();
-            rows.putAll(TABLE.rowMap());
 
-            for (Entry<UUID, Map<String, Map<Material, Boolean>>> row : rows.entrySet()) {
-                if (row.getKey().equals(p.getProxy().getUniqueId())) {
-                    for (Entry<String, Map<Material, Boolean>> column : row.getValue().entrySet()) {
-                        TABLE.remove(row.getKey(), column.getKey());
-                    }
-                }
+            Map<UUID, Map<String, Map<Material, Boolean>>> rows = new HashMap<>(TABLE.rowMap());
+
+            for (Entry<String, Map<Material, Boolean>> column : rows.get(p.getProxy().getUniqueId()).entrySet()) {
+                TABLE.remove(p.getProxy().getUniqueId(), column.getKey());
             }
 
             p.getConfig().set("command-binder-items", null);

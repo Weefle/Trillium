@@ -43,7 +43,7 @@ public class TeleportModule extends TrilliumModule {
 
         TrilliumPlayer p = player(cs.getName());
 
-        if (p.getProxy().hasPermission(Teleport.BACK)) {
+        if (!p.getProxy().hasPermission(Teleport.BACK)) {
             new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
             return;
         }

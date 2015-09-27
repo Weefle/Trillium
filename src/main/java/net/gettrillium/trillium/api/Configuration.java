@@ -21,6 +21,7 @@ public class Configuration {
         public static final String AUTOMATIC_BACKUP_FREQUENCY = PREFIX + "automatic-backup-frequency";
         private static final String SQL = PREFIX + "sql.";
         public static final String SQL_ENABLED = SQL + "enabled";
+        public static final String SQL_DATABASE_TYPE = SQL + "database-type";
         public static final String SQL_HOST_NAME = SQL + "host-name";
         public static final String SQL_PORT = SQL + "port";
         public static final String SQL_DATABASE = SQL + "database";

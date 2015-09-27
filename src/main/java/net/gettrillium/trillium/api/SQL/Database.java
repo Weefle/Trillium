@@ -1,5 +1,6 @@
 package net.gettrillium.trillium.api.SQL;
 
+import net.gettrillium.trillium.api.TrilliumAPI;
 import org.bukkit.plugin.Plugin;
 
 import java.sql.Connection;
@@ -25,11 +26,9 @@ public abstract class Database {
 
     /**
      * Creates a new Database
-     *
-     * @param plugin Plugin instance
      */
-    protected Database(Plugin plugin) {
-        this.plugin = plugin;
+    protected Database() {
+        plugin = TrilliumAPI.getInstance();
         this.connection = null;
     }
 

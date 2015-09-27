@@ -30,9 +30,8 @@ public class MySQL extends Database {
      * @param username Username
      * @param password Password
      */
-    public MySQL(Plugin plugin, String hostname, String port, String database,
+    public MySQL(String hostname, String port, String database,
                  String username, String password) {
-        super(plugin);
         this.hostname = hostname;
         this.port = port;
         this.database = database;

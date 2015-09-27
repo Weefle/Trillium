@@ -34,6 +34,9 @@ server:
   sql:
   # EXPERIMENTAL FEATURE. USE AT OWN RISK.
     enabled: false
+    database-type: "MYSQL"
+    # can be: "MYSQL" or "SQLITE" - If errored, defaults to MYSQL
+    # options below only apply if database-type is "MYSQL". SQLITE doesn't need the options below.
     host-name: "localhost"
     port: "25565"
     database: "example-database"

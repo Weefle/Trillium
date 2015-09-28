@@ -5,9 +5,7 @@ import net.gettrillium.trillium.api.TrilliumAPI;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 /**
  * Created by Saad on 27/9/2015.
@@ -19,6 +17,7 @@ public class SQL {
 
     /**
      * Check if sql is enabled in the config
+     *
      * @return true
      */
     public static boolean sqlEnabled() {
@@ -52,28 +51,34 @@ public class SQL {
                     e.printStackTrace();
                 }
             }
+
+            executeUpdate("CREATE TABLE IF NOT EXISTS players (" +
+                    "ID INT AUTO INCREMENT" +
+                    "uuid VARCHAR(36)," +
+                    "nick VARCHAR(" + config.getInt(Configuration.PlayerSettings.NICKNAMES_CHARACTER_LIMIT) + ")," +
+                    "loc-x INT" +
+                    "loc-y INT" +
+                    "loc-z INT" +
+                    "loc-world VARCHAR(255)" +
+                    "muted BOOLEAN," +
+                    "god BOOLEAN," +
+                    "vanish BOOLEAN);");
+
+            executeUpdate("CREATE TABLE IF NOT EXISTS warps (" +
+                    "ID INT AUTO INCREMENT" +
+                    "name VARCHAR(255)," +
+                    "loc-x INT" +
+                    "loc-y INT" +
+                    "loc-z INT" +
+                    "loc-world VARCHAR(255));");
+        }
+    }
+
+    public static void executeUpdate(String sql) {
+        if (connection != null) {
             try {
-
                 Statement statement = connection.createStatement();
-                statement.executeUpdate("CREATE TABLE IF NOT EXISTS players (" +
-                        "ID INT AUTO INCREMENT" +
-                        "uuid VARCHAR(36)," +
-                        "nick VARCHAR(" + config.getInt(Configuration.PlayerSettings.NICKNAMES_CHARACTER_LIMIT) + ")," +
-                        "loc-x INT" +
-                        "loc-y INT" +
-                        "loc-z INT" +
-                        "loc-world VARCHAR(255)" +
-                        "muted BOOLEAN," +
-                        "god BOOLEAN," +
-                        "vanish BOOLEAN);");
-
-                statement.executeUpdate("CREATE TABLE IF NOT EXISTS warps (" +
-                        "ID INT AUTO INCREMENT" +
-                        "name VARCHAR(255)," +
-                        "loc-x INT" +
-                        "loc-y INT" +
-                        "loc-z INT" +
-                        "loc-world VARCHAR(255));");
+                statement.executeUpdate(sql);
                 statement.closeOnCompletion();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -81,7 +86,21 @@ public class SQL {
         }
     }
 
-    public void update(String tableName, Object... objects) {
+    public static ResultSet executeQuery(String sql) throws SQLException {
+        if (connection != null) {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(sql);
+            statement.closeOnCompletion();
+            return result;
+        }
+        return null;
+    }
+
+    public static PreparedStatement prepareStatement(String sql) throws SQLException {
+        if (connection != null) {
+            return connection.prepareStatement(sql);
+        }
+        return null;
     }
 
     /**

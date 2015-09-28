@@ -1,6 +1,7 @@
 package net.gettrillium.trillium.api;
 
 import net.gettrillium.trillium.Trillium;
+import net.gettrillium.trillium.api.SQL.SQL;
 import net.gettrillium.trillium.api.events.PlayerAFKEvent;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
@@ -243,7 +244,7 @@ public class TrilliumPlayer {
     }
 
     public void dispose() {
-        if (Trillium.connection == null) {
+        if (!SQL.sqlEnabled()) {
             yml.set(Configuration.Player.NICKNAME, nickname);
             yml.set(Configuration.Player.LOCATION, Utils.locationSerializer(proxy.getLocation()));
             yml.set(Configuration.Player.MUTED, isMuted);
@@ -262,20 +263,22 @@ public class TrilliumPlayer {
         } else {
             // TODO - proper try-with-resources here
             try {
-                PreparedStatement ps = Trillium.connection.prepareStatement("UPDATE players SET " +
+                PreparedStatement ps = SQL.prepareStatement("UPDATE players SET " +
                         "(nick, loc-x, loc-y, loc-z, loc-world, muted, god, vanish)" +
                         " VALUES (?, ?, ?, ?, ?, ?, ?, ?) WHERE uuid=?;");
-                ps.setString(1, nickname);
-                ps.setInt(2, proxy.getLocation().getBlockX());
-                ps.setInt(3, proxy.getLocation().getBlockY());
-                ps.setInt(4, proxy.getLocation().getBlockZ());
-                ps.setString(5, proxy.getLocation().getWorld().getName());
-                ps.setBoolean(6, isMuted());
-                ps.setBoolean(7, isGod());
-                ps.setBoolean(8, isVanished());
-                ps.setString(9, proxy.getUniqueId().toString());
-                ps.executeUpdate();
-                ps.close();
+                if (ps != null) {
+                    ps.setString(1, nickname);
+                    ps.setInt(2, proxy.getLocation().getBlockX());
+                    ps.setInt(3, proxy.getLocation().getBlockY());
+                    ps.setInt(4, proxy.getLocation().getBlockZ());
+                    ps.setString(5, proxy.getLocation().getWorld().getName());
+                    ps.setBoolean(6, isMuted());
+                    ps.setBoolean(7, isGod());
+                    ps.setBoolean(8, isVanished());
+                    ps.setString(9, proxy.getUniqueId().toString());
+                    ps.executeUpdate();
+                    ps.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -283,7 +286,7 @@ public class TrilliumPlayer {
     }
 
     public void load() {
-        if (Trillium.connection == null) {
+        if (!SQL.sqlEnabled()) {
             if (newUser) {
                 yml.set(Configuration.Player.NICKNAME, nickname);
                 yml.set(Configuration.Player.LOCATION, Utils.locationSerializer(proxy.getLocation()));
@@ -314,20 +317,22 @@ public class TrilliumPlayer {
         } else {
             if (newUser) {
                 try {
-                    PreparedStatement ps = Trillium.connection.prepareStatement("INSERT INTO players " +
+                    PreparedStatement ps = SQL.prepareStatement("INSERT INTO players " +
                             "(nick, loc-x, loc-y, loc-z, loc-world, muted, god, vanish)" +
                             " VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
-                    ps.setString(1, nickname);
-                    ps.setInt(2, proxy.getLocation().getBlockX());
-                    ps.setInt(3, proxy.getLocation().getBlockY());
-                    ps.setInt(4, proxy.getLocation().getBlockZ());
-                    ps.setString(5, proxy.getLocation().getWorld().getName());
-                    ps.setBoolean(6, isMuted());
-                    ps.setBoolean(7, isGod());
-                    ps.setBoolean(8, isVanished());
-                    ps.setString(9, proxy.getUniqueId().toString());
-                    ps.executeUpdate();
-                    ps.close();
+                    if (ps != null) {
+                        ps.setString(1, nickname);
+                        ps.setInt(2, proxy.getLocation().getBlockX());
+                        ps.setInt(3, proxy.getLocation().getBlockY());
+                        ps.setInt(4, proxy.getLocation().getBlockZ());
+                        ps.setString(5, proxy.getLocation().getWorld().getName());
+                        ps.setBoolean(6, isMuted());
+                        ps.setBoolean(7, isGod());
+                        ps.setBoolean(8, isVanished());
+                        ps.setString(9, proxy.getUniqueId().toString());
+                        ps.executeUpdate();
+                        ps.close();
+                    }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -342,21 +347,20 @@ public class TrilliumPlayer {
                 }
             } else {
                 try {
-                    ResultSet result = Trillium.connection.createStatement().executeQuery("SELECT * " +
-                            "FROM players WHERE uuid=" + proxy.getUniqueId());
-                    Location loc = new Location(Bukkit.getWorld(result.getString("loc-world")),
-                            result.getInt("loc-x"), result.getInt("loc-y"), result.getInt("loc-z"));
-                    setDisplayName(result.getString("nick"));
-                    setLastLocation(loc);
-                    setMuted(result.getBoolean("muted"));
-                    setGod(result.getBoolean("god"));
-                    setVanished(result.getBoolean("vanish"));
+                    ResultSet result = SQL.executeQuery("SELECT * FROM players WHERE uuid=" + proxy.getUniqueId());
+                    if (result != null) {
+                        Location loc = new Location(Bukkit.getWorld(result.getString("loc-world")),
+                                result.getInt("loc-x"), result.getInt("loc-y"), result.getInt("loc-z"));
 
-
+                        setLastLocation(loc);
+                        setDisplayName(result.getString("nick"));
+                        setMuted(result.getBoolean("muted"));
+                        setGod(result.getBoolean("god"));
+                        setVanished(result.getBoolean("vanish"));
+                    }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
                 List<String> serialized = yml.getStringList(Configuration.Player.HOMES);
                 if (serialized != null) {
                     for (String deserialize : serialized) {

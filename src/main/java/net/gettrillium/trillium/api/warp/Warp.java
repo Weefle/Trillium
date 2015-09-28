@@ -1,6 +1,6 @@
 package net.gettrillium.trillium.api.warp;
 
-import net.gettrillium.trillium.Trillium;
+import net.gettrillium.trillium.api.SQL.SQL;
 import net.gettrillium.trillium.api.Utils;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
@@ -10,7 +10,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +62,7 @@ public class Warp {
     }
 
     private static void save() {
-        if (Trillium.connection != null) {
+        if (!SQL.sqlEnabled()) {
             List<String> serialized = new ArrayList<>(warps.size());
             YamlConfiguration yml = YamlConfiguration.loadConfiguration(WarpDatabase.wd());
 
@@ -79,22 +78,22 @@ public class Warp {
                 e.printStackTrace();
             }
         } else {
+            SQL.executeUpdate("DELETE FROM warps");
+
             for (Entry<String, Location> row : warps.entrySet()) {
                 try {
-                    Statement statement = Trillium.connection.createStatement();
-                    statement.executeUpdate("DELETE FROM warps");
-                    statement.closeOnCompletion();
-
-                    PreparedStatement ps = Trillium.connection.prepareStatement("INSERT INTO warps " +
+                    PreparedStatement ps = SQL.prepareStatement("INSERT INTO warps " +
                             "(name, loc-x, loc-y, loc-z, loc-world)" +
                             " VALUES (?, ?, ?, ?, ?);");
-                    ps.setString(1, row.getKey());
-                    ps.setInt(2, row.getValue().getBlockX());
-                    ps.setInt(3, row.getValue().getBlockY());
-                    ps.setInt(4, row.getValue().getBlockZ());
-                    ps.setString(5, row.getValue().getWorld().getName());
-                    ps.executeUpdate();
-                    ps.closeOnCompletion();
+                    if (ps != null) {
+                        ps.setString(1, row.getKey());
+                        ps.setInt(2, row.getValue().getBlockX());
+                        ps.setInt(3, row.getValue().getBlockY());
+                        ps.setInt(4, row.getValue().getBlockZ());
+                        ps.setString(5, row.getValue().getWorld().getName());
+                        ps.executeUpdate();
+                        ps.closeOnCompletion();
+                    }
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -103,6 +102,7 @@ public class Warp {
     }
 
     public static void loadWarps() {
+        // TODO - from SQL
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(WarpDatabase.wd());
         List<String> serialized = yml.getStringList("rows");
         for (String deserialize : serialized) {

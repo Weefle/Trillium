@@ -45,6 +45,15 @@ public class Message {
         format = ChatColor.translateAlternateColorCodes('&', format);
     }
 
+    public Message(String colorize) {
+        colorize = ChatColor.translateAlternateColorCodes('&', colorize);
+        colorize = MAJOR.matcher(colorize).replaceAll(Pallete.MAJOR.getColor());
+        colorize = MINOR.matcher(colorize).replaceAll(Pallete.MINOR.getColor());
+        colorize = HILIGHT.matcher(colorize).replaceAll(Pallete.HIGHLIGHT.getColor());
+        colorize = ChatColor.translateAlternateColorCodes('&', colorize);
+        format = colorize;
+    }
+
     public void broadcast() {
         Bukkit.broadcastMessage(format);
     }

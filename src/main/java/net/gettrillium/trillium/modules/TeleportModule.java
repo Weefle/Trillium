@@ -1,8 +1,11 @@
 package net.gettrillium.trillium.modules;
 
-import net.gettrillium.trillium.api.*;
 import net.gettrillium.trillium.api.Configuration.PlayerSettings;
+import net.gettrillium.trillium.api.LocationHandler;
 import net.gettrillium.trillium.api.Permission.Teleport;
+import net.gettrillium.trillium.api.TrilliumAPI;
+import net.gettrillium.trillium.api.TrilliumModule;
+import net.gettrillium.trillium.api.TrilliumPlayer;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.cooldown.Cooldown;
 import net.gettrillium.trillium.api.cooldown.CooldownType;
@@ -138,9 +141,9 @@ public class TeleportModule extends TrilliumModule {
                         new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
                         return;
                     }
-                    
+
                     double[] coords = new double[3];
-                    
+
                     for (int i = 0; i < 3; i++) {
                         if (StringUtils.isNumeric(args[i])) {
                             coords[i] = Double.parseDouble(args[i]);
@@ -154,8 +157,8 @@ public class TeleportModule extends TrilliumModule {
 
                     Location loc = new Location(target.getLocation().getWorld(), coords[0], coords[1], coords[2]);
                     target.teleport(loc);
-                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), cs.getName() + " teleported you to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(target);
-                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + target.getName() + " to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(cs);
+                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), cs.getName() + " teleported you to " + ChatColor.AQUA + LocationHandler.toString(loc)).to(target);
+                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + target.getName() + " to " + ChatColor.AQUA + LocationHandler.toString(loc)).to(cs);
                 }
             }
         } else {
@@ -172,7 +175,7 @@ public class TeleportModule extends TrilliumModule {
             Player p = (Player) cs;
 
             double[] coords = new double[3];
-            
+
             for (int i = 0; i < 3; i++) {
                 if (StringUtils.isNumeric(args[i])) {
                     coords[i] = Double.parseDouble(args[i]);
@@ -186,7 +189,7 @@ public class TeleportModule extends TrilliumModule {
 
             Location loc = new Location(p.getLocation().getWorld(), coords[0], coords[1], coords[2]);
             p.teleport(loc);
-            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You were teleported to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(p);
+            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You were teleported to " + ChatColor.AQUA + LocationHandler.toString(loc)).to(p);
         }
     }
 
@@ -471,8 +474,8 @@ public class TeleportModule extends TrilliumModule {
 
                 Location loc = new Location(target.getLocation().getWorld(), coords[0], coords[1], coords[2]);
                 target.teleport(loc);
-                new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "The console teleported you to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(target);
-                new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + target.getName() + " to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(cs);
+                new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "The console teleported you to " + ChatColor.AQUA + LocationHandler.toString(loc)).to(target);
+                new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + target.getName() + " to " + ChatColor.AQUA + LocationHandler.toString(loc)).to(cs);
 
             } else {
                 new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
@@ -484,9 +487,9 @@ public class TeleportModule extends TrilliumModule {
             }
 
             Player p = (Player) cs;
-            
+
             double[] coords = new double[3];
-            
+
             for (int i = 0; i < 3; i++) {
                 if (StringUtils.isNumeric(args[i])) {
                     coords[i] = Double.parseDouble(args[i]);
@@ -500,7 +503,7 @@ public class TeleportModule extends TrilliumModule {
 
             Location loc = new Location(p.getLocation().getWorld(), coords[0], coords[1], coords[2]);
             p.teleport(loc);
-            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You were teleported to " + ChatColor.AQUA + Utils.locationSerializer(loc)).to(p);
+            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You were teleported to " + ChatColor.AQUA + LocationHandler.toString(loc)).to(p);
         }
     }
 

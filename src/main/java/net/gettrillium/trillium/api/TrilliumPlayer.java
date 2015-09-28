@@ -245,14 +245,14 @@ public class TrilliumPlayer {
     public void dispose() {
         if (!SQL.sqlEnabled()) {
             yml.set(Configuration.Player.NICKNAME, nickname);
-            yml.set(Configuration.Player.LOCATION, Utils.locationSerializer(proxy.getLocation()));
+            yml.set(Configuration.Player.LOCATION, LocationHandler.serialize(proxy.getLocation()));
             yml.set(Configuration.Player.MUTED, isMuted);
             yml.set(Configuration.Player.GOD, isGod);
             yml.set(Configuration.Player.VANISH, isVanished);
 
             ArrayList<String> serialized = new ArrayList<>();
             for (Entry<String, Location> row : homes.entrySet()) {
-                serialized.add(row.getKey() + ";" + Utils.locationToString(row.getValue()));
+                serialized.add(row.getKey() + ";" + LocationHandler.serialize(row.getValue()));
             }
             yml.set(Configuration.Player.HOMES, serialized);
 
@@ -288,7 +288,7 @@ public class TrilliumPlayer {
         if (!SQL.sqlEnabled()) {
             if (newUser) {
                 yml.set(Configuration.Player.NICKNAME, nickname);
-                yml.set(Configuration.Player.LOCATION, Utils.locationSerializer(proxy.getLocation()));
+                yml.set(Configuration.Player.LOCATION, LocationHandler.serialize(proxy.getLocation()));
                 yml.set(Configuration.Player.MUTED, isMuted);
                 yml.set(Configuration.Player.GOD, isGod);
                 yml.set(Configuration.Player.PVP, pvp);
@@ -298,7 +298,7 @@ public class TrilliumPlayer {
                 save();
             } else {
                 setDisplayName(yml.getString(Configuration.Player.NICKNAME));
-                setLastLocation(Utils.locationDeserializer(yml.getString(Configuration.Player.LOCATION)));
+                setLastLocation(LocationHandler.deserialize(yml.getString(Configuration.Player.LOCATION)));
                 setMuted(yml.getBoolean(Configuration.Player.MUTED));
                 setGod(yml.getBoolean(Configuration.Player.GOD));
                 setPvp(yml.getBoolean(Configuration.Player.PVP));
@@ -308,7 +308,7 @@ public class TrilliumPlayer {
                 if (serialized != null) {
                     for (String deserialize : serialized) {
                         if (deserialize != null) {
-                            homes.put(deserialize.split(";")[0], Utils.locationFromString(deserialize.split(";")[1]));
+                            homes.put(deserialize.split(";")[0], LocationHandler.deserialize(deserialize.split(";")[1]));
                         }
                     }
                 }
@@ -340,7 +340,7 @@ public class TrilliumPlayer {
                 if (serialized != null) {
                     for (String deserialize : serialized) {
                         if (deserialize != null) {
-                            homes.put(deserialize.split(";")[0], Utils.locationFromString(deserialize.split(";")[1]));
+                            homes.put(deserialize.split(";")[0], LocationHandler.deserialize(deserialize.split(";")[1]));
                         }
                     }
                 }
@@ -364,7 +364,7 @@ public class TrilliumPlayer {
                 if (serialized != null) {
                     for (String deserialize : serialized) {
                         if (deserialize != null) {
-                            homes.put(deserialize.split(";")[0], Utils.locationFromString(deserialize.split(";")[1]));
+                            homes.put(deserialize.split(";")[0], LocationHandler.deserialize(deserialize.split(";")[1]));
                         }
                     }
                 }
@@ -414,7 +414,7 @@ public class TrilliumPlayer {
         ArrayList<Message> format = new ArrayList<>(homes.size());
 
         for (Entry<String, Location> row : homes.entrySet()) {
-            format.add(new Message(Mood.NEUTRAL, row.getKey(), Utils.locationToString(row.getValue())));
+            format.add(new Message(Mood.NEUTRAL, row.getKey(), LocationHandler.toString(row.getValue())));
         }
         return format;
     }
@@ -440,15 +440,7 @@ public class TrilliumPlayer {
     }
 
     public boolean isOnline() {
-        if (proxy.isOnline()) {
-            if (isVanished()) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return false;
-        }
+        return proxy.isOnline() && !isVanished();
     }
 
     public YamlConfiguration getConfig() {

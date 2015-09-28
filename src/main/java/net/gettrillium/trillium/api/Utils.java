@@ -17,8 +17,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -259,55 +257,6 @@ public class Utils {
         }
 
         return pages;
-    }
-
-    // TODO - unit test this
-    public static String locationToString(Location l) {
-        if (l == null) {
-            return null;
-        }
-
-        return l.getWorld().getName() + ", " + l.getBlockX() + ", " + l.getBlockY() + ", " + l.getBlockZ();
-    }
-
-    public static Location locationFromString(String s) {
-        if (s == null) {
-            return null;
-        }
-
-        String[] split = COMMA_SPACE.split(s);
-
-        World world = Bukkit.getWorld(split[0]);
-        int x = Integer.parseInt(split[1]);
-        int y = Integer.parseInt(split[2]);
-        int z = Integer.parseInt(split[3]);
-        return new Location(world, (double) x, (double) y, (double) z);
-    }
-
-    // TODO - unit test this
-    public static String locationSerializer(Location loc) {
-        if (loc == null) {
-            return null;
-        }
-
-        return loc.getWorld().getName() + '%' + loc.getX() + '%' + loc.getY() + '%' + loc.getZ() + '%' + loc.getPitch() + '%' + loc.getYaw();
-    }
-
-    public static Location locationDeserializer(String loc) {
-        if (loc == null) {
-            return null;
-        }
-
-        String[] split = loc.split("%");
-
-        World world = Bukkit.getWorld(split[0]);
-        double x = Double.parseDouble(split[1]);
-        double y = Double.parseDouble(split[2]);
-        double z = Double.parseDouble(split[3]);
-        float pitch = Float.parseFloat(split[4]);
-        float yaw = Float.parseFloat(split[5]);
-
-        return new Location(world, x, y, z, yaw, pitch);
     }
 
     // TODO - unit test this

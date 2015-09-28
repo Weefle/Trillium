@@ -1,7 +1,5 @@
 package net.gettrillium.trillium.api.SQL;
 
-import org.bukkit.plugin.Plugin;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,7 +21,6 @@ public class MySQL extends Database {
     /**
      * Creates a new MySQL instance
      *
-     * @param plugin   Plugin instance
      * @param hostname Name of the host
      * @param port     Port number
      * @param database Database name

@@ -121,7 +121,7 @@ public class ChatModule extends TrilliumModule {
                     }
                     new Message(Mood.NEUTRAL, "Muted", "" + ChatColor.AQUA + p.isMuted()).to(cs);
                     new Message(Mood.NEUTRAL, "Flying", "" + ChatColor.AQUA + p.isFlying()).to(cs);
-                    new Message(Mood.NEUTRAL, "Location", "" + ChatColor.AQUA + Utils.locationToString(p.getProxy().getLocation())).to(cs);
+                    new Message(Mood.NEUTRAL, "Location", "" + ChatColor.AQUA + LocationHandler.toString(p.getProxy().getLocation())).to(cs);
 
                     if (p.isVanished() || !p.getProxy().isOnline()) {
                         new Message(Mood.NEUTRAL, "Last Found At", "" + ChatColor.AQUA + p.getLastLocation().getBlockX() + "," + p.getLastLocation().getBlockY() + ", " + p.getLastLocation().getBlockZ()).to(cs);

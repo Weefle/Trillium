@@ -4,17 +4,7 @@ import net.gettrillium.trillium.Trillium;
 import net.gettrillium.trillium.api.Configuration.Economy;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.command.TrilliumCommand;
-import net.gettrillium.trillium.modules.AFKModule;
-import net.gettrillium.trillium.modules.AbilityModule;
-import net.gettrillium.trillium.modules.AdminModule;
-import net.gettrillium.trillium.modules.ChatModule;
-import net.gettrillium.trillium.modules.CommandBinderModule;
-import net.gettrillium.trillium.modules.CoreModule;
-import net.gettrillium.trillium.modules.EconomyModule;
-import net.gettrillium.trillium.modules.FunModule;
-import net.gettrillium.trillium.modules.KitModule;
-import net.gettrillium.trillium.modules.PunishModule;
-import net.gettrillium.trillium.modules.TeleportModule;
+import net.gettrillium.trillium.modules.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
@@ -23,13 +13,8 @@ import org.bukkit.plugin.SimplePluginManager;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
-import java.util.UUID;
 
 public class TrilliumAPI {
     private static Trillium instance;
@@ -38,6 +23,7 @@ public class TrilliumAPI {
     private static Map<UUID, TrilliumPlayer> players;
     private static Map<Class<? extends TrilliumModule>, TrilliumModule> modules;
     private static Map<String, String[]> commands;
+
     public static Trillium getInstance() {
         return instance;
     }

@@ -90,32 +90,6 @@ public class UtilsTest {
     }
 
     @Test
-    public void locationToStringTest() {
-        Assert.assertNull("null input returns null", Utils.locationToString(null));
-        Assert.assertEquals("location serializes properly", "worldname, 0, 1, 2", Utils.locationToString(loc));
-    }
-
-    @Test
-    public void locationFromStringTest() {
-        Assert.assertNull("null input returns null", Utils.locationFromString(null));
-
-        // TODO - mocking bukkit class
-    }
-
-    @Test
-    public void locationSerializerTest() {
-        Assert.assertNull("null input returns null", Utils.locationSerializer(null));
-        Assert.assertEquals("location serializes properly", "worldname%0.0%1.0%2.0%3.0%4.0", Utils.locationSerializer(loc));
-    }
-
-    @Test
-    public void locationDeserializerTest() {
-        Assert.assertNull("null input returns null", Utils.locationDeserializer(null));
-
-        // TODO - mocking bukkit class
-    }
-
-    @Test
     public void commandBlockifyTest() {
         Assert.assertNull("null input string returns null output string", Utils.commandBlockify(null, p));
         Assert.assertEquals("null plaeyr returns original input string", "asdflol @p", Utils.commandBlockify("asdflol @p", null));

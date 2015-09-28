@@ -2,11 +2,8 @@ package net.gettrillium.trillium.modules;
 
 import com.darkblade12.particleeffect.ParticleEffect;
 import net.gettrillium.trillium.api.Configuration.Server;
+import net.gettrillium.trillium.api.*;
 import net.gettrillium.trillium.api.Permission.Admin;
-import net.gettrillium.trillium.api.TrilliumAPI;
-import net.gettrillium.trillium.api.TrilliumModule;
-import net.gettrillium.trillium.api.TrilliumPlayer;
-import net.gettrillium.trillium.api.Utils;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.messageutils.Error;
 import net.gettrillium.trillium.api.messageutils.Message;
@@ -197,7 +194,7 @@ public class AdminModule extends TrilliumModule {
                     new Message(Mood.BAD, TrilliumAPI.getName(cmd), "No chests found.").to(p);
                 } else {
                     for (Location block : chests) {
-                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), Utils.locationToString(block)).to(p);
+                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), LocationHandler.toString(block)).to(p);
                     }
 
                     // create an array with the blocks in vector form so we don't need to do as much object creation in the loop
@@ -258,7 +255,7 @@ public class AdminModule extends TrilliumModule {
             if (p.hasPermission(Admin.SETSPAWN)) {
 
                 p.getWorld().setSpawnLocation(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
-                new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Spawn location set. " + ChatColor.AQUA + Utils.locationToString(p.getLocation())).to(p);
+                new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Spawn location set. " + ChatColor.AQUA + LocationHandler.toString(p.getLocation())).to(p);
 
             } else {
                 new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
@@ -588,7 +585,7 @@ public class AdminModule extends TrilliumModule {
                         if (target.hasPermission(Admin.REPORT_RECEIVER) && !target.getName().equals(p.getName())) {
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "A new report was submitted: ").to(target);
                             new Message(Mood.NEUTRAL, "Player", p.getName()).to(target);
-                            new Message(Mood.NEUTRAL, "Location", Utils.locationToString(p.getLocation())).to(target);
+                            new Message(Mood.NEUTRAL, "Location", LocationHandler.toString(p.getLocation())).to(target);
                             new Message(Mood.NEUTRAL, "Message", msg).to(target);
                         }
                     }

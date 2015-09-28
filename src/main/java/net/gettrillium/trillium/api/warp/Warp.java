@@ -1,7 +1,7 @@
 package net.gettrillium.trillium.api.warp;
 
+import net.gettrillium.trillium.api.LocationHandler;
 import net.gettrillium.trillium.api.SQL.SQL;
-import net.gettrillium.trillium.api.Utils;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import org.bukkit.Location;
@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class Warp {
+
+    // TODO - serialize locs before adding them to lists
 
     private static Map<String, Location> warps = new HashMap<>();
     private static final List<Message> cachedWarpList = new ArrayList<>();
@@ -51,7 +53,7 @@ public class Warp {
             List<Message> format = new ArrayList<>(warps.size());
 
             for (Entry<String, Location> row : warps.entrySet()) {
-                format.add(new Message(Mood.NEUTRAL, row.getKey(), Utils.locationToString(row.getValue())));
+                format.add(new Message(Mood.NEUTRAL, row.getKey(), LocationHandler.toString(row.getValue())));
             }
 
             cachedWarpList.clear();
@@ -67,7 +69,7 @@ public class Warp {
             YamlConfiguration yml = YamlConfiguration.loadConfiguration(WarpDatabase.wd());
 
             for (Entry<String, Location> row : warps.entrySet()) {
-                serialized.add(row.getKey() + ';' + Utils.locationToString(row.getValue()));
+                serialized.add(row.getKey() + ';' + LocationHandler.serialize(row.getValue()));
             }
 
             yml.set("rows", serialized);
@@ -106,7 +108,7 @@ public class Warp {
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(WarpDatabase.wd());
         List<String> serialized = yml.getStringList("rows");
         for (String deserialize : serialized) {
-            warps.put(deserialize.split(";")[0], Utils.locationFromString(deserialize.split(";")[1]));
+            warps.put(deserialize.split(";")[0], LocationHandler.deserialize(deserialize.split(";")[1]));
         }
 
         cachedWarpList.clear();

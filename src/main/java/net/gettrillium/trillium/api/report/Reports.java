@@ -2,7 +2,7 @@ package net.gettrillium.trillium.api.report;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import net.gettrillium.trillium.api.Utils;
+import net.gettrillium.trillium.api.LocationHandler;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import org.bukkit.ChatColor;
@@ -48,7 +48,7 @@ public class Reports {
                 for (Map.Entry<String, HashMap<String, Location>> value : row.getValue().entrySet()) {
                     for (Map.Entry<String, Location> value2 : value.getValue().entrySet()) {
                         msg = value.getKey() + " - " + value2.getKey() + ChatColor.DARK_GRAY + " - "
-                                + Utils.locationToString(value2.getValue());
+                                + LocationHandler.toString(value2.getValue());
                     }
                 }
             }
@@ -65,7 +65,7 @@ public class Reports {
                 for (Map.Entry<String, Location> value2 : value.getValue().entrySet()) {
                     format.add(new Message(Mood.NEUTRAL, String.valueOf(row.getKey()),
                             value.getKey() + " - '" + value2.getKey() + '\'' + ChatColor.DARK_GRAY + " - "
-                                    + Utils.locationToString(value2.getValue())));
+                                    + LocationHandler.toString(value2.getValue())));
                 }
             }
         }
@@ -83,7 +83,7 @@ public class Reports {
         for (String deserialize : serialized) {
 
             HashMap<String, Location> map = new HashMap<>();
-            map.put(deserialize.split(";")[2], Utils.locationFromString(deserialize.split(";")[3]));
+            map.put(deserialize.split(";")[2], LocationHandler.deserialize(deserialize.split(";")[3]));
 
             reports.put(Integer.parseInt(deserialize.split(";")[0]), deserialize.split(";")[1], map);
         }
@@ -97,7 +97,7 @@ public class Reports {
             for (Map.Entry<String, HashMap<String, Location>> value : row.getValue().entrySet()) {
                 for (Map.Entry<String, Location> value2 : value.getValue().entrySet()) {
                     serialized.add(row.getKey() + ";" + value.getKey() + ';' + value2.getKey() + ';'
-                            + Utils.locationToString(value2.getValue()));
+                            + LocationHandler.serialize(value2.getValue()));
                 }
             }
         }

@@ -2,10 +2,7 @@ package net.gettrillium.trillium.modules;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import net.gettrillium.trillium.api.Permission;
-import net.gettrillium.trillium.api.TrilliumAPI;
-import net.gettrillium.trillium.api.TrilliumModule;
-import net.gettrillium.trillium.api.Utils;
+import net.gettrillium.trillium.api.*;
 import net.gettrillium.trillium.api.command.Command;
 import net.gettrillium.trillium.api.commandbinder.CommandBinder;
 import net.gettrillium.trillium.api.messageutils.Error;
@@ -183,7 +180,7 @@ public class CommandBinderModule extends TrilliumModule {
 
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Command bound successfully bound to block.").to(p);
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Command: " + column.getKey()).to(p);
-                            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Location: " + Utils.locationToString(loc)).to(p);
+                            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Location: " + LocationHandler.toString(loc)).to(p);
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Command Sender: " + sender).to(p);
                             event.setCancelled(true);
                         }
@@ -218,7 +215,7 @@ public class CommandBinderModule extends TrilliumModule {
                             }
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Command unbound successfully from block.").to(p);
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Command: " + row.getKey()).to(p);
-                            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Location: " + Utils.locationToString(loc)).to(p);
+                            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Location: " + LocationHandler.toString(loc)).to(p);
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Command Sender: " + sender).to(p);
                             event.setCancelled(true);
                         }

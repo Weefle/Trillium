@@ -113,7 +113,7 @@ public class ChatModule extends TrilliumModule {
                     p.getProxy().sendMessage(" ");
                     new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "Displaying Information On: " + ChatColor.AQUA + p.getName()).to(cs);
                     new Message(Mood.NEUTRAL, "Nickname", "" + ChatColor.AQUA + p.getDisplayName()).to(cs);
-                    new Message(Mood.NEUTRAL, "Online", "" + ChatColor.AQUA + p.isVanished()).to(cs);
+                    new Message(Mood.NEUTRAL, "Online", "" + ChatColor.AQUA + p.isOnline()).to(cs);
                     new Message(Mood.NEUTRAL, "Gamemode", "" + ChatColor.AQUA + p.getProxy().getGameMode()).to(cs);
                     new Message(Mood.NEUTRAL, "Banned", "" + ChatColor.AQUA + p.getProxy().isBanned()).to(cs);
                     if (p.getProxy().isBanned()) {

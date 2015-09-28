@@ -462,6 +462,23 @@ public class AdminModule extends TrilliumModule {
                 new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Successfully murdered " + i + " players in a radius of " + radius).to(cs);
             }
 
+        } else if (args[0].equalsIgnoreCase("everything")) {
+            for (Entity e : entities) {
+                if (e instanceof Item) {
+                    i++;
+                    e.remove();
+                } else if (e instanceof LivingEntity) {
+                    i++;
+                    ((LivingEntity) e).setHealth(0D);
+                }
+            }
+
+            if (i == 0) {
+                new Message(Mood.BAD, TrilliumAPI.getName(cmd), "No players found in a radius of " + radius).to(cs);
+            } else {
+                new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Successfully murdered " + i + " players in a radius of " + radius).to(cs);
+            }
+
         } else if (EntityType.valueOf(args[0]) != null) {
             for (Entity e : entities) {
                 if (e.getType() == EntityType.valueOf(args[1])) {

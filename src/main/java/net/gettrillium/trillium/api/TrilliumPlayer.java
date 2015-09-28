@@ -1,6 +1,5 @@
 package net.gettrillium.trillium.api;
 
-import net.gettrillium.trillium.Trillium;
 import net.gettrillium.trillium.api.SQL.SQL;
 import net.gettrillium.trillium.api.events.PlayerAFKEvent;
 import net.gettrillium.trillium.api.messageutils.Message;
@@ -437,6 +436,18 @@ public class TrilliumPlayer {
         if (yml.get(cooldownName) != null) {
             yml.set(cooldownName, null);
             save();
+        }
+    }
+
+    public boolean isOnline() {
+        if (proxy.isOnline()) {
+            if (isVanished()) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
         }
     }
 

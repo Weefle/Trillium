@@ -24,6 +24,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
+import java.io.*;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -92,7 +93,14 @@ public class TeleportModule extends TrilliumModule {
             Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
         }
 
-        p.teleport(p.getWorld().getSpawnLocation());
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(new File(TrilliumAPI.getInstance().getDataFolder(), "spawn.txt")));
+            p.teleport(LocationHandler.deserialize(br.readLine()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            p.teleport(p.getWorld().getSpawnLocation());
+        }
+
         new Message(Mood.GOOD, "Spawn", "You were successfully teleported to the spawn point.").to(p);
     }
 

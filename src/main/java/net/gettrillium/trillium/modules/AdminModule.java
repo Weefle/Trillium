@@ -1,6 +1,7 @@
 package net.gettrillium.trillium.modules;
 
 import com.darkblade12.particleeffect.ParticleEffect;
+import net.gettrillium.trillium.Trillium;
 import net.gettrillium.trillium.api.Configuration.Server;
 import net.gettrillium.trillium.api.*;
 import net.gettrillium.trillium.api.Permission.Admin;
@@ -10,6 +11,7 @@ import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.messageutils.Pallete;
 import net.gettrillium.trillium.api.report.Reports;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.BlockState;
@@ -18,6 +20,7 @@ import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -253,6 +256,14 @@ public class AdminModule extends TrilliumModule {
         if (cs instanceof Player) {
             Player p = (Player) cs;
             if (p.hasPermission(Admin.SETSPAWN)) {
+
+                try {
+                    FileWriter out = new FileWriter(new File(TrilliumAPI.getInstance().getDataFolder(), "spawn.txt"), false);
+                    out.write(LocationHandler.serialize(p.getLocation()));
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 p.getWorld().setSpawnLocation(p.getLocation().getBlockX(), p.getLocation().getBlockY(), p.getLocation().getBlockZ());
                 new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Spawn location set. " + ChatColor.AQUA + LocationHandler.toString(p.getLocation())).to(p);

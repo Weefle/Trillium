@@ -2,6 +2,8 @@ package net.gettrillium.trillium.api.commandbinder;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import net.gettrillium.trillium.api.LocationHandler;
+import net.gettrillium.trillium.api.SQL.SQL;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.TrilliumPlayer;
 import org.bukkit.Bukkit;
@@ -12,6 +14,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -35,30 +39,54 @@ public class CommandBinder {
         }
 
         private static String serializer(String command, Location loc, boolean player) {
-            int x = loc.getBlockX();
-            int y = loc.getBlockY();
-            int z = loc.getBlockZ();
-            String world = loc.getWorld().getName();
-            return command + ';' + player + ';' + x + ';' + y + ';' + z + ';' + world;
+            return command + ';' + player + ';' + LocationHandler.serialize(loc);
         }
 
         private static void save() {
-            YamlConfiguration yml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
-            List<String> serialized = new ArrayList<>(table.size());
-            Map<String, Map<Location, Boolean>> rows = table.rowMap();
+            if (!SQL.sqlEnabled()) {
+                YamlConfiguration yml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
+                List<String> serialized = new ArrayList<>(table.size());
+                Map<String, Map<Location, Boolean>> rows = table.rowMap();
 
-            for (Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
-                for (Entry<Location, Boolean> column : row.getValue().entrySet()) {
-                    serialized.add(serializer(row.getKey(), column.getKey(), column.getValue()));
+                for (Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
+                    for (Entry<Location, Boolean> column : row.getValue().entrySet()) {
+                        serialized.add(serializer(row.getKey(), column.getKey(), column.getValue()));
+                    }
                 }
-            }
 
-            yml.set("rows", serialized);
+                yml.set("rows", serialized);
 
-            try {
-                yml.save(CommandBinderDatabase.cbd());
-            } catch (IOException e) {
-                e.printStackTrace();
+                try {
+                    yml.save(CommandBinderDatabase.cbd());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+
+                Map<String, Map<Location, Boolean>> rows = table.rowMap();
+                SQL.executeUpdate("DELETE FROM warps");
+
+                for (Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
+                    for (Entry<Location, Boolean> column : row.getValue().entrySet()) {
+                        try {
+                            PreparedStatement ps = SQL.prepareStatement("INSERT INTO commandbinder " +
+                                    "(command, boolean, loc-x, loc-y, loc-z, loc-world)" +
+                                    " VALUES (?, ?, ?, ?, ?, ?);");
+                            if (ps != null) {
+                                ps.setString(1, row.getKey());
+                                ps.setBoolean(2, column.getValue());
+                                ps.setInt(3, column.getKey().getBlockX());
+                                ps.setInt(4, column.getKey().getBlockY());
+                                ps.setInt(5, column.getKey().getBlockZ());
+                                ps.setString(6, column.getKey().getWorld().getName());
+                                ps.executeUpdate();
+                                ps.closeOnCompletion();
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
         }
 
@@ -68,12 +96,7 @@ public class CommandBinder {
             for (String deserialize : serialized) {
                 String command = deserialize.split(";")[0];
                 boolean player = Boolean.parseBoolean(deserialize.split(";")[1]);
-                int x = Integer.parseInt(deserialize.split(";")[2]);
-                int y = Integer.parseInt(deserialize.split(";")[3]);
-                int z = Integer.parseInt(deserialize.split(";")[4]);
-                String world = deserialize.split(";")[5];
-                Location loc = new Location(Bukkit.getWorld(world), x, y, z);
-                table.put(command, loc, player);
+                table.put(command, LocationHandler.deserialize(deserialize.split(";")[2]), player);
             }
         }
     }

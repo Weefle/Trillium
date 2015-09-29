@@ -71,6 +71,15 @@ public class SQL {
                     "loc-y INT" +
                     "loc-z INT" +
                     "loc-world VARCHAR(255));");
+
+            executeUpdate("CREATE TABLE IF NOT EXISTS commandbinder (" +
+                    "ID INT AUTO INCREMENT" +
+                    "command VARCHAR(255)," +
+                    "player BOOLEAN," +
+                    "loc-x INT" +
+                    "loc-y INT" +
+                    "loc-z INT" +
+                    "loc-world VARCHAR(255));");
         }
     }
 

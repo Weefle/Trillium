@@ -26,6 +26,10 @@ public class Permission {
         public static final String VANISH = PREFIX + "vanish";
         public static final String VANISH_OTHER = PREFIX + "vanish.other";
         public static final String PVP = PREFIX + "pvp";
+        public static final String FEED = PREFIX + "feed";
+        public static final String FEED_OTHER = PREFIX + "feed.other";
+        public static final String HEAL = PREFIX + "heal";
+        public static final String HEAL_OTHER = PREFIX + "heal.other";
     }
 
     public static class Afk {

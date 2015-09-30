@@ -12,6 +12,7 @@ import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.messageutils.Pallete;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
@@ -380,6 +381,80 @@ public class AbilityModule extends TrilliumModule {
             }
         } else {
             new Message(Mood.BAD, TrilliumAPI.getName(cmd), "Pvp is completely disabled.").to(cs);
+        }
+    }
+
+    @Command(name = "Feed",
+            command = "feed",
+            description = "Fill up your food saturation levels.",
+            usage = "/feed [player]",
+            permissions = {Ability.FEED, Ability.FEED_OTHER})
+    public void feed(CommandSender cs, String[] args) {
+        String cmd = "feed";
+        if (cs instanceof Player) {
+            Player p = (Player) cs;
+            if (p.hasPermission(Ability.FEED)) {
+                if (args.length == 0) {
+                    p.setFoodLevel(20);
+                    p.setSaturation(20);
+                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Your saturation & food levels have been refilled.").to(p);
+                } else {
+                    if (p.hasPermission(Ability.FEED_OTHER)) {
+                        Player target = Bukkit.getPlayer(args[0]);
+                        if (target != null) {
+                            target.setSaturation(20);
+                            target.setFoodLevel(20);
+                            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), target.getName() + "'s saturation & food levels have been refilled.").to(p);
+                            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Your saturation & food levels have been refilled.").to(target);
+                        } else {
+                            new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(p);
+                        }
+                    } else {
+                        new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
+                    }
+                }
+
+            } else {
+                new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
+            }
+        } else {
+            new Message(TrilliumAPI.getName(cmd), Error.CONSOLE_NOT_ALLOWED).to(cs);
+        }
+    }
+
+    @Command(name = "Heal",
+            command = "heal",
+            description = "Restore your health level",
+            usage = "/heal [player]",
+            permissions = {Ability.FEED})
+    public void heal(CommandSender cs, String[] args) {
+        String cmd = "feed";
+        if (cs instanceof Player) {
+            Player p = (Player) cs;
+            if (p.hasPermission(Ability.HEAL)) {
+                if (args.length == 0) {
+                    p.setHealth(p.getMaxHealth() - p.getHealth());
+                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Your health has been restored.").to(p);
+                } else {
+                    if (p.hasPermission(Ability.HEAL_OTHER)) {
+                        Player target = Bukkit.getPlayer(args[0]);
+                        if (target != null) {
+                            target.setHealth(target.getMaxHealth() - target.getHealth());
+                            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), target.getName() + "'s health has been restored.").to(p);
+                            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Your health has been restored.").to(target);
+                        } else {
+                            new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(p);
+                        }
+                    } else {
+                        new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
+                    }
+                }
+
+            } else {
+                new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
+            }
+        } else {
+            new Message(TrilliumAPI.getName(cmd), Error.CONSOLE_NOT_ALLOWED).to(cs);
         }
     }
 

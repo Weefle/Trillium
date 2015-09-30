@@ -428,7 +428,7 @@ public class AbilityModule extends TrilliumModule {
             usage = "/heal [player]",
             permissions = {Ability.FEED})
     public void heal(CommandSender cs, String[] args) {
-        String cmd = "feed";
+        String cmd = "heal";
         if (cs instanceof Player) {
             Player p = (Player) cs;
             if (p.hasPermission(Ability.HEAL)) {

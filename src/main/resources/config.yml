@@ -38,7 +38,7 @@ server:
     # can be: "MYSQL" or "SQLITE" - If errored, defaults to MYSQL
     # options below only apply if database-type is "MYSQL". SQLITE doesn't need the options below.
     host-name: "localhost"
-    port: "25565"
+    port: "3306"
     database: "example-database"
     user: "example-user"
     pass: "example-pass"

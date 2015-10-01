@@ -198,10 +198,12 @@ public class ChatModule extends TrilliumModule {
                         format1 = format1.replace("%TO%", p.getName());
                         format1 = format1.replace("%FROM%", target.getName());
                         format1 = format1.replace("%MESSAGE%", msg);
+                        format1 = new Message(format1).asString();
 
                         format2 = format2.replace("%TO%", p.getName());
                         format2 = format2.replace("%FROM%", target.getName());
                         format2 = format2.replace("%MESSAGE%", msg);
+                        format2 = new Message(format2).asString();
 
                         p.getProxy().sendMessage(format1);
                         target.getProxy().sendMessage(format2);
@@ -490,6 +492,17 @@ public class ChatModule extends TrilliumModule {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
+        TrilliumPlayer p = TrilliumAPI.getPlayer(event.getPlayer());
+
+        if (p.isMuted() && !p.isShadowMuted()) {
+            event.setCancelled(true);
+        } else if (p.isShadowMuted()) {
+            for (Player recipient : event.getRecipients()) {
+                if (!recipient.getUniqueId().equals(event.getPlayer().getUniqueId()))
+                    event.setCancelled(true);
+            }
+        }
+
         if (event.getPlayer().hasPermission(Permission.Chat.COLOR)) {
             event.setMessage(ChatColor.translateAlternateColorCodes('&', event.getMessage()));
         }

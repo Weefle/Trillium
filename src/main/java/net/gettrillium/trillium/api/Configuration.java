@@ -12,6 +12,7 @@ public class Configuration {
         public static final String GROUP = "group";
         public static final String PVP = "pvp";
         public static final String HOMES = "homes";
+        public static final String GAMEMODE = "gamemode";
     }
 
     public static class Server {

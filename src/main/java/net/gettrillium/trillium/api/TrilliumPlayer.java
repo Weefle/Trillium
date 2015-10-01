@@ -5,6 +5,7 @@ import net.gettrillium.trillium.api.events.PlayerAFKEvent;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -45,11 +46,13 @@ public class TrilliumPlayer {
     private boolean canPlaceBlocks = true;
     private boolean canInteract = true;
     private boolean isFrozen = false;
+    private GameMode gamemode;
 
     public TrilliumPlayer(Player proxy) {
         if (proxy != null) {
             this.proxy = proxy;
             nickname = proxy.getName();
+            gamemode = proxy.getGameMode();
             file = new File(TrilliumAPI.getPlayerFolder(), proxy.getUniqueId() + ".yml");
             if (file.exists()) {
                 newUser = false;
@@ -244,11 +247,20 @@ public class TrilliumPlayer {
 
     public void dispose() {
         if (!SQL.sqlEnabled()) {
+            int gm;
+            if (proxy.getGameMode() == GameMode.SURVIVAL)
+                gm = 0;
+            else if (proxy.getGameMode() == GameMode.CREATIVE)
+                gm = 1;
+            else if (proxy.getGameMode() == GameMode.ADVENTURE)
+                gm = 2;
+            else gm = 3;
             yml.set(Configuration.Player.NICKNAME, nickname);
             yml.set(Configuration.Player.LOCATION, LocationHandler.serialize(proxy.getLocation()));
             yml.set(Configuration.Player.MUTED, isMuted);
             yml.set(Configuration.Player.GOD, isGod);
             yml.set(Configuration.Player.VANISH, isVanished);
+            yml.set(Configuration.Player.GAMEMODE, gm);
 
             ArrayList<String> serialized = new ArrayList<>();
             for (Entry<String, Location> row : homes.entrySet()) {
@@ -262,9 +274,19 @@ public class TrilliumPlayer {
         } else {
             // TODO - proper try-with-resources here
             try {
+
+                int gm;
+                if (proxy.getGameMode() == GameMode.SURVIVAL)
+                    gm = 0;
+                else if (proxy.getGameMode() == GameMode.CREATIVE)
+                    gm = 1;
+                else if (proxy.getGameMode() == GameMode.ADVENTURE)
+                    gm = 2;
+                else gm = 3;
+
                 PreparedStatement ps = SQL.prepareStatement("UPDATE players SET " +
                         "(nick, loc-x, loc-y, loc-z, loc-world, muted, god, vanish)" +
-                        " VALUES (?, ?, ?, ?, ?, ?, ?, ?) WHERE uuid=?;");
+                        " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE uuid=?;");
                 if (ps != null) {
                     ps.setString(1, nickname);
                     ps.setInt(2, proxy.getLocation().getBlockX());
@@ -275,6 +297,7 @@ public class TrilliumPlayer {
                     ps.setBoolean(7, isGod());
                     ps.setBoolean(8, isVanished());
                     ps.setString(9, proxy.getUniqueId().toString());
+                    ps.setInt(10, gm);
                     ps.executeUpdate();
                     ps.close();
                 }
@@ -287,6 +310,14 @@ public class TrilliumPlayer {
     public void load() {
         if (!SQL.sqlEnabled()) {
             if (newUser) {
+                int gm;
+                if (proxy.getGameMode() == GameMode.SURVIVAL)
+                    gm = 0;
+                else if (proxy.getGameMode() == GameMode.CREATIVE)
+                    gm = 1;
+                else if (proxy.getGameMode() == GameMode.ADVENTURE)
+                    gm = 2;
+                else gm = 3;
                 yml.set(Configuration.Player.NICKNAME, nickname);
                 yml.set(Configuration.Player.LOCATION, LocationHandler.serialize(proxy.getLocation()));
                 yml.set(Configuration.Player.MUTED, isMuted);
@@ -295,6 +326,7 @@ public class TrilliumPlayer {
                 yml.set(Configuration.Player.VANISH, isVanished);
                 yml.set(Configuration.Player.BAN_REASON, "");
                 yml.set(Configuration.Player.HOMES, "");
+                yml.set(Configuration.Player.GAMEMODE, gm);
                 save();
             } else {
                 setDisplayName(yml.getString(Configuration.Player.NICKNAME));
@@ -318,8 +350,16 @@ public class TrilliumPlayer {
                 try {
                     PreparedStatement ps = SQL.prepareStatement("INSERT INTO players " +
                             "(nick, loc-x, loc-y, loc-z, loc-world, muted, god, vanish)" +
-                            " VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+                            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
                     if (ps != null) {
+                        int gm;
+                        if (proxy.getGameMode() == GameMode.SURVIVAL)
+                            gm = 0;
+                        else if (proxy.getGameMode() == GameMode.CREATIVE)
+                            gm = 1;
+                        else if (proxy.getGameMode() == GameMode.ADVENTURE)
+                            gm = 2;
+                        else gm = 3;
                         ps.setString(1, nickname);
                         ps.setInt(2, proxy.getLocation().getBlockX());
                         ps.setInt(3, proxy.getLocation().getBlockY());
@@ -329,6 +369,7 @@ public class TrilliumPlayer {
                         ps.setBoolean(7, isGod());
                         ps.setBoolean(8, isVanished());
                         ps.setString(9, proxy.getUniqueId().toString());
+                        ps.setInt(10, gm);
                         ps.executeUpdate();
                         ps.close();
                     }
@@ -437,6 +478,14 @@ public class TrilliumPlayer {
             yml.set(cooldownName, null);
             save();
         }
+    }
+
+    public void setLastGamemode(GameMode mode) {
+        gamemode = mode;
+    }
+
+    public GameMode getLastGamemode() {
+        return gamemode;
     }
 
     public boolean isOnline() {

@@ -27,6 +27,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.projectiles.ProjectileSource;
@@ -156,7 +157,7 @@ public class AbilityModule extends TrilliumModule {
                         player.setVanished(false);
                         new Message(Mood.BAD, TrilliumAPI.getName(cmd), "You are no longer in vanish mode.").to(player);
                         if (getConfig().getBoolean(Configuration.Ability.VANISH_SPECTATOR_MODE)) {
-                            player.getProxy().setGameMode(GameMode.SURVIVAL);
+                            player.getProxy().setGameMode(player.getLastGamemode());
                         }
                     } else {
                         player.setVanished(true);
@@ -177,7 +178,7 @@ public class AbilityModule extends TrilliumModule {
                             new Message(Mood.BAD, TrilliumAPI.getName(cmd), target.getName() + " is no longer in vanish mode.").to(player);
                             target.setVanished(false);
                             if (getConfig().getBoolean(Configuration.Ability.VANISH_SPECTATOR_MODE)) {
-                                target.getProxy().setGameMode(GameMode.SURVIVAL);
+                                target.getProxy().setGameMode(target.getLastGamemode());
                             }
                         } else {
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), player.getName() + " put you in vanish mode.").to(target);
@@ -473,9 +474,6 @@ public class AbilityModule extends TrilliumModule {
 
     @EventHandler
     public void onDamageEntity(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
-            return;
-        }
 
         TrilliumPlayer damaged = player((Player) event.getEntity());
 
@@ -483,15 +481,20 @@ public class AbilityModule extends TrilliumModule {
         TrilliumPlayer damager;
 
         if (e instanceof Player) {
-            damager = (TrilliumPlayer) event.getDamager();
+            damager = TrilliumAPI.getPlayer((Player) event.getDamager());
         } else if (e instanceof Projectile) {
             ProjectileSource shooter = ((Projectile) e).getShooter();
+
             if (!(shooter instanceof Player)) {
                 return;
             }
 
-            damager = ((TrilliumPlayer) shooter);
+            damager = TrilliumAPI.getPlayer((Player) shooter);
         } else {
+            return;
+        }
+
+        if (!(event.getDamager() instanceof Player)) {
             return;
         }
 
@@ -506,9 +509,6 @@ public class AbilityModule extends TrilliumModule {
                 }
             }
         } else {
-            if (!(event.getDamager() instanceof Player)) {
-                return;
-            }
 
             if (!damaged.getProxy().getUniqueId().equals(damager.getProxy().getUniqueId())) {
                 event.setCancelled(true);
@@ -581,5 +581,11 @@ public class AbilityModule extends TrilliumModule {
         if (p.isShadowBanned()) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void changeGameMode(PlayerGameModeChangeEvent event) {
+        TrilliumPlayer p = player(event.getPlayer());
+        p.setLastGamemode(event.getPlayer().getGameMode());
     }
 }

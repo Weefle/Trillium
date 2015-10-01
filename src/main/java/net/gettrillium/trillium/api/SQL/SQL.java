@@ -62,7 +62,8 @@ public class SQL {
                     "loc-world VARCHAR(255)" +
                     "muted BOOLEAN," +
                     "god BOOLEAN," +
-                    "vanish BOOLEAN);");
+                    "vanish BOOLEAN" +
+                    "gamemode INT);");
 
             executeUpdate("CREATE TABLE IF NOT EXISTS warps (" +
                     "ID INT AUTO INCREMENT" +

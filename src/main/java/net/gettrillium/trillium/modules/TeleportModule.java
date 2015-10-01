@@ -123,7 +123,6 @@ public class TeleportModule extends TrilliumModule {
         }
 
         Player target = Bukkit.getPlayer(args[0]);
-        Player target2 = Bukkit.getPlayer(args[1]);
 
         if (target != null) {
             if (args.length < 1) {
@@ -136,6 +135,7 @@ public class TeleportModule extends TrilliumModule {
                 p.teleport(target);
 
             } else {
+                Player target2 = Bukkit.getPlayer(args[1]);
                 if (target2 != null) {
                     target.teleport(target2);
                     if (!target.getName().equals(cs.getName())) {
@@ -267,7 +267,7 @@ public class TeleportModule extends TrilliumModule {
             return;
         }
 
-        if (args.length != 0) {
+        if (args.length == 0) {
             new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
             return;
         }
@@ -537,6 +537,11 @@ public class TeleportModule extends TrilliumModule {
 
         Player p = (Player) cs;
 
+        if (args.length < 1) {
+            new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
+            return;
+        }
+
         if (args[0].equalsIgnoreCase("set")) {
             if (!p.hasPermission(Teleport.WARP_CREATE)) {
                 new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
@@ -642,6 +647,11 @@ public class TeleportModule extends TrilliumModule {
         }
 
         TrilliumPlayer p = player((Player) cs);
+
+        if (args.length < 1) {
+            new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
+            return;
+        }
 
         if (args[0].equalsIgnoreCase("set")) {
 

@@ -247,22 +247,14 @@ public class TrilliumPlayer {
 
     public void dispose() {
         if (!SQL.sqlEnabled()) {
-            int gm;
-            if (proxy.getGameMode() == GameMode.SURVIVAL)
-                gm = 0;
-            else if (proxy.getGameMode() == GameMode.CREATIVE)
-                gm = 1;
-            else if (proxy.getGameMode() == GameMode.ADVENTURE)
-                gm = 2;
-            else gm = 3;
             yml.set(Configuration.Player.NICKNAME, nickname);
             yml.set(Configuration.Player.LOCATION, LocationHandler.serialize(proxy.getLocation()));
             yml.set(Configuration.Player.MUTED, isMuted);
             yml.set(Configuration.Player.GOD, isGod);
             yml.set(Configuration.Player.VANISH, isVanished);
-            yml.set(Configuration.Player.GAMEMODE, gm);
+            yml.set(Configuration.Player.GAMEMODE, proxy.getGameMode().getValue());
 
-            ArrayList<String> serialized = new ArrayList<>();
+            List<String> serialized = new ArrayList<>();
             for (Entry<String, Location> row : homes.entrySet()) {
                 serialized.add(row.getKey() + ";" + LocationHandler.serialize(row.getValue()));
             }
@@ -274,16 +266,6 @@ public class TrilliumPlayer {
         } else {
             // TODO - proper try-with-resources here
             try {
-
-                int gm;
-                if (proxy.getGameMode() == GameMode.SURVIVAL)
-                    gm = 0;
-                else if (proxy.getGameMode() == GameMode.CREATIVE)
-                    gm = 1;
-                else if (proxy.getGameMode() == GameMode.ADVENTURE)
-                    gm = 2;
-                else gm = 3;
-
                 PreparedStatement ps = SQL.prepareStatement("UPDATE players SET " +
                         "(nick, loc-x, loc-y, loc-z, loc-world, muted, god, vanish)" +
                         " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE uuid=?;");
@@ -297,7 +279,7 @@ public class TrilliumPlayer {
                     ps.setBoolean(7, isGod());
                     ps.setBoolean(8, isVanished());
                     ps.setString(9, proxy.getUniqueId().toString());
-                    ps.setInt(10, gm);
+                    ps.setInt(10, proxy.getGameMode().getValue());
                     ps.executeUpdate();
                     ps.close();
                 }
@@ -308,58 +290,13 @@ public class TrilliumPlayer {
     }
 
     public void load() {
-        if (!SQL.sqlEnabled()) {
-            if (newUser) {
-                int gm;
-                if (proxy.getGameMode() == GameMode.SURVIVAL)
-                    gm = 0;
-                else if (proxy.getGameMode() == GameMode.CREATIVE)
-                    gm = 1;
-                else if (proxy.getGameMode() == GameMode.ADVENTURE)
-                    gm = 2;
-                else gm = 3;
-                yml.set(Configuration.Player.NICKNAME, nickname);
-                yml.set(Configuration.Player.LOCATION, LocationHandler.serialize(proxy.getLocation()));
-                yml.set(Configuration.Player.MUTED, isMuted);
-                yml.set(Configuration.Player.GOD, isGod);
-                yml.set(Configuration.Player.PVP, pvp);
-                yml.set(Configuration.Player.VANISH, isVanished);
-                yml.set(Configuration.Player.BAN_REASON, "");
-                yml.set(Configuration.Player.HOMES, "");
-                yml.set(Configuration.Player.GAMEMODE, gm);
-                save();
-            } else {
-                setDisplayName(yml.getString(Configuration.Player.NICKNAME));
-                setLastLocation(LocationHandler.deserialize(yml.getString(Configuration.Player.LOCATION)));
-                setMuted(yml.getBoolean(Configuration.Player.MUTED));
-                setGod(yml.getBoolean(Configuration.Player.GOD));
-                setPvp(yml.getBoolean(Configuration.Player.PVP));
-                setVanished(yml.getBoolean(Configuration.Player.VANISH));
-
-                List<String> serialized = yml.getStringList(Configuration.Player.HOMES);
-                if (serialized != null) {
-                    for (String deserialize : serialized) {
-                        if (deserialize != null) {
-                            homes.put(deserialize.split(";")[0], LocationHandler.deserialize(deserialize.split(";")[1]));
-                        }
-                    }
-                }
-            }
-        } else {
+        if (SQL.sqlEnabled()) {
             if (newUser) {
                 try {
                     PreparedStatement ps = SQL.prepareStatement("INSERT INTO players " +
                             "(nick, loc-x, loc-y, loc-z, loc-world, muted, god, vanish)" +
                             " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
                     if (ps != null) {
-                        int gm;
-                        if (proxy.getGameMode() == GameMode.SURVIVAL)
-                            gm = 0;
-                        else if (proxy.getGameMode() == GameMode.CREATIVE)
-                            gm = 1;
-                        else if (proxy.getGameMode() == GameMode.ADVENTURE)
-                            gm = 2;
-                        else gm = 3;
                         ps.setString(1, nickname);
                         ps.setInt(2, proxy.getLocation().getBlockX());
                         ps.setInt(3, proxy.getLocation().getBlockY());
@@ -369,7 +306,7 @@ public class TrilliumPlayer {
                         ps.setBoolean(7, isGod());
                         ps.setBoolean(8, isVanished());
                         ps.setString(9, proxy.getUniqueId().toString());
-                        ps.setInt(10, gm);
+                        ps.setInt(10, proxy.getGameMode().getValue());
                         ps.executeUpdate();
                         ps.close();
                     }
@@ -401,6 +338,36 @@ public class TrilliumPlayer {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+
+                List<String> serialized = yml.getStringList(Configuration.Player.HOMES);
+                if (serialized != null) {
+                    for (String deserialize : serialized) {
+                        if (deserialize != null) {
+                            homes.put(deserialize.split(";")[0], LocationHandler.deserialize(deserialize.split(";")[1]));
+                        }
+                    }
+                }
+            }
+        } else {
+            if (newUser) {
+                yml.set(Configuration.Player.NICKNAME, nickname);
+                yml.set(Configuration.Player.LOCATION, LocationHandler.serialize(proxy.getLocation()));
+                yml.set(Configuration.Player.MUTED, isMuted);
+                yml.set(Configuration.Player.GOD, isGod);
+                yml.set(Configuration.Player.PVP, pvp);
+                yml.set(Configuration.Player.VANISH, isVanished);
+                yml.set(Configuration.Player.BAN_REASON, "");
+                yml.set(Configuration.Player.HOMES, "");
+                yml.set(Configuration.Player.GAMEMODE, proxy.getGameMode().getValue());
+                save();
+            } else {
+                setDisplayName(yml.getString(Configuration.Player.NICKNAME));
+                setLastLocation(LocationHandler.deserialize(yml.getString(Configuration.Player.LOCATION)));
+                setMuted(yml.getBoolean(Configuration.Player.MUTED));
+                setGod(yml.getBoolean(Configuration.Player.GOD));
+                setPvp(yml.getBoolean(Configuration.Player.PVP));
+                setVanished(yml.getBoolean(Configuration.Player.VANISH));
+
                 List<String> serialized = yml.getStringList(Configuration.Player.HOMES);
                 if (serialized != null) {
                     for (String deserialize : serialized) {
@@ -452,7 +419,7 @@ public class TrilliumPlayer {
     }
 
     public List<Message> getHomeList() {
-        ArrayList<Message> format = new ArrayList<>(homes.size());
+        List<Message> format = new ArrayList<>(homes.size());
 
         for (Entry<String, Location> row : homes.entrySet()) {
             format.add(new Message(Mood.NEUTRAL, row.getKey(), LocationHandler.toString(row.getValue())));

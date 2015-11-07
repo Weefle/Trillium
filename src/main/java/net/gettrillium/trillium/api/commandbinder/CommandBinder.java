@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.Map.Entry;
@@ -22,34 +23,34 @@ import java.util.Map.Entry;
 public class CommandBinder {
 
     public static class Blocks {
-        private static Table<String, Location, Boolean> table = HashBasedTable.create();
+        private static Table<String, String, Boolean> TABLE = HashBasedTable.create();
 
         public static void add(String command, Location loc, boolean player) {
-            table.put(command, loc, player);
+            TABLE.put(command, LocationHandler.serialize(loc), player);
             save();
         }
 
         public static void remove(String command, Location loc) {
-            getTable().remove(command, loc);
+            TABLE.remove(command, LocationHandler.serialize(loc));
             save();
         }
 
-        public static Table<String, Location, Boolean> getTable() {
-            return table;
+        public static Table<String, String, Boolean> getTable() {
+            return TABLE;
         }
 
-        private static String serializer(String command, Location loc, boolean player) {
-            return command + ';' + player + ';' + LocationHandler.serialize(loc);
+        private static String serializer(String command, String loc, boolean player) {
+            return command + ';' + player + ';' + loc;
         }
 
         private static void save() {
             if (!SQL.sqlEnabled()) {
                 YamlConfiguration yml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
-                List<String> serialized = new ArrayList<>(table.size());
-                Map<String, Map<Location, Boolean>> rows = table.rowMap();
+                List<String> serialized = new ArrayList<>(TABLE.size());
+                Map<String, Map<String, Boolean>> rows = TABLE.rowMap();
 
-                for (Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
-                    for (Entry<Location, Boolean> column : row.getValue().entrySet()) {
+                for (Entry<String, Map<String, Boolean>> row : rows.entrySet()) {
+                    for (Entry<String, Boolean> column : row.getValue().entrySet()) {
                         serialized.add(serializer(row.getKey(), column.getKey(), column.getValue()));
                     }
                 }
@@ -63,22 +64,23 @@ public class CommandBinder {
                 }
             } else {
 
-                Map<String, Map<Location, Boolean>> rows = table.rowMap();
-                SQL.executeUpdate("DELETE FROM warps");
+                Map<String, Map<String, Boolean>> rows = TABLE.rowMap();
+                SQL.executeUpdate("DELETE * FROM commandbinder");
 
-                for (Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
-                    for (Entry<Location, Boolean> column : row.getValue().entrySet()) {
+                for (Entry<String, Map<String, Boolean>> row : rows.entrySet()) {
+                    for (Entry<String, Boolean> column : row.getValue().entrySet()) {
                         try {
                             PreparedStatement ps = SQL.prepareStatement("INSERT INTO commandbinder " +
-                                    "(command, boolean, loc_x, loc_y, loc_z, loc_world)" +
+                                    "(command, player, loc_x, loc_y, loc_z, loc_world)" +
                                     " VALUES (?, ?, ?, ?, ?, ?);");
                             if (ps != null) {
+                                Location loc = LocationHandler.deserialize(column.getKey());
                                 ps.setString(1, row.getKey());
                                 ps.setBoolean(2, column.getValue());
-                                ps.setInt(3, column.getKey().getBlockX());
-                                ps.setInt(4, column.getKey().getBlockY());
-                                ps.setInt(5, column.getKey().getBlockZ());
-                                ps.setString(6, column.getKey().getWorld().getName());
+                                ps.setInt(3, loc.getBlockX());
+                                ps.setInt(4, loc.getBlockY());
+                                ps.setInt(5, loc.getBlockZ());
+                                ps.setString(6, loc.getWorld().getName());
                                 ps.executeUpdate();
                                 ps.closeOnCompletion();
                             }
@@ -91,12 +93,27 @@ public class CommandBinder {
         }
 
         public static void setTable() {
-            YamlConfiguration yml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
-            List<String> serialized = yml.getStringList("rows");
-            for (String deserialize : serialized) {
-                String command = deserialize.split(";")[0];
-                boolean player = Boolean.parseBoolean(deserialize.split(";")[1]);
-                table.put(command, LocationHandler.deserialize(deserialize.split(";")[2]), player);
+            if (!SQL.sqlEnabled()) {
+                YamlConfiguration yml = YamlConfiguration.loadConfiguration(CommandBinderDatabase.cbd());
+                List<String> serialized = yml.getStringList("rows");
+                for (String deserialize : serialized) {
+                    String command = deserialize.split(";")[0];
+                    boolean player = Boolean.parseBoolean(deserialize.split(";")[1]);
+                    TABLE.put(command, deserialize.split(";")[2], player);
+                }
+            } else {
+                try {
+                    ResultSet result = SQL.executeQuery("SELECT * FROM commandbinder");
+                    if (result != null) {
+                        Location loc = new Location(Bukkit.getWorld(result.getString("loc_world")),
+                                result.getInt("loc_x"), result.getInt("loc_y"), result.getInt("loc_z"));
+                        String command = result.getString("command");
+                        boolean player = result.getBoolean("player");
+                        TABLE.put(command, LocationHandler.serialize(loc), player);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

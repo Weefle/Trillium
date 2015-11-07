@@ -188,9 +188,9 @@ public class CommandBinderModule extends TrilliumModule {
                 }
 
             } else if (removeMode.contains(p.getUniqueId())) {
-                Map<String, Map<Location, Boolean>> rows = CommandBinder.Blocks.getTable().rowMap();
-                for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
-                    for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
+                Map<String, Map<String, Boolean>> rows = CommandBinder.Blocks.getTable().rowMap();
+                for (Map.Entry<String, Map<String, Boolean>> row : rows.entrySet()) {
+                    for (Map.Entry<String, Boolean> column : row.getValue().entrySet()) {
 
                         Location loc = null;
                         if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
@@ -202,9 +202,9 @@ public class CommandBinderModule extends TrilliumModule {
                                     event.getClickedBlock().getRelative(BlockFace.UP).getLocation().getBlockZ());
                         }
 
-                        if (column.getKey().equals(loc)) {
+                        if (column.getKey().equals(LocationHandler.serialize(loc))) {
 
-                            CommandBinder.Blocks.remove(row.getKey(), column.getKey());
+                            CommandBinder.Blocks.remove(row.getKey(), LocationHandler.deserialize(column.getKey()));
                             removeMode.remove(p.getUniqueId());
 
                             String sender;
@@ -224,10 +224,10 @@ public class CommandBinderModule extends TrilliumModule {
                 }
 
             } else {
-                Map<String, Map<Location, Boolean>> rows = CommandBinder.Blocks.getTable().rowMap();
-                for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
-                    for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
-                        if (column.getKey().equals(event.getClickedBlock().getLocation())) {
+                Map<String, Map<String, Boolean>> rows = CommandBinder.Blocks.getTable().rowMap();
+                for (Map.Entry<String, Map<String, Boolean>> row : rows.entrySet()) {
+                    for (Map.Entry<String, Boolean> column : row.getValue().entrySet()) {
+                        if (column.getKey().equals(LocationHandler.serialize(event.getClickedBlock().getLocation()))) {
 
                             if (column.getValue()) {
                                 Bukkit.dispatchCommand(event.getPlayer(), Utils.commandBlockify(row.getKey(), p));
@@ -246,6 +246,7 @@ public class CommandBinderModule extends TrilliumModule {
         }
     }
 
+    // TODO: cache and less strain.
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         if (event.getFrom().getX() != event.getTo().getX()
@@ -254,9 +255,9 @@ public class CommandBinderModule extends TrilliumModule {
             Player p = event.getPlayer();
 
             if (!setMode.contains(p.getUniqueId()) && !removeMode.contains(p.getUniqueId())) {
-                Map<String, Map<Location, Boolean>> rows = CommandBinder.Blocks.getTable().rowMap();
-                for (Map.Entry<String, Map<Location, Boolean>> row : rows.entrySet()) {
-                    for (Map.Entry<Location, Boolean> column : row.getValue().entrySet()) {
+                Map<String, Map<String, Boolean>> rows = CommandBinder.Blocks.getTable().rowMap();
+                for (Map.Entry<String, Map<String, Boolean>> row : rows.entrySet()) {
+                    for (Map.Entry<String, Boolean> column : row.getValue().entrySet()) {
                         if (column.getKey() != null) {
 
                             Location blockLoc = new Location(p.getWorld(),
@@ -264,7 +265,7 @@ public class CommandBinderModule extends TrilliumModule {
                                     p.getLocation().getBlockY(),
                                     p.getLocation().getBlockZ());
 
-                            if (column.getKey().equals(blockLoc)) {
+                            if (column.getKey().equals(LocationHandler.serialize(blockLoc))) {
                                 if (column.getValue()) {
                                     Bukkit.dispatchCommand(event.getPlayer(), Utils.commandBlockify(row.getKey(), p));
                                 } else {

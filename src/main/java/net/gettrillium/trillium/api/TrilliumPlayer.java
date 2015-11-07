@@ -245,6 +245,8 @@ public class TrilliumPlayer {
         }
     }
 
+    // TODO: redo how homes are handled
+
     public void dispose() {
         if (!SQL.sqlEnabled()) {
             yml.set(Configuration.Player.NICKNAME, nickname);
@@ -326,8 +328,8 @@ public class TrilliumPlayer {
                 try {
                     ResultSet result = SQL.executeQuery("SELECT * FROM players WHERE uuid=" + proxy.getUniqueId());
                     if (result != null) {
-                        Location loc = new Location(Bukkit.getWorld(result.getString("loc-world")),
-                                result.getInt("loc-x"), result.getInt("loc-y"), result.getInt("loc-z"));
+                        Location loc = new Location(Bukkit.getWorld(result.getString("loc_world")),
+                                result.getInt("loc_x"), result.getInt("loc_y"), result.getInt("loc_z"));
 
                         setLastLocation(loc);
                         setDisplayName(result.getString("nick"));

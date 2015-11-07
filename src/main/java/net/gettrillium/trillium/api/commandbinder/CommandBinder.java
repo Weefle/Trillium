@@ -134,7 +134,11 @@ public class CommandBinder {
             Map<UUID, Map<String, Map<Material, Boolean>>> rows = new HashMap<>(TABLE.rowMap());
 
             for (Entry<String, Map<Material, Boolean>> column : rows.get(p.getProxy().getUniqueId()).entrySet()) {
-                TABLE.remove(p.getProxy().getUniqueId(), column.getKey());
+                if (rows.containsKey(p.getProxy().getUniqueId())) {
+                    if (TABLE.containsColumn(p.getProxy().getUniqueId())) {
+                        TABLE.remove(p.getProxy().getUniqueId(), column.getKey());
+                    }
+                }
             }
 
             p.getConfig().set("command-binder-items", null);

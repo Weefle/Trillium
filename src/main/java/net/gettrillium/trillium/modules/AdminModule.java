@@ -45,7 +45,7 @@ public class AdminModule extends TrilliumModule {
             cs.sendMessage(Pallete.MAJOR.getColor() + "Plugin made with love by:");
             cs.sendMessage(Pallete.MINOR.getColor() + "LordSaad, Javaless, Turbotailz,");
             cs.sendMessage(Pallete.MINOR.getColor() + "samczsun, and hintss.");
-            cs.sendMessage(Pallete.MINOR.getColor() + "Tested with love by:");
+            cs.sendMessage(Pallete.MAJOR.getColor() + "Tested with love by:");
             cs.sendMessage(Pallete.MINOR.getColor() + "Zee, and Blake");
             cs.sendMessage(ChatColor.DARK_RED + "<3");
             cs.sendMessage(Pallete.MAJOR.getColor() + "Type /tr help for a list of commands from Trillium.");
@@ -112,8 +112,8 @@ public class AdminModule extends TrilliumModule {
                         }
 
                         cs.sendMessage(" ");
-                        new Message(Mood.GOOD, "Help", "Viewing page: " + page + '/' + pages.size()).to(cs);
-                        cs.sendMessage(Utils.aestheticSlash());
+                        new Message(Mood.GOOD, "Help", "Viewing page: " + page + '/' + (pages.size() - 1)).to(cs);
+                        cs.sendMessage(Utils.aestheticSlash() + Utils.aestheticSlash());
                         for (Message msg : pages.get(page - 1)) {
                             msg.to(cs);
                         }
@@ -121,7 +121,7 @@ public class AdminModule extends TrilliumModule {
                         if (TrilliumAPI.getCommands().keySet().contains(args[1])) {
                             cs.sendMessage(" ");
                             new Message(Mood.GOOD, "Help", "Viewing command: " + args[1]).to(cs);
-                            cs.sendMessage(Utils.aestheticSlash());
+                            cs.sendMessage(Utils.aestheticSlash() + Utils.aestheticSlash());
                             new Message(Mood.NEUTRAL, "Description", TrilliumAPI.getDescription(args[1])).to(cs);
                             new Message(Mood.NEUTRAL, "Usage", TrilliumAPI.getUsage(args[1])).to(cs);
                             new Message(Mood.NEUTRAL, "Permissions", Utils.arrayToReadableString(TrilliumAPI.getPermissions(args[1]))).to(cs);

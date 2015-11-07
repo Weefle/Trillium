@@ -5,6 +5,14 @@ import net.gettrillium.trillium.api.Configuration.Server;
 import net.gettrillium.trillium.api.SQL.SQL;
 import net.gettrillium.trillium.api.TrilliumAPI;
 import net.gettrillium.trillium.api.Utils;
+import net.gettrillium.trillium.api.commandbinder.CommandBinder;
+import net.gettrillium.trillium.api.report.Reports;
+import net.gettrillium.trillium.api.warp.Warp;
+import net.gettrillium.trillium.events.PlayerDeath;
+import net.gettrillium.trillium.events.ServerListPing;
+import net.gettrillium.trillium.runnables.AFKRunnable;
+import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
+import net.gettrillium.trillium.runnables.TpsRunnable;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import org.apache.commons.io.FileUtils;
@@ -30,7 +38,7 @@ public class Trillium extends JavaPlugin {
 
         TrilliumAPI.setInstance(this);
 
-        Utils.load();
+        load();
         generateFiles();
 
         if (getConfig().getBoolean(Server.ALLOW_METRICS)) {
@@ -96,7 +104,7 @@ public class Trillium extends JavaPlugin {
     @Override
     public void onDisable() {
         SQL.close();
-        Utils.unload();
+        unload();
     }
 
     private void generateFiles() {
@@ -136,5 +144,36 @@ public class Trillium extends JavaPlugin {
         RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
         chat = rsp.getProvider();
         return chat != null;
+    }
+
+    public static void load() {
+        TrilliumAPI.getInstance().saveDefaultConfig();
+        TrilliumAPI.getInstance().reloadConfig();
+
+        TrilliumAPI.registerModules();
+        TrilliumAPI.loadPlayers();
+
+        CommandBinder.Blocks.setTable();
+        CommandBinder.Items.setTable();
+        Warp.loadWarps();
+        Reports.setReports();
+
+        new TpsRunnable().runTaskTimer(TrilliumAPI.getInstance(), 100L, 1L);
+        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Broadcast.AUTO_BROADCAST_ENABLED)) {
+            new AutoBroadcastRunnable().runTaskTimer(TrilliumAPI.getInstance(), 1L, (long) Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Broadcast.AUTO_BROADCAST_FREQUENCY)));
+        }
+        if (TrilliumAPI.getInstance().getConfig().getBoolean(Configuration.Afk.AUTO_AFK_ENABLED)) {
+            new AFKRunnable().runTaskTimer(TrilliumAPI.getInstance(), 1L, (long) Utils.timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Configuration.Afk.AUTO_AFK_TIME_UNTIL_IDLE)));
+        }
+
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeath(), TrilliumAPI.getInstance());
+        Bukkit.getServer().getPluginManager().registerEvents(new ServerListPing(), TrilliumAPI.getInstance());
+    }
+
+    public static void unload() {
+        Bukkit.getScheduler().cancelAllTasks();
+        TrilliumAPI.getInstance().saveDefaultConfig();
+        TrilliumAPI.disposePlayers();
+        TrilliumAPI.unregisterModules();
     }
 }

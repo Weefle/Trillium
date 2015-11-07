@@ -11,7 +11,6 @@ import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.messageutils.Pallete;
 import net.gettrillium.trillium.api.report.Reports;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.BlockState;
@@ -58,8 +57,8 @@ public class AdminModule extends TrilliumModule {
                 if (cs.hasPermission(Admin.TRILLIUM)) {
                     if (reloadPrompt.contains(cs.getName())) {
                         reloadPrompt.remove(cs.getName());
-                        Utils.unload();
-                        Utils.load();
+                        Trillium.unload();
+                        Trillium.load();
                         cs.sendMessage(" ");
                         new Message(Mood.GOOD, "Trillium", "Plugin successfully reloaded.").to(cs);
                         cs.sendMessage(" ");

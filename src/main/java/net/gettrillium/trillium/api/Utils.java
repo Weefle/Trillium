@@ -297,34 +297,4 @@ public class Utils {
         return Pallete.MAJOR.getColor() + "" + ChatColor.STRIKETHROUGH + "--------------" + ChatColor.RESET;
     }
 
-    public static void load() {
-        TrilliumAPI.getInstance().saveDefaultConfig();
-        TrilliumAPI.getInstance().reloadConfig();
-
-        TrilliumAPI.registerModules();
-        TrilliumAPI.loadPlayers();
-
-        Blocks.setTable();
-        Items.setTable();
-        Warp.loadWarps();
-        Reports.setReports();
-
-        new TpsRunnable().runTaskTimer(TrilliumAPI.getInstance(), 100L, 1L);
-        if (TrilliumAPI.getInstance().getConfig().getBoolean(Broadcast.AUTO_BROADCAST_ENABLED)) {
-            new AutoBroadcastRunnable().runTaskTimer(TrilliumAPI.getInstance(), 1L, (long) timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Broadcast.AUTO_BROADCAST_FREQUENCY)));
-        }
-        if (TrilliumAPI.getInstance().getConfig().getBoolean(Afk.AUTO_AFK_ENABLED)) {
-            new AFKRunnable().runTaskTimer(TrilliumAPI.getInstance(), 1L, (long) timeToTickConverter(TrilliumAPI.getInstance().getConfig().getString(Afk.AUTO_AFK_TIME_UNTIL_IDLE)));
-        }
-
-        Bukkit.getServer().getPluginManager().registerEvents(new PlayerDeath(), TrilliumAPI.getInstance());
-        Bukkit.getServer().getPluginManager().registerEvents(new ServerListPing(), TrilliumAPI.getInstance());
-    }
-
-    public static void unload() {
-        Bukkit.getScheduler().cancelAllTasks();
-        TrilliumAPI.getInstance().saveDefaultConfig();
-        TrilliumAPI.disposePlayers();
-        TrilliumAPI.unregisterModules();
-    }
 }

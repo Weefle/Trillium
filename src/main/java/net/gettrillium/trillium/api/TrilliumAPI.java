@@ -10,7 +10,7 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.SimplePluginManager;
 
-import java.io.File;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;

@@ -43,8 +43,10 @@ public class AdminModule extends TrilliumModule {
                     + Pallete.MINOR.getColor() + " Trillium "
                     + Utils.aestheticSlash());
             cs.sendMessage(Pallete.MAJOR.getColor() + "Plugin made with love by:");
-            cs.sendMessage(Pallete.MINOR.getColor() + "LordSaad, VortexSeven, Turbotailz,");
+            cs.sendMessage(Pallete.MINOR.getColor() + "LordSaad, Javaless, Turbotailz,");
             cs.sendMessage(Pallete.MINOR.getColor() + "samczsun, and hintss.");
+            cs.sendMessage(Pallete.MINOR.getColor() + "Tested with love by:");
+            cs.sendMessage(Pallete.MINOR.getColor() + "Zee, and Blake");
             cs.sendMessage(ChatColor.DARK_RED + "<3");
             cs.sendMessage(Pallete.MAJOR.getColor() + "Type /tr help for a list of commands from Trillium.");
             new Message(Mood.NEUTRAL, "Version", TrilliumAPI.getInstance().getDescription().getVersion()).to(cs);
@@ -66,7 +68,7 @@ public class AdminModule extends TrilliumModule {
                         reloadPrompt.add(cs.getName());
                         new Message(Mood.BAD, TrilliumAPI.getName(cmd), "Wow there tiger!").to(cs);
                         new Message(Mood.BAD, TrilliumAPI.getName(cmd), "Running the reload command isn't a walk in the park!").to(cs);
-                        new Message(Mood.BAD, TrilliumAPI.getName(cmd), "It's not advised to run this command frequently as it unloads and reloads a lot of things.").to(cs);
+                        new Message(Mood.BAD, TrilliumAPI.getName(cmd), "It's not advised to run this command frequently or successively as it unloads and reloads a lot of things.").to(cs);
                         new Message(Mood.BAD, TrilliumAPI.getName(cmd), "Are you SURE you want to continue?").to(cs);
                         new Message(Mood.BAD, TrilliumAPI.getName(cmd), "If yes, then run this command again.").to(cs);
                     }
@@ -79,8 +81,11 @@ public class AdminModule extends TrilliumModule {
                         List<Message> commands = new ArrayList<>();
                         if (getConfig().getBoolean(Server.PERMISSION_BASED_HELP_MENU)) {
                             for (String command : TrilliumAPI.getCommands().keySet()) {
-                                if (cs.hasPermission(TrilliumAPI.getPermissions(command)[0])) {
-                                    commands.add(new Message(Mood.NEUTRAL, command, TrilliumAPI.getDescription(command)));
+                                for (String perm : TrilliumAPI.getPermissions(command)) {
+                                    if (cs.hasPermission(perm)) {
+                                        commands.add(new Message(Mood.NEUTRAL, command, TrilliumAPI.getDescription(command)));
+                                        break;
+                                    }
                                 }
                             }
                         } else {
@@ -488,7 +493,7 @@ public class AdminModule extends TrilliumModule {
 
         } else if (EntityType.valueOf(args[0]) != null) {
             for (Entity e : entities) {
-                if (e.getType() == EntityType.valueOf(args[1])) {
+                if (e.getType() == EntityType.valueOf(args[0])) {
                     i++;
                     if (e instanceof LivingEntity) {
                         ((LivingEntity) e).setHealth(0D);

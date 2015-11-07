@@ -70,7 +70,7 @@ public class CommandBinder {
                     for (Entry<Location, Boolean> column : row.getValue().entrySet()) {
                         try {
                             PreparedStatement ps = SQL.prepareStatement("INSERT INTO commandbinder " +
-                                    "(command, boolean, loc-x, loc-y, loc-z, loc-world)" +
+                                    "(command, boolean, loc_x, loc_y, loc_z, loc_world)" +
                                     " VALUES (?, ?, ?, ?, ?, ?);");
                             if (ps != null) {
                                 ps.setString(1, row.getKey());

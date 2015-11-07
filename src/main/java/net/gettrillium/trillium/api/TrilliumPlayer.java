@@ -267,7 +267,7 @@ public class TrilliumPlayer {
             // TODO - proper try-with-resources here
             try {
                 PreparedStatement ps = SQL.prepareStatement("UPDATE players SET " +
-                        "(nick, loc-x, loc-y, loc-z, loc-world, muted, god, vanish)" +
+                        "(nick, loc_x, loc_y, loc_z, loc_world, muted, god, vanish)" +
                         " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE uuid=?;");
                 if (ps != null) {
                     ps.setString(1, nickname);
@@ -294,7 +294,7 @@ public class TrilliumPlayer {
             if (newUser) {
                 try {
                     PreparedStatement ps = SQL.prepareStatement("INSERT INTO players " +
-                            "(nick, loc-x, loc-y, loc-z, loc-world, muted, god, vanish)" +
+                            "(nick, loc_x, loc_y, loc_z, loc_world, muted, god, vanish)" +
                             " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
                     if (ps != null) {
                         ps.setString(1, nickname);

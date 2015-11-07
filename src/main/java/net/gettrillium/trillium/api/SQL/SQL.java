@@ -56,10 +56,10 @@ public class SQL {
                         "ID INT AUTO INCREMENT," +
                         "uuid VARCHAR(36)," +
                         "nick VARCHAR(" + config.getInt(Configuration.PlayerSettings.NICKNAMES_CHARACTER_LIMIT) + ")," +
-                        "loc-x INT," +
-                        "loc-y INT," +
-                        "loc-z INT," +
-                        "loc-world VARCHAR(255)," +
+                        "loc_x INT," +
+                        "loc_y INT," +
+                        "loc_z INT," +
+                        "loc_world VARCHAR(255)," +
                         "muted BOOLEAN," +
                         "god BOOLEAN," +
                         "vanish BOOLEAN," +
@@ -68,19 +68,19 @@ public class SQL {
                 executeUpdate("CREATE TABLE IF NOT EXISTS warps (" +
                         "ID INT AUTO INCREMENT," +
                         "name VARCHAR(255)," +
-                        "loc-x INT," +
-                        "loc-y INT," +
-                        "loc-z INT," +
-                        "loc-world VARCHAR(255));");
+                        "loc_x INT," +
+                        "loc_y INT," +
+                        "loc_z INT," +
+                        "loc_world VARCHAR(255));");
 
                 executeUpdate("CREATE TABLE IF NOT EXISTS commandbinder (" +
                         "ID INT AUTO INCREMENT," +
                         "command VARCHAR(255)," +
                         "player BOOLEAN," +
-                        "loc-x INT," +
-                        "loc-y INT," +
-                        "loc-z INT," +
-                        "loc-world VARCHAR(255));");
+                        "loc_x INT," +
+                        "loc_y INT," +
+                        "loc_z INT," +
+                        "loc_world VARCHAR(255));");
             }
         }
     }

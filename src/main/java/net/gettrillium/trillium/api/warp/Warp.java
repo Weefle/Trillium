@@ -85,7 +85,7 @@ public class Warp {
             for (Entry<String, Location> row : warps.entrySet()) {
                 try {
                     PreparedStatement ps = SQL.prepareStatement("INSERT INTO warps " +
-                            "(name, loc-x, loc-y, loc-z, loc-world)" +
+                            "(name, loc_x, loc_y, loc_z, loc_world)" +
                             " VALUES (?, ?, ?, ?, ?);");
                     if (ps != null) {
                         ps.setString(1, row.getKey());

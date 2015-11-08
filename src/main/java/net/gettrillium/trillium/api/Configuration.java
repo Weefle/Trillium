@@ -1,6 +1,7 @@
 package net.gettrillium.trillium.api;
 
 public class Configuration {
+    // Auto-generated config file.
 
     public static class Player {
         public static final String NICKNAME = "nickname";

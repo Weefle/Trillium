@@ -1,22 +1,15 @@
 package net.gettrillium.trillium.api;
 
-import net.gettrillium.trillium.api.Configuration.Afk;
 import net.gettrillium.trillium.api.Configuration.Broadcast;
-import net.gettrillium.trillium.api.commandbinder.CommandBinder.Blocks;
 import net.gettrillium.trillium.api.messageutils.Message;
 import net.gettrillium.trillium.api.messageutils.Mood;
 import net.gettrillium.trillium.api.messageutils.Pallete;
-import net.gettrillium.trillium.api.report.Reports;
-import net.gettrillium.trillium.api.warp.Warp;
-import net.gettrillium.trillium.events.PlayerDeath;
-import net.gettrillium.trillium.events.ServerListPing;
-import net.gettrillium.trillium.runnables.AFKRunnable;
-import net.gettrillium.trillium.runnables.AutoBroadcastRunnable;
 import net.gettrillium.trillium.runnables.TpsRunnable;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -29,8 +22,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static net.gettrillium.trillium.api.commandbinder.CommandBinder.Items;
 
 public class Utils {
 
@@ -295,6 +286,61 @@ public class Utils {
 
     public static String aestheticSlash() {
         return Pallete.MAJOR.getColor() + "" + ChatColor.STRIKETHROUGH + "--------------" + ChatColor.RESET;
+    }
+
+    public static String getColorNameFromID(int id) {
+        String color = "white";
+        switch (id) {
+            case 0:
+                color = "white";
+                break;
+            case 1:
+                color = "orange";
+                break;
+            case 2:
+                color = "magenta";
+                break;
+            case 3:
+                color = "light_blue";
+                break;
+            case 4:
+                color = "yellow";
+                break;
+            case 5:
+                color = "lime";
+                break;
+            case 6:
+                color = "pink";
+                break;
+            case 7:
+                color = "gray";
+                break;
+            case 8:
+                color = "light_gray";
+                break;
+            case 9:
+                color = "cyan";
+                break;
+            case 10:
+                color = "purple";
+                break;
+            case 11:
+                color = "blue";
+                break;
+            case 12:
+                color = "brown";
+                break;
+            case 13:
+                color = "green";
+                break;
+            case 14:
+                color = "red";
+                break;
+            case 15:
+                color = "black";
+                break;
+        }
+        return color;
     }
 
 }

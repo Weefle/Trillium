@@ -77,7 +77,7 @@ public class TrilliumPlayer {
         }
     }
 
-    public Player getProxy() {
+    public Player getPlayer() {
         return proxy;
     }
 

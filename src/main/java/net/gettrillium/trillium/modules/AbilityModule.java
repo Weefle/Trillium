@@ -157,13 +157,13 @@ public class AbilityModule extends TrilliumModule {
                         player.setVanished(false);
                         new Message(Mood.BAD, TrilliumAPI.getName(cmd), "You are no longer in vanish mode.").to(player);
                         if (getConfig().getBoolean(Configuration.Ability.VANISH_SPECTATOR_MODE)) {
-                            player.getProxy().setGameMode(player.getLastGamemode());
+                            player.getPlayer().setGameMode(player.getLastGamemode());
                         }
                     } else {
                         player.setVanished(true);
                         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You are now in vanish mode.").to(player);
                         if (getConfig().getBoolean(Configuration.Ability.VANISH_SPECTATOR_MODE)) {
-                            player.getProxy().setGameMode(GameMode.SPECTATOR);
+                            player.getPlayer().setGameMode(GameMode.SPECTATOR);
                         }
                     }
                 } else {
@@ -178,14 +178,14 @@ public class AbilityModule extends TrilliumModule {
                             new Message(Mood.BAD, TrilliumAPI.getName(cmd), target.getName() + " is no longer in vanish mode.").to(player);
                             target.setVanished(false);
                             if (getConfig().getBoolean(Configuration.Ability.VANISH_SPECTATOR_MODE)) {
-                                target.getProxy().setGameMode(target.getLastGamemode());
+                                target.getPlayer().setGameMode(target.getLastGamemode());
                             }
                         } else {
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), player.getName() + " put you in vanish mode.").to(target);
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), target.getName() + " is now in vanish mode.").to(player);
                             target.setVanished(true);
                             if (getConfig().getBoolean(Configuration.Ability.VANISH_SPECTATOR_MODE)) {
-                                target.getProxy().setGameMode(GameMode.SPECTATOR);
+                                target.getPlayer().setGameMode(GameMode.SPECTATOR);
                             }
                         }
                     } else {
@@ -219,7 +219,7 @@ public class AbilityModule extends TrilliumModule {
                                 double i = Double.parseDouble(args[1]);
                                 if ((i <= 10.0D) && (i >= -10.0D)) {
                                     i *= 0.1;
-                                    p.getProxy().setFlySpeed((float) i);
+                                    p.getPlayer().setFlySpeed((float) i);
                                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Fly speed set to " + args[1]).to(p);
                                 } else {
                                     new Message(Mood.BAD, TrilliumAPI.getName(cmd), args[1] + " is out of bounds. -10 -> 10 only.").to(p);
@@ -229,7 +229,7 @@ public class AbilityModule extends TrilliumModule {
                             }
                         } else {
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Fly speed set to default: 1").to(p);
-                            p.getProxy().setFlySpeed(0.1f);
+                            p.getPlayer().setFlySpeed(0.1f);
                         }
                     } else if (args[0].equalsIgnoreCase("walk")) {
                         if (args.length > 1) {
@@ -237,7 +237,7 @@ public class AbilityModule extends TrilliumModule {
                                 double i = Double.parseDouble(args[1]);
                                 if ((i <= 10.0D) && (i >= -10.0D)) {
                                     i *= 0.1;
-                                    p.getProxy().setWalkSpeed((float) i);
+                                    p.getPlayer().setWalkSpeed((float) i);
                                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Walk speed set to " + args[1]).to(p);
                                 } else {
                                     new Message(Mood.BAD, TrilliumAPI.getName(cmd), args[1] + " is out of bounds. -10 -> 10 only.").to(p);
@@ -247,7 +247,7 @@ public class AbilityModule extends TrilliumModule {
                             }
                         } else {
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Walk speed set to default: 2").to(p);
-                            p.getProxy().setFlySpeed(0.2f);
+                            p.getPlayer().setFlySpeed(0.2f);
                         }
                     } else {
                         new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(p);
@@ -275,19 +275,19 @@ public class AbilityModule extends TrilliumModule {
                 if (p.hasPermission(Ability.GAMEMODE)) {
                     if (args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c")) {
                         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Gamemode set to " + ChatColor.AQUA + "creative").to(p);
-                        p.getProxy().setGameMode(GameMode.CREATIVE);
+                        p.getPlayer().setGameMode(GameMode.CREATIVE);
 
                     } else if (args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0") || args[0].equalsIgnoreCase("s")) {
                         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Gamemode set to " + ChatColor.AQUA + "survival").to(p);
-                        p.getProxy().setGameMode(GameMode.SURVIVAL);
+                        p.getPlayer().setGameMode(GameMode.SURVIVAL);
 
                     } else if (args[0].equalsIgnoreCase("adventure") || args[0].equalsIgnoreCase("2") || args[0].equalsIgnoreCase("a")) {
                         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Gamemode set to " + ChatColor.AQUA + "adventure").to(p);
-                        p.getProxy().setGameMode(GameMode.ADVENTURE);
+                        p.getPlayer().setGameMode(GameMode.ADVENTURE);
 
                     } else if (args[0].equalsIgnoreCase("spectator") || args[0].equalsIgnoreCase("3") || args[0].equalsIgnoreCase("sp")) {
                         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Gamemode set to " + ChatColor.AQUA + "spectator").to(p);
-                        p.getProxy().setGameMode(GameMode.SPECTATOR);
+                        p.getPlayer().setGameMode(GameMode.SPECTATOR);
 
                     } else {
                         new Message(Mood.BAD, TrilliumAPI.getName(cmd), "Mojang didn't add that gamemode yet...").to(p);
@@ -306,22 +306,22 @@ public class AbilityModule extends TrilliumModule {
                         if (args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c")) {
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "creative").to(p);
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " set your gamemode to " + ChatColor.AQUA + "creative").to(pl);
-                            pl.getProxy().setGameMode(GameMode.CREATIVE);
+                            pl.getPlayer().setGameMode(GameMode.CREATIVE);
 
                         } else if (args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0") || args[0].equalsIgnoreCase("s")) {
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "survival").to(p);
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " set your gamemode to " + ChatColor.AQUA + "survival").to(pl);
-                            pl.getProxy().setGameMode(GameMode.SURVIVAL);
+                            pl.getPlayer().setGameMode(GameMode.SURVIVAL);
 
                         } else if (args[0].equalsIgnoreCase("adventure") || args[0].equalsIgnoreCase("2") || args[0].equalsIgnoreCase("a")) {
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "adventure").to(p);
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " set your gamemode to " + ChatColor.AQUA + "adventure").to(pl);
-                            pl.getProxy().setGameMode(GameMode.ADVENTURE);
+                            pl.getPlayer().setGameMode(GameMode.ADVENTURE);
 
                         } else if (args[0].equalsIgnoreCase("spectator") || args[0].equalsIgnoreCase("3") || args[0].equalsIgnoreCase("sp")) {
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), pl.getName() + "'s gamemode set to " + ChatColor.AQUA + "spectator").to(p);
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " set your gamemode to " + ChatColor.AQUA + "spectator").to(pl);
-                            pl.getProxy().setGameMode(GameMode.SPECTATOR);
+                            pl.getPlayer().setGameMode(GameMode.SPECTATOR);
 
                         } else {
                             new Message(Mood.BAD, TrilliumAPI.getName(cmd), "Mojang didn't add that gamemode yet...").to(p);
@@ -336,11 +336,11 @@ public class AbilityModule extends TrilliumModule {
 
             } else {
                 if (p.hasPermission(Ability.GAMEMODE)) {
-                    if (p.getProxy().getGameMode() == GameMode.CREATIVE) {
-                        p.getProxy().setGameMode(GameMode.SURVIVAL);
+                    if (p.getPlayer().getGameMode() == GameMode.CREATIVE) {
+                        p.getPlayer().setGameMode(GameMode.SURVIVAL);
                         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Gamemode set to " + ChatColor.AQUA + "survival").to(p);
                     } else {
-                        p.getProxy().setGameMode(GameMode.CREATIVE);
+                        p.getPlayer().setGameMode(GameMode.CREATIVE);
                         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Gamemode set to " + ChatColor.AQUA + "creative").to(p);
                     }
                 } else {
@@ -504,13 +504,13 @@ public class AbilityModule extends TrilliumModule {
             }
 
             if (!damaged.canPvp() || !damager.canPvp()) {
-                if (!damaged.getProxy().getUniqueId().equals(damager.getProxy().getUniqueId())) {
+                if (!damaged.getPlayer().getUniqueId().equals(damager.getPlayer().getUniqueId())) {
                     event.setCancelled(true);
                 }
             }
         } else {
 
-            if (!damaged.getProxy().getUniqueId().equals(damager.getProxy().getUniqueId())) {
+            if (!damaged.getPlayer().getUniqueId().equals(damager.getPlayer().getUniqueId())) {
                 event.setCancelled(true);
             }
         }

@@ -25,7 +25,7 @@ public class AFKRunnable extends BukkitRunnable {
                 continue;
             }
 
-            if (player.getProxy().isOp()) {
+            if (player.getPlayer().isOp()) {
                 continue;
             }
 
@@ -45,7 +45,7 @@ public class AFKRunnable extends BukkitRunnable {
         }
 
         for (TrilliumPlayer player : toKick) {
-            player.getProxy().kickPlayer("You idled for too long.");
+            player.getPlayer().kickPlayer("You idled for too long.");
             new Message(Mood.BAD, "AFK", player.getName() + " got kicked for idling for too long.").broadcast();
         }
     }

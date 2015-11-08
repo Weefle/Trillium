@@ -142,7 +142,7 @@ public class Tune {
                                         || tone.equalsIgnoreCase("F")
                                         || tone.equalsIgnoreCase("G")) {
                                     if (TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_NOTE).equalsIgnoreCase("NATURAL")) {
-                                        p.getProxy().playNote(p.getProxy().getLocation(),
+                                        p.getPlayer().playNote(p.getPlayer().getLocation(),
                                                 Instrument.valueOf(TrilliumAPI.getInstance().getConfig().getString(Server.TUNE_INSTRUMENT).toUpperCase()),
                                                 Note.natural(dots, Tone.valueOf(tone)));
                                     }

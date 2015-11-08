@@ -110,26 +110,26 @@ public class ChatModule extends TrilliumModule {
             } else {
                 TrilliumPlayer p = player(args[0]);
                 if (p != null) {
-                    p.getProxy().sendMessage(" ");
+                    p.getPlayer().sendMessage(" ");
                     new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "Displaying Information On: " + ChatColor.AQUA + p.getName()).to(cs);
                     new Message(Mood.NEUTRAL, "Nickname", "" + ChatColor.AQUA + p.getDisplayName()).to(cs);
                     new Message(Mood.NEUTRAL, "Online", "" + ChatColor.AQUA + p.isOnline()).to(cs);
-                    new Message(Mood.NEUTRAL, "Gamemode", "" + ChatColor.AQUA + p.getProxy().getGameMode()).to(cs);
-                    new Message(Mood.NEUTRAL, "Banned", "" + ChatColor.AQUA + p.getProxy().isBanned()).to(cs);
-                    if (p.getProxy().isBanned()) {
+                    new Message(Mood.NEUTRAL, "Gamemode", "" + ChatColor.AQUA + p.getPlayer().getGameMode()).to(cs);
+                    new Message(Mood.NEUTRAL, "Banned", "" + ChatColor.AQUA + p.getPlayer().isBanned()).to(cs);
+                    if (p.getPlayer().isBanned()) {
                         new Message(Mood.NEUTRAL, "Ban Reason", ChatColor.RED + "You are the weakest link. Goodbye.").to(cs);
                     }
                     new Message(Mood.NEUTRAL, "Muted", "" + ChatColor.AQUA + p.isMuted()).to(cs);
                     new Message(Mood.NEUTRAL, "Flying", "" + ChatColor.AQUA + p.isFlying()).to(cs);
-                    new Message(Mood.NEUTRAL, "Location", "" + ChatColor.AQUA + LocationHandler.toString(p.getProxy().getLocation())).to(cs);
+                    new Message(Mood.NEUTRAL, "Location", "" + ChatColor.AQUA + LocationHandler.toString(p.getPlayer().getLocation())).to(cs);
 
-                    if (p.isVanished() || !p.getProxy().isOnline()) {
+                    if (p.isVanished() || !p.getPlayer().isOnline()) {
                         new Message(Mood.NEUTRAL, "Last Found At", "" + ChatColor.AQUA + p.getLastLocation().getBlockX() + "," + p.getLastLocation().getBlockY() + ", " + p.getLastLocation().getBlockZ()).to(cs);
                     }
-                    new Message(Mood.NEUTRAL, "Food Level", "" + ChatColor.AQUA + p.getProxy().getFoodLevel()).to(cs);
-                    new Message(Mood.NEUTRAL, "Health Level", "" + ChatColor.AQUA + p.getProxy().getHealthScale()).to(cs);
-                    new Message(Mood.NEUTRAL, "Time Played in Hours", "" + ChatColor.AQUA + (p.getProxy().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60).to(cs);
-                    new Message(Mood.NEUTRAL, "Time Played in Days", "" + ChatColor.AQUA + ((p.getProxy().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60) / 24).to(cs);
+                    new Message(Mood.NEUTRAL, "Food Level", "" + ChatColor.AQUA + p.getPlayer().getFoodLevel()).to(cs);
+                    new Message(Mood.NEUTRAL, "Health Level", "" + ChatColor.AQUA + p.getPlayer().getHealthScale()).to(cs);
+                    new Message(Mood.NEUTRAL, "Time Played in Hours", "" + ChatColor.AQUA + (p.getPlayer().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60).to(cs);
+                    new Message(Mood.NEUTRAL, "Time Played in Days", "" + ChatColor.AQUA + ((p.getPlayer().getStatistic(Statistic.PLAY_ONE_TICK) / 20 / 60) / 60) / 24).to(cs);
                 } else {
                     new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]);
                 }
@@ -156,7 +156,7 @@ public class ChatModule extends TrilliumModule {
                 }
                 String message = sb.toString().trim();
 
-                Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "** " + ChatColor.GRAY + p.getProxy().getName() + " " + message + ChatColor.DARK_GRAY + " **");
+                Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "** " + ChatColor.GRAY + p.getPlayer().getName() + " " + message + ChatColor.DARK_GRAY + " **");
 
             } else {
                 new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
@@ -205,8 +205,8 @@ public class ChatModule extends TrilliumModule {
                         format2 = format2.replace("%MESSAGE%", msg);
                         format2 = new Message(format2).asString();
 
-                        p.getProxy().sendMessage(format1);
-                        target.getProxy().sendMessage(format2);
+                        p.getPlayer().sendMessage(format1);
+                        target.getPlayer().sendMessage(format2);
 
                     } else {
                         new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(p);
@@ -233,20 +233,20 @@ public class ChatModule extends TrilliumModule {
             TrilliumPlayer p = player((Player) cs);
             if (args.length == 1) {
                 if (p.hasPermission(Permission.Chat.NICK)
-                        && !p.getProxy().isOp()
+                        && !p.getPlayer().isOp()
                         && !p.hasPermission(Permission.Chat.NICK_COLOR)) {
 
                     if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("off")) {
                         if (p.hasNickname()) {
-                            if (p.getProxy().isOp()) {
+                            if (p.getPlayer().isOp()) {
                                 if (!getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE).equals("") || !getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE).equals(" ")) {
-                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE) + p.getProxy().getName();
+                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE) + p.getPlayer().getName();
                                     p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
                                 } else {
-                                    p.setDisplayName(p.getProxy().getName());
+                                    p.setDisplayName(p.getPlayer().getName());
                                 }
                             } else {
-                                p.setDisplayName(p.getProxy().getName());
+                                p.setDisplayName(p.getPlayer().getName());
                             }
                         } else {
                             new Message(Mood.BAD, "Nickname", "You don't have a nickname set.").to(p);
@@ -269,15 +269,15 @@ public class ChatModule extends TrilliumModule {
 
                     if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("off")) {
                         if (p.hasNickname()) {
-                            if (p.getProxy().isOp()) {
+                            if (p.getPlayer().isOp()) {
                                 if (!getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE).isEmpty()) {
-                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE) + p.getProxy().getName();
+                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE) + p.getPlayer().getName();
                                     p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
                                 } else {
-                                    p.setDisplayName(p.getProxy().getName());
+                                    p.setDisplayName(p.getPlayer().getName());
                                 }
                             } else {
-                                p.setDisplayName(p.getProxy().getName());
+                                p.setDisplayName(p.getPlayer().getName());
                             }
                         } else {
                             new Message(Mood.BAD, "Nickname", "You don't have a nickname set.").to(p);
@@ -302,19 +302,19 @@ public class ChatModule extends TrilliumModule {
                 }
 
             } else if (args.length > 1) {
-                if (p.hasPermission(Permission.Chat.NICK_OTHER) && !p.getProxy().isOp()) {
+                if (p.hasPermission(Permission.Chat.NICK_OTHER) && !p.getPlayer().isOp()) {
 
                     if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("off")) {
                         if (p.hasNickname()) {
-                            if (p.getProxy().isOp()) {
+                            if (p.getPlayer().isOp()) {
                                 if (!getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE).isEmpty()) {
-                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE) + p.getProxy().getName();
+                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE) + p.getPlayer().getName();
                                     p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
                                 } else {
-                                    p.setDisplayName(p.getProxy().getName());
+                                    p.setDisplayName(p.getPlayer().getName());
                                 }
                             } else {
-                                p.setDisplayName(p.getProxy().getName());
+                                p.setDisplayName(p.getPlayer().getName());
                             }
                         } else {
                             new Message(Mood.BAD, "Nickname", "You don't have a nickname set.").to(p);
@@ -343,15 +343,15 @@ public class ChatModule extends TrilliumModule {
 
                     if (args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("off")) {
                         if (p.hasNickname()) {
-                            if (p.getProxy().isOp()) {
+                            if (p.getPlayer().isOp()) {
                                 if (!getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE).isEmpty()) {
-                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE) + p.getProxy().getName();
+                                    String opcolor = "&" + getConfig().getString(Configuration.PlayerSettings.NICKNAMES_OPS_COLOR_CODE) + p.getPlayer().getName();
                                     p.setDisplayName(ChatColor.translateAlternateColorCodes('&', opcolor + "&f"));
                                 } else {
-                                    p.setDisplayName(p.getProxy().getName());
+                                    p.setDisplayName(p.getPlayer().getName());
                                 }
                             } else {
-                                p.setDisplayName(p.getProxy().getName());
+                                p.setDisplayName(p.getPlayer().getName());
                             }
                         } else {
                             new Message(Mood.BAD, "Nickname", "You don't have a nickname set.").to(p);
@@ -414,13 +414,13 @@ public class ChatModule extends TrilliumModule {
                                 String f = getConfig().getString(Configuration.Chat.CHAT_CHANNELS_FORMAT);
 
                                 f = f.replace("%CHANNELNAME%", args[0]);
-                                f = f.replace("%NICKNAME%", p.getProxy().getName());
+                                f = f.replace("%NICKNAME%", p.getPlayer().getName());
                                 f = f.replace("%MESSAGE%", msg);
                                 if (getConfig().getBoolean(Configuration.Chat.CHAT_CHANNELS_ALLOW_COLOR_CODES)) {
                                     f = ChatColor.translateAlternateColorCodes('&', f);
                                 }
 
-                                pl.getProxy().sendMessage(f);
+                                pl.getPlayer().sendMessage(f);
                             }
                         }
                     } else {

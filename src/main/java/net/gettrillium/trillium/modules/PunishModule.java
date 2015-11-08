@@ -342,7 +342,7 @@ public class PunishModule extends TrilliumModule {
         }
 
         if (p.isShadowBanned() && !p.isMuted()) {
-            p.getProxy().sendMessage("Unknown command. Try /help for a list of commands.");
+            p.getPlayer().sendMessage("Unknown command. Try /help for a list of commands.");
             e.setCancelled(true);
         }
     }

@@ -151,7 +151,7 @@ public class AdminModule extends TrilliumModule {
             final TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Admin.CHESTFINDER)) {
 
-                Location loc = p.getProxy().getLocation();
+                Location loc = p.getPlayer().getLocation();
                 int radius;
                 if (args.length == 0) {
                     radius = 50;
@@ -219,7 +219,7 @@ public class AdminModule extends TrilliumModule {
                                 cancel();
                             }
 
-                            Location loc = p.getProxy().getLocation();
+                            Location loc = p.getPlayer().getLocation();
                             Vector playerVector = loc.toVector();
 
                             for (Vector v : blockVectors) {
@@ -235,7 +235,7 @@ public class AdminModule extends TrilliumModule {
 
                                 for (double d = 0.0; d <= dist; d += 0.5) {
                                     loc.add(dx * d, dy * d, dz * d);
-                                    ParticleEffect.FLAME.display(0.0F, 0.0F, 0.0F, 0.0F, 1, loc, p.getProxy());
+                                    ParticleEffect.FLAME.display(0.0F, 0.0F, 0.0F, 0.0F, 1, loc, p.getPlayer());
                                     loc.subtract(dx, dy, dz);
                                 }
                             }
@@ -399,7 +399,7 @@ public class AdminModule extends TrilliumModule {
             }
         }
 
-        List<Entity> entities = p.getProxy().getNearbyEntities(radius, radius, radius);
+        List<Entity> entities = p.getPlayer().getNearbyEntities(radius, radius, radius);
         int i = 0;
 
         if (args[0].equalsIgnoreCase("mobs")) {
@@ -526,7 +526,7 @@ public class AdminModule extends TrilliumModule {
             if (args.length == 1) {
                 if (args[0].equalsIgnoreCase("crafting") || args[0].equalsIgnoreCase("cv")) {
                     if (p.hasPermission(Admin.INV_CRAFTING)) {
-                        p.getProxy().openWorkbench(p.getProxy().getLocation(), true);
+                        p.getPlayer().openWorkbench(p.getPlayer().getLocation(), true);
                         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Now viewing a crafting table.").to(cs);
                     } else {
                         new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
@@ -536,7 +536,7 @@ public class AdminModule extends TrilliumModule {
                         Player target = Bukkit.getPlayer(args[0]);
 
                         if (target != null) {
-                            p.getProxy().openInventory(target.getInventory());
+                            p.getPlayer().openInventory(target.getInventory());
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You are now viewing " + target.getName() + "'s inventory.").to(cs);
                         } else {
                             new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
@@ -552,7 +552,7 @@ public class AdminModule extends TrilliumModule {
                         Player target = Bukkit.getPlayer(args[0]);
 
                         if (target != null) {
-                            p.getProxy().openInventory(target.getEnderChest());
+                            p.getPlayer().openInventory(target.getEnderChest());
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Now viewing " + args[0] + "'s ender chest.").to(cs);
                         } else {
                             new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(p);
@@ -624,7 +624,7 @@ public class AdminModule extends TrilliumModule {
             TrilliumPlayer p = player((Player) cs);
             if (p.hasPermission(Admin.REPORT_RECEIVER)) {
                 if (args.length == 0) {
-                    p.getProxy().sendMessage(ChatColor.BLUE + "Reports:");
+                    p.getPlayer().sendMessage(ChatColor.BLUE + "Reports:");
                     for (Message msg : Reports.getReportMessages()) {
                         msg.to(p);
                     }

@@ -133,10 +133,10 @@ public class CommandBinder {
 
             Map<UUID, Map<String, Map<Material, Boolean>>> rows = new HashMap<>(TABLE.rowMap());
 
-            for (Entry<String, Map<Material, Boolean>> column : rows.get(p.getProxy().getUniqueId()).entrySet()) {
-                if (rows.containsKey(p.getProxy().getUniqueId())) {
-                    if (TABLE.containsColumn(p.getProxy().getUniqueId())) {
-                        TABLE.remove(p.getProxy().getUniqueId(), column.getKey());
+            for (Entry<String, Map<Material, Boolean>> column : rows.get(p.getPlayer().getUniqueId()).entrySet()) {
+                if (rows.containsKey(p.getPlayer().getUniqueId())) {
+                    if (TABLE.containsColumn(p.getPlayer().getUniqueId())) {
+                        TABLE.remove(p.getPlayer().getUniqueId(), column.getKey());
                     }
                 }
             }
@@ -159,7 +159,7 @@ public class CommandBinder {
                 for (String deserialized : serialized) {
                     Map<Material, Boolean> map = new HashMap<>(1);
                     map.put(Material.valueOf(deserialized.split(";")[1]), Boolean.parseBoolean(deserialized.split(";")[2]));
-                    TABLE.put(p.getProxy().getUniqueId(), deserialized.split(";")[0], map);
+                    TABLE.put(p.getPlayer().getUniqueId(), deserialized.split(";")[0], map);
                 }
             }
         }

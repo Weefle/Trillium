@@ -67,7 +67,7 @@ public class Message {
     }
 
     public void to(TrilliumPlayer to) {
-        to.getProxy().sendMessage(format);
+        to.getPlayer().sendMessage(format);
     }
 
     public String asString() {

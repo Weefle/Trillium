@@ -97,7 +97,7 @@ public class CoreModule extends TrilliumModule {
 
             new Message(Mood.BAD, "Vanish", "Remember! You are still in vanish mode!").to(player);
             for (TrilliumPlayer online : TrilliumAPI.getOnlinePlayers()) {
-                online.getProxy().hidePlayer(player.getProxy());
+                online.getPlayer().hidePlayer(player.getPlayer());
             }
         }
 

@@ -30,17 +30,17 @@ public class KitModule extends TrilliumModule {
                 }
             } else if (args.length == 1) {
                 if (getConfig().getConfigurationSection(Configuration.Kits.KIT_MAKER).contains(args[0])) {
-                    if (p.getProxy().hasPermission(Permission.Kit.USE + args[0])) {
-                        if (Cooldown.hasCooldown(p.getProxy(), CooldownType.KIT)) {
-                            new Message(Mood.BAD, "Kit", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.KIT)).to(p);
+                    if (p.getPlayer().hasPermission(Permission.Kit.USE + args[0])) {
+                        if (Cooldown.hasCooldown(p.getPlayer(), CooldownType.KIT)) {
+                            new Message(Mood.BAD, "Kit", "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getPlayer(), CooldownType.KIT)).to(p);
                         } else {
-                            if (!p.getProxy().isOp()
+                            if (!p.getPlayer().isOp()
                                     && !p.hasPermission(Permission.Kit.COOLDOWN_EXEMPT)
                                     && !p.hasPermission(Permission.Kit.GIVE)) {
-                                Cooldown.setCooldown(p.getProxy(), CooldownType.KIT, true);
+                                Cooldown.setCooldown(p.getPlayer(), CooldownType.KIT, true);
                             }
 
-                            new Kit(args[0]).giveTo(p.getProxy());
+                            new Kit(args[0]).giveTo(p.getPlayer());
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You successfully received kit " + args[0]).to(p);
 
                         }
@@ -51,7 +51,7 @@ public class KitModule extends TrilliumModule {
                     new Message(Mood.BAD, TrilliumAPI.getName(cmd), args[0] + " is not a valid kit.").to(p);
                 }
             } else {
-                if (p.getProxy().hasPermission(Permission.Kit.GIVE)) {
+                if (p.getPlayer().hasPermission(Permission.Kit.GIVE)) {
                     Player target = Bukkit.getPlayer(args[1]);
                     if (target != null) {
                         new Kit(args[0]).giveTo(target);

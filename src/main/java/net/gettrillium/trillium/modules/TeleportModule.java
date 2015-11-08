@@ -47,22 +47,22 @@ public class TeleportModule extends TrilliumModule {
 
         TrilliumPlayer p = player(cs.getName());
 
-        if (!p.getProxy().hasPermission(Teleport.BACK)) {
+        if (!p.getPlayer().hasPermission(Teleport.BACK)) {
             new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
             return;
         }
 
-        if (Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
-            new Message(Mood.BAD, TrilliumAPI.getName(cmd), "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
+        if (Cooldown.hasCooldown(p.getPlayer(), CooldownType.TELEPORTATION)) {
+            new Message(Mood.BAD, TrilliumAPI.getName(cmd), "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getPlayer(), CooldownType.TELEPORTATION)).to(p);
             return;
         }
 
-        if (!p.getProxy().isOp() && !p.hasPermission(Teleport.COOLDOWN_EXEMPT)) {
-            Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
+        if (!p.getPlayer().isOp() && !p.hasPermission(Teleport.COOLDOWN_EXEMPT)) {
+            Cooldown.setCooldown(p.getPlayer(), CooldownType.TELEPORTATION, false);
         }
 
         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You have been sent back to your last location.").to(p);
-        p.getProxy().teleport(p.getLastLocation());
+        p.getPlayer().teleport(p.getLastLocation());
     }
 
     @Command(name = "Spawn",
@@ -242,8 +242,8 @@ public class TeleportModule extends TrilliumModule {
             Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
         }
 
-        target.getProxy().teleport(p);
-        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + target.getProxy().getName() + " to you.").to(p);
+        target.getPlayer().teleport(p);
+        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + target.getPlayer().getName() + " to you.").to(p);
         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " teleported you to them.").to(target);
     }
 
@@ -378,7 +378,7 @@ public class TeleportModule extends TrilliumModule {
             }
 
             TrilliumPlayer requester = player(Bukkit.getPlayer(tpr.get(p.getUniqueId())));
-            requester.getProxy().teleport(p);
+            requester.getPlayer().teleport(p);
 
             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + requester.getName() + " to you.").to(p);
             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " accepted your teleport request.").to(requester);
@@ -397,7 +397,7 @@ public class TeleportModule extends TrilliumModule {
 
             TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getUniqueId())));
 
-            p.teleport(requester.getProxy());
+            p.teleport(requester.getPlayer());
             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported to " + requester.getName()).to(p);
             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " accepted to teleport to you.").to(requester);
 
@@ -674,16 +674,16 @@ public class TeleportModule extends TrilliumModule {
                 }
             }
 
-            if (p.getProxy().isOp()) {
+            if (p.getPlayer().isOp()) {
                 max = getConfig().getInt(PlayerSettings.MAX_NUMBER_OF_HOMES);
             }
 
             if (p.getHomeList().size() <= max) {
                 if (args.length >= 2) {
-                    p.setHome(args[1], p.getProxy().getLocation());
+                    p.setHome(args[1], p.getPlayer().getLocation());
                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "New home " + args[1] + " set.").to(p);
                 } else {
-                    p.setHome("default", p.getProxy().getLocation());
+                    p.setHome("default", p.getPlayer().getLocation());
                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Default home set.").to(p);
                 }
             } else {
@@ -734,13 +734,13 @@ public class TeleportModule extends TrilliumModule {
                 return;
             }
 
-            if (Cooldown.hasCooldown(p.getProxy(), CooldownType.TELEPORTATION)) {
-                new Message(Mood.BAD, TrilliumAPI.getName(cmd), "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getProxy(), CooldownType.TELEPORTATION)).to(p);
+            if (Cooldown.hasCooldown(p.getPlayer(), CooldownType.TELEPORTATION)) {
+                new Message(Mood.BAD, TrilliumAPI.getName(cmd), "Cooldown is still active: " + ChatColor.AQUA + Cooldown.getTime(p.getPlayer(), CooldownType.TELEPORTATION)).to(p);
                 return;
             }
 
-            if (!p.getProxy().isOp() && !p.hasPermission(Teleport.COOLDOWN_EXEMPT)) {
-                Cooldown.setCooldown(p.getProxy(), CooldownType.TELEPORTATION, false);
+            if (!p.getPlayer().isOp() && !p.hasPermission(Teleport.COOLDOWN_EXEMPT)) {
+                Cooldown.setCooldown(p.getPlayer(), CooldownType.TELEPORTATION, false);
             }
 
             if (args.length <= 1) {
@@ -749,10 +749,10 @@ public class TeleportModule extends TrilliumModule {
                     return;
                 }
 
-                PlayerHomeEvent event = new PlayerHomeEvent("default", p.getProxy(), p.getProxy().getLocation(), p.getHomeLocation("default"));
+                PlayerHomeEvent event = new PlayerHomeEvent("default", p.getPlayer(), p.getPlayer().getLocation(), p.getHomeLocation("default"));
                 Bukkit.getPluginManager().callEvent(event);
                 if (!event.isCancelled()) {
-                    p.getProxy().teleport(p.getHomeLocation("default"));
+                    p.getPlayer().teleport(p.getHomeLocation("default"));
                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You were teleported to your default home").to(p);
                 }
 
@@ -762,10 +762,10 @@ public class TeleportModule extends TrilliumModule {
                     return;
                 }
 
-                PlayerHomeEvent event = new PlayerHomeEvent(args[1], p.getProxy(), p.getProxy().getLocation(), p.getHomeLocation(args[1]));
+                PlayerHomeEvent event = new PlayerHomeEvent(args[1], p.getPlayer(), p.getPlayer().getLocation(), p.getHomeLocation(args[1]));
                 Bukkit.getPluginManager().callEvent(event);
                 if (!event.isCancelled()) {
-                    p.getProxy().teleport(p.getHomeLocation(args[1]));
+                    p.getPlayer().teleport(p.getHomeLocation(args[1]));
                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You were teleported to home " + args[1]).to(p);
                 }
             }

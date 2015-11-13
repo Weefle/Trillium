@@ -474,44 +474,45 @@ public class AbilityModule extends TrilliumModule {
 
     @EventHandler
     public void onDamageEntity(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof Player) {
+            TrilliumPlayer damaged = player((Player) event.getEntity());
 
-        TrilliumPlayer damaged = player((Player) event.getEntity());
+            Entity e = event.getDamager();
+            TrilliumPlayer damager;
 
-        Entity e = event.getDamager();
-        TrilliumPlayer damager;
+            if (e instanceof Player) {
+                damager = TrilliumAPI.getPlayer((Player) event.getDamager());
+            } else if (e instanceof Projectile) {
+                ProjectileSource shooter = ((Projectile) e).getShooter();
 
-        if (e instanceof Player) {
-            damager = TrilliumAPI.getPlayer((Player) event.getDamager());
-        } else if (e instanceof Projectile) {
-            ProjectileSource shooter = ((Projectile) e).getShooter();
+                if (!(shooter instanceof Player)) {
+                    return;
+                }
 
-            if (!(shooter instanceof Player)) {
+                damager = TrilliumAPI.getPlayer((Player) shooter);
+            } else {
                 return;
             }
 
-            damager = TrilliumAPI.getPlayer((Player) shooter);
-        } else {
-            return;
-        }
-
-        if (!(event.getDamager() instanceof Player)) {
-            return;
-        }
-
-        if (getConfig().getBoolean(Server.PVP_ENABLED)) {
-            if (!getConfig().getBoolean(Server.PVP_ENABLE_TOGGLE_PVP)) {
+            if (!(event.getDamager() instanceof Player)) {
                 return;
             }
 
-            if (!damaged.canPvp() || !damager.canPvp()) {
+            if (getConfig().getBoolean(Server.PVP_ENABLED)) {
+                if (!getConfig().getBoolean(Server.PVP_ENABLE_TOGGLE_PVP)) {
+                    return;
+                }
+
+                if (!damaged.canPvp() || !damager.canPvp()) {
+                    if (!damaged.getPlayer().getUniqueId().equals(damager.getPlayer().getUniqueId())) {
+                        event.setCancelled(true);
+                    }
+                }
+            } else {
+
                 if (!damaged.getPlayer().getUniqueId().equals(damager.getPlayer().getUniqueId())) {
                     event.setCancelled(true);
                 }
-            }
-        } else {
-
-            if (!damaged.getPlayer().getUniqueId().equals(damager.getPlayer().getUniqueId())) {
-                event.setCancelled(true);
             }
         }
     }

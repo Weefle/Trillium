@@ -7,7 +7,10 @@ import org.bukkit.Material;
  */
 public enum  ItemDB {
 
-    STONE(Material.STONE, 0, "stone", "blockstone", "stoneblock", "stn");
+    STONE(Material.STONE, 0, "stone", "blockstone", "stoneblock", "stn"),
+    COBBLESTONE(Material.COBBLESTONE, 0, "cobblestone", "cobble", "cble", "cbble");
+
+
 
     private Material material;
     private int durability;

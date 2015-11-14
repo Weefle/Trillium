@@ -33,9 +33,9 @@ public class LocationHandler {
     }
 
     public static String toString(Location loc) {
-        double x = loc.getX();
-        double y = loc.getY();
-        double z = loc.getZ();
+        double x = loc.getBlockX();
+        double y = loc.getBlockY();
+        double z = loc.getBlockZ();
         String world = loc.getWorld().getName();
 
         String readable = "%HIGHLIGHT%" + x + "%MAJOR%, " + "%HIGHLIGHT%" + y + "%MAJOR%, " + "%HIGHLIGHT%" + z + "%MAJOR%, %HIGHLIGHT%" + world;

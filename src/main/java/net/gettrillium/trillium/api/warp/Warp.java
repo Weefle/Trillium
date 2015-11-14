@@ -46,7 +46,7 @@ public class Warp {
         return LocationHandler.deserialize(warps.get(name));
     }
 
-    public static boolean isNotNull(String name) {
+    public static boolean exists(String name) {
         return warps.containsKey(name);
     }
 

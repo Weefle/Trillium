@@ -435,7 +435,7 @@ public class TrilliumPlayer {
     }
 
     public boolean hasCooldown(String cooldownName) {
-        return yml.get(cooldownName) != null;
+        return yml.getString(cooldownName) != null;
     }
 
     public long getCooldown(String cooldownName) {

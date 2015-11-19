@@ -217,7 +217,8 @@ public class TrilliumAPI {
         }
     }
 
-    public static void unregisterCommands() {
+
+        public static void unregisterCommands() {
         try {
             Field field = SimplePluginManager.class.getDeclaredField("commandMap");
             field.setAccessible(true);

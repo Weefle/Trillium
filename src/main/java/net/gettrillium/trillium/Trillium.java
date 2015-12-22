@@ -47,6 +47,7 @@ public class Trillium extends JavaPlugin {
 
         load();
         generateFiles();
+        SQL.load();
 
         if (getConfig().getBoolean(Server.ALLOW_METRICS)) {
             try {

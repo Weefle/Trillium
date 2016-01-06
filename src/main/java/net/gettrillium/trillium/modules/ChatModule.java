@@ -394,44 +394,43 @@ public class ChatModule extends TrilliumModule {
     public void chatchannel(CommandSender cs, String[] args) {
         String cmd = "chatchannel";
         if (getConfig().getBoolean(Configuration.Chat.CHAT_CHANNELS_ENABLED)) {
-            if (cs instanceof Player) {
-                TrilliumPlayer p = player((Player) cs);
-                if (args.length >= 2) {
-                    if (p.hasPermission(Permission.Chat.CHATCHANNEL + args[0])) {
+            if (args.length >= 2) {
+                if (cs.hasPermission(Permission.Chat.CHATCHANNEL + args[0])) {
 
-                        for (TrilliumPlayer pl : TrilliumAPI.getOnlinePlayers()) {
-                            if (pl.hasPermission(Permission.Chat.CHATCHANNEL + args[0])) {
+                    for (TrilliumPlayer pl : TrilliumAPI.getOnlinePlayers()) {
+                        if (pl.hasPermission(Permission.Chat.CHATCHANNEL + args[0])) {
 
-                                StringBuilder sb = new StringBuilder();
-                                for (int i = 1; i < args.length; i++) {
-                                    sb.append(args[i]).append(" ");
-                                }
-
-                                String msg = sb.toString().trim();
-
-                                String f = getConfig().getString(Configuration.Chat.CHAT_CHANNELS_FORMAT);
-
-                                f = f.replace("%CHANNELNAME%", args[0]);
-                                f = f.replace("%NICKNAME%", p.getPlayer().getName());
-                                f = f.replace("%MESSAGE%", msg);
-                                if (getConfig().getBoolean(Configuration.Chat.CHAT_CHANNELS_ALLOW_COLOR_CODES)) {
-                                    f = ChatColor.translateAlternateColorCodes('&', f);
-                                }
-
-                                pl.getPlayer().sendMessage(f);
+                            StringBuilder sb = new StringBuilder();
+                            for (int i = 1; i < args.length; i++) {
+                                sb.append(args[i]).append(" ");
                             }
+
+                            String msg = getConfig().getString(Configuration.Chat.CHAT_CHANNELS_FORMAT);
+                            msg = new Message(msg).asString();
+                            msg = msg.replace("%CHANNELNAME%", args[0]);
+                            if (cs instanceof Player) {
+                                msg = msg.replace("%NICKNAME%", ((Player) cs).getDisplayName());
+                                msg = msg.replace("%USERNAME%", cs.getName());
+                            } else {
+                                msg = msg.replace("%NICKNAME%", "Console");
+                                msg = msg.replace("%USERNAME%", "Console");
+                            }
+                            msg = msg.replace("%MESSAGE%", sb.toString().trim());
+                            if (getConfig().getBoolean(Configuration.Chat.CHAT_CHANNELS_ALLOW_COLOR_CODES)) {
+                                msg = ChatColor.translateAlternateColorCodes('&', msg);
+                            }
+                            pl.getPlayer().sendMessage(msg);
+                            Bukkit.getConsoleSender().sendMessage(msg);
                         }
-                    } else {
-                        new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(p);
                     }
                 } else {
-                    new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd));
+                    new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);
                 }
             } else {
-                new Message(TrilliumAPI.getName(cmd), Error.CONSOLE_NOT_ALLOWED).to(cs);
+                new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             }
         } else {
-            new Message(Mood.BAD, TrilliumAPI.getName(cmd), "This feature is disabled.");
+            new Message(Mood.BAD, TrilliumAPI.getName(cmd), "This feature is disabled.").to(cs);
         }
     }
 

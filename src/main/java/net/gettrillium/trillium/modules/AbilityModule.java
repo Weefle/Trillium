@@ -434,7 +434,7 @@ public class AbilityModule extends TrilliumModule {
             Player p = (Player) cs;
             if (p.hasPermission(Ability.HEAL)) {
                 if (args.length == 0) {
-                    p.setHealth(p.getMaxHealth() - p.getHealth());
+                    p.setHealth(20);
                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Your health has been restored.").to(p);
                 } else {
                     if (p.hasPermission(Ability.HEAL_OTHER)) {
@@ -442,7 +442,7 @@ public class AbilityModule extends TrilliumModule {
                         if (target != null) {
                             target.setHealth(20);
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), target.getName() + "'s health has been restored.").to(p);
-                            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Your health has been restored.").to(target);
+                            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " restored your health.").to(target);
                         } else {
                             new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(p);
                         }

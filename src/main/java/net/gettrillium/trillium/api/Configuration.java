@@ -73,6 +73,7 @@ public class Configuration {
 
     public static class PluginMessages {
         private static final String PREFIX = "plugin-messages.";
+        public static final String AUTO_HIGHLIGHT_PLAYER_NAMES = PREFIX + "auto-highlight-player-nanes";
         private static final String COLOR_PALLETE = PREFIX + "color-pallete.";
         public static final String COLOR_PALLETE_MINOR_COLOR = COLOR_PALLETE + "minor-color";
         public static final String COLOR_PALLETE_MAJOR_COLOR = COLOR_PALLETE + "major-color";

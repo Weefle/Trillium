@@ -122,6 +122,10 @@ chat:
 
 #---------------[ Plugin Messages ]---------------#
 plugin-messages:
+  auto-highlight-player-nanes: true
+  # Whenever a player name is said from plugin messages, it will highlight the name with the highlight
+  # from the color pallete below and will put the major color afterwards for the rest of the message
+  # ".. <msg> .. %HIGHLIGHT%<playername>%MAJOR .. <msg> .."
   color-pallete:
   # Use %MINOR%, %MAJOR% and %HIGHLIGHT% for message colors.
     minor-color: "&a"

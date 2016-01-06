@@ -142,9 +142,9 @@ public class TeleportModule extends TrilliumModule {
                 if (target2 != null) {
                     target.teleport(target2);
                     if (!target.getName().equals(cs.getName())) {
-                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), Pallete.HIGHLIGHT.getColor() + target.getName() + Pallete.MAJOR.getColor() + " was teleported to " + Pallete.HIGHLIGHT.getColor() + target2.getName()).to(cs);
+                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), target.getName() + " was teleported to " + target2.getName()).to(cs);
                     } else {
-                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You were teleported to " + Pallete.HIGHLIGHT.getColor() + target2.getName()).to(cs);
+                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You were teleported to " + target2.getName()).to(cs);
                     }
 
                 } else {
@@ -168,8 +168,8 @@ public class TeleportModule extends TrilliumModule {
 
                     Location loc = new Location(target.getLocation().getWorld(), coords[0], coords[1], coords[2]);
                     target.teleport(loc);
-                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), Pallete.HIGHLIGHT.getColor() + cs.getName() + Pallete.MAJOR.getColor() + " teleported you to " + Pallete.HIGHLIGHT.getColor() + LocationHandler.toString(loc)).to(target);
-                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + Pallete.HIGHLIGHT.getColor() + target.getName() + Pallete.MAJOR.getColor() + " to " + Pallete.HIGHLIGHT.getColor() + LocationHandler.toString(loc)).to(cs);
+                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), cs.getName() + " teleported you to " + Pallete.HIGHLIGHT.getColor() + LocationHandler.toString(loc)).to(target);
+                    new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + target.getName() + " to " + Pallete.HIGHLIGHT.getColor() + LocationHandler.toString(loc)).to(cs);
                 }
             }
         } else {
@@ -246,8 +246,8 @@ public class TeleportModule extends TrilliumModule {
         }
 
         target.getPlayer().teleport(p);
-        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + Pallete.HIGHLIGHT.getColor() + target.getPlayer().getName() + Pallete.MAJOR.getColor() + " to you.").to(p);
-        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), Pallete.HIGHLIGHT.getColor() + p.getName() + Pallete.MAJOR.getColor() + " teleported you to them.").to(target);
+        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + target.getPlayer().getName() + Pallete.MAJOR.getColor() + " to you.").to(p);
+        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " teleported you to them.").to(target);
     }
 
     @Command(name = "TPR",
@@ -291,11 +291,11 @@ public class TeleportModule extends TrilliumModule {
             Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
         }
 
-        new Message(Mood.NEUTRAL, "TPR", Pallete.HIGHLIGHT.getColor() + target.getName() + Pallete.MAJOR.getColor() + " is now pending. Please stand by.").to(p);
+        new Message(Mood.NEUTRAL, "TPR", target.getName() + " is now pending. Please stand by.").to(p);
 
-        new Message(Mood.NEUTRAL, "TPR", Pallete.HIGHLIGHT.getColor() + p.getName() + Pallete.MAJOR.getColor() + " would like to teleport to you.").to(target);
-        new Message(Mood.NEUTRAL, "TPR", Pallete.HIGHLIGHT.getColor() + "/tpra " + Pallete.MAJOR.getColor() + "to accept the teleport.").to(target);
-        new Message(Mood.NEUTRAL, "TPR", Pallete.HIGHLIGHT.getColor() + "/tprd " + Pallete.MAJOR.getColor() + "to deny the teleport.").to(target);
+        new Message(Mood.NEUTRAL, "TPR", p.getName() + " would like to teleport to you.").to(target);
+        new Message(Mood.NEUTRAL, "TPR", "/tpra " + "to accept the teleport.").to(target);
+        new Message(Mood.NEUTRAL, "TPR", "/tprd " + "to deny the teleport.").to(target);
 
         tpr.put(p.getUniqueId(), target.getUniqueId());
     }
@@ -341,11 +341,11 @@ public class TeleportModule extends TrilliumModule {
             Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
         }
 
-        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "Teleport request for " + Pallete.HIGHLIGHT.getColor() + target.getName() + Pallete.MAJOR.getColor() + " to here is now pending. Please stand by.").to(p);
+        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "Teleport request for "  + target.getName() + " to here is now pending. Please stand by.").to(p);
 
-        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), Pallete.HIGHLIGHT.getColor() + p.getName() + Pallete.MAJOR.getColor() + " would like you to teleport to him").to(target);
-        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), Pallete.HIGHLIGHT.getColor() + "/tpra " + Pallete.MAJOR.getColor() + "to accept the teleport.").to(target);
-        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), Pallete.HIGHLIGHT.getColor() + "/tprd " + Pallete.MAJOR.getColor() + "to deny the teleport.").to(target);
+        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), p.getName() + " would like you to teleport to him").to(target);
+        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "/tpra " + "to accept the teleport.").to(target);
+        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "/tprd " + "to deny the teleport.").to(target);
         tprh.put(p.getUniqueId(), target.getUniqueId());
     }
 
@@ -383,8 +383,8 @@ public class TeleportModule extends TrilliumModule {
             TrilliumPlayer requester = player(Bukkit.getPlayer(tpr.get(p.getUniqueId())));
             requester.getPlayer().teleport(p);
 
-            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + Pallete.HIGHLIGHT.getColor() + requester.getName() + Pallete.MAJOR.getColor() + " to you.").to(p);
-            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), Pallete.HIGHLIGHT.getColor() + p.getName() + Pallete.MAJOR.getColor() + " accepted your teleport request.").to(requester);
+            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + requester.getName() + " to you.").to(p);
+            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " accepted your teleport request.").to(requester);
             tpr.remove(p.getUniqueId());
 
         } else if (tprh.containsValue(p.getUniqueId())) {
@@ -401,8 +401,8 @@ public class TeleportModule extends TrilliumModule {
             TrilliumPlayer requester = player(Bukkit.getPlayer(tprh.get(p.getUniqueId())));
 
             p.teleport(requester.getPlayer());
-            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported to " + Pallete.HIGHLIGHT.getColor() + requester.getName()).to(p);
-            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), Pallete.HIGHLIGHT.getColor() + p.getName() + Pallete.MAJOR.getColor() + " accepted to teleport to you.").to(requester);
+            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported to " + requester.getName()).to(p);
+            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " accepted to teleport to you.").to(requester);
 
             tprh.remove(p.getUniqueId());
 
@@ -434,13 +434,13 @@ public class TeleportModule extends TrilliumModule {
         if (tpr.containsValue(p.getUniqueId())) {
             Player requester = Bukkit.getPlayer(tpr.get(p.getUniqueId()));
 
-            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You denied " + Pallete.HIGHLIGHT.getColor() + requester.getName() + "'s teleport request.").to(p);
+            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You denied " + requester.getName() + "'s teleport request.").to(p);
             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " denied your teleport request.").to(requester);
             tpr.remove(p.getUniqueId());
         } else if (tprh.containsValue(p.getUniqueId())) {
             Player requester = Bukkit.getPlayer(tprh.get(p.getUniqueId()));
 
-            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You denied " + Pallete.HIGHLIGHT.getColor() + requester.getName() + "'s teleport request.").to(p);
+            new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You denied " + requester.getName() + "'s teleport request.").to(p);
             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " denied your teleport request.").to(requester);
             tprh.remove(p.getUniqueId());
         } else {

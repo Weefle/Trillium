@@ -6,6 +6,7 @@ import net.gettrillium.trillium.api.TrilliumPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.regex.Pattern;
 
@@ -16,7 +17,7 @@ public class Message {
     private static final Pattern MOOD_COLOR = Pattern.compile("%MOOD_COLOR%", Pattern.LITERAL);
     private static final Pattern MAJOR = Pattern.compile("%MAJOR%", Pattern.LITERAL);
     private static final Pattern MINOR = Pattern.compile("%MINOR%", Pattern.LITERAL);
-    private static final Pattern HILIGHT = Pattern.compile("%HIGHLIGHT%", Pattern.LITERAL);
+    private static final Pattern HIGHLIGHT = Pattern.compile("%HIGHLIGHT%", Pattern.LITERAL);
     private static final Pattern EXTRA = Pattern.compile("%EXTRA%", Pattern.LITERAL);
     private static final Pattern USERNAME = Pattern.compile("%USERNAME%", Pattern.LITERAL);
     private String format;
@@ -29,7 +30,7 @@ public class Message {
         format = MOOD_COLOR.matcher(format).replaceAll(mood.getColor());
         format = MAJOR.matcher(format).replaceAll(Pallete.MAJOR.getColor());
         format = MINOR.matcher(format).replaceAll(Pallete.MINOR.getColor());
-        format = HILIGHT.matcher(format).replaceAll(Pallete.HIGHLIGHT.getColor());
+        format = HIGHLIGHT.matcher(format).replaceAll(Pallete.HIGHLIGHT.getColor());
         format = ChatColor.translateAlternateColorCodes('&', format);
     }
 
@@ -46,10 +47,18 @@ public class Message {
     }
 
     public Message(String colorize) {
+        if (TrilliumAPI.getInstance().getConfig().getBoolean(PluginMessages.AUTO_HIGHLIGHT_PLAYER_NAMES)) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (colorize.contains(p.getName())) {
+                    String inject = "%HIGHLIGHT%" + p.getName() + "%MAJOR%";
+                    colorize = colorize.replace(p.getName(), inject);
+                }
+            }
+        }
         colorize = ChatColor.translateAlternateColorCodes('&', colorize);
         colorize = MAJOR.matcher(colorize).replaceAll(Pallete.MAJOR.getColor());
         colorize = MINOR.matcher(colorize).replaceAll(Pallete.MINOR.getColor());
-        colorize = HILIGHT.matcher(colorize).replaceAll(Pallete.HIGHLIGHT.getColor());
+        colorize = HIGHLIGHT.matcher(colorize).replaceAll(Pallete.HIGHLIGHT.getColor());
         colorize = ChatColor.translateAlternateColorCodes('&', colorize);
         format = colorize;
     }

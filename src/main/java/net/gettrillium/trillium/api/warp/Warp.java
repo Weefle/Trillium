@@ -52,7 +52,7 @@ public class Warp {
 
     public static List<Message> getWarpList() {
         if (cachedWarpList.isEmpty()) {
-            List<Message> format = new ArrayList<>(warps.size());
+            List<Message> format = new ArrayList<>(warps.size() + 1);
 
             for (Entry<String, String> row : warps.entrySet()) {
                 format.add(new Message(Mood.NEUTRAL, row.getKey(), LocationHandler.toString(LocationHandler.deserialize(row.getValue()))));

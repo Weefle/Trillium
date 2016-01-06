@@ -16,6 +16,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.List;
+
 public class PunishModule extends TrilliumModule {
 
     private boolean chatIsSilenced;
@@ -140,16 +142,7 @@ public class PunishModule extends TrilliumModule {
                 new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
-                String reason;
-                if (args.length > 1) {
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 1; i < args.length; i++) {
-                        sb.append(args[i]).append(" ");
-                    }
-                    reason = sb.toString().trim();
-                } else {
-                    reason = "You are the weakest link. Good bye.";
-                }
+                String reason = reasonCalculator(args);
 
                 if (target != null) {
                     Bukkit.getBanList(BanList.Type.NAME).addBan(target.getName(), reason, null, cs.getName());
@@ -253,16 +246,7 @@ public class PunishModule extends TrilliumModule {
                 new Message(TrilliumAPI.getName(cmd), Error.TOO_FEW_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
             } else {
                 Player target = Bukkit.getPlayer(args[0]);
-                String reason;
-                if (args.length > 1) {
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 1; i < args.length; i++) {
-                        sb.append(args[i]).append(" ");
-                    }
-                    reason = sb.toString().trim();
-                } else {
-                    reason = "You are the weakest link. Good bye.";
-                }
+                String reason = reasonCalculator(args);
 
                 if (target != null) {
                     Bukkit.getBanList(BanList.Type.IP).addBan(String.valueOf(target.getAddress()), reason, null, cs.getName());
@@ -345,5 +329,19 @@ public class PunishModule extends TrilliumModule {
             p.getPlayer().sendMessage("Unknown command. Try /help for a list of commands.");
             e.setCancelled(true);
         }
+    }
+
+    private String reasonCalculator(String[] args) {
+        String reason;
+        if (args.length > 1) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 1; i < args.length; i++) {
+                sb.append(args[i]).append(" ");
+            }
+            reason = sb.toString().trim();
+        } else {
+            reason = "You are the weakest link. Good bye.";
+        }
+        return reason;
     }
 }

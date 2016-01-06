@@ -440,7 +440,7 @@ public class AbilityModule extends TrilliumModule {
                     if (p.hasPermission(Ability.HEAL_OTHER)) {
                         Player target = Bukkit.getPlayer(args[0]);
                         if (target != null) {
-                            target.setHealth(target.getMaxHealth() - target.getHealth());
+                            target.setHealth(20);
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), target.getName() + "'s health has been restored.").to(p);
                             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "Your health has been restored.").to(target);
                         } else {

@@ -189,7 +189,7 @@ public class AdminModule extends TrilliumModule {
                             if ((type == Material.CHEST) || (type == Material.TRAPPED_CHEST)) {
                                 Location chestLoc = bs.getLocation();
 
-                                if (loc.distanceSquared(chestLoc) < (double) radiusSquared) {
+                                if (loc.distanceSquared(chestLoc) <= (double) radiusSquared) {
                                     chests.add(bs.getLocation());
                                 }
                             }
@@ -201,18 +201,18 @@ public class AdminModule extends TrilliumModule {
                     new Message(Mood.BAD, TrilliumAPI.getName(cmd), "No chests found.").to(p);
                 } else {
                     for (Location block : chests) {
-                        new Message(Mood.GOOD, TrilliumAPI.getName(cmd), LocationHandler.toString(block)).to(p);
+                        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), LocationHandler.toString(block)).to(p);
                     }
 
                     // create an array with the blocks in vector form so we don't need to do as much object creation in the loop
-                    final List<Vector> blockVectors = new ArrayList<>(chests.size());
+                    final List<Vector> blockVectors = new ArrayList<>(chests.size() + 1);
 
                     for (Location chest : chests) {
                         blockVectors.add(chest.toVector());
                     }
 
                     new BukkitRunnable() {
-                        int count = 30;
+                        private int count = 30;
 
                         public void run() {
                             if (--count == 0) {
@@ -324,31 +324,32 @@ public class AdminModule extends TrilliumModule {
                 new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "Server Statistics:").to(cs);
                 Utils.printCurrentMemory(cs);
             } else {
-                if (args[0].equalsIgnoreCase("clear")) {
+                if (args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("gc")) {
                     if (lagPrompt.contains(cs.getName())) {
                         lagPrompt.remove(cs.getName());
 
                         final long time = System.currentTimeMillis();
 
+                        Utils.aestheticSlash();
                         new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "Before GC:").to(cs);
-                        Utils.printCurrentMemory(cs);
-                        cs.sendMessage(" ");
 
+                        Utils.aestheticSlash();
+                        Utils.printCurrentMemory(cs);
+                        Utils.aestheticSlash();
+
+                        cs.sendMessage(" ");
                         System.gc();
                         new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "GC complete.").to(cs);
+                        Utils.aestheticSlash();
+                        cs.sendMessage(" ");
 
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                cs.sendMessage(" ");
-                                new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "After GC:").to(cs);
-                                Utils.printCurrentMemory(cs);
+                        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "After GC:").to(cs);
+                        Utils.aestheticSlash();
+                        Utils.printCurrentMemory(cs);
 
-                                long need = System.currentTimeMillis() - time;
-                                new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "GC took " + need / 1000L + " seconds.").to(cs);
+                        long need = System.currentTimeMillis() - time;
+                        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "GC took " + need / 1000L + " seconds.").to(cs);
 
-                            }
-                        }.runTaskLater(TrilliumAPI.getInstance(), 5L);
 
                     } else {
                         lagPrompt.add(cs.getName());

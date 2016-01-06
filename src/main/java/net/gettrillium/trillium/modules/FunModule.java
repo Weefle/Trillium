@@ -53,8 +53,8 @@ public class FunModule extends TrilliumModule {
             Player target = Bukkit.getPlayer(args[0]);
             if (target != null) {
                 p.getWorld().strikeLightning(target.getLocation());
-                new Message(Mood.GOOD, TrilliumAPI.getUsage(cmd), p.getName() + " has struck lightning upon you!").to(target);
-                new Message(Mood.GOOD, TrilliumAPI.getUsage(cmd), "You struck lightning upon " + target.getName()).to(p);
+                new Message(Mood.GOOD, TrilliumAPI.getName(cmd), p.getName() + " has struck lightning upon you!").to(target);
+                new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You struck lightning upon " + target.getName()).to(p);
 
             } else {
                 new Message(TrilliumAPI.getUsage(cmd), Error.INVALID_PLAYER, args[0]).to(p);

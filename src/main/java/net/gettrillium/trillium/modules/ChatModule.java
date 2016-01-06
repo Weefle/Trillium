@@ -81,12 +81,10 @@ public class ChatModule extends TrilliumModule {
                         new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[0]).to(cs);
                     }
 
-                } else if (args[0].equalsIgnoreCase("global")) {
+                } else {
                     for (Player pl : Bukkit.getOnlinePlayers()) {
                         Utils.clearChat(pl);
                     }
-                } else {
-                    new Message(TrilliumAPI.getName(cmd), Error.WRONG_ARGUMENTS, TrilliumAPI.getUsage(cmd)).to(cs);
                 }
             } else {
                 new Message(TrilliumAPI.getName(cmd), Error.NO_PERMISSION, TrilliumAPI.getPermissions(cmd)[0]).to(cs);

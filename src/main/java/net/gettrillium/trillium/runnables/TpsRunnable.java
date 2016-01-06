@@ -13,7 +13,7 @@ public class TpsRunnable extends BukkitRunnable {
         return getTPS(100);
     }
 
-    public static double getTPS(int tickCount) {
+    private static double getTPS(int tickCount) {
         // prevent wraparounds
         if (tickCount > ticks.length) {
             tickCount = ticks.length;

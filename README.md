@@ -64,7 +64,7 @@ package net.gettrillium.trillium.modules;
             command = "fly",
             description = "SOAR THROUGH THE AIR LIKE A MAJESTIC BUTTERFLY!",
             usage = "/fly",
-            permissions = {Ability.FLY, Ability.FLY_OTHER})
+            permissions = {Ability.FLY, Ability.FLY_OTHER}) // not necessary
     public void fly(CommandSender cs, String[] args) {
            // Needs to be the exact same as the command name. Write it ONLY if you want to make the command more synced with everything.
            String cmd = "fly";
@@ -91,7 +91,7 @@ package net.gettrillium.trillium.modules;
                if (player.hasPermission(Ability.FLY) || player.hasPermission(Ability.FLY_OTHER)) {
                
                    // If you want to access regular player methods but only have the TrilliumPlayer object, then
-                   // use "trilliumplay.getProxy().<regular player methods here>"
+                   // use "trilliumplay.getPlayer().<regular player methods here>"
                    if (player.isFlying()) {
                       // Example of normal error message without the Error enums.
                        new Message(Mood.BAD, TrilliumAPI.getName(cmd), "You are no longer in fly mode.").to(player);

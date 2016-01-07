@@ -13,6 +13,7 @@ public class AutoBroadcastRunnable extends BukkitRunnable {
     private int queue = 1;
     private int min = Integer.MAX_VALUE;
     private int max = Integer.MIN_VALUE;
+    // TODO: redo
 
     public AutoBroadcastRunnable() {
         for (String i : TrilliumAPI.getInstance().getConfig().getConfigurationSection(Broadcast.AUTO_BROADCAST_BROADCASTS).getKeys(false)) {

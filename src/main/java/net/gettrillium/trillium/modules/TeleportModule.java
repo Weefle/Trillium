@@ -153,20 +153,9 @@ public class TeleportModule extends TrilliumModule {
                         return;
                     }
 
-                    double[] coords = new double[3];
+                    double[] coords = coordinateCalculator(args, target, cmd, cs);
 
-                    for (int i = 0; i < 3; i++) {
-                        if (StringUtils.isNumeric(args[i])) {
-                            coords[i] = Double.parseDouble(args[i]);
-                        } else if (args[i].startsWith("~")) {
-                            coords[i] = target.getLocation().getX() + Double.parseDouble(args[i]);
-                        } else {
-                            new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[i]).to(cs);
-                            return;
-                        }
-                    }
-
-                    Location loc = new Location(target.getLocation().getWorld(), coords[0], coords[1], coords[2]);
+                    Location loc = new Location(target.getLocation().getWorld(), coords[0], coords[1], coords[2], target.getLocation().getYaw(), target.getLocation().getPitch());
                     target.teleport(loc);
                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), cs.getName() + " teleported you to " + Pallete.HIGHLIGHT.getColor() + LocationHandler.toString(loc)).to(target);
                     new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You teleported " + target.getName() + " to " + Pallete.HIGHLIGHT.getColor() + LocationHandler.toString(loc)).to(cs);
@@ -185,20 +174,9 @@ public class TeleportModule extends TrilliumModule {
 
             Player p = (Player) cs;
 
-            double[] coords = new double[3];
+            double[] coords = coordinateCalculator(args, p, cmd, p);
 
-            for (int i = 0; i < 3; i++) {
-                if (StringUtils.isNumeric(args[i])) {
-                    coords[i] = Double.parseDouble(args[i]);
-                } else if (args[i].startsWith("~")) {
-                    coords[i] = p.getLocation().getX() + Double.parseDouble(args[i]);
-                } else {
-                    new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[i]).to(cs);
-                    return;
-                }
-            }
-
-            Location loc = new Location(p.getLocation().getWorld(), coords[0], coords[1], coords[2]);
+            Location loc = new Location(p.getLocation().getWorld(), coords[0], coords[1], coords[2], p.getLocation().getYaw(), p.getLocation().getPitch());
             p.teleport(loc);
             new Message(Mood.GOOD, TrilliumAPI.getName(cmd), "You were teleported to " + Pallete.HIGHLIGHT.getColor() + LocationHandler.toString(loc)).to(p);
         }
@@ -341,7 +319,7 @@ public class TeleportModule extends TrilliumModule {
             Cooldown.setCooldown(p, CooldownType.TELEPORTATION, false);
         }
 
-        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "Teleport request for "  + target.getName() + " to here is now pending. Please stand by.").to(p);
+        new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "Teleport request for " + target.getName() + " to here is now pending. Please stand by.").to(p);
 
         new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), p.getName() + " would like you to teleport to him").to(target);
         new Message(Mood.NEUTRAL, TrilliumAPI.getName(cmd), "/tpra " + "to accept the teleport.").to(target);
@@ -773,5 +751,34 @@ public class TeleportModule extends TrilliumModule {
                 }
             }
         }
+    }
+
+    private double[] coordinateCalculator(String[] args, Player victim, String cmd, CommandSender receiver) {
+        double[] coords = new double[3];
+
+        for (int i = 0; i < 3; i++) {
+            if (StringUtils.isNumeric(args[i])) {
+                coords[i] = Double.parseDouble(args[i]);
+            } else if (args[i].startsWith("~")) {
+                if (StringUtils.isNumeric(args[i].substring(1)) && !args[i].substring(1).isEmpty()) {
+                    if (i == 0)
+                        coords[i] = victim.getLocation().getX() + Double.parseDouble(args[i].substring(1));
+                    else if (i == 1)
+                        coords[i] = victim.getLocation().getY() + Double.parseDouble(args[i].substring(1));
+                    else if (i == 2)
+                        coords[i] = victim.getLocation().getZ() + Double.parseDouble(args[i].substring(1));
+                } else {
+                    if (i == 0)
+                        coords[i] = victim.getLocation().getX();
+                    else if (i == 1)
+                        coords[i] = victim.getLocation().getY();
+                    else if (i == 2)
+                        coords[i] = victim.getLocation().getZ();
+                }
+            } else {
+                new Message(TrilliumAPI.getName(cmd), Error.INVALID_PLAYER, args[i]).to(receiver);
+            }
+        }
+        return coords;
     }
 }
